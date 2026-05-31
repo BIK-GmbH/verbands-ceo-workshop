@@ -1,0 +1,237 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./print.css";
+
+html, body, #root {
+  height: 100%;
+}
+
+html, body {
+  /* Disable iOS pull-to-refresh and edge-swipe browser-back. */
+  overscroll-behavior: contain;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile: bigger bottom nav + respect iPhone home-indicator safe area.
+ *
+ * The trick: extend the footer's HEIGHT to include the safe-area-inset-bottom
+ * but DO NOT add padding-bottom on top of it. Otherwise we double-account —
+ * border-box subtracts the padding from the content area, items-center
+ * centres in the (height - padding) region, and the safe-area band ends up
+ * empty below the icons. Looks like the footer "floats" above a void.
+ *
+ * Solution: extended height + nothing else. flex items-center now centres
+ * the icons across the full visible footer band, so they sit slightly above
+ * the home indicator instead of pinned to the top of an oversized box.
+ */
+@media (max-width: 767px) {
+  :root {
+    --footer-height: var(--footer-height-mobile);
+  }
+  footer[data-workshop-footer] {
+    /* height grows with safe area; no padding-bottom (would double-count) */
+    height: calc(var(--footer-height-mobile) + env(safe-area-inset-bottom));
+  }
+  /* Presentation bottom bar: same idea — symmetric padding so the icons
+   * stay vertically centred even as the bar grows for the safe area. */
+  [data-presentation] > div:last-child {
+    padding-top: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* PWA standalone (iOS Home-Screen, Android installed PWA, also iPad/desktop
+ * with notch / camera cutout): respect safe-area-inset-top so the sticky
+ * header doesn't slide under the status bar / Dynamic Island. */
+header[data-workshop-header] {
+  padding-top: env(safe-area-inset-top);
+  height: calc(var(--header-height) + env(safe-area-inset-top)) !important;
+}
+[data-progress-bar] {
+  top: calc(var(--header-height) + env(safe-area-inset-top)) !important;
+}
+[data-presentation] > div:first-child {
+  padding-top: calc(env(safe-area-inset-top) + 0.5rem);
+}
+/* Mobile drawer: also dodges the Dynamic Island / status bar at the top,
+ * AND respects the home-indicator at the bottom for long module lists. */
+[data-drawer] {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+/* Splash logo: shift slightly up so it's optically centred in the visible
+ * area (status bar eats some pixels at top) — minor cosmetic tweak. */
+@supports (padding-top: env(safe-area-inset-top)) {
+  #splash > .splash-inner {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--workshop-accent);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* Presentation-mode tweaks. */
+.presentation-slide .slide-page {
+  padding: 1.25rem 1.25rem !important;
+  max-width: none !important;
+}
+@media (min-width: 768px) {
+  .presentation-slide .slide-page {
+    padding: 2.5rem 3rem !important;
+  }
+}
+.presentation-slide h1 { font-size: 1.5rem !important; line-height: 1.2; }
+.presentation-slide h2 { font-size: 1.15rem !important; }
+.presentation-slide h3 { font-size: 1rem !important; }
+.presentation-slide pre { font-size: 0.75rem; }
+.presentation-slide table { font-size: 0.85rem; }
+@media (min-width: 768px) {
+  .presentation-slide h1 { font-size: 2.25rem !important; }
+  .presentation-slide h2 { font-size: 1.5rem !important; }
+  .presentation-slide h3 { font-size: 1.25rem !important; }
+  .presentation-slide pre { font-size: 0.85rem; }
+  .presentation-slide table { font-size: 0.9rem; }
+}
+.presentation-slide [data-speaker-notes] {
+  margin-top: 1.5rem;
+}
+
+[data-presentation] .presentation-slide[data-notes-open="1"] [data-speaker-notes] {
+  position: fixed;
+  right: 1rem;
+  bottom: 4.75rem;
+  z-index: 25;
+  width: min(420px, calc(100vw - 2rem));
+  max-height: min(42dvh, 360px);
+  overflow: auto;
+  margin: 0 !important;
+  padding: 1rem !important;
+  border: 1px solid rgba(255,255,255,0.16) !important;
+  border-radius: 0.75rem;
+  background: rgba(12,17,28,0.92);
+  color: rgba(255,255,255,0.82) !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.36);
+  backdrop-filter: blur(16px);
+}
+[data-presentation] .presentation-slide[data-notes-open="1"] [data-speaker-notes] strong {
+  color: #fff !important;
+}
+@media (max-width: 767px) {
+  [data-presentation] .presentation-slide[data-notes-open="1"] [data-speaker-notes] {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
+    width: auto;
+    max-height: 34dvh;
+  }
+}
+
+/* ── Slide transitions ─────────────────────────────────────────────── */
+@keyframes slideInRight {
+  from { transform: translate3d(48px, 0, 0); opacity: 0; }
+  to   { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { transform: translate3d(-48px, 0, 0); opacity: 0; }
+  to   { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+.slide-enter-forward  { animation: slideInRight 260ms ease-out; }
+.slide-enter-backward { animation: slideInLeft 260ms ease-out; }
+
+/* Disable when motion is off (user toggle or prefers-reduced-motion in auto mode) */
+html[data-motion="off"] .slide-enter-forward,
+html[data-motion="off"] .slide-enter-backward,
+html[data-motion="off"] .slide-snap-back {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Live drag transform — applied while finger is on screen */
+.slide-dragging {
+  transition: none !important;
+  will-change: transform;
+}
+.slide-snap-back {
+  transition: transform 220ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+@keyframes swipeHintFadeIn {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+html[data-motion="off"] [data-swipe-hint] {
+  animation: none !important;
+}
+
+/* ── Mobile drawer + backdrop ──────────────────────────────────────── */
+@keyframes drawerSlideIn {
+  from { transform: translate3d(-100%, 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes drawerSlideOut {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-100%, 0, 0); }
+}
+@keyframes backdropFadeIn  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes backdropFadeOut { from { opacity: 1 } to { opacity: 0 } }
+
+[data-drawer]            { animation: drawerSlideIn  240ms cubic-bezier(.2,.7,.2,1); }
+[data-drawer][data-exit] { animation: drawerSlideOut 200ms ease-in forwards; }
+[data-backdrop]            { animation: backdropFadeIn  240ms ease-out; }
+[data-backdrop][data-exit] { animation: backdropFadeOut 200ms ease-in forwards; }
+
+html[data-motion="off"] [data-drawer],
+html[data-motion="off"] [data-drawer][data-exit],
+html[data-motion="off"] [data-backdrop],
+html[data-motion="off"] [data-backdrop][data-exit] {
+  animation: none !important;
+}
+
+/* ── Accordion expand/collapse via grid-row trick ─────────────────── */
+.accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms cubic-bezier(.2,.7,.2,1);
+}
+.accordion-content > div { overflow: hidden; min-height: 0; }
+.accordion-content[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+html[data-motion="off"] .accordion-content {
+  transition: none !important;
+}
+
+/* Mobile: avoid horizontal page-scroll when long pre/url content shows up. */
+@media (max-width: 767px) {
+  .slide-page {
+    padding: 1.5rem 1rem !important;
+  }
+  .slide-page h1 { font-size: 1.75rem !important; }
+  .slide-page h2 { font-size: 1.25rem !important; }
+  .slide-page h3 { font-size: 1.05rem !important; }
+  .slide-page pre { font-size: 0.75rem; }
+  .slide-page table { font-size: 0.8rem; }
+  /* Long URLs / inline code break instead of pushing layout */
+  .slide-page a, .slide-page code { word-break: break-word; overflow-wrap: anywhere; }
+}

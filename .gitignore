@@ -1,0 +1,21 @@
+node_modules
+dist
+dist-ssr
+.DS_Store
+*.local
+.env
+.env.local
+.vscode/*
+!.vscode/extensions.json
+.idea
+.vite
+playwright-report
+test-results
+/exports
+
+# Workshop-specific: kundenspezifische Materialien, Angebots-PDFs etc.
+# bleiben lokal, nicht im public Repo
+assets/
+
+# Claude Code session-local state (cron locks etc.)
+.claude/scheduled_tasks.lock

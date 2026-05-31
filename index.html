@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+    <link rel="preload" as="image" href="%BASE_URL%brand/bik-logo-white.svg" type="image/svg+xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#181A27" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Verbands-CEO" />
+    <meta name="description" content="KI-augmentierter Verbands-CEO · Vorstands-Workshop · BIK GmbH × Fachverband Betonbohren und -sägen Deutschland e. V." />
+    <title>KI-augmentierter Verbands-CEO · Vorstands-Workshop</title>
+    <style>
+      /* Splash — inlined so it shows BEFORE any JS/CSS bundles parse. */
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background: #181A27;     /* BIK Anthrazit */
+        color: #ffffff;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        opacity: 1;
+        transition: opacity 420ms cubic-bezier(.2,.7,.2,1);
+        will-change: opacity;
+      }
+      #splash[data-leaving="1"] { opacity: 0; pointer-events: none; }
+      #splash > .splash-inner {
+        text-align: center;
+        animation: splashRise 520ms cubic-bezier(.2,.7,.2,1) both;
+      }
+      #splash .splash-mark {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto 20px;
+        animation: splashPulse 1.8s ease-in-out infinite;
+        filter: drop-shadow(0 6px 26px rgba(56,182,171,0.32));
+      }
+      #splash .splash-title  { font-weight: 700; font-size: 18px; letter-spacing: 0.2px; }
+      #splash .splash-sub    { font-weight: 400; font-size: 13px; opacity: 0.78; margin-top: 4px; }
+      #splash .splash-spinner {
+        margin: 22px auto 0;
+        width: 26px; height: 26px;
+        border: 2.5px solid rgba(255,255,255,0.18);
+        border-top-color: #38B6AB;     /* BIK Türkis */
+        border-radius: 50%;
+        animation: splashSpin 0.85s linear infinite;
+      }
+      @keyframes splashRise {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes splashPulse {
+        0%, 100% { transform: scale(1)   rotate(0deg); }
+        50%      { transform: scale(1.04) rotate(0deg); }
+      }
+      @keyframes splashSpin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        #splash, #splash > .splash-inner { animation: none !important; transition: none !important; }
+        #splash .splash-mark, #splash .splash-spinner { animation: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="splash" aria-label="Loading" role="status">
+      <div class="splash-inner">
+        <img class="splash-mark" src="%BASE_URL%brand/bik-logo-white.svg" alt="BIK" />
+        <div class="splash-title">KI-augmentierter Verbands-CEO</div>
+        <div class="splash-sub">Vorstands-Workshop · FBS × BIK</div>
+        <div class="splash-spinner" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script>window.__splashStart = performance.now();</script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

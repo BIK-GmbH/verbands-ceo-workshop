@@ -1,0 +1,56 @@
+---
+title:
+  de: "Ergebnistypen-Pipeline (technisch)"
+  en: "Result-type pipeline (technical)"
+researchedOn: 2026-05-31
+---
+
+# <I18n de="Ergebnistypen-Pipeline (technisch)" en="Result-type pipeline (technical)" />
+
+<p>
+  <I18n
+    de="Für die technisch Interessierten und den Trainer: Wie aus dem Workshop konkrete Ergebnisse entstehen."
+    en="For the technically curious and the trainer: how concrete results emerge from the workshop."
+  />
+</p>
+
+<De>
+1. **Erfassen** — interaktive Felder schreiben in den localStorage-Store (kein Server).
+2. **Exportieren** — Workshop-Protokoll als Markdown + JSON (Route `/protokoll`).
+3. **Regenerieren** — der Repo-Skill `/konzept-neu` liest das Protokoll und erzeugt ein angepasstes Konzept + Folien.
+4. **Rendern/Export** — `npm run build` + `npm run export:pdf` erzeugt das PDF aus der Print-Route; alternativ ein Canva-Marken-Deck.
+</De>
+
+<En>
+1. **Capture** — interactive fields write into the localStorage store (no server).
+2. **Export** — workshop record as Markdown + JSON (route `/protokoll`).
+3. **Regenerate** — the repo skill `/konzept-neu` reads the record and produces an adapted concept + slides.
+4. **Render/export** — `npm run build` + `npm run export:pdf` generates the PDF from the print route; alternatively a Canva brand deck.
+</En>
+
+<CommandBox lang="bash">
+# Plattform lokal starten
+npm run dev
+# Konzept-PDF (DE) erzeugen
+npm run build
+npm run export:pdf
+</CommandBox>
+
+<CommandBox lang="bash">
+# Aus dem Workshop-Protokoll Konzept + Folien neu generieren
+/konzept-neu workshop-protokoll-2026-05-31.md
+</CommandBox>
+
+<NoteCard variant="hint">
+  <I18n
+    de="Die Plattform ist selbst ein Composer-Ergebnis: MDX → React → statische Seite, deploybar auf GitHub Pages."
+    en="The platform is itself a Composer result: MDX → React → static site, deployable on GitHub Pages."
+  />
+</NoteCard>
+
+<SpeakerNotes>
+  <I18n
+    de="In Modul 7 live zeigen: Protokoll exportieren, /konzept-neu laufen lassen, PDF erzeugen. Damit wird die Pipeline aus den Folien greifbar — der Workshop produziert sein eigenes Ergebnis."
+    en="Show live in module 7: export the record, run /konzept-neu, generate the PDF. This makes the pipeline tangible — the workshop produces its own result."
+  />
+</SpeakerNotes>

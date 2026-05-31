@@ -1,0 +1,61 @@
+/* BIK Workshop Design Tokens
+ * Real BIK brand palette extracted from bik.biz CSS (May 2026).
+ * Primary: BIK Türkis #38B6AB · Secondary: Tiefblau #13357A · Dark: #181A27
+ */
+
+@theme {
+  --color-bik-50:  oklch(0.97 0.02 190);
+  --color-bik-100: oklch(0.93 0.05 190);
+  --color-bik-200: #A0D4CD;             /* helles Türkis (BIK accent) */
+  --color-bik-300: oklch(0.78 0.10 190);
+  --color-bik-400: oklch(0.71 0.11 188);
+  --color-bik-500: #38B6AB;             /* BIK Türkis (primary) */
+  --color-bik-600: #03989E;             /* Logo-Akzent */
+  --color-bik-700: #13357A;             /* BIK Tiefblau (secondary) */
+  --color-bik-800: oklch(0.30 0.10 250);
+  --color-bik-900: #181A27;             /* BIK Anthrazit (dark surface) */
+
+  --color-accent: var(--color-bik-500);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+:root {
+  /* Brand */
+  --bik-turquoise: #38B6AB;
+  --bik-turquoise-light: #A0D4CD;
+  --bik-deep-blue: #13357A;
+  --bik-anthracite: #181A27;
+  --bik-logo-accent: #03989E;
+
+  /* Workshop accent — defaults to BIK Türkis. Per-workshop overrideable. */
+  --workshop-accent: var(--bik-turquoise);
+  --workshop-accent-deep: var(--bik-deep-blue);
+
+  /* Surface */
+  --bg: #ffffff;
+  --bg-elev: #f6f9f8;          /* warmed grey, picks up the turquoise */
+  --fg: #181A27;               /* uses BIK anthracite for body text */
+  --fg-muted: #57606a;
+  --border: #e2e8f0;
+
+  --sidebar-width: 280px;
+  --header-height: 56px;
+  --footer-height: 44px;
+  --footer-height-mobile: 56px;
+}
+
+[data-theme="dark"] {
+  --bg: #0d0f17;
+  --bg-elev: #181A27;          /* BIK anthracite as elevated surface */
+  --fg: #e5e7eb;
+  --fg-muted: #94a3b8;
+  --border: #1f2235;
+}
+
+/* Optional alternate workshop accents */
+[data-workshop="cdb"]      { --workshop-accent: #7c3aed; }
+[data-workshop="trustai"]  { --workshop-accent: #0d9488; }

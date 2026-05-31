@@ -1,0 +1,132 @@
+<svg id="a" data-name="elemente" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 1000 1000">
+  <defs>
+    <style>
+      .n {
+        stroke: #13357A;
+        stroke-miterlimit: 8.06;
+        stroke-width: 60px;
+      }
+
+      .n, .o {
+        fill: none;
+      }
+
+      .p {
+        clip-path: url(#i);
+      }
+
+      .q {
+        clip-path: url(#k);
+      }
+
+      .r {
+        clip-path: url(#m);
+      }
+
+      .s {
+        clip-path: url(#f);
+      }
+
+      .t {
+        clip-path: url(#j);
+      }
+
+      .u {
+        fill: #13357A;
+      }
+
+      .v {
+        clip-path: url(#h);
+      }
+
+      .w {
+        clip-path: url(#g);
+      }
+
+      .x {
+        clip-path: url(#l);
+      }
+
+      .y {
+        clip-path: url(#d);
+      }
+
+      .z {
+        clip-path: url(#e);
+      }
+
+      .aa {
+        clip-path: url(#c);
+      }
+
+      .ab {
+        fill: #03989e;
+      }
+    </style>
+    <clipPath id="c">
+      <rect class="o" x="87.68" y="85.43" width="829.97" height="829.97"/>
+    </clipPath>
+    <clipPath id="d">
+      <circle class="o" cx="502.66" cy="500.42" r="414.99" transform="translate(-206.62 502.01) rotate(-45)"/>
+    </clipPath>
+    <clipPath id="e">
+      <rect class="o" x="450.68" y="236.43" width="180" height="180"/>
+    </clipPath>
+    <clipPath id="f">
+      <rect class="o" x="492.61" y="201.23" width="160.96" height="184.23" transform="translate(-40.76 487.44) rotate(-44.65)"/>
+    </clipPath>
+    <clipPath id="g">
+      <polygon class="o" points="630.25 236.69 580.39 415.25 451.1 284.39 630.25 236.69"/>
+    </clipPath>
+    <clipPath id="h">
+      <rect class="o" x="636.01" y="299.1" width="162.67" height="162.67"/>
+    </clipPath>
+    <clipPath id="i">
+      <rect class="o" x="673.54" y="267.88" width="145.1" height="166.07" transform="translate(-31.28 625.66) rotate(-44.65)"/>
+    </clipPath>
+    <clipPath id="j">
+      <polygon class="ab" points="797.62 299.84 752.67 460.8 636.12 342.83 797.62 299.84"/>
+    </clipPath>
+    <clipPath id="k">
+      <rect class="o" x="676.01" y="495.1" width="102.67" height="102.67"/>
+    </clipPath>
+    <clipPath id="l">
+      <rect class="o" x="700.52" y="476.02" width="91.1" height="104.27" transform="translate(-155.86 676.8) rotate(-44.65)"/>
+    </clipPath>
+    <clipPath id="m">
+      <polygon class="o" points="778.42 496.08 750.2 597.14 677.03 523.08 778.42 496.08"/>
+    </clipPath>
+  </defs>
+  <g class="aa">
+    <g class="y">
+      <path class="n" d="M502.67,85.43c-229.19,0-414.99,185.8-414.99,414.99s185.8,414.98,414.99,414.98,414.98-185.8,414.98-414.98S731.85,85.43,502.67,85.43Z"/>
+    </g>
+  </g>
+  <path class="u" d="M219.65,653.64v-201.04h70.42c24.39,0,42.89,4.68,55.5,14.02,12.61,9.33,18.92,23.02,18.92,41.06,0,9.85-2.54,18.53-7.6,26.04-5.06,7.5-12.09,13-21.1,16.5,10.3,2.57,18.42,7.77,24.35,15.6,5.94,7.82,8.92,17.39,8.92,28.71,0,19.33-6.17,33.97-18.5,43.92-12.33,9.95-29.92,15.01-52.75,15.19h-78.15ZM261.07,566.1v54.27h35.48c9.76,0,17.38-2.32,22.85-6.98,5.48-4.65,8.23-11.07,8.23-19.27,0-18.4-9.53-27.74-28.58-28.02h-37.98ZM261.07,536.82h30.65c20.9-.38,31.35-8.71,31.35-25,0-9.11-2.65-15.67-7.94-19.67-5.29-4.01-13.65-6.02-25.06-6.02h-29v50.69Z"/>
+  <path class="u" d="M444.15,653.64h-41.42v-201.04h41.42v201.04Z"/>
+  <path class="u" d="M545.5,572.99l-21.54,23.21v57.44h-41.42v-201.04h41.42v91.13l18.23-24.98,51.23-66.15h50.96l-71.4,89.33,73.46,111.71h-49.29l-51.65-80.65Z"/>
+  <g class="z">
+    <g class="s">
+      <g class="w">
+        <path class="ab" d="M565.6,171.26l129.48,131.06-114.51,113.13-129.48-131.05,114.51-113.13Z"/>
+      </g>
+    </g>
+  </g>
+  <g class="v">
+    <g class="p">
+      <g>
+        <polygon class="ab" points="797.62 299.84 752.67 460.8 636.12 342.83 797.62 299.84"/>
+        <g class="t">
+          <path class="ab" d="M739.34,240.85l116.72,118.14-103.22,101.98-116.72-118.14,103.22-101.98Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g class="q">
+    <g class="x">
+      <g class="r">
+        <path class="ab" d="M741.83,459.05l73.28,74.17-64.81,64.03-73.28-74.17,64.8-64.03Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

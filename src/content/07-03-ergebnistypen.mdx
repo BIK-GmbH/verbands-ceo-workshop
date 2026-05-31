@@ -1,0 +1,55 @@
+---
+title:
+  de: "Ergebnistypen generieren"
+  en: "Generate result types"
+researchedOn: 2026-05-31
+---
+
+# <I18n de="Ergebnistypen generieren" en="Generate result types" />
+
+<De>
+Aus dem Workshop entstehen vier Ergebnistypen — jeder mit einem klaren Weg, wie er erzeugt wird:
+
+| Ergebnistyp | Womit erzeugt |
+|---|---|
+| Angepasstes Konzept-PDF | Print-Ansicht der Plattform → PDF (`npm run export:pdf`) bzw. `/konzept-neu` |
+| Aktualisiertes Folien-Deck | diese Plattform (MDX) oder Canva-Marken-Deck |
+| Beschluss-/Maßnahmenliste | aus dem Protokoll |
+| Marken-Deck (Canva) | Canva-Integration |
+
+</De>
+
+<En>
+Four result types come out of the workshop — each with a clear way to generate it:
+
+| Result type | How it's created |
+|---|---|
+| Adapted concept PDF | platform print view → PDF (`npm run export:pdf`) or `/konzept-neu` |
+| Updated slide deck | this platform (MDX) or Canva brand deck |
+| Resolution/action list | from the record |
+| Brand deck (Canva) | Canva integration |
+
+</En>
+
+<DemoBox title="Konzept + Folien aus dem Protokoll neu erzeugen" lang="bash" step={1}>
+/konzept-neu workshop-protokoll-2026-05-31.md
+</DemoBox>
+
+<DemoBox title="Konzept-PDF aus der Plattform exportieren" lang="bash" step={2}>
+npm run build
+npm run export:pdf
+</DemoBox>
+
+<NoteCard variant="tip">
+  <I18n
+    de="Die Generierung läuft über Claude Code selbst — also genau das Werkzeug, um das es im Workshop geht. Das Konzept erzeugt sich mit dem Mittel, das es beschreibt."
+    en="Generation runs through Claude Code itself — the very tool this workshop is about. The concept produces itself with the means it describes."
+  />
+</NoteCard>
+
+<SpeakerNotes>
+  <I18n
+    de="Optional live demonstrieren, wenn die Zeit reicht: `/konzept-neu` mit dem exportierten Protokoll aufrufen. Wichtig ist die Botschaft, nicht der Vollzug: Das Ergebnis entsteht mit demselben Werkzeug, das das Betriebsmodell trägt."
+    en="Optionally demo live if time allows: run `/konzept-neu` with the exported record. The message matters more than the execution: the result is created with the same tool that carries the operating model."
+  />
+</SpeakerNotes>

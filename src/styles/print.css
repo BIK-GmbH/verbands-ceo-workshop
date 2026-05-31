@@ -1,0 +1,78 @@
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  :root {
+    --bg: #ffffff;
+    --bg-elev: #f8fafc;
+    --fg: #000000;
+    --fg-muted: #4b5563;
+    --workshop-accent: #1F4E79;
+  }
+
+  /* Hide UI chrome — only slide content prints. */
+  .no-print,
+  header[data-workshop-header],
+  aside[data-workshop-sidebar],
+  footer[data-workshop-footer],
+  [data-presenter-toggle],
+  [data-command-palette-overlay] {
+    display: none !important;
+  }
+
+  main[data-workshop-content] {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  body, .bg-white {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .slide-page {
+    page-break-after: always;
+    break-after: page;
+    padding: 1.2cm 1.4cm !important;
+    min-height: auto;
+  }
+
+  .slide-page:last-child {
+    page-break-after: auto;
+  }
+
+  /* Re-enable speaker notes in print. */
+  [data-speaker-notes] {
+    display: block !important;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #d1d5db;
+    font-size: 0.75rem;
+    color: #4b5563;
+    page-break-inside: avoid;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+    word-break: break-all;
+  }
+
+  pre, code {
+    border: 1px solid #d1d5db !important;
+    background: #f7f7f7 !important;
+    color: #000 !important;
+    page-break-inside: avoid;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+}
