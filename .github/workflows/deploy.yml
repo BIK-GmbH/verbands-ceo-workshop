@@ -26,7 +26,9 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          BASE_PATH: /claude-code-workshop/
+          # Private (Enterprise) Pages serve at the root of a random
+          # *.pages.github.io subdomain, not under /<repo>/.
+          BASE_PATH: /
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
