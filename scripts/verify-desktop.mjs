@@ -6,6 +6,10 @@ const ctx = await browser.newContext({
   viewport: { width: 1440, height: 900 },
   locale: "de-DE",
 });
+// Pass the client-side login gate (see src/components/LoginGate.tsx).
+await ctx.addInitScript(() =>
+  localStorage.setItem("verbands-ceo.auth.v1", "df617b21b8aee6210556bc3949b2d7c6bff8a9d53445323eb8652b70cd13cc36"),
+);
 const page = await ctx.newPage();
 await page.goto(`${URL}#/s/00.01`, { waitUntil: "networkidle" });
 await page.waitForFunction(() => !document.getElementById("splash"), { timeout: 3000 }).catch(() => {});

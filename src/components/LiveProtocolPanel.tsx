@@ -13,6 +13,9 @@ import {
   Plus,
   X,
   Pencil,
+  Sparkles,
+  Loader2,
+  Check,
 } from "lucide-react";
 import type { Lang, SlideMeta } from "@/types/slide";
 import { useAllEntries, useCapture } from "@/lib/useWorkshop";
@@ -22,12 +25,14 @@ import {
   exportJSON,
   downloadFile,
   setEntry,
+  getEntry,
   removeEntry,
   type CaptureEntry,
 } from "@/lib/workshop-store";
+import { describeAiError, useApiKey } from "@/lib/ai-assist";
 import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { MANIFEST, findModule } from "@/lib/slides";
-import { BulkPolishButton, EntryEditor, isEditableText } from "@/components/ProtocolAi";
+import { BulkPolishButton, EntryEditor, MicButton, isEditableText, polishQuestion } from "@/components/ProtocolAi";
 
 interface Props {
   open: boolean;
@@ -65,6 +70,33 @@ function AdhocField({
   const { supported, listening, toggle } = useDictation((chunk) =>
     setValue((text ? text + " " : "") + chunk),
   );
+  const apiKey = useApiKey();
+  const [editing, setEditing] = useState(false);
+  const [draftQ, setDraftQ] = useState(entry.prompt);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const questionMic = useDictation((chunk) => setDraftQ((q) => (q ? q + " " : "") + chunk));
+
+  const saveQuestion = () => {
+    const q = draftQ.trim();
+    if (!q) return;
+    setEntry({ id: entry.id, module: entry.module, slideId: entry.slideId, kind: "text", prompt: q, value: text });
+    setEditing(false);
+  };
+
+  const polish = async () => {
+    if (!draftQ.trim() || busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      setDraftQ(await polishQuestion(draftQ, entry.slideId));
+    } catch (err) {
+      setError(describeAiError(err, lang));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div
       className="rounded-md p-2"
@@ -73,18 +105,90 @@ function AdhocField({
         background: "color-mix(in oklch, var(--workshop-accent) 5%, var(--bg))",
       }}
     >
-      <div className="flex items-start gap-2 mb-1">
-        <span className="text-xs font-medium leading-snug flex-1">{entry.prompt}</span>
-        <button
-          type="button"
-          onClick={onDelete}
-          className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
-          title={de ? "Frage löschen" : "Delete question"}
-          style={{ color: "var(--fg-muted)" }}
-        >
-          <X size={13} />
-        </button>
-      </div>
+      {editing ? (
+        <div className="space-y-1.5 mb-1.5">
+          <div className="flex items-start gap-1.5">
+            <textarea
+              value={draftQ}
+              onChange={(e) => setDraftQ(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  saveQuestion();
+                } else if (e.key === "Escape") {
+                  setEditing(false);
+                }
+              }}
+              readOnly={busy}
+              rows={2}
+              autoFocus
+              className="flex-1 min-w-0 text-xs rounded-md p-1.5 resize-y"
+              style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
+            />
+            <MicButton mic={questionMic} lang={lang} />
+          </div>
+          {error && <p className="text-[11px]" style={{ color: "#dc2626" }}>{error}</p>}
+          <div className="flex items-center gap-1.5">
+            {apiKey && (
+              <button
+                type="button"
+                onClick={polish}
+                disabled={busy || !draftQ.trim()}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium disabled:opacity-50"
+                style={{ background: "var(--workshop-accent)", color: "white" }}
+              >
+                {busy ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+                {de ? "Glätten" : "Polish"}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setDraftQ(entry.prompt);
+                setEditing(false);
+              }}
+              className="ml-auto px-2 py-1 rounded-md text-[11px]"
+              style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
+            >
+              {de ? "Abbrechen" : "Cancel"}
+            </button>
+            <button
+              type="button"
+              onClick={saveQuestion}
+              disabled={busy || !draftQ.trim()}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium disabled:opacity-50"
+              style={{ background: "var(--workshop-accent)", color: "white" }}
+            >
+              <Check size={12} /> {de ? "Übernehmen" : "Apply"}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-start gap-1 mb-1">
+          <span className="text-xs font-medium leading-snug flex-1">{entry.prompt}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setDraftQ(entry.prompt);
+              setEditing(true);
+            }}
+            className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
+            title={de ? "Frage bearbeiten" : "Edit question"}
+            style={{ color: "var(--workshop-accent)" }}
+          >
+            <Pencil size={12} />
+          </button>
+          <button
+            type="button"
+            onClick={onDelete}
+            className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
+            title={de ? "Frage löschen" : "Delete question"}
+            style={{ color: "var(--fg-muted)" }}
+          >
+            <X size={13} />
+          </button>
+        </div>
+      )}
       <div className="relative">
         <textarea
           value={text}
@@ -140,19 +244,31 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const noteText = typeof note === "string" ? note : "";
   const noteDictation = useDictation((chunk) => setNote((noteText ? noteText + " " : "") + chunk));
 
-  const addQuestion = () => {
+  const apiKey = useApiKey();
+  const [polishingQ, setPolishingQ] = useState(false);
+  const [questionError, setQuestionError] = useState("");
+  const newQMic = useDictation((chunk) => setNewQ((q) => (q ? q + " " : "") + chunk));
+
+  const addQuestion = async () => {
     const q = newQ.trim();
     if (!q) return;
     const field = `q-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
-    setEntry({
-      id: `${current.id}:${field}`,
-      module: current.module,
-      slideId: current.id,
-      kind: "text",
-      prompt: q,
-      value: "",
-    });
+    const base = { id: `${current.id}:${field}`, module: current.module, slideId: current.id, kind: "text" as const };
+    setEntry({ ...base, prompt: q, value: "" });
     setNewQ("");
+    setQuestionError("");
+    if (!apiKey) return;
+    // Save the raw question first so nothing is lost, then swap in the polished wording.
+    setPolishingQ(true);
+    try {
+      const polished = await polishQuestion(q, current.id);
+      const latest = getEntry(base.id);
+      if (latest && latest.prompt === q) setEntry({ ...base, prompt: polished, value: latest.value });
+    } catch (err) {
+      setQuestionError(describeAiError(err, lang));
+    } finally {
+      setPolishingQ(false);
+    }
   };
 
   // Ad-hoc questions for the current slide (shown even with an empty answer).
@@ -310,6 +426,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                 className="flex-1 text-xs rounded-md p-2"
                 style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
               />
+              <MicButton mic={newQMic} lang={lang} />
               <button
                 type="button"
                 onClick={addQuestion}
@@ -320,6 +437,12 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                 <Plus size={14} />
               </button>
             </div>
+            {(polishingQ || questionError) && (
+              <p className="text-[11px] mb-2 flex items-center gap-1" style={{ color: questionError ? "#dc2626" : "var(--fg-muted)" }}>
+                {polishingQ && <Loader2 size={12} className="animate-spin" />}
+                {questionError || (de ? "Frage wird sauber formuliert …" : "Polishing the question …")}
+              </p>
+            )}
             {adhoc.length > 0 && (
               <div className="space-y-2">
                 {adhoc.map((e) => (

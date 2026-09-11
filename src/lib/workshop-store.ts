@@ -43,7 +43,7 @@ const KEY = "verbands-ceo.workshop.v1";
 const EVENT = "workshop-store-change";
 
 const DEFAULT_META: WorkshopMeta = {
-  title: "KI – Fiktion oder Realität — „Der KI-augmentierte Verbands-CEO“",
+  title: "KI-Geschäftsführer: Fiktion oder Realität?",
   date: "",
   participants: "",
 };

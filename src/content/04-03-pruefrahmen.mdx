@@ -1,0 +1,141 @@
+---
+title:
+  de: "Prüfrahmen: technisch · organisatorisch · Mitglieder"
+  en: "Test frame: technical · organisational · members"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Prüfrahmen: technisch · organisatorisch · Mitglieder" en="Test frame: technical · organisational · members" />
+
+<p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
+  <I18n
+    de="Wir legen das Zielbild von gestern an drei Prüfsteine an. Je Dimension gebt ihr eine Ampel und eine kurze Begründung ab. Die wirtschaftliche Prüfung folgt ausführlich in Phase 5."
+    en="We hold yesterday's target picture against three touchstones. For each dimension you give a traffic light and a short reason. The economic check follows in detail in phase 5."
+  />
+</p>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "1rem", margin: "1rem 0" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", marginBottom: "0.5rem" }}><I18n de="Technisch · 20 Min" en="Technical · 20 min" /></strong>
+<De>
+
+- Gibt es passende, stabile Lösungen?
+- Wie aufwendig ist die Integration in bestehende Systeme?
+- Datenbasis & Qualität: Welche Wissensquellen gäbe es überhaupt?
+- Welche technischen Risiken sehen wir?
+
+</De>
+<En>
+
+- Are there suitable, stable solutions?
+- How much effort is integration into existing systems?
+- Data basis & quality: which knowledge sources would there be at all?
+- Which technical risks do we see?
+
+</En>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", marginBottom: "0.5rem" }}><I18n de="Organisatorisch · 20 Min" en="Organisational · 20 min" /></strong>
+<De>
+
+- Prozesse & Rollen: Wer macht was, wer gibt frei?
+- Ressourcen & Kompetenzen: Wer hat Zeit und Know-how?
+- Change & Kommunikation: Wie nehmen wir Geschäftsstelle und Vorstand mit?
+
+</De>
+<En>
+
+- Processes & roles: who does what, who approves?
+- Resources & skills: who has time and know-how?
+- Change & communication: how do we bring the office and board along?
+
+</En>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", marginBottom: "0.5rem" }}><I18n de="Mitglieder & Verband · 10 Min" en="Members & association · 10 min" /></strong>
+<De>
+
+- Welchen konkreten Nutzen haben die Mitgliedsfirmen?
+- Wie gewinnen wir nach Wilma Akzeptanz?
+- Wie binden wir Mitglieder früh ein?
+- Passt es zur Strategie des Verbandes?
+
+</De>
+<En>
+
+- What concrete benefit do member companies get?
+- How do we win acceptance after Wilma?
+- How do we involve members early?
+- Does it fit the association's strategy?
+
+</En>
+  </div>
+</div>
+
+<NoteCard variant="hint">
+  <I18n
+    de="Anregung zur Datenbasis: Beschluss- und Protokollarchiv, Satzung und Geschäftsordnung, Normen und Regelwerke, Seminar- und Schulungsunterlagen, Mitgliederanfragen und häufige Fragen, Wissen, das bisher nur in Köpfen steckt. Datenschutz folgt auf 04.04, Risiken auf 04.05, Wirtschaftlichkeit in Phase 5."
+    en="Prompt for the data basis: archive of resolutions and minutes, statutes and rules of procedure, standards and regulations, seminar and training material, member enquiries and frequent questions, knowledge that so far only exists in people's heads. Data protection follows on 04.04, risks on 04.05, economics in phase 5."
+  />
+</NoteCard>
+
+<h3><I18n de="Technisch" en="Technical" /></h3>
+
+<WorkshopInput
+  slideId="04.03"
+  field="ampel-technisch"
+  prompt="Ampel technisch: Wie machbar ist das Zielbild technisch?"
+  kind="vote"
+  options={["Grün: machbar", "Gelb: mit Anpassungen", "Rot: kritisch"]}
+/>
+
+<WorkshopInput
+  slideId="04.03"
+  field="einschaetzung-technisch"
+  prompt="Begründung technisch: Lösungen, Integration, Datenbasis, Risiken"
+  kind="text"
+  rows={2}
+/>
+
+<h3><I18n de="Organisatorisch" en="Organisational" /></h3>
+
+<WorkshopInput
+  slideId="04.03"
+  field="ampel-organisatorisch"
+  prompt="Ampel organisatorisch: Wie machbar ist das Zielbild für unsere Organisation?"
+  kind="vote"
+  options={["Grün: machbar", "Gelb: mit Anpassungen", "Rot: kritisch"]}
+/>
+
+<WorkshopInput
+  slideId="04.03"
+  field="einschaetzung-organisatorisch"
+  prompt="Begründung organisatorisch: Prozesse, Rollen, Ressourcen, Change"
+  kind="text"
+  rows={2}
+/>
+
+<h3><I18n de="Mitglieder & Verband" en="Members & association" /></h3>
+
+<WorkshopInput
+  slideId="04.03"
+  field="ampel-mitglieder"
+  prompt="Ampel Mitglieder & Verband: Tragen die Mitglieder das Zielbild mit?"
+  kind="vote"
+  options={["Grün: machbar", "Gelb: mit Anpassungen", "Rot: kritisch"]}
+/>
+
+<WorkshopInput
+  slideId="04.03"
+  field="einschaetzung-mitglieder"
+  prompt="Begründung Mitglieder & Verband: Nutzen, Akzeptanz, Einbindung, Strategie"
+  kind="text"
+  rows={2}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Insgesamt 50 Minuten: 20 technisch, 20 organisatorisch, 10 Mitglieder und Verband. Je Dimension zuerst die Leitfragen durchgehen, dann die Ampel im Konsens setzen und die Begründung festhalten. Gelb ist ein legitimes Ergebnis, es heißt: ADAPT. Bei der Datenbasis konkret werden: Welche Quellen gibt es wirklich, wer pflegt sie, wo steckt Wissen nur in Köpfen? Die Mitgliederperspektive bewusst aus Sicht einer Mitgliedsfirma einnehmen, am besten lässt ihr jemanden aus einem Mitgliedsbetrieb sprechen. Rote Ampeln nicht wegdiskutieren, sie sind Kandidaten für STOP. Überleitung: Ein Punkt verdient einen eigenen Blick, Datenschutz und Verantwortung."
+    en="50 minutes in total: 20 technical, 20 organisational, 10 members and association. For each dimension, first go through the guiding questions, then set the traffic light by consensus and capture the reason. Yellow is a legitimate result, it means: ADAPT. Be concrete about the data basis: which sources really exist, who maintains them, where does knowledge only live in people's heads? Take the member perspective deliberately from a member company's point of view, ideally let someone from a member business speak. Do not argue red lights away, they are candidates for STOP. Bridge: one point deserves its own look, data protection and responsibility."
+  />
+</SpeakerNotes>

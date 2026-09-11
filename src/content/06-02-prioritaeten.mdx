@@ -1,0 +1,85 @@
+---
+title:
+  de: "Prioritäten: Wirkung · Machbarkeit · Aufwand"
+  en: "Priorities: impact · feasibility · effort"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Prioritäten: Wirkung · Machbarkeit · Aufwand" en="Priorities: impact · feasibility · effort" />
+
+<p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
+  <I18n
+    de="Nicht alles auf einmal. Wir suchen die 1–3 Handlungsfelder mit dem größten Hebel und die Quick Wins, mit denen wir sofort starten können."
+    en="Not everything at once. We look for the 1–3 fields of action with the biggest lever and the quick wins we can start with right away."
+  />
+</p>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem", margin: "0.5rem 0 1rem" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong><I18n de="Wirkung" en="Impact" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}>
+      <I18n de="Was verändert sich spürbar für Vorstand, Geschäftsstelle und Mitglieder?" en="What changes noticeably for the board, the office and the members?" />
+    </p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong><I18n de="Machbarkeit" en="Feasibility" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}>
+      <I18n de="Haben wir Daten, Kompetenz und Akzeptanz? Hat es den Realitätscheck bestanden?" en="Do we have the data, skills and acceptance? Did it pass the reality check?" />
+    </p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong><I18n de="Aufwand" en="Effort" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}>
+      <I18n de="Wie viel Zeit, Geld und Kapazität der Geschäftsstelle bindet es?" en="How much time, money and office capacity does it tie up?" />
+    </p>
+  </div>
+</div>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "0.6rem", margin: "0.5rem 0 1rem" }}>
+  <div style={{ border: "2px solid var(--workshop-accent)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.75rem", letterSpacing: "0.06em", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="WIRKUNG HOCH · AUFWAND GERING" en="HIGH IMPACT · LOW EFFORT" /></div>
+    <strong><I18n de="Quick Wins: sofort starten" en="Quick wins: start right away" /></strong>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.75rem", letterSpacing: "0.06em", color: "var(--fg-muted)", fontWeight: 700 }}><I18n de="WIRKUNG HOCH · AUFWAND HOCH" en="HIGH IMPACT · HIGH EFFORT" /></div>
+    <strong><I18n de="Große Vorhaben: in Etappen planen" en="Major projects: plan in stages" /></strong>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.75rem", letterSpacing: "0.06em", color: "var(--fg-muted)", fontWeight: 700 }}><I18n de="WIRKUNG GERING · AUFWAND GERING" en="LOW IMPACT · LOW EFFORT" /></div>
+    <strong><I18n de="Nebenbei: wenn Zeit ist" en="On the side: when there is time" /></strong>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.75rem", letterSpacing: "0.06em", color: "var(--fg-muted)", fontWeight: 700 }}><I18n de="WIRKUNG GERING · AUFWAND HOCH" en="LOW IMPACT · HIGH EFFORT" /></div>
+    <strong><I18n de="Zurückstellen" en="Put on hold" /></strong>
+  </div>
+</div>
+
+<ExerciseCard duration="10 Min" goal="1–3 Handlungsfelder mit dem größten Hebel festlegen und Quick Wins benennen.">
+  <I18n
+    de="Stoßrichtungen und Use Cases aus Zielbild und Realitätscheck als Karten in die Matrix hängen. Machbarkeit kurz prüfen. Dann Punktabfrage: 3 Punkte pro Person für die wichtigsten Handlungsfelder."
+    en="Put the directions and use cases from the target picture and the reality check into the matrix as cards. Briefly check feasibility. Then dot vote: 3 dots per person for the most important fields of action."
+  />
+</ExerciseCard>
+
+<WorkshopInput
+  slideId="06.02"
+  field="handlungsfelder"
+  prompt="Unsere 1–3 Handlungsfelder"
+  kind="text"
+  rows={3}
+/>
+
+<WorkshopInput
+  slideId="06.02"
+  field="quick-wins"
+  prompt="Quick Wins: Womit können wir sofort starten?"
+  kind="text"
+  rows={2}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Harald: 10 Minuten. Karten zügig in die Matrix sortieren lassen, nicht jede Karte diskutieren. Machbarkeit ist der Filter aus Phase 4: Was dort auf STOP stand, kommt hier nicht in die Matrix. Auf maximal drei Handlungsfelder bestehen, lieber weniger. Quick Wins müssen ohne großes Budget und ohne Beschaffung möglich sein. Überleitung: Wann soll was erreicht sein?"
+    en="Harald: 10 minutes. Have the cards sorted into the matrix quickly, don't discuss every card. Feasibility is the filter from phase 4: whatever was on STOP there does not go into the matrix here. Insist on at most three fields of action, fewer is better. Quick wins must be possible without a large budget and without procurement. Bridge: when should what be achieved?"
+  />
+</SpeakerNotes>

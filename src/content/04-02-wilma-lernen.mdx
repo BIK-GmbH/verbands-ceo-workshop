@@ -1,0 +1,92 @@
+---
+title:
+  de: "Wilma: Was lernen wir?"
+  en: "Wilma: what do we learn?"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Wilma: Was lernen wir?" en="Wilma: what do we learn?" />
+
+<p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
+  <I18n
+    de="Mit Wilma hat der FBS Digitalisierung schon einmal angegangen, ohne durchschlagenden Erfolg. Akzeptanz ist nicht entstanden, entsprechend groß ist die Skepsis bei den Mitgliedsfirmen. Genau daraus lernen wir jetzt."
+    en="With Wilma, the FBS already tackled digitalisation once, without real success. No acceptance was built, and scepticism among member companies is correspondingly high. That is exactly what we learn from now."
+  />
+</p>
+
+<NoteCard variant="tip">
+  <I18n
+    de="Spielregel für diese Runde: respektvoll und ohne Schuldzuweisung. Wir suchen Ursachen, keine Verantwortlichen. Wer damals beteiligt war, hat das Wissen, das wir heute brauchen."
+    en="Ground rule for this round: respectful and without assigning blame. We look for causes, not culprits. Whoever was involved back then has the knowledge we need today."
+  />
+</NoteCard>
+
+<ExerciseCard duration="20 Min" title={{ de: "Wilma-Lernrunde", en: "Wilma learning round" }}>
+  <I18n
+    de="Drei Fragen, in dieser Reihenfolge: 1. Was ist bei Wilma gelungen? 2. Wo lagen die Herausforderungen? 3. Was lernen wir daraus, was machen wir diesmal anders? Methode: moderierte Runde, jede Person kommt zu Wort, Stichworte auf Karten."
+    en="Three questions, in this order: 1. What worked with Wilma? 2. Where were the challenges? 3. What do we learn from it, what do we do differently this time? Method: facilitated round, everyone gets a say, keywords on cards."
+  />
+</ExerciseCard>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "0.75rem", margin: "1rem 0" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", marginBottom: "0.3rem", color: "var(--workshop-accent)" }}><I18n de="Technik" en="Technology" /></strong>
+    <span style={{ fontSize: "0.9rem", color: "var(--fg-muted)" }}><I18n de="Hat die Lösung zuverlässig funktioniert?" en="Did the solution work reliably?" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", marginBottom: "0.3rem", color: "var(--workshop-accent)" }}><I18n de="Akzeptanz" en="Acceptance" /></strong>
+    <span style={{ fontSize: "0.9rem", color: "var(--fg-muted)" }}><I18n de="Haben Mitglieder und Geschäftsstelle den Nutzen gesehen?" en="Did members and the office see the benefit?" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", marginBottom: "0.3rem", color: "var(--workshop-accent)" }}><I18n de="Nutzung" en="Usage" /></strong>
+    <span style={{ fontSize: "0.9rem", color: "var(--fg-muted)" }}><I18n de="Wurde sie im Alltag wirklich genutzt? Wie leicht war der Einstieg?" en="Was it really used day to day? How easy was it to get started?" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", marginBottom: "0.3rem", color: "var(--workshop-accent)" }}><I18n de="Plattform" en="Platform" /></strong>
+    <span style={{ fontSize: "0.9rem", color: "var(--fg-muted)" }}><I18n de="Passte die Plattform zu unseren Aufgaben und Abläufen?" en="Did the platform fit our tasks and processes?" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", marginBottom: "0.3rem", color: "var(--workshop-accent)" }}><I18n de="Organisation" en="Organisation" /></strong>
+    <span style={{ fontSize: "0.9rem", color: "var(--fg-muted)" }}><I18n de="Gab es Verantwortliche, Zeit, Begleitung und Kommunikation?" en="Were there owners, time, support and communication?" /></span>
+  </div>
+</div>
+
+<WorkshopInput
+  slideId="04.02"
+  field="wilma-gelungen"
+  prompt="Was ist bei Wilma gelungen?"
+  kind="text"
+  rows={2}
+/>
+
+<WorkshopInput
+  slideId="04.02"
+  field="wilma-herausforderungen"
+  prompt="Wo lagen die Herausforderungen?"
+  kind="text"
+  rows={2}
+/>
+
+<WorkshopInput
+  slideId="04.02"
+  field="wilma-dimension"
+  prompt="Wo lag das Hauptproblem?"
+  kind="checklist"
+  options={["Technik", "Akzeptanz", "Nutzung", "Plattform", "Organisation"]}
+/>
+
+<WorkshopInput
+  slideId="04.02"
+  field="wilma-lernen"
+  prompt="Was lernen wir daraus? Diesmal machen wir anders: …"
+  kind="text"
+  rows={3}
+  placeholder="Diesmal machen wir anders: …"
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="20 Minuten, das Herzstück von Phase 4. Wilma nicht kleinreden, aber auch niemanden vorführen. Bewusst mit dem Gelungenen beginnen, das öffnet die Runde. Dann die fünf Dimensionen als Suchraster nutzen, nicht als Abfrage. Bei der Checkliste darf mehr als ein Hauptproblem markiert werden; wenn fast alles markiert wird, nachfragen, welches am schwersten wog. Die Lernsätze wörtlich festhalten, sie gehen direkt auf das Poster „Diesmal anders, weil …“. Überleitung: Mit diesen Learnings im Kopf prüfen wir jetzt das Zielbild."
+    en="20 minutes, the heart of phase 4. Do not play Wilma down, but do not put anyone on the spot either. Deliberately start with what worked, which opens up the round. Then use the five dimensions as a search grid, not as a quiz. More than one main problem may be ticked in the checklist; if almost everything is ticked, ask which weighed most. Capture the learning sentences verbatim, they go straight onto the poster “This time it is different because …”. Bridge: with these learnings in mind, we now test the target picture."
+  />
+</SpeakerNotes>

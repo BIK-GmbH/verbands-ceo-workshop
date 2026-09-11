@@ -1,0 +1,93 @@
+---
+title:
+  de: "Wer macht was & Ressourcen"
+  en: "Who does what & resources"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Wer macht was & Ressourcen" en="Who does what & resources" />
+
+<h3 style={{ marginTop: "0.25rem" }}><I18n de="Wer macht was? RACI, einfach erklärt" en="Who does what? RACI, simply explained" /></h3>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "0.75rem", margin: "0.5rem 0 1rem" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>R</div>
+    <strong><I18n de="Verantwortlich" en="Responsible" /></strong>
+    <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="macht die Arbeit und treibt voran" en="does the work and drives it forward" /></p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>C</div>
+    <strong><I18n de="Unterstützt" en="Consulted" /></strong>
+    <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="bringt Wissen ein, wird vorher gefragt" en="contributes knowledge, is asked beforehand" /></p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>A</div>
+    <strong><I18n de="Entscheidet" en="Accountable" /></strong>
+    <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="gibt frei und trägt die Verantwortung, genau eine Person" en="approves and carries the responsibility, exactly one person" /></p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>I</div>
+    <strong><I18n de="Informiert" en="Informed" /></strong>
+    <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="wird auf dem Laufenden gehalten" en="is kept up to date" /></p>
+  </div>
+</div>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem", margin: "0.5rem 0 1rem" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", letterSpacing: "0.08em", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="RESSOURCEN & SUPPORT" en="RESOURCES & SUPPORT" /></div>
+    <ul style={{ fontSize: "0.85rem", margin: "0.4rem 0 0", paddingLeft: "1.1rem" }}>
+      <li><I18n de="Budget: Welcher Rahmen ist realistisch?" en="Budget: what framework is realistic?" /></li>
+      <li><I18n de="Personal: Wer hat wie viel Zeit dafür?" en="Staff: who has how much time for it?" /></li>
+      <li><I18n de="Tools: Was ist schon da, was fehlt?" en="Tools: what is already there, what is missing?" /></li>
+      <li><I18n de="Daten: Welche Unterlagen und Wissensbestände brauchen wir?" en="Data: which documents and knowledge do we need?" /></li>
+      <li><I18n de="Externe Unterstützung: Welche Partner, welches Know-how?" en="External support: which partners, which know-how?" /></li>
+    </ul>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", letterSpacing: "0.08em", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="RISIKEN & ABHÄNGIGKEITEN" en="RISKS & DEPENDENCIES" /></div>
+    <ul style={{ fontSize: "0.85rem", margin: "0.4rem 0 0", paddingLeft: "1.1rem" }}>
+      <li><I18n de="Was muss vorher passieren, z. B. Beschluss, Datenschutzklärung, Daten aufbereiten?" en="What has to happen first, e.g. a resolution, data protection clarification, preparing data?" /></li>
+      <li><I18n de="Wer oder was kann bremsen?" en="Who or what could slow things down?" /></li>
+      <li><I18n de="Welche Risiken aus dem Realitätscheck gelten weiter?" en="Which risks from the reality check still apply?" /></li>
+    </ul>
+  </div>
+</div>
+
+<ExerciseCard duration="20 Min" goal="Jeder Meilenstein hat eine verantwortliche Person, der Ressourcenbedarf und die kritischen Abhängigkeiten sind benannt.">
+  <I18n
+    de="10 Min Verantwortlichkeiten: Namen an die Meilensteine auf dem Zeitstrahl kleben. 5 Min Ressourcen: Kurzabfrage im Plenum. 5 Min Risiken & Abhängigkeiten: Was muss zuerst geklärt sein?"
+    en="10 min responsibilities: stick names onto the milestones on the timeline. 5 min resources: quick poll in the plenary. 5 min risks & dependencies: what has to be clarified first?"
+  />
+</ExerciseCard>
+
+<WorkshopInput
+  slideId="06.04"
+  field="verantwortliche"
+  prompt="Wer übernimmt was?"
+  kind="text"
+  rows={3}
+  placeholder="z. B. Meilenstein · verantwortlich · entscheidet · unterstützt · informiert"
+/>
+
+<WorkshopInput
+  slideId="06.04"
+  field="ressourcen"
+  prompt="Ressourcen & Support: Was brauchen wir (Budget, Personal, Tools, Daten, Partner)?"
+  kind="text"
+  rows={2}
+/>
+
+<WorkshopInput
+  slideId="06.04"
+  field="abhaengigkeiten"
+  prompt="Risiken & Abhängigkeiten: Was muss zuerst geklärt sein?"
+  kind="text"
+  rows={2}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Harald: 20 Minuten für drei Blöcke. RACI nicht theoretisch erklären, sondern direkt anwenden: Wer macht es, wer entscheidet? Nur Namen von Personen im Raum oder mit klarer Rückfrage vergeben, niemanden in Abwesenheit verpflichten. Bei Ressourcen keine Beträge erfinden: Wenn niemand einen Rahmen nennen kann, wird die Klärung selbst zum To-do. Überleitung: das Roadmap-Poster."
+    en="Harald: 20 minutes for three blocks. Don't explain RACI in theory, apply it directly: who does it, who decides? Only assign names of people in the room or with a clear follow-up, don't commit anyone in their absence. For resources, don't invent amounts: if nobody can name a framework, clarifying it becomes a to-do itself. Bridge: the roadmap poster."
+  />
+</SpeakerNotes>

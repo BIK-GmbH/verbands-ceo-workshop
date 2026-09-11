@@ -2,6 +2,9 @@ import { chromium } from "@playwright/test";
 const URL = process.env.URL ?? "http://localhost:5174";
 
 const browser = await chromium.launch();
+// Pass the client-side login gate (see src/components/LoginGate.tsx).
+const seedAuth = () =>
+  localStorage.setItem("verbands-ceo.auth.v1", "df617b21b8aee6210556bc3949b2d7c6bff8a9d53445323eb8652b70cd13cc36");
 
 // Mobile shot
 {
@@ -9,6 +12,7 @@ const browser = await chromium.launch();
     viewport: { width: 390, height: 844 },
     hasTouch: true, isMobile: true, locale: "de-DE",
   });
+  await ctx.addInitScript(seedAuth);
   const page = await ctx.newPage();
   // Throttle so splash stays visible long enough to capture
   const cdp = await ctx.newCDPSession(page);
@@ -30,6 +34,7 @@ const browser = await chromium.launch();
     viewport: { width: 1280, height: 720 },
     locale: "de-DE",
   });
+  await ctx.addInitScript(seedAuth);
   const page = await ctx.newPage();
   const cdp = await ctx.newCDPSession(page);
   await cdp.send("Network.emulateNetworkConditions", {

@@ -1,0 +1,80 @@
+---
+title:
+  de: "Nächste Schritte direkt nach der Sitzung"
+  en: "Next steps right after the session"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Nächste Schritte direkt nach der Sitzung" en="Next steps right after the session" />
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "0.75rem", margin: "0.75rem 0 1rem" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.9rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="SCHRITT 01" en="STEP 01" /></div>
+    <strong><I18n de="Bündeln & dokumentieren" en="Consolidate & document" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.4rem 0 0" }}>
+      <I18n de="Unterlagen, Ergebnisse und Entscheidungen zusammenführen: Protokoll, Poster-Fotos, Beschlussvorschlag." en="Bring together documents, results and decisions: record, poster photos, draft resolution." />
+    </p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.9rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="SCHRITT 02" en="STEP 02" /></div>
+    <strong><I18n de="Informieren & Kick-off planen" en="Inform & plan the kick-off" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.4rem 0 0" }}>
+      <I18n de="Verantwortliche informieren und den Kick-off der Arbeitsgruppen planen." en="Inform the owners and plan the kick-off of the working groups." />
+    </p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.9rem", background: "var(--bg-elev)" }}>
+    <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="SCHRITT 03" en="STEP 03" /></div>
+    <strong><I18n de="Starten & überprüfen" en="Start & review" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.4rem 0 0" }}>
+      <I18n de="Erste Quick Wins starten und Review-Termine festlegen." en="Start the first quick wins and set review dates." />
+    </p>
+  </div>
+</div>
+
+<NoteCard variant="tip" title="Commitment-Poster · Commitment poster">
+  <I18n
+    de="Das Poster entsteht analog an der Wand; hier halten wir es digital fest."
+    en="The poster is created on the wall; here we record it digitally."
+  />
+</NoteCard>
+
+<WorkshopInput
+  slideId="07.06"
+  field="poster-antwort"
+  prompt="Unsere Antwort auf die Leitfrage"
+  kind="text"
+  rows={2}
+/>
+
+<WorkshopInput
+  slideId="07.06"
+  field="poster-beschluesse"
+  prompt="Unsere Beschlüsse"
+  kind="text"
+  rows={2}
+/>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "0 1rem" }}>
+  <WorkshopInput slideId="07.06" field="owner" prompt="Wer koordiniert und bis wann?" kind="text" rows={2} />
+  <WorkshopInput slideId="07.06" field="naechster-termin" prompt="Nächster Termin" kind="text" rows={2} />
+</div>
+
+<De>
+> Fiktion oder Realität? Die Antwort liegt nicht in der Technik, sondern in dem, was wir gemeinsam daraus machen.
+</De>
+
+<En>
+> Fiction or reality? The answer does not lie in the technology, but in what we make of it together.
+</En>
+
+<div style={{ display: "flex", justifyContent: "center", margin: "1.5rem 0 0.5rem" }}>
+  <img className="theme-img-light" src={`${import.meta.env.BASE_URL}brand/zukunft-fester-grund-light.webp`} alt="Zukunft auf festem Grund – Innovation, KI, Beton, gemeinsam stärker" style={{ width: "340px", maxWidth: "100%", height: "auto" }} />
+  <img className="theme-img-dark" src={`${import.meta.env.BASE_URL}brand/zukunft-fester-grund-dark.webp`} alt="Zukunft auf festem Grund – Innovation, KI, Beton, gemeinsam stärker" style={{ width: "340px", maxWidth: "100%", height: "auto" }} />
+</div>
+
+<SpeakerNotes>
+  <I18n
+    de="Harald: letzte 5 Minuten. Das Commitment-Poster gemeinsam füllen: Antwort, Beschlüsse, wer koordiniert, nächster Termin. Den Termin möglichst noch im Raum festmachen, damit der Schwung nicht verpufft. Mit dem Schlusssatz enden, Dank an alle, Hinweis, dass das Protokoll zeitnah verschickt wird."
+    en="Harald: last 5 minutes. Fill in the commitment poster together: answer, decisions, who coordinates, next date. Fix the date in the room if at all possible so the momentum is not lost. End with the closing sentence, thank everyone, and mention that the record will be sent out shortly."
+  />
+</SpeakerNotes>

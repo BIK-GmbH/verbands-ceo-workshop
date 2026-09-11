@@ -69,6 +69,10 @@ async function startPreview(base: string): Promise<ChildProcess> {
 
 async function exportLang(browser: Awaited<ReturnType<typeof chromium.launch>>, lang: "de" | "en") {
   const ctx = await browser.newContext({ locale: lang === "de" ? "de-DE" : "en-US" });
+  // Pass the client-side login gate (see src/components/LoginGate.tsx).
+  await ctx.addInitScript(() =>
+    localStorage.setItem("verbands-ceo.auth.v1", "df617b21b8aee6210556bc3949b2d7c6bff8a9d53445323eb8652b70cd13cc36"),
+  );
   const page = await ctx.newPage();
 
   // Seed the lang preference *before* we hit /print so MDX renders in the right tongue.

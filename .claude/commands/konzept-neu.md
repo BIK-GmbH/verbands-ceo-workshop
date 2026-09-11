@@ -1,14 +1,19 @@
 ---
-description: Aus einem Workshop-Protokoll ein angepasstes Konzept + aktualisierte Folien erzeugen (der „Composer")
+description: Aus einem Workshop-Protokoll ein Ergebnisdokument + aktualisierte Folien erzeugen (der „Composer")
 argument-hint: <pfad/zum/workshop-protokoll.md | .json>
 ---
 
-# /konzept-neu — Konzept & Folien aus dem Workshop-Protokoll regenerieren
+# /konzept-neu — Ergebnisdokument & Folien aus dem Workshop-Protokoll
 
-Du bist der **Composer** aus dem Konzept „Der KI-augmentierte Verbands-CEO": Du nimmst die im
-Workshop erfassten Vorstands-Eingaben und produzierst daraus konkrete Ergebnisse — ein an den
-Fachverband Betonbohren und -sägen Deutschland e. V. (FBS) **angepasstes Konzept** plus
-**aktualisierte Folien**.
+Du nimmst die im Workshop „KI-Geschäftsführer: Fiktion oder Realität?" (Fachverband Betonbohren
+und -sägen Deutschland e. V., FBS, 16./17.09.2026) erfassten Eingaben und machst daraus konkrete
+Ergebnisse: ein **Ergebnisdokument** mit der gemeinsam erarbeiteten Antwort plus **aktualisierte
+Folien**. Veranstalter: Harald Ostermann · Innovationswerkstatt & Digital Management School
+(Moderation) und Dr. Stefan Reinheimer · BIK GmbH (Experteninput).
+
+**Neutralität ist Pflicht:** Das Ergebnis gibt wieder, was die Gruppe erarbeitet hat. Keine
+Produkt- oder Anbieterempfehlung (auch keine BIK-Produkte), kein vorweggenommener nächster
+Schritt. Inhaltliche Referenz: `docs/workshop-konzept.md`.
 
 ## Eingabe
 
@@ -18,26 +23,27 @@ Repo nach `workshop-protokoll-*.md` / `*.json` suchen und den neuesten nehmen �
 
 ## Vorgehen
 
-1. **Protokoll lesen** und strukturieren: pro Modul die Entscheidungen, Votes, Checklisten und
-   Freitexte extrahieren. Achte besonders auf:
-   - Modul 1: priorisierter Engpass, konkrete Schmerzpunkte
-   - Modul 2: Top-Aufgabencluster, Votum zur ½-FTE-Empfehlung
-   - Modul 3: ausgewählte Wissensquellen + Eigentümer
-   - Modul 4: Governance-Rollen (Product Owner, Daten-Owner, Freigabekreis, Review-Rhythmus)
-   - Modul 5: gewählte Pilotprozesse, Budgetrahmen
-   - Modul 6: Beschluss zum BIK-Pilot, Auflagen, Verantwortliche
+1. **Protokoll lesen** und strukturieren: pro Modul Entscheidungen, Votes, Checklisten, Freitexte
+   und die Poster-Felder (`poster-…`) extrahieren. Module laut `src/lib/manifest.ts`:
+   - Modul 0 Auftakt: Erwartungen, Barometer „Fiktion oder Realität?" (vorher)
+   - Modul 1 Analyse: Need to Move — gesammelte Probleme, Cluster, Priorität, 5× Warum, Kernproblem
+   - Modul 2 Vision — Möglichkeitsraum, Szenarien, gemeinsame Vision
+   - Modul 3 Zielbild — Aufgaben, Fähigkeiten, Nutzen, Zusammenspiel mit Menschen, erste Use Cases
+   - Modul 4 Realitätscheck „Wilma" — was gelungen ist, Herausforderungen, Lehren
+   - Modul 5 Wirtschaftlichkeit & Argumentation — Aufwand/Nutzen, Argumente für die Mitglieder
+   - Modul 6 Roadmap — 100 Tage, 12/24/36 Monate, Meilensteine
+   - Modul 7 Commitment — Barometer (nachher), Entscheidungen, Verantwortliche, nächste Schritte
+   - Anhang: eigene Fragen/Aufgaben aus dem Live-Protokoll (Felder `q-…`), auch unbeantwortete
 
-2. **Angepasstes Konzept schreiben**: Erzeuge `exports/konzept-fbs-angepasst.md` — die
-   Struktur des Originalkonzepts (6 Kapitel + Management Summary), aber durchgängig mit den
-   konkreten Vorstands-Entscheidungen gefüllt. Markiere klar, was **beschlossen**, was
-   **offen** und was **als Auflage** vermerkt wurde. Bleibe inhaltlich an den Folien
-   (`src/content/*.mdx`) und am Originalkonzept; erfinde keine Fakten.
+2. **Ergebnisdokument schreiben**: `exports/ergebnis-fbs-ki-geschaeftsfuehrer.md` — je Phase ein
+   Kapitel mit dem Poster-Ergebnis, dazu eine Zusammenfassung mit der gemeinsamen Antwort auf die
+   Leitfrage. Markiere klar, was **entschieden**, was **offen** und was **Auflage/Bedingung** ist.
+   Bleibe an Protokoll und Folien (`src/content/*.mdx`); erfinde keine Fakten.
 
 3. **Folien aktualisieren** (optional, wenn der Nutzer es will): Passe die betroffenen
-   `src/content/*.mdx` an — vor allem die Erarbeiten- und Beschluss-Folien (z. B. 06.03
-   Beschlussvorlage mit dem realen Beschluss, 04.04 Governance mit den benannten Rollen).
-   Setze `researchedOn` auf das heutige Datum. Halte die MDX-Konventionen ein
-   (keine geraden `"` in JSX-Attributen, kein rohes `<` in Text).
+   `src/content/*.mdx` an, vor allem Poster- und Commitment-Folien. Setze `researchedOn` auf das
+   heutige Datum. Halte die MDX-Konventionen ein (keine geraden `"` in JSX-Attributen, kein rohes
+   `<` in Text, Farben nur über Variablen).
 
 4. **PDF erzeugen**:
    ```bash
@@ -46,15 +52,14 @@ Repo nach `workshop-protokoll-*.md` / `*.json` suchen und den neuesten nehmen �
    ```
    Ergebnis: `exports/workshop-de.pdf` (das aktualisierte Folien-Deck).
 
-5. **Marken-Deck (optional)**: Auf Wunsch zusätzlich `/workshop-deck` aufrufen, um ein
-   Canva-Marken-Deck zu erzeugen.
+5. **Deck (optional)**: Auf Wunsch zusätzlich `/workshop-deck` aufrufen.
 
-6. **Zusammenfassen**: Liste am Ende auf, welche Dateien erzeugt/geändert wurden und welche
-   offenen Punkte (aus Modul 6) noch intern zu klären sind.
+6. **Zusammenfassen**: Liste auf, welche Dateien erzeugt/geändert wurden und welche offenen Punkte
+   (aus Modul 7 und den offenen `q-…`-Fragen) noch zu klären sind.
 
 ## Leitplanken
 
-- **KI bereitet vor — der Mensch entscheidet.** Kennzeichne klar, was Entwurf ist und vom
-  Vorstand noch freigegeben werden muss.
+- **KI bereitet vor, der Mensch entscheidet.** Kennzeichne klar, was Entwurf ist und vom Verband
+  noch freigegeben werden muss.
 - Keine personenbezogenen Daten über das Protokoll hinaus erfinden.
-- Quellen & Annahmen transparent halten (Modellannahmen als solche kennzeichnen).
+- Annahmen und Quellen transparent halten (Modellannahmen als solche kennzeichnen).

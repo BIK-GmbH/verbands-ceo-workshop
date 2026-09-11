@@ -1,0 +1,43 @@
+---
+title:
+  de: "Profil des KI-Geschäftsführers"
+  en: "Profile of the AI managing director"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Profil des KI-Geschäftsführers" en="Profile of the AI managing director" />
+
+<ExerciseCard duration="20 Min" title={{ de: "Steckbrief erarbeiten", en: "Work out the profile" }}>
+  <I18n de="Drei Gruppen: Rolle & Fähigkeiten · Nutzen · Zusammenspiel & Leitprinzipien. Danach im Plenum zusammenführen und gemeinsam die ersten Use Cases festhalten." en="Three groups: role & capabilities · benefit · interplay & guiding principles. Then bring it together in the plenary and capture the first use cases jointly." />
+</ExerciseCard>
+
+<div style={{ border: "2px solid var(--workshop-accent)", borderRadius: "12px", padding: "0.75rem 1.1rem 0.25rem", background: "var(--bg-elev)" }}>
+  <div style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--workshop-accent)", fontWeight: 700 }}>
+    <I18n de="Steckbrief · Unser KI-Geschäftsführer" en="Profile · Our AI managing director" />
+  </div>
+
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0 1rem" }}>
+    <WorkshopInput slideId="03.04" field="rolle" prompt="Rolle: Was ist er, was ist er nicht?" kind="text" rows={3} />
+    <WorkshopInput slideId="03.04" field="faehigkeiten" prompt="Fähigkeiten: Was kann er?" kind="text" rows={3} />
+  </div>
+
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0 1rem" }}>
+    <WorkshopInput slideId="03.04" field="nutzen-verband" prompt="Nutzen für den Verband" kind="text" rows={3} />
+    <WorkshopInput slideId="03.04" field="nutzen-vorstand" prompt="Nutzen für den Vorstand" kind="text" rows={3} />
+    <WorkshopInput slideId="03.04" field="nutzen-mitglieder" prompt="Nutzen für die Mitglieder" kind="text" rows={3} />
+  </div>
+
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0 1rem" }}>
+    <WorkshopInput slideId="03.04" field="zusammenspiel-mensch" prompt="Zusammenspiel mit Menschen: Geschäftsstelle, Vorstand, Ausschüsse" kind="text" rows={3} />
+    <WorkshopInput slideId="03.04" field="leitprinzipien" prompt="Leitprinzipien: Warum – Wofür – Wie" kind="text" rows={3} />
+  </div>
+
+  <WorkshopInput slideId="03.04" field="erste-use-cases" prompt="Erste Use Cases" kind="text" rows={3} placeholder="Ein Use Case pro Zeile …" />
+</div>
+
+<SpeakerNotes>
+  <I18n
+    de="Harald: Die Gruppen arbeiten parallel etwa 12 Min, dann 8 Min Plenum. Auf Konkretheit achten: Statt entlastet die Geschäftsstelle lieber beantwortet Mitgliederfragen zur Beschlusslage mit Quelle. Die Einordnung aus 03.03 als Leitplanke nutzen; was dort beim Menschen blieb, taucht hier nicht als Fähigkeit auf. Leitprinzipien kurz halten, drei Sätze reichen. Bei den Use Cases zwei bis vier nennen, nicht zehn."
+    en="Harald: groups work in parallel for about 12 min, then 8 min plenary. Push for concreteness: instead of relieves the office, rather answers member questions on the resolution status with a source. Use the classification from 03.03 as a guardrail; what stayed human there does not show up as a capability here. Keep guiding principles short, three sentences are enough. Name two to four use cases, not ten."
+  />
+</SpeakerNotes>

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Menu, Play, Search, Sparkles, Sun, Moon, ClipboardList } from "lucide-react";
 import type { Lang, Theme } from "@/types/slide";
@@ -18,6 +19,21 @@ interface Props {
 
 const ICON = { strokeWidth: 2.25 } as const;
 const IS_MAC = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent);
+const BASE = import.meta.env.BASE_URL;
+
+/** Quiet surface for header controls — adapts to light and dark theme. */
+const SOFT: CSSProperties = {
+  background: "color-mix(in oklch, var(--fg) 6%, transparent)",
+  border: "1px solid color-mix(in oklch, var(--fg) 8%, transparent)",
+};
+const SOFT_HOVER = "hover:bg-[color-mix(in_oklch,var(--fg)_11%,transparent)] active:bg-[color-mix(in_oklch,var(--fg)_16%,transparent)]";
+
+/** Host logos, in the agreed order after the FBS seal. Light = dark artwork, dark = white artwork. */
+const HOST_LOGOS = [
+  { light: "brand/innovationswerkstatt-dark.png", dark: "brand/innovationswerkstatt-white.png", alt: "Innovationswerkstatt", h: 15 },
+  { light: "brand/dms-logo-dark.png", dark: "brand/dms-logo-white.png", alt: "Digital Management School", h: 26 },
+  { light: "brand/bik-logo-dark.svg", dark: "brand/bik-logo-white.svg", alt: "BIK GmbH", h: 24 },
+];
 
 export function Header({
   lang,
@@ -44,8 +60,8 @@ export function Header({
       className="sticky top-0 z-30 flex items-center px-3 sm:px-5 border-b shrink-0 gap-2"
       style={{
         height: "var(--header-height)",
-        background: "var(--workshop-accent)",
-        color: "white",
+        background: "var(--bg)",
+        color: "var(--fg)",
         borderColor: "var(--border)",
       }}
     >
@@ -53,8 +69,8 @@ export function Header({
       <button
         onClick={onToggleMobileSidebar}
         data-testid="mobile-sidebar-toggle"
-        className="md:hidden size-9 grid place-items-center rounded-md transition-colors hover:bg-white/10 active:bg-white/20"
-        style={{ background: "rgba(255,255,255,0.14)" }}
+        className={`md:hidden size-9 grid place-items-center rounded-md transition-colors ${SOFT_HOVER}`}
+        style={SOFT}
         aria-label="Menü"
       >
         <Menu size={20} {...ICON} />
@@ -62,41 +78,44 @@ export function Header({
 
       <Link
         to="/"
-        className="flex items-center gap-3 min-w-0 rounded-md transition-opacity hover:opacity-90"
+        className="flex items-center gap-3 min-w-0 rounded-md transition-opacity hover:opacity-85"
         style={{ color: "inherit", textDecoration: "none" }}
         title={lang === "de" ? "Zur Startseite" : "To the start page"}
       >
-        {/* Dark logos on white chips: white-on-turquoise is hard to read. */}
-        <span className="hidden sm:grid place-items-center size-10 shrink-0 rounded-full bg-white shadow-sm">
+        <span className="hidden sm:block shrink-0">
           <img
-            src={`${import.meta.env.BASE_URL}brand/fbs-logo.png`}
+            src={`${BASE}brand/fbs-logo.png`}
             alt="Fachverband Betonbohren und -sägen Deutschland e. V."
-            width={34}
-            height={34}
-            className="size-[34px]"
+            width={38}
+            height={38}
+            className="theme-img-light size-[38px]"
+          />
+          <img
+            src={`${BASE}brand/fbs-logo-white.png`}
+            alt="Fachverband Betonbohren und -sägen Deutschland e. V."
+            width={38}
+            height={38}
+            className="theme-img-dark size-[38px]"
           />
         </span>
         <div className="leading-tight min-w-0">
-          <div className="text-sm font-semibold truncate">KI – Fiktion oder Realität</div>
-          <div className="text-[11px] opacity-80 truncate hidden sm:block">
-            „Der KI-augmentierte Verbands-CEO“ · FBS-Workshop
+          <div className="text-sm font-semibold truncate">
+            {lang === "de" ? "KI-Geschäftsführer: Fiktion oder Realität?" : "AI managing director: fiction or reality?"}
+          </div>
+          <div className="text-[11px] truncate hidden sm:block" style={{ color: "var(--fg-muted)" }}>
+            {lang === "de" ? "FBS-Workshop · 16./17. September 2026" : "FBS workshop · 16–17 September 2026"}
           </div>
         </div>
-        <div className="hidden lg:flex items-center gap-3 ml-2 px-3 h-9 rounded-md bg-white shadow-sm shrink-0">
-          <img
-            src={`${import.meta.env.BASE_URL}brand/innovationswerkstatt-dark.png`}
-            alt="Innovationswerkstatt"
-            height={16}
-            className="h-4 w-auto"
-          />
-          <span className="w-px h-5" style={{ background: "#e2e8f0" }} aria-hidden />
-          <img
-            src={`${import.meta.env.BASE_URL}brand/bik-logo-dark.svg`}
-            alt="BIK GmbH"
-            width={26}
-            height={26}
-            className="size-[26px]"
-          />
+        <div
+          className="hidden xl:flex items-center gap-3.5 ml-2 pl-4 h-8 shrink-0 border-l"
+          style={{ borderColor: "var(--border)" }}
+        >
+          {HOST_LOGOS.map((l) => (
+            <span key={l.alt} className="block shrink-0">
+              <img src={`${BASE}${l.light}`} alt={l.alt} className="theme-img-light w-auto" style={{ height: l.h }} />
+              <img src={`${BASE}${l.dark}`} alt={l.alt} className="theme-img-dark w-auto" style={{ height: l.h }} />
+            </span>
+          ))}
         </div>
       </Link>
 
@@ -106,15 +125,16 @@ export function Header({
           onClick={onToggleProtocol}
           data-testid="open-protocol"
           aria-pressed={protocolOpen}
-          className="inline-flex items-center gap-2 px-3 h-9 rounded-md transition-all text-xs font-semibold shadow-sm hover:brightness-110 active:scale-[0.98]"
-          style={{
-            background: "var(--workshop-accent-deep)",
-            color: "white",
-            border: protocolOpen
-              ? "1px solid white"
-              : "1px solid rgba(255,255,255,0.35)",
-            boxShadow: protocolOpen ? "0 0 0 2px rgba(255,255,255,0.45)" : undefined,
-          }}
+          className={`inline-flex items-center gap-2 px-3 h-9 rounded-md transition-all text-xs font-semibold active:scale-[0.98] ${protocolOpen ? "" : SOFT_HOVER}`}
+          style={
+            protocolOpen
+              ? {
+                  background: "color-mix(in oklch, var(--workshop-accent) 14%, transparent)",
+                  border: "1px solid var(--workshop-accent)",
+                  color: "var(--workshop-accent)",
+                }
+              : SOFT
+          }
           title={lang === "de" ? "Live-Protokoll ein-/ausblenden — läuft rechts mit" : "Toggle live record — runs on the right"}
           aria-label={lang === "de" ? "Live-Protokoll" : "Live record"}
         >
@@ -125,8 +145,8 @@ export function Header({
         <button
           onClick={onOpenPalette}
           data-command-palette
-          className="inline-flex items-center gap-2 px-2.5 h-9 rounded-md transition-colors hover:bg-white/10 active:bg-white/20 text-xs"
-          style={{ background: "rgba(255,255,255,0.14)" }}
+          className={`inline-flex items-center gap-2 px-2.5 h-9 rounded-md transition-colors text-xs ${SOFT_HOVER}`}
+          style={SOFT}
           title={t("search", lang)}
           aria-label={t("search", lang)}
         >
@@ -134,7 +154,7 @@ export function Header({
           <span className="hidden lg:inline">{t("search", lang)}</span>
           <kbd
             className="hidden lg:inline px-1.5 py-0.5 rounded text-[10px] font-mono"
-            style={{ background: "rgba(255,255,255,0.18)" }}
+            style={{ background: "color-mix(in oklch, var(--fg) 8%, transparent)", color: "var(--fg-muted)" }}
           >
             {IS_MAC ? "⌘K" : lang === "de" ? "Strg K" : "Ctrl K"}
           </kbd>
@@ -143,7 +163,7 @@ export function Header({
         {/* Desktop / tablet: 2-button DE/EN switch */}
         <div
           className="hidden sm:flex rounded-md overflow-hidden text-xs"
-          style={{ background: "rgba(255,255,255,0.14)" }}
+          style={SOFT}
           role="group"
           aria-label={t("toggleLang", lang)}
         >
@@ -153,11 +173,11 @@ export function Header({
               onClick={() => setLang(l)}
               data-testid={`lang-${l}`}
               aria-pressed={lang === l}
-              className="px-2 h-9 uppercase tracking-wider transition-colors hover:bg-white/10"
+              className={`px-2 h-[34px] uppercase tracking-wider transition-colors ${SOFT_HOVER}`}
               style={
                 lang === l
-                  ? { background: "rgba(255,255,255,0.28)", fontWeight: 600 }
-                  : undefined
+                  ? { background: "var(--fg)", color: "var(--bg)", fontWeight: 600 }
+                  : { color: "var(--fg-muted)" }
               }
             >
               {l}
@@ -169,8 +189,8 @@ export function Header({
         <button
           onClick={() => setLang(lang === "de" ? "en" : "de")}
           data-testid="lang-toggle-mobile"
-          className="sm:hidden size-9 grid place-items-center rounded-md text-xs uppercase font-semibold transition-colors hover:bg-white/10 active:bg-white/20"
-          style={{ background: "rgba(255,255,255,0.14)" }}
+          className={`sm:hidden size-9 grid place-items-center rounded-md text-xs uppercase font-semibold transition-colors ${SOFT_HOVER}`}
+          style={SOFT}
           aria-label={t("toggleLang", lang)}
         >
           {lang}
@@ -180,8 +200,8 @@ export function Header({
           onClick={motion.cycle}
           data-testid="motion-toggle"
           data-motion-mode={motion.mode}
-          className="size-9 grid place-items-center rounded-md transition-colors hover:bg-white/10 active:bg-white/20 relative"
-          style={{ background: "rgba(255,255,255,0.14)" }}
+          className={`size-9 grid place-items-center rounded-md transition-colors relative ${SOFT_HOVER}`}
+          style={SOFT}
           title={motionLabel}
           aria-label={motionLabel}
         >
@@ -202,8 +222,8 @@ export function Header({
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           data-testid="theme-toggle"
-          className="size-9 grid place-items-center rounded-md transition-colors hover:bg-white/10 active:bg-white/20"
-          style={{ background: "rgba(255,255,255,0.14)" }}
+          className={`size-9 grid place-items-center rounded-md transition-colors ${SOFT_HOVER}`}
+          style={SOFT}
           title={t("toggleTheme", lang)}
           aria-label={t("toggleTheme", lang)}
         >
@@ -213,7 +233,7 @@ export function Header({
         {/* Divider — sets the primary action visually apart */}
         <span
           className="hidden sm:block w-px h-6 mx-1.5 self-center"
-          style={{ background: "rgba(255,255,255,0.35)" }}
+          style={{ background: "var(--border)" }}
           aria-hidden
         />
 
@@ -221,12 +241,8 @@ export function Header({
         <Link
           to={`/p/${currentId}`}
           data-testid="enter-presentation"
-          className="inline-flex items-center gap-2 px-4 h-9 rounded-md transition-all text-sm font-semibold shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98]"
-          style={{
-            background: "white",
-            color: "var(--workshop-accent-deep)",
-            border: "1px solid rgba(255,255,255,0.7)",
-          }}
+          className="inline-flex items-center gap-2 px-4 h-9 rounded-md transition-all text-sm font-semibold shadow-sm hover:shadow-md hover:brightness-110 active:scale-[0.98]"
+          style={{ background: "var(--workshop-accent)", color: "white" }}
           title={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
           aria-label={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
         >

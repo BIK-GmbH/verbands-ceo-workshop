@@ -1,0 +1,73 @@
+---
+title:
+  de: "Vergleichsszenarien & 3-Jahres-Hypothese"
+  en: "Comparison scenarios & 3-year hypothesis"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Vergleichsszenarien & 3-Jahres-Hypothese" en="Comparison scenarios & 3-year hypothesis" />
+
+<p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
+  <I18n
+    de="Fünf denkbare Aufstellungen, bewusst ohne Preise und ohne Empfehlung. Bewertet jedes Szenario je Kriterium mit ＋ (günstig), ○ (neutral) oder − (ungünstig)."
+    en="Five conceivable setups, deliberately without prices and without a recommendation. Rate each scenario per criterion with ＋ (favourable), ○ (neutral) or − (unfavourable)."
+  />
+</p>
+
+<De>
+
+| Szenario | Kosten | Kapazität | Wissenssicherung | Abhängigkeit |
+|---|---|---|---|---|
+| Früher: zwei Geschäftsführer und mehr Assistenz | … | … | … | … |
+| Heute: reduzierte Besetzung, ohne KI | … | … | … | … |
+| Neue Vollzeit-Geschäftsführung | … | … | … | … |
+| Teilzeit-Geschäftsführung mit KI-Unterstützung | … | … | … | … |
+| Externe Geschäftsstellen-Dienstleistung | … | … | … | … |
+| Euer eigenes Szenario | … | … | … | … |
+
+</De>
+
+<En>
+
+| Scenario | Cost | Capacity | Knowledge retention | Dependence |
+|---|---|---|---|---|
+| Before: two managing directors and more assistance | … | … | … | … |
+| Today: reduced staffing, without AI | … | … | … | … |
+| New full-time management | … | … | … | … |
+| Part-time management with AI support | … | … | … | … |
+| External office service | … | … | … | … |
+| Your own scenario | … | … | … | … |
+
+</En>
+
+<h3><I18n de="Arbeitshypothese: „Die Investition rechnet sich innerhalb von drei Jahren.“" en="Working hypothesis: “The investment pays off within three years.”" /></h3>
+
+<div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.9rem 1.1rem", background: "var(--bg-elev)", margin: "0.75rem 0", fontSize: "0.95rem", lineHeight: 1.7 }}>
+  <div><strong><I18n de="Nutzen über 36 Monate" en="Benefit over 36 months" /></strong> = <I18n de="Zeitgewinn (Std./Woche) × Arbeitswochen pro Jahr × 3 Jahre × Stundensatz (€)" en="time gained (hrs/week) × working weeks per year × 3 years × hourly rate (€)" /></div>
+  <div><strong><I18n de="Kosten über 36 Monate" en="Cost over 36 months" /></strong> = <I18n de="einmalige Kosten (€) + laufende Kosten (€/Monat) × 36" en="one-off costs (€) + running costs (€/month) × 36" /></div>
+  <div style={{ color: "var(--fg-muted)", marginTop: "0.3rem" }}><I18n de="Die Hypothese hält, wenn der Nutzen die Kosten mindestens deckt. Rechnet zweimal: einmal mit vorsichtigen, einmal mit optimistischen Annahmen." en="The hypothesis holds if the benefit at least covers the cost. Calculate twice: once with cautious and once with optimistic assumptions." /></div>
+</div>
+
+<WorkshopInput
+  slideId="05.03"
+  field="annahmen"
+  prompt="Unsere Annahmen: Zeitgewinn, Kosten, Nutzen (jeweils als Bandbreite)"
+  kind="text"
+  rows={3}
+  placeholder="Zeitgewinn: … bis … Std./Woche · Stundensatz: … € · einmalig: … bis … € · laufend: … bis … €/Monat · nicht in Euro messbar: …"
+/>
+
+<WorkshopInput
+  slideId="05.03"
+  field="hypothese"
+  prompt="Die Investition rechnet sich innerhalb von drei Jahren. Hält die Hypothese?"
+  kind="vote"
+  options={["Hält", "Hält eher", "Unklar", "Hält nicht"]}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="10 Minuten. Die Szenarien neutral vorstellen, keines hervorheben. Die Gruppe bewertet, die Moderation hält nur fest; auffällige Bewertungen kurz ins Feld Annahmen übernehmen. Das eigene Szenario ist ausdrücklich erlaubt. Bei der Rechnung keine Zahlen vorgeben, sondern fragen: Wie viele Stunden pro Woche würde die Geschäftsstelle realistisch gewinnen, vorsichtig und optimistisch? Kosten nur als Bandbreite aus eigener Einschätzung oder vorliegenden Angeboten, nicht aus dieser Folie. Die Hypothese ist eine Hypothese: Unklar ist ein ehrliches Ergebnis und führt zu einem Prüfauftrag für die Roadmap. Überleitung: Nicht alles steckt in der Rechnung."
+    en="10 minutes. Present the scenarios neutrally, highlight none. The group rates, the facilitator only records; copy notable ratings briefly into the assumptions field. The group's own scenario is explicitly allowed. Do not give figures for the calculation, ask instead: how many hours per week would the office realistically gain, cautiously and optimistically? Costs only as a range from the group's own estimate or existing quotes, not from this slide. The hypothesis is a hypothesis: unclear is an honest result and leads to a review task for the roadmap. Bridge: not everything is in the calculation."
+  />
+</SpeakerNotes>

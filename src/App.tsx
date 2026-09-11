@@ -8,24 +8,27 @@ import { Landing } from "@/routes/Landing";
 import { LangProvider } from "@/lib/i18n";
 import { ThemeProvider } from "@/lib/theme";
 import { MotionProvider } from "@/lib/motion";
+import { LoginGate } from "@/components/LoginGate";
 
 export function App() {
   return (
     <LangProvider>
       <ThemeProvider>
         <MotionProvider>
-          <HashRouter>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route element={<WorkshopLayout />}>
-              <Route path="/s/:slideId" element={<Slide />} />
-            </Route>
-            <Route path="/p/:slideId" element={<Presentation />} />
-            <Route path="/print" element={<Print />} />
-            <Route path="/protokoll" element={<Protocol />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </HashRouter>
+          <LoginGate>
+            <HashRouter>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route element={<WorkshopLayout />}>
+                  <Route path="/s/:slideId" element={<Slide />} />
+                </Route>
+                <Route path="/p/:slideId" element={<Presentation />} />
+                <Route path="/print" element={<Print />} />
+                <Route path="/protokoll" element={<Protocol />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </HashRouter>
+          </LoginGate>
         </MotionProvider>
       </ThemeProvider>
     </LangProvider>

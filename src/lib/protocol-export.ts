@@ -10,7 +10,7 @@ import { findModule } from "./slides";
 
 const STR = {
   de: {
-    sub: "KI – Fiktion oder Realität · „Der KI-augmentierte Verbands-CEO“",
+    sub: "Zweitages-Workshop · Fachverband Betonbohren und -sägen Deutschland e. V.",
     date: "Datum",
     participants: "Teilnehmende",
     count: "Erfasste Beiträge",
@@ -18,10 +18,11 @@ const STR = {
     module: "Modul",
     appendix: "Anhang",
     none: "Noch keine Eingaben erfasst.",
-    host: "Innovationswerkstatt · Harald Ostermann    ·    BIK GmbH · Dr. Stefan Reinheimer",
+    open: "— offen",
+    host: "Innovationswerkstatt & Digital Management School · Harald Ostermann    ·    BIK GmbH · Dr. Stefan Reinheimer",
   },
   en: {
-    sub: "AI – Fiction or Reality · “The AI-Augmented Association CEO”",
+    sub: "Two-day workshop · Fachverband Betonbohren und -sägen Deutschland e. V.",
     date: "Date",
     participants: "Participants",
     count: "Captured input",
@@ -29,7 +30,8 @@ const STR = {
     module: "Module",
     appendix: "Appendix",
     none: "No input captured yet.",
-    host: "Innovationswerkstatt · Harald Ostermann    ·    BIK GmbH · Dr. Stefan Reinheimer",
+    open: "— open",
+    host: "Innovationswerkstatt & Digital Management School · Harald Ostermann    ·    BIK GmbH · Dr. Stefan Reinheimer",
   },
 } as const;
 
@@ -48,30 +50,38 @@ const CSS = `
 @page { size: A4; margin: 20mm 18mm; }
 html, body { margin: 0; padding: 0; }
 body { font-family: 'Inter','Segoe UI',-apple-system,Roboto,'Helvetica Neue',Arial,sans-serif; color: #181A27; font-size: 11pt; line-height: 1.5; }
-.cover { border-bottom: 3px solid #38B6AB; padding-bottom: 12px; margin-bottom: 20px; }
-h1 { font-size: 21pt; color: #13357A; margin: 0 0 2px; font-weight: 700; }
+.cover { border-bottom: 3px solid #CD184B; padding-bottom: 12px; margin-bottom: 20px; }
+h1 { font-size: 21pt; color: #181A27; margin: 0 0 2px; font-weight: 700; }
 .sub { color: #5b6473; font-size: 10.5pt; margin-bottom: 10px; }
 table.meta { border-collapse: collapse; font-size: 10pt; }
 table.meta td { padding: 1px 0; vertical-align: top; }
 table.meta td.k { color: #5b6473; padding-right: 16px; white-space: nowrap; }
 section.module { margin-bottom: 14px; }
-h2.module { font-size: 12.5pt; color: #38B6AB; border-bottom: 1px solid #e3e7ee; padding-bottom: 3px; margin: 20px 0 8px; font-weight: 600; }
-h2.module .mt { color: #9aa3b2; font-weight: 400; }
-.entry { padding: 7px 0; border-bottom: 1px solid #f0f2f6; page-break-inside: avoid; }
-.entry .q { font-weight: 600; color: #13357A; margin: 0 0 2px; font-size: 10.5pt; }
+h2.module { font-size: 12.5pt; color: #CD184B; border-bottom: 1px solid #e5e5e3; padding-bottom: 3px; margin: 20px 0 8px; font-weight: 600; }
+h2.module .mt { color: #9a9ca6; font-weight: 400; }
+.entry { padding: 7px 0; border-bottom: 1px solid #f0f0ee; page-break-inside: avoid; }
+.entry .q { font-weight: 600; color: #181A27; margin: 0 0 2px; font-size: 10.5pt; }
 .entry .a { margin: 0; white-space: pre-wrap; }
-.entry .ref { margin: 3px 0 0; font-size: 8pt; color: #9aa3b2; font-family: ui-monospace,'Consolas',monospace; }
-.empty { color: #9aa3b2; }
-footer { margin-top: 22px; border-top: 1px solid #e3e7ee; padding-top: 8px; font-size: 8.5pt; color: #9aa3b2; text-align: center; }
+.entry .a.open { color: #9a9ca6; font-style: italic; }
+.entry .ref { margin: 3px 0 0; font-size: 8pt; color: #9a9ca6; font-family: ui-monospace,'Consolas',monospace; }
+.empty { color: #9a9ca6; }
+footer { margin-top: 22px; border-top: 1px solid #e5e5e3; padding-top: 8px; font-size: 8.5pt; color: #9a9ca6; text-align: center; }
 `;
+
+function hasValue(e: CaptureEntry): boolean {
+  return Array.isArray(e.value) ? e.value.length > 0 : Boolean(typeof e.value === "string" && e.value.trim());
+}
+
+/** Ad-hoc questions/tasks added in the live protocol (field id "q-…") are exported even while unanswered. */
+function isAdHoc(e: CaptureEntry): boolean {
+  return (e.id.split(":")[1] ?? "").startsWith("q-");
+}
 
 function bodyHtml(lang: Lang): string {
   const { meta, entries } = getState();
   const t = STR[lang];
   const list = Object.values(entries)
-    .filter((e) =>
-      Array.isArray(e.value) ? e.value.length > 0 : Boolean(typeof e.value === "string" && e.value.trim()),
-    )
+    .filter((e) => hasValue(e) || isAdHoc(e))
     .sort((a, b) => a.id.localeCompare(b.id));
   const now = new Date().toISOString().slice(0, 10);
 
@@ -99,7 +109,8 @@ function bodyHtml(lang: Lang): string {
         const mt = m ? ` · ${esc(m.title[lang])}` : "";
         out += `<section class="module"><h2 class="module">${label}<span class="mt">${mt}</span></h2>`;
       }
-      out += `<div class="entry"><p class="q">${esc(e.prompt)}</p><p class="a">${valHtml(e.value)}</p><p class="ref">${esc(e.slideId)} · ${esc(e.kind)}</p></div>`;
+      const answer = hasValue(e) ? `<p class="a">${valHtml(e.value)}</p>` : `<p class="a open">${t.open}</p>`;
+      out += `<div class="entry"><p class="q">${esc(e.prompt)}</p>${answer}<p class="ref">${esc(e.slideId)} · ${esc(e.kind)}</p></div>`;
     }
     out += `</section>`;
   }

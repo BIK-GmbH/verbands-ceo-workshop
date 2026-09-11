@@ -145,7 +145,7 @@ export function Presentation() {
           <button
             onClick={() => setNotesOpen((o) => !o)}
             className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[420px]:w-9 max-[420px]:px-0 justify-center rounded-md hover:bg-white/10 active:bg-white/20 transition-colors"
-            style={{ background: notesOpen ? "rgba(56,182,171,0.24)" : "rgba(255,255,255,0.08)" }}
+            style={{ background: notesOpen ? "color-mix(in oklch, var(--workshop-accent) 32%, transparent)" : "rgba(255,255,255,0.08)" }}
             title={`${notesLabel} (N)`}
             aria-label="Toggle speaker notes"
             aria-pressed={notesOpen}
@@ -185,7 +185,7 @@ export function Presentation() {
           style={{
             width: progress,
             background: "var(--workshop-accent)",
-            boxShadow: "0 0 18px rgba(56,182,171,0.45)",
+            boxShadow: "0 0 18px color-mix(in oklch, var(--workshop-accent) 45%, transparent)",
           }}
           aria-hidden
         />

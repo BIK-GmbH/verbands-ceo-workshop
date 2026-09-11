@@ -36,7 +36,19 @@ function saveText(entry: CaptureEntry, value: string, raw: string | undefined) {
 /** Only free-text contributions can be reworded (votes/checklists are structured). */
 export const isEditableText = (e: CaptureEntry) => e.kind === "text" && typeof e.value === "string";
 
-function MicButton({ mic, lang }: { mic: ReturnType<typeof useDictation>; lang: Lang }) {
+const QUESTION_INSTRUCTION =
+  "Formuliere den gesprochenen Beitrag als klare, prägnante Frage bzw. Aufgabe für das Workshop-Protokoll: ein Satz, bei einer Frage mit Fragezeichen. Inhalt nicht verändern, Füllwörter entfernen.";
+
+/** Turns a dictated ad-hoc question/task into one clean sentence. Throws AiAssistError. */
+export function polishQuestion(text: string, slideId: string): Promise<string> {
+  return refineText({
+    text,
+    instruction: QUESTION_INSTRUCTION,
+    context: { slideId, slideTitle: findSlide(slideId)?.title.de, prompt: "Eigene Frage / Aufgabe" },
+  });
+}
+
+export function MicButton({ mic, lang }: { mic: ReturnType<typeof useDictation>; lang: Lang }) {
   if (!mic.supported) return null;
   const de = lang === "de";
   return (

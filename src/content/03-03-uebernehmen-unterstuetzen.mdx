@@ -1,0 +1,57 @@
+---
+title:
+  de: "Übernehmen · Unterstützen · Bewusst nicht"
+  en: "Take over · support · deliberately not"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Übernehmen · Unterstützen · Bewusst nicht" en="Take over · support · deliberately not" />
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem", marginBottom: "0.5rem" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.75rem 1rem", background: "var(--bg-elev)" }}>
+    <strong style={{ color: "var(--workshop-accent)" }}><I18n de="KI übernimmt (mit Freigabe)" en="AI takes over (with approval)" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="Erledigt die Aufgabe weitgehend, ein Mensch gibt frei." en="Does the task largely on its own, a human approves." /></p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.75rem 1rem", background: "var(--bg-elev)" }}>
+    <strong style={{ color: "var(--workshop-accent)" }}><I18n de="KI unterstützt" en="AI supports" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="Bereitet vor, recherchiert, entwirft; der Mensch führt." en="Prepares, researches, drafts; the human leads." /></p>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.75rem 1rem", background: "var(--bg-elev)" }}>
+    <strong style={{ color: "var(--workshop-accent-deep)" }}><I18n de="Bewusst beim Menschen" en="Deliberately human" /></strong>
+    <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="Vertreten, entscheiden, verhandeln, Beziehungen pflegen." en="Representing, deciding, negotiating, maintaining relationships." /></p>
+  </div>
+</div>
+
+<ExerciseCard duration="25 Min" title={{ de: "Einordnen je Cluster", en: "Classify per cluster" }}>
+  <I18n de="Kleingruppen übernehmen je einige Cluster aus der Aufgabenliste und wählen den Schwerpunkt. Mischfälle sind normal: Haltet sie in der Begründung fest. Danach stellt jede Gruppe im Plenum vor, die anderen dürfen widersprechen." en="Small groups each take a few clusters from the task list and choose the main emphasis. Mixed cases are normal: capture them in the reasoning. Then each group presents in the plenary, the others may object." />
+</ExerciseCard>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "0 1rem" }}>
+  <WorkshopInput slideId="03.03" field="cluster-strategie" prompt="Strategie & Jahresplanung" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-gremien" prompt="Vorstand & Gremien" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-mitglieder" prompt="Mitgliedermanagement & Bindung" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-gewinnung-partner" prompt="Mitgliedergewinnung & Partnerpflege" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-lobby-normen" prompt="Lobby · Normen · Ausschüsse" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-sitzungen-protokolle" prompt="Sitzungen, MV & Protokolle" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-veranstaltungen" prompt="Veranstaltungen & Weiterbildung" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-budget" prompt="Budget, Haushalt, Controlling" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-kommunikation" prompt="PR · Newsletter · Web · Social" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-wissen" prompt="Wissensmanagement, Satzung, Beschlüsse" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+  <WorkshopInput slideId="03.03" field="cluster-verwaltung" prompt="Verwaltung · Datenschutz · Compliance" kind="decision" options={["KI übernimmt (mit Freigabe)", "KI unterstützt", "Bewusst beim Menschen"]} />
+</div>
+
+<WorkshopInput
+  slideId="03.03"
+  field="begruendung"
+  prompt="Begründung, Mischfälle und Ausnahmen je Cluster"
+  kind="text"
+  rows={4}
+  placeholder="z. B. Protokolle: Entwurf durch KI, Freigabe bleibt beim Vorstand …"
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Harald: Drei bis vier Kleingruppen bilden, die Cluster verteilen (etwa 15 Min Gruppenarbeit, 10 Min Plenum). Keine Einordnung vorgeben; wenn eine Gruppe unsicher ist, fragen: Wer unterschreibt am Ende? Wer steht dafür gerade? Die Kategorie Bewusst beim Menschen ist kein Scheitern, sondern eine bewusste Entscheidung. Neue Cluster aus 03.02 in der Begründung ergänzen. Überleitung: Aus dieser Zuordnung ergibt sich das Profil."
+    en="Harald: form three to four small groups and distribute the clusters (about 15 min group work, 10 min plenary). Don't prescribe any classification; if a group is unsure, ask: who signs in the end? Who is accountable? The category Deliberately human is not a failure but a conscious decision. Add new clusters from 03.02 in the reasoning. Transition: the profile follows from this assignment."
+  />
+</SpeakerNotes>

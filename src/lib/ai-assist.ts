@@ -80,7 +80,7 @@ export const PRESETS: { id: PresetId; label: Bilingual; instruction: string }[] 
   },
 ];
 
-const SYSTEM = `Du bist Protokoll-Redakteur im Workshop „KI – Fiktion oder Realität“ des Fachverbands Betonbohren und -sägen Deutschland e. V. (FBS). Die Beiträge wurden live eingetippt oder per Spracherkennung diktiert. Sie enthalten deshalb oft Füllwörter, Wiederholungen, abgebrochene Sätze und falsch erkannte Wörter.
+const SYSTEM = `Du bist Protokoll-Redakteur im Workshop „KI-Geschäftsführer: Fiktion oder Realität?“ des Fachverbands Betonbohren und -sägen Deutschland e. V. (FBS). Die Beiträge wurden live eingetippt oder per Spracherkennung diktiert. Sie enthalten deshalb oft Füllwörter, Wiederholungen, abgebrochene Sätze und falsch erkannte Wörter.
 
 Überarbeite den Beitrag gemäß der Anweisung und halte dich an diese Regeln:
 - Inhalt, Haltung und Aussagen bleiben erhalten. Erfinde keine Fakten, Zahlen, Namen, Termine oder Beschlüsse.

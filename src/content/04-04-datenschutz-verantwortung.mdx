@@ -1,0 +1,82 @@
+---
+title:
+  de: "Datenschutz & Verantwortung"
+  en: "Data protection & responsibility"
+researchedOn: 2026-09-11
+---
+
+# <I18n de="Datenschutz & Verantwortung" en="Data protection & responsibility" />
+
+<p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
+  <I18n
+    de="Der Verband verarbeitet personenbezogene Daten: Mitgliederanfragen, E-Mails, Seminaranmeldungen, Gremienunterlagen. Jede KI-Lösung muss Datenschutz und Freigaben von Anfang an mitdenken, nicht nachträglich aufsetzen. Das gilt unabhängig davon, welche Lösung ihr wählt."
+    en="The association processes personal data: member enquiries, emails, seminar registrations, committee documents. Any AI solution must build in data protection and approvals from the start, not bolt them on afterwards. This applies regardless of which solution you choose."
+  />
+</p>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "0.75rem", margin: "1rem 0" }}>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", color: "var(--workshop-accent)", fontSize: "0.8rem" }}>1 · <I18n de="KI bereitet vor" en="AI prepares" /></strong>
+    <span style={{ fontSize: "0.9rem" }}><I18n de="Entwurf, Zusammenfassung, Vorschlag mit Quellenangabe" en="Draft, summary, suggestion with sources" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", color: "var(--workshop-accent)", fontSize: "0.8rem" }}>2 · <I18n de="Mensch prüft" en="Human reviews" /></strong>
+    <span style={{ fontSize: "0.9rem" }}><I18n de="Inhalt, Ton, Fakten und Datenschutz" en="Content, tone, facts and data protection" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", color: "var(--workshop-accent)", fontSize: "0.8rem" }}>3 · <I18n de="Mensch entscheidet" en="Human decides" /></strong>
+    <span style={{ fontSize: "0.9rem" }}><I18n de="Freigabe durch eine benannte Person" en="Approval by a named person" /></span>
+  </div>
+  <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)", borderTop: "3px solid var(--workshop-accent)" }}>
+    <strong style={{ display: "block", color: "var(--workshop-accent)", fontSize: "0.8rem" }}>4 · <I18n de="Nachvollziehbar" en="Traceable" /></strong>
+    <span style={{ fontSize: "0.9rem" }}><I18n de="Wer hat wann was freigegeben?" en="Who approved what, and when?" /></span>
+  </div>
+</div>
+
+<De>
+
+| Aufgabenfeld | KI darf automatisch | KI darf vorbereiten | Mensch entscheidet |
+|---|---|---|---|
+| Standardkommunikation | Terminvorschläge, Erinnerungen | Antworten an Mitglieder, Newsletter-Entwürfe | heikle Einzelfälle, Krisenkommunikation |
+| Gremienarbeit | Fristenhinweise, Agenda-Bausteine | Protokollentwürfe, Beschlusszusammenfassungen | finale Protokolle, Beschlüsse |
+| Wissen & Fachauskünfte | Verschlagwortung, Zusammenfassungen | FAQ-Entwürfe, Antworten mit Quellen | verbindliche Fachauskünfte, Regelauslegung |
+| Öffentlichkeitsarbeit | Varianten, Redaktionsplanung | Presse-, Social- und Webtexte | offizielle Positionierung |
+| Personal | nichts | Stellenprofile, Leitfäden | Auswahl, Bewertung, Entscheidung |
+| Finanzen & Recht | Fristenwarnungen | Berichtsentwürfe, Maßnahmenlisten | Budgets, Zahlungen, Rechtsfreigaben |
+
+</De>
+
+<En>
+
+| Task field | AI may do automatically | AI may prepare | Humans decide |
+|---|---|---|---|
+| Standard communication | Meeting suggestions, reminders | Replies to members, newsletter drafts | delicate individual cases, crisis communication |
+| Committee work | Deadline alerts, agenda building blocks | Minutes drafts, resolution summaries | final minutes, resolutions |
+| Knowledge & expert advice | Tagging, summaries | FAQ drafts, answers with sources | binding expert advice, rule interpretation |
+| Public relations | Variants, editorial planning | Press, social and web copy | official positioning |
+| Staff | nothing | Job profiles, guides | selection, assessment, decision |
+| Finance & legal | Deadline alerts | Report drafts, action lists | budgets, payments, legal approvals |
+
+</En>
+
+<NoteCard variant="warning">
+  <I18n
+    de="DSGVO-Grundsätze für KI in der Verbandsarbeit: nur die Daten nutzen, die die Aufgabe braucht · Zwecke dokumentieren · Rollen und Rechte klar trennen · sensible und öffentliche Inhalte in getrennten Wissensräumen · Löschfristen festlegen · Nutzung protokollieren · Auftragsverarbeitung und Regeln für externe KI-Modelle vertraglich klären. Der EU AI Act ordnet KI zusätzlich nach Risikoklassen; Personal- und Bewertungsentscheidungen sind besonders sensibel."
+    en="GDPR principles for AI in association work: only use the data the task needs · document purposes · separate roles and permissions clearly · sensitive and public content in separate knowledge spaces · set deletion periods · log usage · settle data processing and rules for external AI models by contract. The EU AI Act additionally classifies AI by risk class; staff and assessment decisions are particularly sensitive."
+  />
+</NoteCard>
+
+<WorkshopInput
+  slideId="04.04"
+  field="regeln-fuer-uns"
+  prompt="Welche Regeln brauchen wir? Was darf die KI bei uns, was nicht, und wer gibt frei?"
+  kind="text"
+  rows={3}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Läuft innerhalb der technischen und organisatorischen Prüfung mit, etwa 5 Minuten. Datenschutz nicht als Bremse, sondern als Bedingung für Vertrauen rahmen: Nach Wilma ist Vertrauen die knappste Ressource. Die Freigabelogik in vier Schritten zeigen, der Kernsatz lautet: KI bereitet vor, der Mensch entscheidet. Die Matrix ist ein Beispiel, kein Regelwerk. Fragen: Ist eine Zeile für uns zu mutig oder zu vorsichtig? Beim Personal gibt es bewusst nichts Automatisches. Keine Rechtsberatung geben; offene Rechtsfragen als Punkt für die Roadmap festhalten, gegebenenfalls mit Datenschutzbeauftragten. Überleitung: Welche Risiken sehen wir darüber hinaus?"
+    en="Runs within the technical and organisational check, about 5 minutes. Frame data protection not as a brake but as the condition for trust: after Wilma, trust is the scarcest resource. Show the four-step approval logic; the key sentence is: AI prepares, humans decide. The matrix is an example, not a rulebook. Ask: is any row too bold or too cautious for us? For staff matters there is deliberately nothing automatic. Do not give legal advice; capture open legal questions as a roadmap item, involving the data protection officer if needed. Bridge: which other risks do we see?"
+  />
+</SpeakerNotes>

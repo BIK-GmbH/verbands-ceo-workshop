@@ -42,6 +42,8 @@ export default defineConfig({
         "brand/fbs-logo-white.png",
         "brand/innovationswerkstatt-dark.png",
         "brand/innovationswerkstatt-white.png",
+        "brand/dms-logo-dark.png",
+        "brand/dms-logo-white.png",
       ],
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,webp,ico,woff2}"],
@@ -52,11 +54,11 @@ export default defineConfig({
       },
       manifest: {
         id: "/verbands-ceo-workshop/",
-        name: "KI – Fiktion oder Realität · FBS-Workshop",
-        short_name: "Verbands-CEO",
+        name: "KI-Geschäftsführer: Fiktion oder Realität? · FBS-Workshop",
+        short_name: "FBS-Workshop",
         description:
-          "Zweitages-Workshop „KI – Fiktion oder Realität“ zum Betriebsmodell „Der KI-augmentierte Verbands-CEO“ — Innovationswerkstatt und BIK GmbH für den Fachverband Betonbohren und -sägen Deutschland e. V.",
-        theme_color: "#181A27",
+          "Zweitages-Workshop „KI-Geschäftsführer: Fiktion oder Realität?“ für den Fachverband Betonbohren und -sägen Deutschland e. V. — Harald Ostermann (Innovationswerkstatt & Digital Management School) und Dr. Stefan Reinheimer (BIK GmbH).",
+        theme_color: "#111218",
         background_color: "#ffffff",
         display: "standalone",
         orientation: "any",

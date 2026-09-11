@@ -34,19 +34,19 @@ export function Protocol() {
     <div style={{ background: "var(--bg)", color: "var(--fg)", minHeight: "100svh" }}>
       <header
         className="sticky top-0 z-10 flex items-center gap-3 px-4 sm:px-6 border-b"
-        style={{ height: "var(--header-height)", background: "var(--workshop-accent)", color: "white", borderColor: "var(--border)" }}
+        style={{ height: "var(--header-height)", background: "var(--bg)", color: "var(--fg)", borderColor: "var(--border)" }}
       >
         <button
           type="button"
           onClick={goBack}
-          className="inline-flex items-center gap-2 text-sm font-medium rounded-md px-2.5 h-9 hover:bg-white/20 active:bg-white/30 transition-colors"
-          style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.5)" }}
+          className="inline-flex items-center gap-2 text-sm font-medium rounded-md px-2.5 h-9 transition-colors hover:bg-[color-mix(in_oklch,var(--fg)_11%,transparent)]"
+          style={{ background: "color-mix(in oklch, var(--fg) 6%, transparent)", border: "1px solid var(--border)" }}
         >
           <ArrowLeft size={18} /> {de ? "Zurück zur Folie" : "Back to slide"}
         </button>
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm rounded-md px-2.5 h-9 hover:bg-white/15 active:bg-white/25 transition-colors"
+          className="inline-flex items-center gap-2 text-sm rounded-md px-2.5 h-9 transition-colors hover:bg-[color-mix(in_oklch,var(--fg)_8%,transparent)]"
           title={de ? "Zur Startseite" : "To start"}
         >
           <Home size={16} /> <span className="hidden sm:inline">{de ? "Start" : "Start"}</span>

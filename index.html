@@ -6,12 +6,12 @@
     <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
     <link rel="preload" as="image" href="./brand/fbs-logo-white.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#181A27" />
+    <meta name="theme-color" content="#111218" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Verbands-CEO" />
-    <meta name="description" content="KI – Fiktion oder Realität · „Der KI-augmentierte Verbands-CEO“ · Zweitages-Workshop · Innovationswerkstatt × BIK GmbH × Fachverband Betonbohren und -sägen Deutschland e. V." />
-    <title>KI – Fiktion oder Realität · Verbands-CEO-Workshop</title>
+    <meta name="apple-mobile-web-app-title" content="FBS-Workshop" />
+    <meta name="description" content="KI-Geschäftsführer: Fiktion oder Realität? · Zweitages-Workshop des Fachverbands Betonbohren und -sägen Deutschland e. V. · Harald Ostermann (Innovationswerkstatt &amp; Digital Management School) und Dr. Stefan Reinheimer (BIK GmbH)" />
+    <title>KI-Geschäftsführer: Fiktion oder Realität? · FBS-Workshop</title>
     <style>
       /* Splash — inlined so it shows BEFORE any JS/CSS bundles parse. */
       #splash {
@@ -20,7 +20,7 @@
         z-index: 9999;
         display: grid;
         place-items: center;
-        background: #181A27;     /* BIK Anthrazit */
+        background: #111218;     /* neutral near-black */
         color: #ffffff;
         font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           "Helvetica Neue", Arial, sans-serif;
@@ -38,17 +38,18 @@
         height: 96px;
         margin: 0 auto 20px;
         animation: splashPulse 1.8s ease-in-out infinite;
-        filter: drop-shadow(0 6px 26px rgba(56,182,171,0.32));
+        filter: drop-shadow(0 6px 26px rgba(205,24,75,0.28));
       }
       #splash .splash-title  { font-weight: 700; font-size: 18px; letter-spacing: 0.2px; }
-      #splash .splash-sub    { font-weight: 400; font-size: 13px; opacity: 0.78; margin-top: 4px; }
+      #splash .splash-title span { color: #EE4D6C; }
+      #splash .splash-sub    { font-weight: 400; font-size: 13px; opacity: 0.72; margin-top: 4px; }
       #splash .splash-hosts  { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; opacity: 0.85; }
       #splash .splash-hosts img { display: block; width: auto; }
       #splash .splash-spinner {
         margin: 22px auto 0;
         width: 26px; height: 26px;
         border: 2.5px solid rgba(255,255,255,0.18);
-        border-top-color: #38B6AB;     /* BIK Türkis */
+        border-top-color: #DC3055;     /* accent red */
         border-radius: 50%;
         animation: splashSpin 0.85s linear infinite;
       }
@@ -71,10 +72,11 @@
     <div id="splash" aria-label="Loading" role="status">
       <div class="splash-inner">
         <img class="splash-mark" src="./brand/fbs-logo-white.png" alt="Fachverband Betonbohren und -sägen Deutschland e. V." />
-        <div class="splash-title">KI – Fiktion oder Realität</div>
-        <div class="splash-sub">„Der KI-augmentierte Verbands-CEO“ · FBS-Workshop</div>
+        <div class="splash-title"><span>KI-Geschäftsführer:</span> Fiktion oder Realität?</div>
+        <div class="splash-sub">FBS-Workshop · 16./17. September 2026</div>
         <div class="splash-hosts">
-          <img src="./brand/innovationswerkstatt-white.png" alt="Innovationswerkstatt" style="height: 14px" />
+          <img src="./brand/innovationswerkstatt-white.png" alt="Innovationswerkstatt" style="height: 13px" />
+          <img src="./brand/dms-logo-white.png" alt="Digital Management School" style="height: 24px" />
           <img src="./brand/bik-logo-white.svg" alt="BIK GmbH" style="height: 22px" />
         </div>
         <div class="splash-spinner" aria-hidden="true"></div>
