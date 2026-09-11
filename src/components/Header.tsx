@@ -59,7 +59,12 @@ export function Header({
         <Menu size={20} {...ICON} />
       </button>
 
-      <div className="flex items-center gap-3 min-w-0">
+      <Link
+        to="/"
+        className="flex items-center gap-3 min-w-0 rounded-md transition-opacity hover:opacity-90"
+        style={{ color: "inherit", textDecoration: "none" }}
+        title={lang === "de" ? "Zur Startseite" : "To the start page"}
+      >
         <img
           src={`${import.meta.env.BASE_URL}brand/fbs-logo-white.png`}
           alt="Fachverband Betonbohren und -sägen Deutschland e. V."
@@ -91,7 +96,7 @@ export function Header({
             className="size-7"
           />
         </div>
-      </div>
+      </Link>
 
       <div className="ml-auto flex items-center gap-1.5">
         <button

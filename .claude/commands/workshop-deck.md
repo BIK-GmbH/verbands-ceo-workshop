@@ -12,12 +12,12 @@ Verbands-CEO" (FBS) über die **Canva-MCP-Integration**.
 
 1. **Quelle bestimmen**: Wenn `$ARGUMENTS` ein Protokoll enthält, nutze die Vorstands-Ergebnisse;
    sonst die Kerninhalte der Plattform (`src/content/*.mdx`) — Auftakt, Idee in einem Satz,
-   Aufgaben/Rolle, Zielarchitektur, Governance, Förderung/Roadmap, Beschluss.
+   Aufgaben/Rolle, Zielarchitektur, Governance, Roadmap & Wirtschaftlichkeit, Beschluss.
 2. **Canva prüfen**: Mit einer leichten Canva-MCP-Abfrage (z. B. Brand-Kits/Designs auflisten)
    testen, ob der Connector authentifiziert ist. Falls nicht: den Nutzer bitten, Canva in den
    Connector-Einstellungen zu verbinden.
 3. **Deck generieren** (Canva MCP, `generate-design` / `create-design-from-candidate`):
-   - Titel: „Der KI-augmentierte Verbands-CEO — Vorstands-Workshop"
+   - Titel: „KI – Fiktion oder Realität", Untertitel „Der KI-augmentierte Verbands-CEO" (Zweitages-Workshop, 16./17.09.2026)
    - ~10–14 Slides, Deutsch, je Konzeptkapitel eine Kernaussage + 3–5 Bullets
    - BIK-Farben: Türkis #38B6AB, Tiefblau #13357A, Anthrazit #181A27
    - Co-Branding-Hinweis: BIK GmbH × DIE INNOVATIONSWERKSTATT Amberg × FBS

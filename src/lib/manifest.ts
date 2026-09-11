@@ -2,8 +2,8 @@ import type { ModuleMeta } from "@/types/slide";
 
 /**
  * Single source of truth for module/slide order & IDs.
- * Workshop: "Der KI-augmentierte Verbands-CEO" — Halbtags-Vorstandsworkshop
- * für den Fachverband Betonbohren und -sägen Deutschland e. V. (FBS).
+ * Workshop: "KI – Fiktion oder Realität" („Der KI-augmentierte Verbands-CEO") —
+ * Zweitages-Workshop für den Fachverband Betonbohren und -sägen Deutschland e. V. (FBS).
  * Aufgebaut entlang der 6 Konzeptkapitel + Auftakt + Ergebnis-Werkstatt + Anhang.
  */
 export const MANIFEST: ModuleMeta[] = [
@@ -16,7 +16,7 @@ export const MANIFEST: ModuleMeta[] = [
       { id: "00.02", module: 0, slide: 2, title: { de: "Begrüßung & wie dieser Workshop funktioniert", en: "Welcome & how this workshop works" } },
       { id: "00.03", module: 0, slide: 3, title: { de: "Warum wir hier sind", en: "Why we are here" } },
       { id: "00.04", module: 0, slide: 4, title: { de: "Die Idee in einem Satz", en: "The idea in one sentence" } },
-      { id: "00.05", module: 0, slide: 5, title: { de: "Agenda — der Halbtag", en: "Agenda — the half day" } },
+      { id: "00.05", module: 0, slide: 5, title: { de: "Agenda — zwei Tage", en: "Agenda — two days" } },
       { id: "00.06", module: 0, slide: 6, title: { de: "So arbeiten wir heute", en: "How we work today" } },
     ],
   },
@@ -66,12 +66,11 @@ export const MANIFEST: ModuleMeta[] = [
   },
   {
     index: 5,
-    title: { de: "Fördermittel, Roadmap & Wirtschaftlichkeit", en: "Funding, Roadmap & Economics" },
+    title: { de: "Roadmap & Wirtschaftlichkeit", en: "Roadmap & Economics" },
     slides: [
-      { id: "05.01", module: 5, slide: 1, title: { de: "Fördermittelanalyse", en: "Funding analysis" } },
-      { id: "05.02", module: 5, slide: 2, title: { de: "Roadmap in vier Phasen", en: "Roadmap in four phases" } },
-      { id: "05.03", module: 5, slide: 3, title: { de: "Wirtschaftlichkeit & Kostenkorridore", en: "Economics & cost corridors" } },
-      { id: "05.04", module: 5, slide: 4, title: { de: "Erarbeiten: Pilot-Scoping (90 Tage)", en: "Work it out: pilot scoping (90 days)" } },
+      { id: "05.01", module: 5, slide: 1, title: { de: "Roadmap in vier Phasen", en: "Roadmap in four phases" } },
+      { id: "05.02", module: 5, slide: 2, title: { de: "Wirtschaftlichkeit & Kostenkorridore", en: "Economics & cost corridors" } },
+      { id: "05.03", module: 5, slide: 3, title: { de: "Erarbeiten: Pilot-Scoping (90 Tage)", en: "Work it out: pilot scoping (90 days)" } },
     ],
   },
   {
@@ -99,10 +98,9 @@ export const MANIFEST: ModuleMeta[] = [
     title: { de: "Anhang", en: "Appendix" },
     slides: [
       { id: "99.01", module: 99, slide: 1, title: { de: "Glossar", en: "Glossary" } },
-      { id: "99.02", module: 99, slide: 2, title: { de: "Fördermittel-Steckbriefe", en: "Funding profiles" } },
-      { id: "99.03", module: 99, slide: 3, title: { de: "Quellen & Konzeptdokument", en: "Sources & concept document" } },
-      { id: "99.04", module: 99, slide: 4, title: { de: "Ergebnistypen-Pipeline (technisch)", en: "Result-type pipeline (technical)" } },
-      { id: "99.05", module: 99, slide: 5, title: { de: "Changelog", en: "Changelog" } },
+      { id: "99.02", module: 99, slide: 2, title: { de: "Quellen & Konzeptdokument", en: "Sources & concept document" } },
+      { id: "99.03", module: 99, slide: 3, title: { de: "Ergebnistypen-Pipeline (technisch)", en: "Result-type pipeline (technical)" } },
+      { id: "99.04", module: 99, slide: 4, title: { de: "Changelog", en: "Changelog" } },
     ],
   },
 ];

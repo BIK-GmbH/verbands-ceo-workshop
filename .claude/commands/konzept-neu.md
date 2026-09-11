@@ -24,7 +24,7 @@ Repo nach `workshop-protokoll-*.md` / `*.json` suchen und den neuesten nehmen �
    - Modul 2: Top-Aufgabencluster, Votum zur ½-FTE-Empfehlung
    - Modul 3: ausgewählte Wissensquellen + Eigentümer
    - Modul 4: Governance-Rollen (Product Owner, Daten-Owner, Freigabekreis, Review-Rhythmus)
-   - Modul 5: gewählte Pilotprozesse, Gemeinnützigkeit, Budgetrahmen
+   - Modul 5: gewählte Pilotprozesse, Budgetrahmen
    - Modul 6: Beschluss zum BIK-Pilot, Auflagen, Verantwortliche
 
 2. **Angepasstes Konzept schreiben**: Erzeuge `exports/konzept-fbs-angepasst.md` — die

@@ -28,7 +28,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: "prompt",
+      // autoUpdate: a new deploy replaces the cached version on the next load,
+      // otherwise viewers keep seeing the old deck until they accept a prompt.
+      registerType: "autoUpdate",
       includeAssets: [
         "favicon.svg",
         "apple-touch-icon.png",
@@ -42,7 +44,10 @@ export default defineConfig({
         "brand/innovationswerkstatt-white.png",
       ],
       workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,png,ico,woff2}"],
+        globPatterns: ["**/*.{js,css,html,svg,png,webp,ico,woff2}"],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
         navigateFallback: `${BASE}index.html`,
       },
       manifest: {
