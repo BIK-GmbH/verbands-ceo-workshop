@@ -66,11 +66,11 @@ export const MANIFEST: ModuleMeta[] = [
   },
   {
     index: 4,
-    title: { de: "Realitätscheck „Wilma“", en: "Reality check “Wilma”" },
+    title: { de: "Realitätscheck FBS", en: "Reality check FBS" },
     description: { de: "Tag 2 · 08:30–10:00", en: "Day 2 · 08:30–10:00" },
     slides: [
       { id: "04.01", module: 4, slide: 1, title: { de: "Phase 4: Warum sollte es diesmal funktionieren?", en: "Phase 4: Why should it work this time?" } },
-      { id: "04.02", module: 4, slide: 2, title: { de: "Wilma: Was lernen wir?", en: "Wilma: what do we learn?" } },
+      { id: "04.02", module: 4, slide: 2, title: { de: "Eigene Erfahrungen: Was lernen wir?", en: "Our own experience: what do we learn?" } },
       { id: "04.03", module: 4, slide: 3, title: { de: "Prüfrahmen: technisch · organisatorisch · Mitglieder", en: "Test frame: technical · organisational · members" } },
       { id: "04.04", module: 4, slide: 4, title: { de: "Datenschutz & Verantwortung", en: "Data protection & responsibility" } },
       { id: "04.05", module: 4, slide: 5, title: { de: "Risiken & Absicherung", en: "Risks & safeguards" } },

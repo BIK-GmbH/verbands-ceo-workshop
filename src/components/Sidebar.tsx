@@ -135,7 +135,7 @@ export function Sidebar({
                 onClick={() => toggleModule(m.index)}
                 data-testid={`module-toggle-${m.index}`}
                 className={clsx(
-                  "w-full text-left px-4 py-2 flex items-center gap-2 text-sm font-medium",
+                  "w-full text-left px-4 py-2 flex items-start gap-2 text-sm font-medium",
                   "hover:bg-black/5 active:bg-black/10",
                   isActive && "border-l-2",
                 )}
@@ -143,13 +143,14 @@ export function Sidebar({
                 aria-expanded={isOpen}
               >
                 <span
-                  className="text-xs font-mono w-7 shrink-0"
+                  className="text-xs font-mono w-7 shrink-0 pt-0.5"
                   style={{ color: "var(--fg-muted)" }}
                 >
                   {m.index === 99 ? "Anh" : String(m.index).padStart(2, "0")}
                 </span>
-                <span className="flex-1 truncate">{pick(m.title, lang)}</span>
-                <span className="opacity-50 shrink-0">
+                {/* Long module titles wrap instead of being cut off. */}
+                <span className="flex-1 min-w-0 leading-snug">{pick(m.title, lang)}</span>
+                <span className="opacity-50 shrink-0 pt-0.5">
                   {isOpen ? (
                     <ChevronDown size={14} {...ICON} />
                   ) : (

@@ -28,7 +28,7 @@ inhaltlich aber komplett ersetzt und um eine **interaktive Erfassungs- und Gener
 erweitert.
 
 - **Format:** zwei Tage, erarbeitend; jede Phase endet mit einer Poster-Folie (Felder `poster-…`); Tag 1 = Module 0–3, Tag 2 = Module 4–7
-- **Module:** 0 Auftakt · 1 Analyse: Need to Move · 2 Vision · 3 Zielbild · 4 Realitätscheck „Wilma" · 5 Wirtschaftlichkeit & Argumentation · 6 Roadmap · 7 Commitment · 99 Anhang (54 Folien, siehe `src/lib/manifest.ts`)
+- **Module:** 0 Auftakt · 1 Analyse: Need to Move · 2 Vision · 3 Zielbild · 4 Realitätscheck FBS · 5 Wirtschaftlichkeit & Argumentation · 6 Roadmap · 7 Commitment · 99 Anhang (54 Folien, siehe `src/lib/manifest.ts`)
 - **Einstieg:** Route `/` ist die Landing Page (`src/routes/Landing.tsx`, Hero `public/brand/hero-ki-beton.webp`); Folien unter `/s/:id`
 - **Login:** Die ganze App liegt hinter einem clientseitigen Soft-Gate (`src/components/LoginGate.tsx`, SHA-256 von `user:passwort`, localStorage-Key `verbands-ceo.auth.v1`). Kein echter Schutz, nur gegen Zufallsbesucher. Für Playwright/Screenshots den Hash per `addInitScript` in localStorage setzen (siehe `scripts/shot.mjs`).
 - **Sprache:** Deutsch-first, EN-Toggle bleibt erhalten

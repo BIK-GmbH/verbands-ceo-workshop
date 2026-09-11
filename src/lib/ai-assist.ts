@@ -129,8 +129,17 @@ function toAiError(err: unknown): AiAssistError {
   return new AiAssistError("api", err instanceof Error ? err.message : String(err));
 }
 
-/** Rewrites one contribution according to `instruction`. Throws AiAssistError. */
-export async function refineText(req: RefineRequest): Promise<string> {
+export interface CompletionRequest {
+  system: string;
+  prompt: string;
+  /** Rewording stays "low" for a short live round trip; syntheses (e.g. group opinion) may use "medium". */
+  effort?: "low" | "medium" | "high";
+  /** Identifies the calling feature in error logs. */
+  logLabel: string;
+}
+
+/** One Claude call with a custom system prompt; returns the text answer. Throws AiAssistError. */
+export async function completeText({ system, prompt, effort = "low", logLabel }: CompletionRequest): Promise<string> {
   const apiKey = getApiKey();
   if (!apiKey) throw new AiAssistError("no-key");
 
@@ -142,14 +151,13 @@ export async function refineText(req: RefineRequest): Promise<string> {
       // Server-side fallback: a policy decline is retried on Anthropic's recommended model.
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
-      // Rewording is light work; low effort keeps the round trip short during a live session.
-      output_config: { effort: "low" },
-      system: SYSTEM,
-      messages: [{ role: "user", content: buildPrompt(req) }],
+      output_config: { effort },
+      system,
+      messages: [{ role: "user", content: prompt }],
     })
     .catch((err: unknown) => {
       const aiErr = toAiError(err);
-      console.error("[ai-assist] refine failed", { code: aiErr.code, slideId: req.context.slideId, detail: aiErr.message });
+      console.error("[ai-assist] request failed", { code: aiErr.code, feature: logLabel, detail: aiErr.message });
       throw aiErr;
     });
 
@@ -160,6 +168,11 @@ export async function refineText(req: RefineRequest): Promise<string> {
     .trim();
   if (!out) throw new AiAssistError("empty");
   return out;
+}
+
+/** Rewrites one contribution according to `instruction`. Throws AiAssistError. */
+export function refineText(req: RefineRequest): Promise<string> {
+  return completeText({ system: SYSTEM, prompt: buildPrompt(req), logLabel: `refine ${req.context.slideId}` });
 }
 
 const ERROR_TEXT: Record<AiErrorCode, Bilingual> = {

@@ -10,14 +10,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 // Hide splash once React has mounted. Min visible time keeps it from flashing
-// on fast loads. Honour reduced-motion (skip transition) and motion=off setting.
+// on fast loads. The fade always plays (gentle motion is part of the look, see lib/motion.tsx).
 function hideSplash() {
   const el = document.getElementById("splash");
   if (!el) return;
-  const motionOff =
-    document.documentElement.dataset.motion === "off" ||
-    matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (motionOff) {
+  if (document.documentElement.dataset.motion === "off") {
     el.remove();
     return;
   }

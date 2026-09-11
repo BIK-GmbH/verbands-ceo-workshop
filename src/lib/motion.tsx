@@ -4,11 +4,14 @@ export type MotionMode = "auto" | "on" | "off";
 
 const KEY = "workshop.motion";
 
+/**
+ * The header toggle was removed and the gentle transitions are part of the workshop look,
+ * so they always play – deliberately regardless of the OS reduced-motion setting.
+ * A previously stored "off" is cleared because it could no longer be changed.
+ */
 function getInitialMotion(): MotionMode {
-  if (typeof window === "undefined") return "auto";
-  const stored = window.localStorage.getItem(KEY);
-  if (stored === "auto" || stored === "on" || stored === "off") return stored;
-  return "auto";
+  if (typeof window !== "undefined") window.localStorage.removeItem(KEY);
+  return "on";
 }
 
 function isReducedPref(): boolean {

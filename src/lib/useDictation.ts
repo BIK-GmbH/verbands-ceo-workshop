@@ -77,5 +77,5 @@ export function useDictation(
 
   useEffect(() => () => recRef.current?.stop(), []);
 
-  return { supported, listening, toggle };
+  return { supported, listening, toggle, start, stop };
 }

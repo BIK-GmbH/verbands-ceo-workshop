@@ -7,6 +7,7 @@ import { useAllEntries, useWorkshopMeta } from "@/lib/useWorkshop";
 import { exportMarkdown, exportJSON, downloadFile, clearAll } from "@/lib/workshop-store";
 import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { AudioRecorder } from "@/components/AudioRecorder";
+import { ReportPanel } from "@/components/ReportPanel";
 import { findModule, ALL_SLIDES } from "@/lib/slides";
 
 export function Protocol() {
@@ -138,6 +139,8 @@ export function Protocol() {
             <Trash2 size={16} /> {de ? "Zurücksetzen" : "Reset"}
           </button>
         </section>
+
+        <ReportPanel entries={entries} lang={lang} />
 
         {entries.length > 0 && (
           <div className="mb-6 max-w-md">

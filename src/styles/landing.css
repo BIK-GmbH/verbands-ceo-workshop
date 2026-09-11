@@ -28,7 +28,3 @@
   0%, 100% { opacity: 0.55; }
   50%      { opacity: 0.9; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .landing-rise, .landing-hero-img, .landing-glow { animation: none; }
-}

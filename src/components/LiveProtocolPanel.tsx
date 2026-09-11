@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   PanelRightClose,
@@ -242,7 +242,43 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
     removeWhenEmpty: true,
   });
   const noteText = typeof note === "string" ? note : "";
-  const noteDictation = useDictation((chunk) => setNote((noteText ? noteText + " " : "") + chunk));
+  // Dictation is bound to the slide it was started on, so speech that is still being
+  // finalised after a slide change lands on the old slide, not the new one.
+  const dictationSlide = useRef<SlideMeta>(current);
+  const restartOnNewSlide = useRef(false);
+  const noteDictation = useDictation((chunk) => {
+    const slide = dictationSlide.current;
+    const id = `${slide.id}:notiz`;
+    const prev = getEntry(id)?.value;
+    const existing = typeof prev === "string" ? prev : "";
+    setEntry({
+      id,
+      module: slide.module,
+      slideId: slide.id,
+      kind: "text",
+      prompt: de ? `Notiz · ${slide.title.de}` : `Note · ${slide.title.en}`,
+      value: (existing ? existing + " " : "") + chunk,
+    });
+  });
+  const { listening: noteListening, start: startNoteDictation, stop: stopNoteDictation } = noteDictation;
+
+  // Slide change while dictating: end the running session, then restart it for the new slide.
+  useEffect(() => {
+    if (dictationSlide.current.id === current.id) return;
+    if (!noteListening) {
+      dictationSlide.current = current;
+      return;
+    }
+    restartOnNewSlide.current = true;
+    stopNoteDictation();
+  }, [current, noteListening, stopNoteDictation]);
+
+  useEffect(() => {
+    if (noteListening || !restartOnNewSlide.current) return;
+    restartOnNewSlide.current = false;
+    dictationSlide.current = current;
+    startNoteDictation();
+  }, [noteListening, current, startNoteDictation]);
 
   const apiKey = useApiKey();
   const [polishingQ, setPolishingQ] = useState(false);
@@ -411,20 +447,21 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
             >
               {de ? "Eigene Frage / Aufgabe" : "Custom question / task"}
             </div>
-            <div className="flex gap-1.5 mb-2">
-              <input
-                type="text"
+            <div className="flex items-start gap-1.5 mb-2">
+              <textarea
                 value={newQ}
                 onChange={(e) => setNewQ(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+                  // Enter adds the question; Shift+Enter keeps a line break for longer tasks.
+                  if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     addQuestion();
                   }
                 }}
-                placeholder={de ? "Neue Frage zu dieser Folie…" : "New question for this slide…"}
-                className="flex-1 text-xs rounded-md p-2"
-                style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
+                rows={2}
+                placeholder={de ? "Neue Frage zu dieser Folie… (Enter = hinzufügen)" : "New question for this slide… (Enter = add)"}
+                className="flex-1 min-w-0 text-xs rounded-md p-2 resize-y"
+                style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)", minHeight: "2.5rem" }}
               />
               <MicButton mic={newQMic} lang={lang} />
               <button

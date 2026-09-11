@@ -1,46 +1,49 @@
-# Der KI-augmentierte Verbands-CEO — Vorstands-Workshop
+# KI-Geschäftsführer: Fiktion oder Realität? — Workshop-Plattform
 
-Interaktive Konzept-Werkstatt für einen **Halbtags-Vorstandsworkshop (~3,5 Std)** zum
-BIK-Betriebsmodell **„Der KI-augmentierte Verbands-CEO"** — erstellt für den Vorstand des
-**Fachverbands Betonbohren und -sägen Deutschland e. V. (FBS)**.
+Interaktive Workshop-Plattform für den Zweitages-Workshop **„KI-Geschäftsführer: Fiktion oder Realität?"**
+des **Fachverbands Betonbohren und -sägen Deutschland e. V.** am 16./17.09.2026.
 
-Veranstalter: **BIK GmbH** · in Kooperation mit **DIE INNOVATIONSWERKSTATT Amberg**.
+**Veranstalter:** Harald Ostermann · Innovationswerkstatt & Digital Management School ·
+Dr. Stefan Reinheimer · BIK GmbH
 
-## Was diese Plattform kann
+## Funktionen
 
-- **Durchgehen:** 40 Folien entlang der 6 Konzeptkapitel (Auftakt → Beschluss → Ergebnis), DE/EN.
-- **Erarbeiten:** Pro Modul eine Übung mit Live-Erfassung (tippen oder **einsprechen**) —
-  Entscheidungen, Prioritäten, Votes, Anmerkungen. Alles landet lokal im **Workshop-Protokoll**.
-- **Aufnehmen (optional):** Lokaler Sitzungs-Rekorder (mit Einwilligung, kein Upload), Auswertung
-  nachträglich per `audio`-Skill.
-- **Erzeugen:** Aus dem Protokoll ein **angepasstes Konzept + neue Folien** — über den
-  Slash-Command `/konzept-neu`, ein **Canva-Marken-Deck** (`/workshop-deck`) und den
-  Print→PDF-Export. Das ist der „Composer" aus dem Konzept, live.
+- **Folien** in 8 Modulen und 7 Phasen, nach dem Poster-Prinzip aufgebaut
+- **Live-Protokoll** mit Diktat (Web Speech) und optionaler KI-Überarbeitung (opt-in)
+- **Protokoll-Export** als PDF, Word, Markdown und JSON
+- **Interview-Modus** mit Transkription und Meinungsbildern
+- **Poster-Generator** für Workshop-Ergebnisse
+- **Light/Dark-Modus** und **DE/EN**
+- **Soft-Login** (Zugangsdaten bei der Moderation)
 
-## Schnellstart
+## Quick Start
+
+Voraussetzung: Node.js 20+ und npm.
 
 ```bash
 npm install
-npm run dev            # http://localhost:5174  (Dev)
-npm run build          # tsc + vite build → dist/
-npm run export:pdf -- --lang=de   # exports/workshop-de.pdf
+npm run dev        # http://localhost:5174/verbands-ceo-workshop/
+npm run build      # Typecheck + Production-Build nach dist/
+npm run preview    # Production-Build lokal auf http://localhost:4173
 ```
 
-Navigation: Pfeiltasten / `J`/`K`, `⌘K` Suche, `P` Presenter, `F` Vollbild.
-Oben rechts **„Protokoll"** → Live-Mitschrieb + Export.
+Ohne Pfad-Präfix lokal starten: `BASE_PATH=/ npm run dev` → http://localhost:5174/
 
-## Aufbau
+## API-Keys
 
-- `src/content/*.mdx` — Folieninhalte (Frontmatter + bilingual)
-- `src/lib/manifest.ts` — Reihenfolge & IDs (Single Source of Truth)
-- `src/lib/workshop-store.ts` + `src/lib/useWorkshop.ts` — Erfassungs-Store (localStorage)
-- `src/components/slide-blocks/WorkshopInput.tsx` — Erfassungs-Block (Text/Vote/Decision/Checklist + Diktat)
-- `src/routes/Protocol.tsx` — Protokoll-Seite (`/protokoll`) + Export
-- `.claude/commands/` — `/konzept-neu`, `/workshop-deck`
+Einige Funktionen nutzen externe KI-Dienste:
 
-Details für Mitwirkende: siehe `CLAUDE.md`.
+- **Claude (Anthropic):** Textüberarbeitung und Zusammenfassungen
+- **OpenAI:** Transkription im Interview-Modus
 
----
+Die Keys werden in der App eingegeben und **nur im Browser** gespeichert. Sie gehören nie ins
+Repository. Ohne Keys laufen Folien, Protokoll und Export trotzdem, nur die KI-Funktionen fehlen.
 
-Grundlage: BIK-Konzept „Der KI-augmentierte Verbands-CEO" (Dokument BIK-FB-CEO-2026-01, Mai 2026).
-Technische Basis: `claude-code-workshop` (BIK GmbH).
+## Deploy
+
+GitHub Pages über `.github/workflows/deploy.yml`, automatisch bei jedem Push auf `main`.
+
+## Weiterführend
+
+- `CLAUDE.md`: Architektur, MDX-Konventionen, Befehle für Mitwirkende
+- `docs/workshop-konzept.md`: inhaltliches Workshop-Konzept

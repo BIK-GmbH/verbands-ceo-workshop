@@ -95,7 +95,7 @@ const COPY = {
   },
 } as const;
 
-/** Host groups: Harald Ostermann (Innovationswerkstatt & DMS, lead) and Dr. Stefan Reinheimer (BIK). */
+/** Host groups: Harald Ostermann (Innovationswerkstatt & DMS) and Dr. Stefan Reinheimer (BIK) facilitate together. */
 const HOSTS = [
   {
     key: "iw-dms",
@@ -109,7 +109,7 @@ const HOSTS = [
   },
   {
     key: "bik",
-    role: "expert" as const,
+    role: "moderation" as const,
     org: "BIK GmbH",
     person: "Dr. Stefan Reinheimer",
     logos: [{ src: "brand/bik-logo-white.svg", alt: "BIK GmbH", height: 38 }],

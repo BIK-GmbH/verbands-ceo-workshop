@@ -8,9 +8,10 @@ Diese Datei ist die inhaltliche Referenz für alle Folien. Alte Folien liegen nu
 - **Titel:** „KI-Geschäftsführer: Fiktion oder Realität?" (kein Untertitel mehr; „Der KI-augmentierte Verbands-CEO" entfällt, weil er die Antwort vorwegnimmt)
 - **Verband:** Fachverband Betonbohren und -sägen Deutschland e. V. (FBS), Darmstadt, **bundesweiter Fachverband** (nicht „Landesverband")
 - **Termin:** 16. und 17. September 2026, Zweitages-Workshop mit Vertretern des Fachverbandes
-- **Veranstalter:** Harald Ostermann · Innovationswerkstatt & Digital Management School (federführend, Moderation) · Dr. Stefan Reinheimer · BIK GmbH (Experteninput KI & Digitalisierung)
+- **Veranstalter:** Harald Ostermann · Innovationswerkstatt & Digital Management School (Moderation, federführend) · Dr. Stefan Reinheimer · BIK GmbH (Moderation, Experteninput KI & Digitalisierung in Phase 2)
 - **Anlass:** Früher zwei Geschäftsführer und deutlich mehr Assistenz; aus Kostengründen reduziert, die Aufgaben sind kaum weniger geworden. Früheres Digitalisierungsprojekt „Wilma" war nicht erfolgreich, keine Akzeptanz, große Skepsis bei den Mitgliedsfirmen.
 - **Förderthema:** bewusst komplett entfernt.
+- **Wilma:** nicht als Menüpunkt oder Überschrift nennen (für die Beteiligten belastend); Phase 4 heißt „Realitätscheck FBS", auf den Folien selbst darf Wilma vorkommen.
 
 ## Grundprinzipien (verbindlich)
 
@@ -35,7 +36,7 @@ Diese Datei ist die inhaltliche Referenz für alle Folien. Alte Folien liegen nu
 **Tag 2 · Donnerstag, 17. September 2026**
 | Zeit | Block |
 |---|---|
-| 08:30–10:00 | Phase 4 · Realitätscheck „Wilma" |
+| 08:30–10:00 | Phase 4 · Realitätscheck FBS |
 | 10:00–10:15 | Pause |
 | 10:15–11:00 | Phase 5 · Wirtschaftlichkeit & Argumentation |
 | 11:00–11:45 | Phase 6 · Roadmap |
@@ -78,10 +79,10 @@ Anlass, Leitfrage, die Phasen, Spielregeln, Poster-Prinzip, App (Protokoll, Dikt
 - Zeithorizonte 100 Tage/12/24 Monate werden in Phase 6 (Roadmap) bearbeitet, nicht doppelt hier.
 - Beispiel-Ergebnisse (Ablaufblatt, als Anregung, nicht vorgeben): 100 Tage: erster Prototyp beantwortet definierte Verbandsfragen auf Basis geprüften Wissens, Quick Wins für Geschäftsstelle und Vorstand · 12 Monate: regelmäßige Nutzung durch Vorstand, Geschäftsstelle, Mitglieder, messbare Zeitersparnis · 24 Monate: weitere Prozesse integriert, breite Akzeptanz · 36 Monate: fester Bestandteil der Verbandsarbeit, Verband als Vorreiter der Branche.
 
-### Phase 4 · Realitätscheck „Wilma" (90 Min) — Modul 4
+### Phase 4 · Realitätscheck FBS (90 Min) — Modul 4
 - **Kernfrage:** Warum sollte es diesmal funktionieren?
 - **Output:** Klarheit, was wir aus Wilma lernen und künftig anders machen; Entscheidungsliste GO / ADAPT / STOP → **„Diesmal anders, weil …"-Poster**.
-- **Ablauf:** 10 Min Zielbild in 60 Sekunden · 20 Min **Wilma-Lernrunde:** Was ist bei Wilma gelungen? Wo lagen die Herausforderungen (Technik, Akzeptanz, Nutzung, Plattform, Organisation)? Was lernen wir daraus? · 20 Min technische Machbarkeit (verfügbare Lösungen, Integrationsaufwand, Datenbasis & Qualität, technische Risiken) · 20 Min organisatorische Machbarkeit (Prozesse, Rollen, Ressourcen & Kompetenzen, Change & Kommunikation) · 10 Min Verbands- und Mitgliederperspektive (Akzeptanz, Einbindung, Mehrwert) · 5 Min Risiken & Absicherung · 5 Min GO / ADAPT / STOP.
+- **Ablauf:** 10 Min Zielbild in 60 Sekunden · 20 Min **Lernrunde eigene Erfahrungen (u. a. Wilma):** Was ist bei Wilma gelungen? Wo lagen die Herausforderungen (Technik, Akzeptanz, Nutzung, Plattform, Organisation)? Was lernen wir daraus? · 20 Min technische Machbarkeit (verfügbare Lösungen, Integrationsaufwand, Datenbasis & Qualität, technische Risiken) · 20 Min organisatorische Machbarkeit (Prozesse, Rollen, Ressourcen & Kompetenzen, Change & Kommunikation) · 10 Min Verbands- und Mitgliederperspektive (Akzeptanz, Einbindung, Mehrwert) · 5 Min Risiken & Absicherung · 5 Min GO / ADAPT / STOP.
 - **Prüfrahmen:** Technisch · Organisatorisch · Wirtschaftlich (Details in Phase 5) · Mitglieder & Verband · Risiken & Absicherung. Datenschutz/DSGVO und „KI bereitet vor, Mensch entscheidet" gehören hierher.
 - Zitat Ablaufblatt: „Ein Zielbild, das sich in der Realität nicht bewährt, ist kein Zielbild – es ist ein Risiko." Motto: „Focus on what works."
 
