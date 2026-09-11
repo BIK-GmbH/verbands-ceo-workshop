@@ -66,3 +66,17 @@ export const UI = {
 
 export type UIKey = keyof typeof UI;
 export const t = (key: UIKey, lang: Lang) => pick(UI[key], lang);
+
+/**
+ * Slide "as of" dates stay ISO days in the frontmatter (the research-stale
+ * workflow parses them) but are shown to the audience as month + year only.
+ */
+export function formatAsOf(iso: string, lang: Lang): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}

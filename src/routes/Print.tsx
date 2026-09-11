@@ -1,5 +1,5 @@
 import { ALL_SLIDES, getSlideComponent } from "@/lib/slides";
-import { pick, useLang, t } from "@/lib/i18n";
+import { pick, useLang, t, formatAsOf } from "@/lib/i18n";
 import { MDXProvider } from "@mdx-js/react";
 import {
   I18n,
@@ -37,7 +37,7 @@ export function Print() {
           >
             <div className="text-xs font-mono mb-1 text-gray-500">
               {s.id} · {t("module", lang)} {s.module === 99 ? "Anh" : s.module}
-              {s.researchedOn && ` · ${t("researchedOn", lang)}: ${s.researchedOn}`}
+              {s.researchedOn && ` · ${t("researchedOn", lang)}: ${formatAsOf(s.researchedOn, lang)}`}
             </div>
             {Component ? (
               <MDXProvider components={printMdxComponents}>

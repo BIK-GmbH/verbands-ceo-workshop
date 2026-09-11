@@ -39,6 +39,12 @@ const COPY = {
       },
     ],
     modulesTitle: "Der Weg durch die zwei Tage",
+    visualEyebrow: "Fiktion oder Realität?",
+    visualTitle: "Zukunft auf festem Grund",
+    visualText:
+      "KI ersetzt weder das Handwerk noch die Erfahrung der Branche. Sie baut darauf auf: auf dem Wissen, den Regelwerken und den Prozessen, die der FBS über Jahrzehnte geschaffen hat. In zwei Tagen prüfen wir gemeinsam, wo daraus echte Entlastung wird.",
+    visualAlt: "Zukunft auf festem Grund – Innovation, KI, Beton, gemeinsam stärker",
+    tags: ["Innovation", "KI", "Beton", "Gemeinsam stärker"],
     day1: "Tag 1",
     day2: "Tag 2",
     module: "Modul",
@@ -69,6 +75,12 @@ const COPY = {
       },
     ],
     modulesTitle: "The path through the two days",
+    visualEyebrow: "Fiction or reality?",
+    visualTitle: "A future on solid ground",
+    visualText:
+      "AI replaces neither the craft nor the industry's experience. It builds on them: on the knowledge, rulebooks and processes the FBS has created over decades. In two days we examine together where this turns into real relief.",
+    visualAlt: "A future on solid ground – innovation, AI, concrete, stronger together",
+    tags: ["Innovation", "AI", "Concrete", "Stronger together"],
     day1: "Day 1",
     day2: "Day 2",
     module: "Module",
@@ -219,6 +231,36 @@ export function Landing() {
               <span className="text-sm opacity-80">{h.person}</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── Key visual ───────────────────────────────────────── */}
+      <section className="px-5 sm:px-10 py-14 sm:py-20" style={{ background: ANTHRAZIT }}>
+        <div className="max-w-6xl mx-auto grid gap-10 md:grid-cols-[minmax(0,420px)_1fr] items-center">
+          <img
+            src={`${BASE}brand/zukunft-fester-grund-dark.webp`}
+            alt={c.visualAlt}
+            loading="lazy"
+            className="w-full max-w-[420px] mx-auto h-auto drop-shadow-[0_24px_60px_rgba(56,182,171,0.22)]"
+          />
+          <div>
+            <p className="text-xs sm:text-sm tracking-[0.14em] uppercase mb-3" style={{ color: TUERKIS }}>
+              {c.visualEyebrow}
+            </p>
+            <h2 className="text-3xl sm:text-5xl font-bold leading-tight tracking-tight">{c.visualTitle}</h2>
+            <p className="mt-5 text-base sm:text-lg leading-relaxed opacity-80 max-w-xl">{c.visualText}</p>
+            <ul className="mt-7 flex flex-wrap gap-2">
+              {c.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="px-3 py-1.5 rounded-full text-sm font-medium"
+                  style={{ background: `${TUERKIS}1f`, border: `1px solid ${TUERKIS}66`, color: "#bff0eb" }}
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 

@@ -56,6 +56,16 @@
   --border: #1f2235;
 }
 
+/* Theme-dependent artwork (e.g. FBS logo, key visual): both variants are in the
+ * markup, only the one matching the theme is shown. Print always uses light. */
+.theme-img-dark { display: none; }
+[data-theme="dark"] .theme-img-light { display: none; }
+[data-theme="dark"] .theme-img-dark { display: block; }
+@media print {
+  .theme-img-light { display: block !important; }
+  .theme-img-dark { display: none !important; }
+}
+
 /* Optional alternate workshop accents */
 [data-workshop="cdb"]      { --workshop-accent: #7c3aed; }
 [data-workshop="trustai"]  { --workshop-accent: #0d9488; }

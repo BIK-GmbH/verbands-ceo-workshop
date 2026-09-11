@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import type { Lang, SlideMeta } from "@/types/slide";
 import { neighbours } from "@/lib/slides";
-import { t } from "@/lib/i18n";
+import { t, formatAsOf } from "@/lib/i18n";
 
 interface Props {
   lang: Lang;
@@ -72,7 +72,7 @@ export function Footer({ lang, current }: Props) {
       <div className="flex-1 flex items-center justify-end gap-3">
         {current.researchedOn && (
           <span className="hidden md:inline" title={t("researchedOn", lang)}>
-            {t("researchedOn", lang)}: {current.researchedOn}
+            {t("researchedOn", lang)}: {formatAsOf(current.researchedOn, lang)}
           </span>
         )}
         <Link

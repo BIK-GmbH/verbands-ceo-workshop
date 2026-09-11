@@ -17,7 +17,7 @@ import {
 import { AudioRecorder } from "./AudioRecorder";
 import { getSlideComponent, findSlide } from "@/lib/slides";
 import type { Lang as L } from "@/types/slide";
-import { pick, t } from "@/lib/i18n";
+import { pick, t, formatAsOf } from "@/lib/i18n";
 
 interface ChildrenProps {
   children?: ReactNode;
@@ -127,7 +127,7 @@ export function SlideRenderer({ slideId, lang }: Props) {
       <div className="text-xs font-mono mb-3" style={{ color: "var(--fg-muted)" }}>
         {meta.id} · {t("module", lang)} {meta.module === 99 ? "Anh" : meta.module}
         {meta.researchedOn && (
-          <span className="ml-3 opacity-70">· {t("researchedOn", lang)}: {meta.researchedOn}</span>
+          <span className="ml-3 opacity-70">· {t("researchedOn", lang)}: {formatAsOf(meta.researchedOn, lang)}</span>
         )}
       </div>
       <MDXProvider components={mdxComponents}>
