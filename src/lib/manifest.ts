@@ -14,9 +14,10 @@ export const MANIFEST: ModuleMeta[] = [
     slides: [
       { id: "00.01", module: 0, slide: 1, title: { de: "Cover", en: "Cover" } },
       { id: "00.02", module: 0, slide: 2, title: { de: "Begrüßung & wie dieser Workshop funktioniert", en: "Welcome & how this workshop works" } },
-      { id: "00.03", module: 0, slide: 3, title: { de: "Die Idee in einem Satz", en: "The idea in one sentence" } },
-      { id: "00.04", module: 0, slide: 4, title: { de: "Agenda — der Halbtag", en: "Agenda — the half day" } },
-      { id: "00.05", module: 0, slide: 5, title: { de: "So arbeiten wir heute", en: "How we work today" } },
+      { id: "00.03", module: 0, slide: 3, title: { de: "Warum wir hier sind", en: "Why we are here" } },
+      { id: "00.04", module: 0, slide: 4, title: { de: "Die Idee in einem Satz", en: "The idea in one sentence" } },
+      { id: "00.05", module: 0, slide: 5, title: { de: "Agenda — der Halbtag", en: "Agenda — the half day" } },
+      { id: "00.06", module: 0, slide: 6, title: { de: "So arbeiten wir heute", en: "How we work today" } },
     ],
   },
   {

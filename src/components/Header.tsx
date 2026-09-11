@@ -12,6 +12,8 @@ interface Props {
   setTheme: (t: Theme) => void;
   onOpenPalette: () => void;
   onToggleMobileSidebar: () => void;
+  protocolOpen: boolean;
+  onToggleProtocol: () => void;
 }
 
 const ICON = { strokeWidth: 2.25 } as const;
@@ -23,6 +25,8 @@ export function Header({
   setTheme,
   onOpenPalette,
   onToggleMobileSidebar,
+  protocolOpen,
+  onToggleProtocol,
 }: Props) {
   const params = useParams<{ slideId: string }>();
   const currentId = params.slideId ?? ALL_SLIDES[0].id;
@@ -57,51 +61,59 @@ export function Header({
 
       <div className="flex items-center gap-3 min-w-0">
         <img
-          src={`${import.meta.env.BASE_URL}brand/bik-logo-white.svg`}
-          alt="BIK"
-          width={32}
-          height={32}
-          className="hidden sm:block size-8 shrink-0"
-          aria-hidden
+          src={`${import.meta.env.BASE_URL}brand/fbs-logo-white.png`}
+          alt="Fachverband Betonbohren und -sägen Deutschland e. V."
+          width={40}
+          height={40}
+          className="hidden sm:block size-10 shrink-0"
         />
         <div className="leading-tight min-w-0">
-          <div className="text-sm font-semibold truncate">KI-augmentierter Verbands-CEO</div>
+          <div className="text-sm font-semibold truncate">KI – Fiktion oder Realität</div>
           <div className="text-[11px] opacity-80 truncate hidden sm:block">
-            Vorstands-Workshop · FBS × BIK
+            „Der KI-augmentierte Verbands-CEO“ · FBS-Workshop
           </div>
+        </div>
+        <div
+          className="hidden lg:flex items-center gap-3 pl-3 ml-1 shrink-0"
+          style={{ borderLeft: "1px solid rgba(255,255,255,0.35)" }}
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}brand/innovationswerkstatt-white.png`}
+            alt="Innovationswerkstatt"
+            height={18}
+            className="h-[18px] w-auto"
+          />
+          <img
+            src={`${import.meta.env.BASE_URL}brand/bik-logo-white.svg`}
+            alt="BIK GmbH"
+            width={28}
+            height={28}
+            className="size-7"
+          />
         </div>
       </div>
 
       <div className="ml-auto flex items-center gap-1.5">
-        <Link
-          to="/protokoll"
+        <button
+          type="button"
+          onClick={onToggleProtocol}
           data-testid="open-protocol"
-          className="inline-flex items-center gap-2 px-2.5 h-9 rounded-md transition-colors hover:bg-white/10 active:bg-white/20 text-xs"
-          style={{ background: "rgba(255,255,255,0.14)" }}
-          title={lang === "de" ? "Workshop-Protokoll" : "Workshop record"}
-          aria-label={lang === "de" ? "Workshop-Protokoll" : "Workshop record"}
+          aria-pressed={protocolOpen}
+          className="inline-flex items-center gap-2 px-3 h-9 rounded-md transition-all text-xs font-semibold shadow-sm hover:brightness-110 active:scale-[0.98]"
+          style={{
+            background: "var(--workshop-accent-deep)",
+            color: "white",
+            border: protocolOpen
+              ? "1px solid white"
+              : "1px solid rgba(255,255,255,0.35)",
+            boxShadow: protocolOpen ? "0 0 0 2px rgba(255,255,255,0.45)" : undefined,
+          }}
+          title={lang === "de" ? "Live-Protokoll ein-/ausblenden — läuft rechts mit" : "Toggle live record — runs on the right"}
+          aria-label={lang === "de" ? "Live-Protokoll" : "Live record"}
         >
           <ClipboardList size={16} {...ICON} />
-          <span className="hidden lg:inline">{lang === "de" ? "Protokoll" : "Record"}</span>
-        </Link>
-
-        <Link
-          to={`/p/${currentId}`}
-          data-testid="enter-presentation"
-          className="inline-flex items-center gap-2 px-3 h-9 rounded-md transition-colors text-xs font-semibold shadow-sm hover:shadow-md active:scale-[0.98]"
-          style={{
-            background: "rgba(255,255,255,0.94)",
-            color: "var(--workshop-accent-deep)",
-            border: "1px solid rgba(255,255,255,0.55)",
-          }}
-          title={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
-          aria-label={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
-        >
-          <Play size={15} {...ICON} fill="currentColor" />
-          <span className="max-[520px]:hidden">
-            {lang === "de" ? "Präsentieren" : "Present"}
-          </span>
-        </Link>
+          <span className="hidden sm:inline">{lang === "de" ? "Protokoll" : "Record"}</span>
+        </button>
 
         <button
           onClick={onOpenPalette}
@@ -190,6 +202,32 @@ export function Header({
         >
           {theme === "dark" ? <Moon size={18} {...ICON} /> : <Sun size={18} {...ICON} />}
         </button>
+
+        {/* Divider — sets the primary action visually apart */}
+        <span
+          className="hidden sm:block w-px h-6 mx-1.5 self-center"
+          style={{ background: "rgba(255,255,255,0.35)" }}
+          aria-hidden
+        />
+
+        {/* Primary action — far right, prominent */}
+        <Link
+          to={`/p/${currentId}`}
+          data-testid="enter-presentation"
+          className="inline-flex items-center gap-2 px-4 h-9 rounded-md transition-all text-sm font-semibold shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98]"
+          style={{
+            background: "white",
+            color: "var(--workshop-accent-deep)",
+            border: "1px solid rgba(255,255,255,0.7)",
+          }}
+          title={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
+          aria-label={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
+        >
+          <Play size={16} {...ICON} fill="currentColor" />
+          <span className="max-[520px]:hidden">
+            {lang === "de" ? "Präsentieren" : "Present"}
+          </span>
+        </Link>
       </div>
     </header>
   );

@@ -36,7 +36,7 @@ export function WorkshopInput({
   const [lang] = useLang();
   const module = Number.parseInt(slideId, 10);
   const id = `${slideId}:${field}`;
-  const [value, setValue] = useCapture({ id, module, slideId, kind, prompt });
+  const [value, setValue] = useCapture({ id, module, slideId, kind, prompt, removeWhenEmpty: true });
 
   const text = typeof value === "string" ? value : "";
   const selected = Array.isArray(value) ? value : typeof value === "string" && value ? [value] : [];

@@ -56,7 +56,7 @@ export const UI = {
   of:           { de: "von",               en: "of" },
   researchedOn: { de: "Stand",             en: "As of" },
   sources:      { de: "Quellen",           en: "Sources" },
-  exercise:     { de: "Übung",             en: "Exercise" },
+  exercise:     { de: "Erarbeiten",        en: "Work it out" },
   duration:     { de: "Dauer",             en: "Duration" },
   goal:         { de: "Ziel",              en: "Goal" },
   hint:         { de: "Hinweis",           en: "Hint" },

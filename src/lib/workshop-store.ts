@@ -40,7 +40,7 @@ const KEY = "verbands-ceo.workshop.v1";
 const EVENT = "workshop-store-change";
 
 const DEFAULT_META: WorkshopMeta = {
-  title: "Vorstands-Workshop — KI-augmentierter Verbands-CEO",
+  title: "KI – Fiktion oder Realität — „Der KI-augmentierte Verbands-CEO“",
   date: "",
   participants: "",
 };

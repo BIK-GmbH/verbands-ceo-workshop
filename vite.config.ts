@@ -36,6 +36,10 @@ export default defineConfig({
         "icon-512.png",
         "brand/bik-logo-white.svg",
         "brand/bik-logo-dark.svg",
+        "brand/fbs-logo.png",
+        "brand/fbs-logo-white.png",
+        "brand/innovationswerkstatt-dark.png",
+        "brand/innovationswerkstatt-white.png",
       ],
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,ico,woff2}"],
@@ -43,10 +47,10 @@ export default defineConfig({
       },
       manifest: {
         id: "/verbands-ceo-workshop/",
-        name: "KI-augmentierter Verbands-CEO · BIK GmbH",
+        name: "KI – Fiktion oder Realität · FBS-Workshop",
         short_name: "Verbands-CEO",
         description:
-          "Vorstands-Workshop zum Betriebsmodell „Der KI-augmentierte Verbands-CEO“ — BIK GmbH für den Fachverband Betonbohren und -sägen Deutschland e. V.",
+          "Zweitages-Workshop „KI – Fiktion oder Realität“ zum Betriebsmodell „Der KI-augmentierte Verbands-CEO“ — Innovationswerkstatt und BIK GmbH für den Fachverband Betonbohren und -sägen Deutschland e. V.",
         theme_color: "#181A27",
         background_color: "#ffffff",
         display: "standalone",

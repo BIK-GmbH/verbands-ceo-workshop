@@ -5,6 +5,7 @@ import {
   type WorkshopMeta,
   getEntry,
   setEntry,
+  removeEntry,
   getMeta,
   setMeta,
   getAllEntries,
@@ -28,6 +29,18 @@ interface CaptureConfig {
   slideId: string;
   kind: CaptureKind;
   prompt: string;
+  /**
+   * When true, clearing the field (empty string / empty array) deletes the
+   * entry entirely instead of storing an empty value. Used for notes and the
+   * structured exercise fields so "clear the text" means "remove the
+   * contribution". Ad-hoc questions set this false — they persist (the prompt
+   * is the content) and are removed via an explicit delete action.
+   */
+  removeWhenEmpty?: boolean;
+}
+
+function isEmpty(v: CaptureEntry["value"]): boolean {
+  return Array.isArray(v) ? v.length === 0 : v.trim() === "";
 }
 
 /**
@@ -42,6 +55,10 @@ export function useCapture(
 
   const set = useCallback(
     (v: CaptureEntry["value"]) => {
+      if (cfg.removeWhenEmpty && isEmpty(v)) {
+        removeEntry(cfg.id);
+        return;
+      }
       setEntry({
         id: cfg.id,
         module: cfg.module,
@@ -51,7 +68,7 @@ export function useCapture(
         value: v,
       });
     },
-    [cfg.id, cfg.module, cfg.slideId, cfg.kind, cfg.prompt],
+    [cfg.id, cfg.module, cfg.slideId, cfg.kind, cfg.prompt, cfg.removeWhenEmpty],
   );
 
   const fallback: CaptureEntry["value"] = cfg.kind === "checklist" ? [] : "";

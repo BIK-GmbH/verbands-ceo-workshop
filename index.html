@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
-    <link rel="preload" as="image" href="%BASE_URL%brand/bik-logo-white.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="./brand/fbs-logo-white.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#181A27" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Verbands-CEO" />
-    <meta name="description" content="KI-augmentierter Verbands-CEO · Vorstands-Workshop · BIK GmbH × Fachverband Betonbohren und -sägen Deutschland e. V." />
-    <title>KI-augmentierter Verbands-CEO · Vorstands-Workshop</title>
+    <meta name="description" content="KI – Fiktion oder Realität · „Der KI-augmentierte Verbands-CEO“ · Zweitages-Workshop · Innovationswerkstatt × BIK GmbH × Fachverband Betonbohren und -sägen Deutschland e. V." />
+    <title>KI – Fiktion oder Realität · Verbands-CEO-Workshop</title>
     <style>
       /* Splash — inlined so it shows BEFORE any JS/CSS bundles parse. */
       #splash {
@@ -42,6 +42,8 @@
       }
       #splash .splash-title  { font-weight: 700; font-size: 18px; letter-spacing: 0.2px; }
       #splash .splash-sub    { font-weight: 400; font-size: 13px; opacity: 0.78; margin-top: 4px; }
+      #splash .splash-hosts  { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; opacity: 0.85; }
+      #splash .splash-hosts img { display: block; width: auto; }
       #splash .splash-spinner {
         margin: 22px auto 0;
         width: 26px; height: 26px;
@@ -68,9 +70,13 @@
   <body>
     <div id="splash" aria-label="Loading" role="status">
       <div class="splash-inner">
-        <img class="splash-mark" src="%BASE_URL%brand/bik-logo-white.svg" alt="BIK" />
-        <div class="splash-title">KI-augmentierter Verbands-CEO</div>
-        <div class="splash-sub">Vorstands-Workshop · FBS × BIK</div>
+        <img class="splash-mark" src="./brand/fbs-logo-white.png" alt="Fachverband Betonbohren und -sägen Deutschland e. V." />
+        <div class="splash-title">KI – Fiktion oder Realität</div>
+        <div class="splash-sub">„Der KI-augmentierte Verbands-CEO“ · FBS-Workshop</div>
+        <div class="splash-hosts">
+          <img src="./brand/innovationswerkstatt-white.png" alt="Innovationswerkstatt" style="height: 14px" />
+          <img src="./brand/bik-logo-white.svg" alt="BIK GmbH" style="height: 22px" />
+        </div>
         <div class="splash-spinner" aria-hidden="true"></div>
       </div>
     </div>

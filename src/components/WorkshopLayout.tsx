@@ -7,6 +7,7 @@ import { CommandPalette } from "./CommandPalette";
 import { ProgressBar } from "./ProgressBar";
 import { PWAUpdatePrompt } from "./PWAUpdatePrompt";
 import { SwipeHint } from "./SwipeHint";
+import { LiveProtocolPanel } from "./LiveProtocolPanel";
 import { useLang } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
 import { useKeymap } from "@/lib/keymap";
@@ -22,6 +23,13 @@ export function WorkshopLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  // Live-Protokoll dock — persisted so it stays open across slides and reloads.
+  const [protocolOpen, setProtocolOpen] = useState(
+    () => typeof window !== "undefined" && window.localStorage.getItem("verbands-ceo.panel") === "1",
+  );
+  useEffect(() => {
+    window.localStorage.setItem("verbands-ceo.panel", protocolOpen ? "1" : "0");
+  }, [protocolOpen]);
   const nav = useNavigate();
   const params = useParams<{ slideId: string }>();
   const current = findSlide(params.slideId ?? "") ?? ALL_SLIDES[0];
@@ -109,6 +117,8 @@ export function WorkshopLayout() {
         setTheme={setTheme}
         onOpenPalette={() => setPaletteOpen(true)}
         onToggleMobileSidebar={() => setMobileSidebarOpen((o) => !o)}
+        protocolOpen={protocolOpen}
+        onToggleProtocol={() => setProtocolOpen((o) => !o)}
       />
       <ProgressBar slideId={current.id} />
 
@@ -143,6 +153,13 @@ export function WorkshopLayout() {
             <Outlet context={{ lang, current }} />
           </div>
         </main>
+
+        <LiveProtocolPanel
+          open={protocolOpen}
+          onClose={() => setProtocolOpen(false)}
+          lang={lang}
+          current={current}
+        />
       </div>
 
       <Footer lang={lang} current={current} />

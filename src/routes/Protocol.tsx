@@ -1,17 +1,26 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, FileDown, FileJson, Trash2, FileText } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, FileDown, FileJson, Trash2, FileText, Home, Printer, FileType } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries, useWorkshopMeta } from "@/lib/useWorkshop";
 import { exportMarkdown, exportJSON, downloadFile, clearAll } from "@/lib/workshop-store";
+import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { AudioRecorder } from "@/components/AudioRecorder";
-import { findModule } from "@/lib/slides";
+import { findModule, ALL_SLIDES } from "@/lib/slides";
 
 export function Protocol() {
   const [lang] = useLang();
+  const navigate = useNavigate();
   const entries = useAllEntries();
   const [meta, setMeta] = useWorkshopMeta();
   const de = lang === "de";
   const stamp = new Date().toISOString().slice(0, 10);
+
+  // Return to the slide the user came from; fall back to the deck start if the
+  // protocol was opened directly (no in-app history). React Router tracks the
+  // history position in window.history.state.idx.
+  const canGoBack = ((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0;
+  const goBack = () =>
+    canGoBack ? navigate(-1) : navigate(`/s/${ALL_SLIDES[0].id}`);
 
   const byModule = entries.reduce<Record<number, typeof entries>>((acc, e) => {
     (acc[e.module] ??= []).push(e);
@@ -24,8 +33,20 @@ export function Protocol() {
         className="sticky top-0 z-10 flex items-center gap-3 px-4 sm:px-6 border-b"
         style={{ height: "var(--header-height)", background: "var(--workshop-accent)", color: "white", borderColor: "var(--border)" }}
       >
-        <Link to="/s/07.02" className="inline-flex items-center gap-2 text-sm font-medium hover:opacity-90">
-          <ArrowLeft size={18} /> {de ? "Zurück" : "Back"}
+        <button
+          type="button"
+          onClick={goBack}
+          className="inline-flex items-center gap-2 text-sm font-medium rounded-md px-2.5 h-9 hover:bg-white/20 active:bg-white/30 transition-colors"
+          style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.5)" }}
+        >
+          <ArrowLeft size={18} /> {de ? "Zurück zur Folie" : "Back to slide"}
+        </button>
+        <Link
+          to={`/s/${ALL_SLIDES[0].id}`}
+          className="inline-flex items-center gap-2 text-sm rounded-md px-2.5 h-9 hover:bg-white/15 active:bg-white/25 transition-colors"
+          title={de ? "Zur Startseite" : "To start"}
+        >
+          <Home size={16} /> <span className="hidden sm:inline">{de ? "Start" : "Start"}</span>
         </Link>
         <div className="ml-auto text-sm font-semibold">
           {de ? "Workshop-Protokoll" : "Workshop record"}
@@ -73,11 +94,27 @@ export function Protocol() {
         <section className="flex flex-wrap gap-2 my-6">
           <button
             type="button"
-            onClick={() => downloadFile(`workshop-protokoll-${stamp}.md`, exportMarkdown(), "text/markdown")}
+            onClick={() => printProtocolPdf(lang)}
             className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium"
             style={{ background: "var(--workshop-accent)", color: "white" }}
           >
-            <FileDown size={16} /> {de ? "Protokoll als Markdown" : "Record as Markdown"}
+            <Printer size={16} /> PDF
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadProtocolWord(lang)}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium"
+            style={{ background: "var(--workshop-accent-deep)", color: "white" }}
+          >
+            <FileType size={16} /> Word
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadFile(`workshop-protokoll-${stamp}.md`, exportMarkdown(), "text/markdown")}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm"
+            style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
+          >
+            <FileDown size={16} /> Markdown
           </button>
           <button
             type="button"
