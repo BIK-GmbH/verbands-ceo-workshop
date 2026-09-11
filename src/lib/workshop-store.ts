@@ -6,7 +6,8 @@
  * "Konzept-Delta" that the /konzept-neu skill turns into an adapted concept
  * PDF + updated slides (the "Composer" from the concept, demonstrated live).
  *
- * No personal data leaves the browser. Everything is local and deletable.
+ * Everything is stored locally and deletable. Text only leaves the browser when
+ * the facilitator opts into the AI assistant (see ai-assist.ts).
  */
 
 export type CaptureKind = "text" | "decision" | "vote" | "checklist";
@@ -21,6 +22,8 @@ export interface CaptureEntry {
   prompt: string;
   /** text/decision/vote → string · checklist → string[] */
   value: string | string[];
+  /** The originally dictated/typed text, kept once the AI assistant rewrote `value`. */
+  raw?: string;
   updatedAt: string;
 }
 
@@ -101,7 +104,9 @@ export function getEntry(id: string): CaptureEntry | undefined {
 
 export function setEntry(entry: Omit<CaptureEntry, "updatedAt">) {
   const state = read();
-  state.entries[entry.id] = { ...entry, updatedAt: new Date().toISOString() };
+  // Slide inputs don't know about `raw`; keep it so the original stays restorable.
+  const raw = entry.raw ?? state.entries[entry.id]?.raw;
+  state.entries[entry.id] = { ...entry, raw, updatedAt: new Date().toISOString() };
   write(state);
 }
 

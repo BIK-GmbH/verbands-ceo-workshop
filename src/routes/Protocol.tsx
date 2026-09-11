@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, FileDown, FileJson, Trash2, FileText, Home, Printer, FileType } from "lucide-react";
+import { ArrowLeft, FileDown, FileJson, Trash2, FileText, Home, Printer, FileType, Pencil } from "lucide-react";
+import { BulkPolishButton, EntryEditor, isEditableText } from "@/components/ProtocolAi";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries, useWorkshopMeta } from "@/lib/useWorkshop";
 import { exportMarkdown, exportJSON, downloadFile, clearAll } from "@/lib/workshop-store";
@@ -14,6 +16,7 @@ export function Protocol() {
   const [meta, setMeta] = useWorkshopMeta();
   const de = lang === "de";
   const stamp = new Date().toISOString().slice(0, 10);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   // Return to the slide the user came from; fall back to the deck start if the
   // protocol was opened directly (no in-app history). React Router tracks the
@@ -42,7 +45,7 @@ export function Protocol() {
           <ArrowLeft size={18} /> {de ? "Zurück zur Folie" : "Back to slide"}
         </button>
         <Link
-          to={`/s/${ALL_SLIDES[0].id}`}
+          to="/"
           className="inline-flex items-center gap-2 text-sm rounded-md px-2.5 h-9 hover:bg-white/15 active:bg-white/25 transition-colors"
           title={de ? "Zur Startseite" : "To start"}
         >
@@ -59,8 +62,8 @@ export function Protocol() {
         </h1>
         <p className="text-sm mb-6" style={{ color: "var(--fg-muted)" }}>
           {de
-            ? "Alle Eingaben werden lokal in eurem Browser gespeichert. Exportiert das Protokoll und lasst daraus mit dem /konzept-neu-Skill ein angepasstes Konzept + neue Folien erzeugen."
-            : "All input is stored locally in your browser. Export the record and turn it into an adapted concept + new slides with the /konzept-neu skill."}
+            ? "Hier laufen alle Beiträge aus allen Folien zusammen. Mit ✎ lässt sich jeder Freitext von Hand oder per KI überarbeiten; die Exporte enthalten immer die aktuelle, überarbeitete Fassung. Gespeichert wird lokal in eurem Browser. Nur die KI-Überarbeitung (opt-in) überträgt den jeweiligen Text an die Claude-API."
+            : "All contributions from all slides come together here. Use ✎ to edit any free text by hand or with AI; exports always contain the current, reworded version. Storage is local in your browser. Only AI rewording (opt-in) sends the text to the Claude API."}
         </p>
 
         {/* Meta */}
@@ -136,6 +139,12 @@ export function Protocol() {
           </button>
         </section>
 
+        {entries.length > 0 && (
+          <div className="mb-6 max-w-md">
+            <BulkPolishButton entries={entries} lang={lang} />
+          </div>
+        )}
+
         {/* Entries */}
         {entries.length === 0 ? (
           <div
@@ -161,14 +170,30 @@ export function Protocol() {
                   </h2>
                   <div className="space-y-3">
                     {byModule[mod].map((e) => {
+                      if (editingId === e.id) {
+                        return <EntryEditor key={e.id} entry={e} lang={lang} onClose={() => setEditingId(null)} />;
+                      }
                       const val = Array.isArray(e.value) ? e.value.join(", ") : e.value;
                       return (
                         <div key={e.id} className="rounded-md p-3" style={{ background: "var(--bg-elev)", border: "1px solid var(--border)" }}>
-                          <div className="text-sm font-medium mb-1">{e.prompt}</div>
+                          <div className="flex items-start gap-2 mb-1">
+                            <div className="text-sm font-medium flex-1">{e.prompt}</div>
+                            {isEditableText(e) && (
+                              <button
+                                type="button"
+                                onClick={() => setEditingId(e.id)}
+                                className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md shrink-0"
+                                style={{ border: "1px solid var(--border)", color: "var(--workshop-accent)" }}
+                                title={de ? "Bearbeiten / mit KI umformulieren" : "Edit / reword with AI"}
+                              >
+                                <Pencil size={13} /> {de ? "Bearbeiten" : "Edit"}
+                              </button>
+                            )}
+                          </div>
                           <div className="text-sm whitespace-pre-wrap" style={{ color: val ? "var(--fg)" : "var(--fg-muted)" }}>
                             {val || (de ? "— (keine Eingabe)" : "— (no input)")}
                           </div>
-                          <div className="text-[11px] mt-1 font-mono" style={{ color: "var(--fg-muted)" }}>{e.slideId} · {e.kind}</div>
+                          <div className="text-[11px] mt-1 font-mono" style={{ color: "var(--fg-muted)" }}>{e.slideId} · {e.kind}{e.raw ? (de ? " · KI-überarbeitet" : " · AI-reworded") : ""}</div>
                         </div>
                       );
                     })}

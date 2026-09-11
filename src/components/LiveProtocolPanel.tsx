@@ -12,6 +12,7 @@ import {
   FileType,
   Plus,
   X,
+  Pencil,
 } from "lucide-react";
 import type { Lang, SlideMeta } from "@/types/slide";
 import { useAllEntries, useCapture } from "@/lib/useWorkshop";
@@ -26,6 +27,7 @@ import {
 } from "@/lib/workshop-store";
 import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { MANIFEST, findModule } from "@/lib/slides";
+import { BulkPolishButton, EntryEditor, isEditableText } from "@/components/ProtocolAi";
 
 interface Props {
   open: boolean;
@@ -117,14 +119,15 @@ function AdhocField({
  * sees the protocol build up in real time — no navigating to a separate page.
  * Holds: progress, a free-text note for the current slide, ad-hoc questions
  * added live, and the live list of every captured contribution (click to jump
- * to its slide, × to delete). Local-only (localStorage); the AI summary is
- * produced downstream by the /konzept-neu skill on export.
+ * to its slide, ✎ to edit or let the AI reword it, × to delete). Stored locally;
+ * the AI assistant (opt-in, see ai-assist.ts) polishes dictated text in place.
  */
 export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const de = lang === "de";
   const navigate = useNavigate();
   const entries = useAllEntries();
   const [newQ, setNewQ] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [note, setNote] = useCapture({
     id: `${current.id}:notiz`,
@@ -334,6 +337,11 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
             >
               {de ? "Erfasste Beiträge" : "Captured input"}
             </div>
+            {filled.length > 0 && (
+              <div className="mb-3">
+                <BulkPolishButton entries={filled} lang={lang} />
+              </div>
+            )}
             {filled.length === 0 ? (
               <p className="text-xs" style={{ color: "var(--fg-muted)" }}>
                 {de
@@ -361,6 +369,16 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                         <div className="space-y-1.5">
                           {byModule[mod].map((e) => {
                             const isCurrent = e.slideId === current.id;
+                            if (editingId === e.id) {
+                              return (
+                                <EntryEditor
+                                  key={e.id}
+                                  entry={e}
+                                  lang={lang}
+                                  onClose={() => setEditingId(null)}
+                                />
+                              );
+                            }
                             const val = Array.isArray(e.value) ? e.value.join(", ") : e.value;
                             return (
                               <div
@@ -389,9 +407,22 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                                     className="mt-0.5 font-mono opacity-60"
                                     style={{ fontSize: "10px" }}
                                   >
-                                    {e.slideId} · {e.kind} →
+                                    {e.slideId} · {e.kind}
+                                    {e.raw ? (de ? " · KI-überarbeitet" : " · AI-reworded") : ""} →
                                   </div>
                                 </button>
+                                {isEditableText(e) && (
+                                  <button
+                                    type="button"
+                                    onClick={() => setEditingId(e.id)}
+                                    className="px-1.5 grid place-items-center shrink-0 hover:bg-black/5"
+                                    title={de ? "Bearbeiten / mit KI umformulieren" : "Edit / reword with AI"}
+                                    aria-label={de ? "Bearbeiten" : "Edit"}
+                                    style={{ color: "var(--workshop-accent)" }}
+                                  >
+                                    <Pencil size={13} />
+                                  </button>
+                                )}
                                 <button
                                   type="button"
                                   onClick={() => removeEntry(e.id)}

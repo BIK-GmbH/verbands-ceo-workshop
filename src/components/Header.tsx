@@ -17,6 +17,7 @@ interface Props {
 }
 
 const ICON = { strokeWidth: 2.25 } as const;
+const IS_MAC = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent);
 
 export function Header({
   lang,
@@ -65,35 +66,36 @@ export function Header({
         style={{ color: "inherit", textDecoration: "none" }}
         title={lang === "de" ? "Zur Startseite" : "To the start page"}
       >
-        <img
-          src={`${import.meta.env.BASE_URL}brand/fbs-logo-white.png`}
-          alt="Fachverband Betonbohren und -sägen Deutschland e. V."
-          width={40}
-          height={40}
-          className="hidden sm:block size-10 shrink-0"
-        />
+        {/* Dark logos on white chips: white-on-turquoise is hard to read. */}
+        <span className="hidden sm:grid place-items-center size-10 shrink-0 rounded-full bg-white shadow-sm">
+          <img
+            src={`${import.meta.env.BASE_URL}brand/fbs-logo.png`}
+            alt="Fachverband Betonbohren und -sägen Deutschland e. V."
+            width={34}
+            height={34}
+            className="size-[34px]"
+          />
+        </span>
         <div className="leading-tight min-w-0">
           <div className="text-sm font-semibold truncate">KI – Fiktion oder Realität</div>
           <div className="text-[11px] opacity-80 truncate hidden sm:block">
             „Der KI-augmentierte Verbands-CEO“ · FBS-Workshop
           </div>
         </div>
-        <div
-          className="hidden lg:flex items-center gap-3 pl-3 ml-1 shrink-0"
-          style={{ borderLeft: "1px solid rgba(255,255,255,0.35)" }}
-        >
+        <div className="hidden lg:flex items-center gap-3 ml-2 px-3 h-9 rounded-md bg-white shadow-sm shrink-0">
           <img
-            src={`${import.meta.env.BASE_URL}brand/innovationswerkstatt-white.png`}
+            src={`${import.meta.env.BASE_URL}brand/innovationswerkstatt-dark.png`}
             alt="Innovationswerkstatt"
-            height={18}
-            className="h-[18px] w-auto"
+            height={16}
+            className="h-4 w-auto"
           />
+          <span className="w-px h-5" style={{ background: "#e2e8f0" }} aria-hidden />
           <img
-            src={`${import.meta.env.BASE_URL}brand/bik-logo-white.svg`}
+            src={`${import.meta.env.BASE_URL}brand/bik-logo-dark.svg`}
             alt="BIK GmbH"
-            width={28}
-            height={28}
-            className="size-7"
+            width={26}
+            height={26}
+            className="size-[26px]"
           />
         </div>
       </Link>
@@ -134,7 +136,7 @@ export function Header({
             className="hidden lg:inline px-1.5 py-0.5 rounded text-[10px] font-mono"
             style={{ background: "rgba(255,255,255,0.18)" }}
           >
-            ⌘K
+            {IS_MAC ? "⌘K" : lang === "de" ? "Strg K" : "Ctrl K"}
           </kbd>
         </button>
 
