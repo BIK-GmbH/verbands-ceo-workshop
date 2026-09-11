@@ -10,20 +10,25 @@ import path from "node:path";
 
 const BASE = process.env.BASE_PATH ?? "/verbands-ceo-workshop/";
 
+const mdxPlugin = mdx({
+  providerImportSource: "@mdx-js/react",
+  remarkPlugins: [
+    remarkFrontmatter,
+    [remarkMdxFrontmatter, { name: "frontmatter" }],
+    remarkGfm,
+  ],
+});
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: BASE,
   plugins: [
     {
       enforce: "pre",
-      ...mdx({
-        providerImportSource: "@mdx-js/react",
-        remarkPlugins: [
-          remarkFrontmatter,
-          [remarkMdxFrontmatter, { name: "frontmatter" }],
-          remarkGfm,
-        ],
-      }),
+      ...mdxPlugin,
+      // The MDX plugin drops the query before matching, so `x.mdx?raw` would be
+      // compiled too. Raw imports (the glossary reads its own slide source) must stay strings.
+      transform: (value: string, id: string) => (id.includes("?raw") ? undefined : mdxPlugin.transform(value, id)),
     },
     react(),
     tailwindcss(),

@@ -4,6 +4,7 @@ import type { Lang } from "@/types/slide";
 import { getEntry, setEntry, type CaptureEntry } from "@/lib/workshop-store";
 import { useDictation } from "@/lib/useDictation";
 import { findSlide } from "@/lib/slides";
+import { Tooltip } from "@/components/ui/Tooltip";
 import {
   PRESETS,
   describeAiError,
@@ -15,6 +16,30 @@ import {
 } from "@/lib/ai-assist";
 
 const ERROR_COLOR = "#dc2626";
+
+/** What each AI preset does, shown as a tooltip on its button. */
+const PRESET_HINTS: Record<string, { de: string; en: string }> = {
+  polish: {
+    de: "Diktierfehler, Füllwörter und abgebrochene Sätze bereinigen und leicht straffen, ohne Aussagen zu verlieren.",
+    en: "Clean up dictation errors, filler words and broken sentences and tighten slightly, without losing any statement.",
+  },
+  shorter: {
+    de: "Deutlich kürzen, nur die Kernaussagen bleiben. Nichts Wesentliches fällt weg.",
+    en: "Shorten considerably, only the key statements remain. Nothing essential is dropped.",
+  },
+  longer: {
+    de: "Ausführlicher formulieren und angelegte Zusammenhänge klarer machen. Es kommen keine neuen Fakten, Zahlen oder Beschlüsse hinzu.",
+    en: "Phrase in more detail and make implied connections clearer. No new facts, figures or decisions are added.",
+  },
+  professional: {
+    de: "In den sachlichen Stil eines offiziellen Verbandsprotokolls bringen.",
+    en: "Bring into the factual style of an official association record.",
+  },
+  bullets: {
+    de: "Den Inhalt in prägnante Stichpunkte gliedern, einer pro Zeile.",
+    en: "Structure the content as concise bullet points, one per line.",
+  },
+};
 
 function contextFor(entry: CaptureEntry): RefineRequest["context"] {
   return { slideId: entry.slideId, slideTitle: findSlide(entry.slideId)?.title.de, prompt: entry.prompt };
@@ -52,20 +77,31 @@ export function MicButton({ mic, lang }: { mic: ReturnType<typeof useDictation>;
   if (!mic.supported) return null;
   const de = lang === "de";
   return (
-    <button
-      type="button"
-      onClick={mic.toggle}
-      className="size-7 grid place-items-center rounded-md shrink-0 transition-colors"
-      style={{
-        background: mic.listening ? "var(--workshop-accent)" : "var(--bg-elev)",
-        color: mic.listening ? "white" : "var(--fg-muted)",
-        border: "1px solid var(--border)",
-      }}
-      title={mic.listening ? (de ? "Diktat stoppen" : "Stop dictation") : de ? "Einsprechen" : "Dictate"}
-      aria-label={mic.listening ? (de ? "Diktat stoppen" : "Stop dictation") : de ? "Einsprechen" : "Dictate"}
+    <Tooltip
+      content={
+        mic.listening
+          ? de
+            ? "Diktat stoppen"
+            : "Stop dictation"
+          : de
+            ? "Einsprechen statt tippen, der Text wird angehängt"
+            : "Dictate instead of typing, the text is appended"
+      }
     >
-      {mic.listening ? <MicOff size={13} /> : <Mic size={13} />}
-    </button>
+      <button
+        type="button"
+        onClick={mic.toggle}
+        className="size-7 grid place-items-center rounded-md shrink-0 transition-colors"
+        style={{
+          background: mic.listening ? "var(--workshop-accent)" : "var(--bg-elev)",
+          color: mic.listening ? "white" : "var(--fg-muted)",
+          border: "1px solid var(--border)",
+        }}
+        aria-label={mic.listening ? (de ? "Diktat stoppen" : "Stop dictation") : de ? "Einsprechen" : "Dictate"}
+      >
+        {mic.listening ? <MicOff size={13} /> : <Mic size={13} />}
+      </button>
+    </Tooltip>
   );
 }
 
@@ -235,25 +271,26 @@ export function EntryEditor({
         <>
           <div className="flex flex-wrap gap-1">
             {PRESETS.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => run(p.id, p.instruction)}
-                disabled={busy !== null || !draft.trim()}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium transition-colors disabled:opacity-50"
-                style={
-                  p.id === "polish"
-                    ? { background: "var(--workshop-accent)", color: "white" }
-                    : { border: "1px solid var(--workshop-accent)", color: "var(--workshop-accent)" }
-                }
-              >
-                {busy === p.id ? (
-                  <Loader2 size={12} className="animate-spin" />
-                ) : p.id === "polish" ? (
-                  <Sparkles size={12} />
-                ) : null}
-                {p.label[lang]}
-              </button>
+              <Tooltip key={p.id} content={PRESET_HINTS[p.id]?.[lang]}>
+                <button
+                  type="button"
+                  onClick={() => run(p.id, p.instruction)}
+                  disabled={busy !== null || !draft.trim()}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium transition-colors disabled:opacity-50"
+                  style={
+                    p.id === "polish"
+                      ? { background: "var(--workshop-accent)", color: "white" }
+                      : { border: "1px solid var(--workshop-accent)", color: "var(--workshop-accent)" }
+                  }
+                >
+                  {busy === p.id ? (
+                    <Loader2 size={12} className="animate-spin" />
+                  ) : p.id === "polish" ? (
+                    <Sparkles size={12} />
+                  ) : null}
+                  {p.label[lang]}
+                </button>
+              </Tooltip>
             ))}
           </div>
           <div className="flex gap-1.5">
@@ -272,17 +309,24 @@ export function EntryEditor({
               style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
             />
             <MicButton mic={instructionMic} lang={lang} />
-            <button
-              type="button"
-              onClick={() => run("custom", instruction)}
-              disabled={busy !== null || !instruction.trim() || !draft.trim()}
-              className="size-7 grid place-items-center rounded-md shrink-0 disabled:opacity-50"
-              style={{ background: "var(--workshop-accent-deep)", color: "white" }}
-              title={de ? "Anweisung anwenden" : "Apply instruction"}
-              aria-label={de ? "Anweisung anwenden" : "Apply instruction"}
+            <Tooltip
+              content={
+                de
+                  ? "Eigene Anweisung auf den Text anwenden (auch Enter im Feld)"
+                  : "Apply your own instruction to the text (or press Enter in the field)"
+              }
             >
-              {busy === "custom" ? <Loader2 size={13} className="animate-spin" /> : <Wand2 size={13} />}
-            </button>
+              <button
+                type="button"
+                onClick={() => run("custom", instruction)}
+                disabled={busy !== null || !instruction.trim() || !draft.trim()}
+                className="size-7 grid place-items-center rounded-md shrink-0 disabled:opacity-50"
+                style={{ background: "var(--workshop-accent-deep)", color: "white" }}
+                aria-label={de ? "Anweisung anwenden" : "Apply instruction"}
+              >
+                {busy === "custom" ? <Loader2 size={13} className="animate-spin" /> : <Wand2 size={13} />}
+              </button>
+            </Tooltip>
           </div>
         </>
       ) : (
@@ -293,27 +337,42 @@ export function EntryEditor({
 
       <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
         {history.length > 0 && (
-          <button
-            type="button"
-            onClick={undo}
-            disabled={busy !== null}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-md"
-            style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+          <Tooltip
+            content={
+              de
+                ? "Letzten Schritt zurücknehmen, Schritt für Schritt bis zur Ausgangsfassung"
+                : "Undo the last step, step by step back to the starting version"
+            }
           >
-            <Undo2 size={12} /> {de ? "Rückgängig" : "Undo"}
-          </button>
+            <button
+              type="button"
+              onClick={undo}
+              disabled={busy !== null}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-md"
+              style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+            >
+              <Undo2 size={12} /> {de ? "Rückgängig" : "Undo"}
+            </button>
+          </Tooltip>
         )}
         {entry.raw && draft !== entry.raw && (
-          <button
-            type="button"
-            onClick={() => replaceDraft(entry.raw ?? "")}
-            disabled={busy !== null}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-md"
-            style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
-            title={de ? "Ursprünglich diktierten Text wiederherstellen" : "Restore the originally dictated text"}
+          <Tooltip
+            content={
+              de
+                ? "Den ursprünglich eingegebenen bzw. diktierten Text wiederherstellen, vor jeder KI-Überarbeitung"
+                : "Restore the originally typed or dictated text, before any AI rewording"
+            }
           >
-            <RotateCcw size={12} /> {de ? "Original" : "Original"}
-          </button>
+            <button
+              type="button"
+              onClick={() => replaceDraft(entry.raw ?? "")}
+              disabled={busy !== null}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-md"
+              style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+            >
+              <RotateCcw size={12} /> {de ? "Original" : "Original"}
+            </button>
+          </Tooltip>
         )}
         <div className="ml-auto flex gap-1.5">
           <button
@@ -324,16 +383,23 @@ export function EntryEditor({
           >
             {de ? "Abbrechen" : "Cancel"}
           </button>
-          <button
-            type="button"
-            onClick={save}
-            disabled={busy !== null}
-            className="px-2.5 py-1 rounded-md font-medium disabled:opacity-50"
-            style={{ background: "var(--workshop-accent)", color: "white" }}
-            title={de ? "Übernehmen (Strg+Enter)" : "Apply (Ctrl+Enter)"}
+          <Tooltip
+            content={
+              de
+                ? "Fassung ins Protokoll übernehmen (Strg+Enter). Esc bricht ab."
+                : "Save this version to the record (Ctrl+Enter). Esc cancels."
+            }
           >
-            {de ? "Übernehmen" : "Apply"}
-          </button>
+            <button
+              type="button"
+              onClick={save}
+              disabled={busy !== null}
+              className="px-2.5 py-1 rounded-md font-medium disabled:opacity-50"
+              style={{ background: "var(--workshop-accent)", color: "white" }}
+            >
+              {de ? "Übernehmen" : "Apply"}
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>
@@ -400,16 +466,24 @@ export function BulkPolishButton({ entries, lang }: { entries: CaptureEntry[]; l
 
   return (
     <div className="space-y-1.5">
-      <button
-        type="button"
-        onClick={run}
-        disabled={progress !== null || pending.length === 0}
-        className="w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium disabled:opacity-60"
-        style={{ background: "var(--workshop-accent)", color: "white" }}
+      <Tooltip
+        content={
+          de
+            ? "Glättet alle Freitexte, die noch nicht überarbeitet wurden: Diktierfehler, Füllwörter, Satzbau. Der Inhalt bleibt, das Original ist über ✎ wiederherstellbar. Beiträge, die sich währenddessen ändern, werden nicht überschrieben."
+            : "Polishes every free text not yet reworded: dictation errors, filler words, sentence structure. The content stays, the original can be restored via ✎. Items changed in the meantime are not overwritten."
+        }
       >
-        {progress ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-        {label}
-      </button>
+        <button
+          type="button"
+          onClick={run}
+          disabled={progress !== null || pending.length === 0}
+          className="w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium disabled:opacity-60"
+          style={{ background: "var(--workshop-accent)", color: "white" }}
+        >
+          {progress ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+          {label}
+        </button>
+      </Tooltip>
       {error && (
         <p className="text-[11px]" style={{ color: ERROR_COLOR }}>
           {error}
@@ -417,9 +491,17 @@ export function BulkPolishButton({ entries, lang }: { entries: CaptureEntry[]; l
       )}
       <div className="flex items-center justify-between gap-2 text-[10px]" style={{ color: "var(--fg-muted)" }}>
         <span>{de ? "KI-Assistent aktiv · Einzelbeiträge über ✎ bearbeiten" : "AI assistant active · edit single items via ✎"}</span>
-        <button type="button" className="underline hover:no-underline shrink-0" onClick={() => setApiKey("")}>
-          {de ? "Schlüssel entfernen" : "Remove key"}
-        </button>
+        <Tooltip
+          content={
+            de
+              ? "Löscht den Claude-Schlüssel aus diesem Browser. Die KI-Funktionen sind danach aus, alle Beiträge bleiben erhalten."
+              : "Deletes the Claude key from this browser. AI features are then off, all contributions are kept."
+          }
+        >
+          <button type="button" className="underline hover:no-underline shrink-0" onClick={() => setApiKey("")}>
+            {de ? "Schlüssel entfernen" : "Remove key"}
+          </button>
+        </Tooltip>
       </div>
     </div>
   );

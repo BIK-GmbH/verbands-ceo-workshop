@@ -1,0 +1,134 @@
+/* Tooltip bubble + Hint term styles. Dark bubble on the light theme, light bubble on
+ * the dark theme, so the explanation always stands out from the slide surface. */
+
+:root {
+  --tip-bg: #1f2130;
+  --tip-fg: #f4f4f6;
+  --tip-border: rgba(255, 255, 255, 0.08);
+  --tip-shadow: 0 10px 28px -8px rgba(15, 17, 26, 0.45), 0 2px 6px rgba(15, 17, 26, 0.18);
+}
+
+[data-theme="dark"] {
+  --tip-bg: #f1f1f4;
+  --tip-fg: #16171f;
+  --tip-border: rgba(0, 0, 0, 0.1);
+  --tip-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.tip-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  max-width: min(320px, calc(100vw - 16px));
+  padding: 7px 11px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--tip-border);
+  background: var(--tip-bg);
+  color: var(--tip-fg);
+  box-shadow: var(--tip-shadow);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.45;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: manual;
+}
+
+.tip-bubble[data-ready="0"] {
+  visibility: hidden;
+}
+
+.tip-bubble[data-ready="1"] {
+  animation: tip-in-top 150ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.tip-bubble[data-ready="1"][data-place="bottom"] {
+  animation-name: tip-in-bottom;
+}
+
+.tip-arrow {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: var(--tip-bg);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.tip-bubble[data-place="top"] .tip-arrow {
+  bottom: -5px;
+  border-right: 1px solid var(--tip-border);
+  border-bottom: 1px solid var(--tip-border);
+}
+
+.tip-bubble[data-place="bottom"] .tip-arrow {
+  top: -5px;
+  border-left: 1px solid var(--tip-border);
+  border-top: 1px solid var(--tip-border);
+}
+
+@keyframes tip-in-top {
+  from { opacity: 0; transform: translateY(4px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes tip-in-bottom {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Hint: visible term with a dotted accent underline. */
+.hint-term {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--workshop-accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  cursor: help;
+  border-radius: 3px;
+  transition: background-color 150ms ease;
+}
+
+.hint-term:hover,
+.hint-term[data-tip-open="1"] {
+  background: color-mix(in oklch, var(--workshop-accent) 10%, transparent);
+}
+
+.hint-term:focus-visible,
+.hint-icon:focus-visible {
+  outline: 2px solid var(--workshop-accent);
+  outline-offset: 2px;
+}
+
+.hint-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -0.12em;
+  margin-left: 0.2em;
+  color: var(--workshop-accent);
+  cursor: help;
+  border-radius: 999px;
+  opacity: 0.85;
+  transition: opacity 150ms ease;
+}
+
+.hint-icon:hover,
+.hint-icon[data-tip-open="1"] {
+  opacity: 1;
+}
+
+.hint-term .hint-icon {
+  margin-left: 0.15em;
+}
+
+@media print {
+  .tip-bubble { display: none !important; }
+  .hint-term { text-decoration: none; background: none; }
+  .hint-icon { display: none !important; }
+}

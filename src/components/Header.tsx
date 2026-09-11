@@ -1,9 +1,11 @@
 import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Menu, Play, Search, Sun, Moon, ClipboardList } from "lucide-react";
+import { Menu, Play, Search, Sun, Moon, ClipboardList, Settings as SettingsIcon } from "lucide-react";
+import { useApiKey } from "@/lib/ai-assist";
 import type { Lang, Theme } from "@/types/slide";
 import { t } from "@/lib/i18n";
 import { ALL_SLIDES } from "@/lib/slides";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 interface Props {
   lang: Lang;
@@ -46,6 +48,8 @@ export function Header({
 }: Props) {
   const params = useParams<{ slideId: string }>();
   const currentId = params.slideId ?? ALL_SLIDES[0].id;
+  // A dot on the gear signals that AI features are still off on this device.
+  const claudeKey = useApiKey();
   return (
     <header
       data-workshop-header
@@ -112,6 +116,13 @@ export function Header({
       </Link>
 
       <div className="ml-auto flex items-center gap-1.5">
+        <Tooltip
+          content={
+            lang === "de"
+              ? "Live-Protokoll ein- oder ausblenden. Es läuft rechts neben der Folie mit: Notiz zur Folie, eigene Fragen, alle erfassten Beiträge und Export."
+              : "Show or hide the live record. It runs next to the slide: note for this slide, own questions, all captured input and export."
+          }
+        >
         <button
           type="button"
           onClick={onToggleProtocol}
@@ -127,19 +138,25 @@ export function Header({
                 }
               : SOFT
           }
-          title={lang === "de" ? "Live-Protokoll ein-/ausblenden — läuft rechts mit" : "Toggle live record — runs on the right"}
           aria-label={lang === "de" ? "Live-Protokoll" : "Live record"}
         >
           <ClipboardList size={16} {...ICON} />
           <span className="hidden sm:inline">{lang === "de" ? "Protokoll" : "Record"}</span>
         </button>
+        </Tooltip>
 
+        <Tooltip
+          content={
+            lang === "de"
+              ? `Alle Folien nach Stichwort durchsuchen und direkt hinspringen (${IS_MAC ? "⌘K" : "Strg K"}).`
+              : `Search all slides by keyword and jump straight there (${IS_MAC ? "⌘K" : "Ctrl K"}).`
+          }
+        >
         <button
           onClick={onOpenPalette}
           data-command-palette
           className={`inline-flex items-center gap-2 px-2.5 h-9 rounded-md transition-colors text-xs ${SOFT_HOVER}`}
           style={SOFT}
-          title={t("search", lang)}
           aria-label={t("search", lang)}
         >
           <Search size={16} {...ICON} />
@@ -151,6 +168,7 @@ export function Header({
             {IS_MAC ? "⌘K" : lang === "de" ? "Strg K" : "Ctrl K"}
           </kbd>
         </button>
+        </Tooltip>
 
         {/* Desktop / tablet: 2-button DE/EN switch */}
         <div
@@ -160,8 +178,15 @@ export function Header({
           aria-label={t("toggleLang", lang)}
         >
           {(["de", "en"] as Lang[]).map((l) => (
-            <button
+            <Tooltip
               key={l}
+              content={
+                l === "de"
+                  ? "Deutsch: Folien, Sprechernotizen und Oberfläche auf Deutsch"
+                  : "English: slides, speaker notes and interface in English"
+              }
+            >
+            <button
               onClick={() => setLang(l)}
               data-testid={`lang-${l}`}
               aria-pressed={lang === l}
@@ -174,10 +199,12 @@ export function Header({
             >
               {l}
             </button>
+            </Tooltip>
           ))}
         </div>
 
         {/* Mobile: single toggle (DE ↔ EN) */}
+        <Tooltip content={lang === "de" ? "Sprache wechseln: Deutsch ↔ Englisch" : "Switch language: German ↔ English"}>
         <button
           onClick={() => setLang(lang === "de" ? "en" : "de")}
           data-testid="lang-toggle-mobile"
@@ -187,17 +214,49 @@ export function Header({
         >
           {lang}
         </button>
+        </Tooltip>
 
+        <Tooltip
+          content={
+            lang === "de"
+              ? `KI-Einstellungen: API-Schlüssel für Glätten, Ergebnisbericht, Poster und Interview-Transkription, einmal pro Gerät.${claudeKey ? "" : " Der Punkt zeigt: auf diesem Gerät noch nicht eingerichtet."}`
+              : `AI settings: API keys for polishing, results report, posters and interview transcription, once per device.${claudeKey ? "" : " The dot means: not set up on this device yet."}`
+          }
+        >
+        <Link
+          to="/einstellungen"
+          className={`size-9 grid place-items-center rounded-md transition-colors relative ${SOFT_HOVER}`}
+          style={{ ...SOFT, color: "inherit" }}
+          aria-label={lang === "de" ? "KI-Einstellungen" : "AI settings"}
+        >
+          <SettingsIcon size={18} {...ICON} />
+          {!claudeKey && (
+            <span
+              className="absolute -top-0.5 -right-0.5 size-2 rounded-full"
+              style={{ background: "var(--workshop-accent)" }}
+              aria-hidden
+            />
+          )}
+        </Link>
+        </Tooltip>
+
+        <Tooltip
+          content={
+            lang === "de"
+              ? `Zu ${theme === "dark" ? "hellem" : "dunklem"} Design wechseln. Dunkel schont die Augen im abgedunkelten Raum, hell ist am Beamer meist besser lesbar.`
+              : `Switch to ${theme === "dark" ? "light" : "dark"} theme. Dark is easier on the eyes in a dimmed room, light usually reads better on a projector.`
+          }
+        >
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           data-testid="theme-toggle"
           className={`size-9 grid place-items-center rounded-md transition-colors ${SOFT_HOVER}`}
           style={SOFT}
-          title={t("toggleTheme", lang)}
           aria-label={t("toggleTheme", lang)}
         >
           {theme === "dark" ? <Moon size={18} {...ICON} /> : <Sun size={18} {...ICON} />}
         </button>
+        </Tooltip>
 
         {/* Divider — sets the primary action visually apart */}
         <span
@@ -207,12 +266,18 @@ export function Header({
         />
 
         {/* Primary action — far right, prominent */}
+        <Tooltip
+          content={
+            lang === "de"
+              ? "Präsentations-Modus ab dieser Folie: ohne Menüs, Blättern mit Pfeiltasten, N blendet die Sprechernotizen ein, F für Vollbild, Esc beendet."
+              : "Presentation mode from this slide: no menus, arrow keys to navigate, N shows speaker notes, F for fullscreen, Esc exits."
+          }
+        >
         <Link
           to={`/p/${currentId}`}
           data-testid="enter-presentation"
           className="inline-flex items-center gap-2 px-4 h-9 rounded-md transition-all text-sm font-semibold shadow-sm hover:shadow-md hover:brightness-110 active:scale-[0.98]"
           style={{ background: "var(--workshop-accent)", color: "white" }}
-          title={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
           aria-label={lang === "de" ? "Präsentations-Modus" : "Presentation mode"}
         >
           <Play size={16} {...ICON} fill="currentColor" />
@@ -220,6 +285,7 @@ export function Header({
             {lang === "de" ? "Präsentieren" : "Present"}
           </span>
         </Link>
+        </Tooltip>
       </div>
     </header>
   );

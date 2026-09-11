@@ -9,6 +9,7 @@ import { useSwipeNav } from "@/lib/useSwipeNav";
 import { useSlideDirection } from "@/lib/useSlideDirection";
 import { useMotion } from "@/lib/motion";
 import { SlideRenderer } from "@/components/SlideRenderer";
+import { Tooltip } from "@/components/ui/Tooltip";
 import clsx from "clsx";
 
 const ICON = { strokeWidth: 2.25 } as const;
@@ -142,40 +143,55 @@ export function Presentation() {
             backdropFilter: "blur(14px)",
           }}
         >
-          <button
-            onClick={() => setNotesOpen((o) => !o)}
-            className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[420px]:w-9 max-[420px]:px-0 justify-center rounded-md hover:bg-white/10 active:bg-white/20 transition-colors"
-            style={{ background: notesOpen ? "color-mix(in oklch, var(--workshop-accent) 32%, transparent)" : "rgba(255,255,255,0.08)" }}
-            title={`${notesLabel} (N)`}
-            aria-label="Toggle speaker notes"
-            aria-pressed={notesOpen}
+          <Tooltip
+            content={
+              lang === "de"
+                ? "Sprechernotizen ein- oder ausblenden (N): Zeit, Ablauf und Überleitung für die Moderation"
+                : "Show or hide speaker notes (N): timing, flow and transition for the facilitators"
+            }
           >
-            {notesOpen ? <Eye size={16} {...ICON} /> : <EyeOff size={16} {...ICON} />}
-            <span className="max-[420px]:hidden">{notesLabel}</span>
-          </button>
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[560px]:w-9 max-[560px]:px-0 justify-center rounded-md hover:bg-white/10 active:bg-white/20 transition-colors"
-            style={{ background: "rgba(255,255,255,0.08)" }}
-            title={`${themeLabel} (T)`}
-            aria-label="Toggle theme"
+            <button
+              onClick={() => setNotesOpen((o) => !o)}
+              className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[420px]:w-9 max-[420px]:px-0 justify-center rounded-md hover:bg-white/10 active:bg-white/20 transition-colors"
+              style={{ background: notesOpen ? "color-mix(in oklch, var(--workshop-accent) 32%, transparent)" : "rgba(255,255,255,0.08)" }}
+              aria-label="Toggle speaker notes"
+              aria-pressed={notesOpen}
+            >
+              {notesOpen ? <Eye size={16} {...ICON} /> : <EyeOff size={16} {...ICON} />}
+              <span className="max-[420px]:hidden">{notesLabel}</span>
+            </button>
+          </Tooltip>
+          <Tooltip content={lang === "de" ? "Hell/Dunkel umschalten (T)" : "Toggle light/dark (T)"}>
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[560px]:w-9 max-[560px]:px-0 justify-center rounded-md hover:bg-white/10 active:bg-white/20 transition-colors"
+              style={{ background: "rgba(255,255,255,0.08)" }}
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Moon size={18} {...ICON} /> : <Sun size={18} {...ICON} />}
+              <span className="max-[560px]:hidden">{themeLabel}</span>
+            </button>
+          </Tooltip>
+          <Tooltip
+            content={
+              lang === "de"
+                ? "Präsentation beenden (Esc), zurück zur Arbeitsansicht dieser Folie"
+                : "End the presentation (Esc), back to the working view of this slide"
+            }
           >
-            {theme === "dark" ? <Moon size={18} {...ICON} /> : <Sun size={18} {...ICON} />}
-            <span className="max-[560px]:hidden">{themeLabel}</span>
-          </button>
-          <Link
-            to={`/s/${current.id}`}
-            className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[420px]:w-9 max-[420px]:px-0 justify-center rounded-md transition-colors"
-            style={{
-              background: "rgba(255,255,255,0.92)",
-              color: "var(--workshop-accent-deep)",
-            }}
-            title={`${exitLabel} (Esc)`}
-            aria-label="Exit presentation"
-          >
-            <X size={17} {...ICON} />
-            <span className="max-[420px]:hidden">{exitLabel}</span>
-          </Link>
+            <Link
+              to={`/s/${current.id}`}
+              className="inline-flex items-center gap-1.5 h-9 min-w-9 px-2.5 max-[420px]:w-9 max-[420px]:px-0 justify-center rounded-md transition-colors"
+              style={{
+                background: "rgba(255,255,255,0.92)",
+                color: "var(--workshop-accent-deep)",
+              }}
+              aria-label="Exit presentation"
+            >
+              <X size={17} {...ICON} />
+              <span className="max-[420px]:hidden">{exitLabel}</span>
+            </Link>
+          </Tooltip>
         </div>
       </div>
 

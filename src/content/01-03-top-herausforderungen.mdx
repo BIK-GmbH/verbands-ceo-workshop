@@ -10,32 +10,41 @@ researchedOn: 2026-09-11
 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
 <div>
 
-<ExerciseCard duration="10 Min" goal="Jede Person notiert ihre Top 5 Probleme des Verbandes.">
+<ExerciseCard duration="10 Min" title={{ de: "Stillarbeit: Top 5 auf Karten", en: "Silent work: top 5 on cards" }}>
   <I18n
-    de="Stillarbeit. Welche Probleme und Herausforderungen sieht ihr für den FBS in den nächsten 3–5 Jahren? Eine Karte pro Problem, maximal fünf. Nur Probleme, keine Lösungen."
-    en="Quiet work. Which problems and challenges do you see for the FBS in the next 3–5 years? One card per problem, five at most. Only problems, no solutions."
+    de={<>Anknüpfend an die Einzelinterviews schreibt jede Person still ihre Top 5 Herausforderungen für den FBS in den <Hint de="Bewusst mittelfristig: weit genug, um über das Tagesgeschäft hinauszublicken, und nah genug, um konkret zu bleiben." en="Deliberately medium-term: far enough to look beyond day-to-day business and close enough to stay concrete.">nächsten 3–5 Jahren</Hint> auf, eine Herausforderung pro Karte. Nur Probleme, keine Lösungen.</>}
+    en={<>Building on the individual interviews, each person silently writes down their top 5 challenges for the FBS in the <Hint de="Bewusst mittelfristig: weit genug, um über das Tagesgeschäft hinauszublicken, und nah genug, um konkret zu bleiben." en="Deliberately medium-term: far enough to look beyond day-to-day business and close enough to stay concrete.">next 3–5 years</Hint>, one challenge per card. Only problems, no solutions.</>}
   />
 </ExerciseCard>
 
 </div>
 <div>
 
-<ExerciseCard duration="15 Min" goal="Ein vollständiges Bild aller genannten Probleme an der Wand.">
+<ExerciseCard duration="15 Min" title={{ de: "Reihum vorlesen", en: "Read aloud in turn" }}>
   <I18n
-    de="Reihum stellt jede Person ihre Karten kurz vor und hängt sie an die Wand. Erst sammeln, nicht bewerten. Die Karten werden 1:1 hier übertragen."
-    en="In turn, each person briefly presents their cards and puts them on the wall. Collect first, don't evaluate. The cards are transferred here 1:1."
+    de={<>Reihum liest jede Person ihre Karten vor, die Moderation übernimmt sie im <Hint de="Die Moderation startet die Aufnahme, wer vorliest, setzt nach jeder Karte kurz ab. Jede Sprechpause wird eine eigene Karte; falsch Erkanntes lässt sich per Klick auf die Karte korrigieren." en="The facilitators start the recording; whoever reads pauses briefly after each card. Every pause becomes a card of its own; misrecognised text can be corrected by clicking the card.">Karten-Modus</Hint>. Erst sammeln, nicht bewerten, nur <Hint de="Nur nachfragen, wie etwas gemeint ist, nicht, ob es stimmt oder wichtig ist. Bewertet wird erst beim Priorisieren." en="Only ask how something is meant, not whether it is right or important. Evaluation only comes when prioritising.">Verständnisfragen</Hint>. Doppelte Karten dürfen bleiben, sie zeigen Gewicht.</>}
+    en={<>In turn, each person reads their cards aloud and the facilitators take them over in <Hint de="Die Moderation startet die Aufnahme, wer vorliest, setzt nach jeder Karte kurz ab. Jede Sprechpause wird eine eigene Karte; falsch Erkanntes lässt sich per Klick auf die Karte korrigieren." en="The facilitators start the recording; whoever reads pauses briefly after each card. Every pause becomes a card of its own; misrecognised text can be corrected by clicking the card.">card mode</Hint>. Collect first, don't evaluate, only <Hint de="Nur nachfragen, wie etwas gemeint ist, nicht, ob es stimmt oder wichtig ist. Bewertet wird erst beim Priorisieren." en="Only ask how something is meant, not whether it is right or important. Evaluation only comes when prioritising.">questions of understanding</Hint>. Duplicate cards may stay; they show weight.</>}
   />
 </ExerciseCard>
 
 </div>
 </div>
 
+<CardCollector
+  slideId="01.03"
+  field="karten-herausforderungen"
+  prompt="Top-Herausforderungen – vorgelesene Karten"
+  clusterTarget="01.04:problemfelder"
+  clusterPrompt="Unsere 3–5 Problemfelder (Name + wichtigste Beiträge)"
+/>
+
 <WorkshopInput
   slideId="01.03"
   field="herausforderungen-gesammelt"
-  prompt="Alle Karten an der Wand – 1:1 übertragen"
+  prompt="Alle genannten Herausforderungen – 1:1 festgehalten"
   kind="text"
-  rows={8}
+  rows={3}
+  placeholder="Ergänzungen aus der Runde, die nicht auf Karten stehen …"
 />
 
 <WorkshopInput
@@ -48,14 +57,14 @@ researchedOn: 2026-09-11
 
 <NoteCard variant="warning" title="Nur Probleme">
   <I18n
-    de="„Wir brauchen ein neues System“ ist keine Karte für diese Runde. Die Frage ist: Was genau klemmt? Ideen zu KI kommen ins zweite Feld und bleiben dort geparkt."
-    en="“We need a new system” is not a card for this round. The question is: what exactly is stuck? Ideas about AI go into the second field and stay parked there."
+    de="„Wir brauchen ein neues System“ ist keine Herausforderung für diese Runde. Die Frage ist: Was genau klemmt? Ideen zu KI kommen ins letzte Feld und bleiben dort geparkt."
+    en="“We need a new system” is not a challenge for this round. The question is: what exactly is stuck? Ideas about AI go into the last field and stay parked there."
   />
 </NoteCard>
 
 <SpeakerNotes>
   <I18n
-    de="Die Einzelreflexion wirklich still halten, auch wenn es unruhig wird. Beim Sammeln nur Verständnisfragen zulassen, keine Diskussion. Lösungsformulierungen freundlich in Probleme zurückübersetzen: Was wäre das Problem dahinter? Eine Person aus der Moderation überträgt die Karten parallel ins Feld. Überleitung: Clustern und Priorisieren."
-    en="Keep the individual reflection truly quiet, even if it gets restless. During collecting, allow only questions of understanding, no discussion. Kindly translate solution statements back into problems: what would the problem behind it be? One facilitator transfers the cards into the field in parallel. Bridge: clustering and prioritising."
+    de="10 Minuten Stillarbeit, danach 15 Minuten reihum vorlesen. An die Einzelinterviews anknüpfen, ohne sie erneut durchzugehen. Während der Stillarbeit wirklich still, Karten und Stifte bereitlegen. Karten-Modus: Vor dem Vorlesen „Karten vorlesen“ drücken; wer vorliest, liest eine Karte, setzt kurz ab, dann die nächste. Jede Pause wird eine eigene Karte. Falsch Erkanntes per Klick auf die Karte korrigieren, Überflüssiges mit × löschen, fehlende Karten eintippen und mit Enter übernehmen. Beim Vorlesen nur Verständnisfragen zulassen, keine Diskussion. Lösungsformulierungen freundlich in Probleme zurückübersetzen: Was wäre das Problem dahinter? Zum Schluss optional „Karten glätten“ (korrigiert Erkennungsfehler, führt Dubletten zusammen, erst Vorschau) und „Zu Themenfeldern clustern“: Der Vorschlag landet als Startpunkt im Feld Problemfelder auf der nächsten Folie. Überleitung: Bündeln und Priorisieren."
+    en="10 minutes of silent work, then 15 minutes of reading aloud in turn. Build on the individual interviews without going through them again. During silent work really silent; have cards and pens ready. Card mode: before the reading, press “Read cards aloud”; whoever reads reads one card, pauses briefly, then the next. Every pause becomes a card of its own. Correct misrecognised text by clicking the card, delete surplus cards with ×, type missing cards and confirm with Enter. During the reading allow only questions of understanding, no discussion. Kindly translate solution statements back into problems: what would the problem behind it be? Finally, optionally “Polish cards” (fixes recognition errors, merges duplicates, preview first) and “Cluster into topic areas”: the suggestion lands as a starting point in the problem areas field on the next slide. Bridge: clustering and prioritising."
   />
 </SpeakerNotes>

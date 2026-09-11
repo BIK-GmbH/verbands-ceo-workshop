@@ -7,3 +7,8 @@ export { SkillCard } from "./SkillCard";
 export { SpeakerNotes } from "./SpeakerNotes";
 export { YouTubeEmbed } from "./YouTubeEmbed";
 export { WorkshopInput } from "./WorkshopInput";
+export { ParticipantsList } from "./ParticipantsList";
+export { BarometerVotes } from "./BarometerVotes";
+export { WorkshopGlossary } from "./WorkshopGlossary";
+export { CardCollector } from "./CardCollector";
+export { Hint, HintIcon, PrintHint, PrintHintIcon } from "./Hint";

@@ -16,6 +16,8 @@ import {
   Sparkles,
   Loader2,
   Check,
+  Search,
+  FileText,
 } from "lucide-react";
 import type { Lang, SlideMeta } from "@/types/slide";
 import { useAllEntries, useCapture } from "@/lib/useWorkshop";
@@ -33,6 +35,7 @@ import { describeAiError, useApiKey } from "@/lib/ai-assist";
 import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { MANIFEST, findModule } from "@/lib/slides";
 import { BulkPolishButton, EntryEditor, MicButton, isEditableText, polishQuestion } from "@/components/ProtocolAi";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 interface Props {
   open: boolean;
@@ -40,6 +43,26 @@ interface Props {
   lang: Lang;
   current: SlideMeta;
 }
+
+/** Tooltips for the export buttons (shared with the full record page). */
+export const EXPORT_HINTS = {
+  pdf: {
+    de: "Protokoll druckfertig aufbereiten und über den Druckdialog drucken oder als PDF speichern",
+    en: "Prepare the record for printing; print it or save it as PDF from the print dialog",
+  },
+  word: {
+    de: "Protokoll als Word-Datei (.doc) herunterladen, zum Weiterbearbeiten und Versenden",
+    en: "Download the record as a Word file (.doc) for further editing and sending",
+  },
+  markdown: {
+    de: "Reiner Text mit Überschriften, z. B. für ein Wiki oder zur Weiterverarbeitung mit KI",
+    en: "Plain text with headings, e.g. for a wiki or further processing with AI",
+  },
+  json: {
+    de: "Alle Beiträge als strukturierte Daten, z. B. als Sicherung oder zur technischen Weiterverarbeitung",
+    en: "All contributions as structured data, e.g. as a backup or for technical processing",
+  },
+} as const;
 
 /** Ad-hoc questions get the field prefix "q-" so they can be told apart. */
 const isAdhoc = (id: string) => (id.split(":")[1] ?? "").startsWith("q-");
@@ -130,16 +153,24 @@ function AdhocField({
           {error && <p className="text-[11px]" style={{ color: "#dc2626" }}>{error}</p>}
           <div className="flex items-center gap-1.5">
             {apiKey && (
-              <button
-                type="button"
-                onClick={polish}
-                disabled={busy || !draftQ.trim()}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium disabled:opacity-50"
-                style={{ background: "var(--workshop-accent)", color: "white" }}
+              <Tooltip
+                content={
+                  de
+                    ? "KI bringt die Frage in einen klaren Satz, Inhalt unverändert, Füllwörter raus"
+                    : "AI turns the question into one clear sentence, content unchanged, filler words removed"
+                }
               >
-                {busy ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-                {de ? "Glätten" : "Polish"}
-              </button>
+                <button
+                  type="button"
+                  onClick={polish}
+                  disabled={busy || !draftQ.trim()}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-medium disabled:opacity-50"
+                  style={{ background: "var(--workshop-accent)", color: "white" }}
+                >
+                  {busy ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+                  {de ? "Glätten" : "Polish"}
+                </button>
+              </Tooltip>
             )}
             <button
               type="button"
@@ -166,27 +197,31 @@ function AdhocField({
       ) : (
         <div className="flex items-start gap-1 mb-1">
           <span className="text-xs font-medium leading-snug flex-1">{entry.prompt}</span>
-          <button
-            type="button"
-            onClick={() => {
-              setDraftQ(entry.prompt);
-              setEditing(true);
-            }}
-            className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
-            title={de ? "Frage bearbeiten" : "Edit question"}
-            style={{ color: "var(--workshop-accent)" }}
-          >
-            <Pencil size={12} />
-          </button>
-          <button
-            type="button"
-            onClick={onDelete}
-            className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
-            title={de ? "Frage löschen" : "Delete question"}
-            style={{ color: "var(--fg-muted)" }}
-          >
-            <X size={13} />
-          </button>
+          <Tooltip content={de ? "Frage umformulieren, tippen oder einsprechen" : "Reword the question, typed or dictated"}>
+            <button
+              type="button"
+              onClick={() => {
+                setDraftQ(entry.prompt);
+                setEditing(true);
+              }}
+              className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
+              aria-label={de ? "Frage bearbeiten" : "Edit question"}
+              style={{ color: "var(--workshop-accent)" }}
+            >
+              <Pencil size={12} />
+            </button>
+          </Tooltip>
+          <Tooltip content={de ? "Frage samt Antwort aus dem Protokoll löschen" : "Delete the question and its answer from the record"}>
+            <button
+              type="button"
+              onClick={onDelete}
+              className="size-6 grid place-items-center rounded shrink-0 hover:bg-black/5"
+              aria-label={de ? "Frage löschen" : "Delete question"}
+              style={{ color: "var(--fg-muted)" }}
+            >
+              <X size={13} />
+            </button>
+          </Tooltip>
         </div>
       )}
       <div className="relative">
@@ -199,19 +234,27 @@ function AdhocField({
           style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
         />
         {supported && (
-          <button
-            type="button"
-            onClick={toggle}
-            className="absolute top-1.5 right-1.5 size-6 grid place-items-center rounded-md"
-            style={{
-              background: listening ? "var(--workshop-accent)" : "var(--bg-elev)",
-              color: listening ? "white" : "var(--fg-muted)",
-              border: "1px solid var(--border)",
-            }}
-            title={listening ? (de ? "Diktat stoppen" : "Stop dictation") : de ? "Einsprechen" : "Dictate"}
+          <Tooltip
+            content={
+              listening
+                ? de ? "Diktat stoppen" : "Stop dictation"
+                : de ? "Antwort einsprechen, der Text wird angehängt" : "Dictate the answer, the text is appended"
+            }
           >
-            {listening ? <MicOff size={12} /> : <Mic size={12} />}
-          </button>
+            <button
+              type="button"
+              onClick={toggle}
+              className="absolute top-1.5 right-1.5 size-6 grid place-items-center rounded-md"
+              style={{
+                background: listening ? "var(--workshop-accent)" : "var(--bg-elev)",
+                color: listening ? "white" : "var(--fg-muted)",
+                border: "1px solid var(--border)",
+              }}
+              aria-label={listening ? (de ? "Diktat stoppen" : "Stop dictation") : de ? "Einsprechen" : "Dictate"}
+            >
+              {listening ? <MicOff size={12} /> : <Mic size={12} />}
+            </button>
+          </Tooltip>
         )}
       </div>
     </div>
@@ -232,6 +275,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const entries = useAllEntries();
   const [newQ, setNewQ] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   const [note, setNote] = useCapture({
     id: `${current.id}:notiz`,
@@ -314,7 +358,13 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const filled = entries.filter((e) =>
     Array.isArray(e.value) ? e.value.length > 0 : Boolean(e.value && e.value.trim()),
   );
-  const byModule = filled.reduce<Record<number, typeof filled>>((acc, e) => {
+  const needle = query.trim().toLowerCase();
+  const shown = needle
+    ? filled.filter((e) =>
+        `${e.prompt} ${Array.isArray(e.value) ? e.value.join(" ") : e.value}`.toLowerCase().includes(needle),
+      )
+    : filled;
+  const byModule = shown.reduce<Record<number, typeof shown>>((acc, e) => {
     (acc[e.module] ??= []).push(e);
     return acc;
   }, {});
@@ -323,7 +373,28 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const pct = totalModules ? Math.round((modulesWithInput / totalModules) * 100) : 0;
   const stamp = new Date().toISOString().slice(0, 10);
 
-  if (!open) return null;
+  if (!open) {
+    // Closing the drawer keeps the dictation running; show where it writes and offer a stop.
+    if (!noteListening) return null;
+    return (
+      <div
+        className="no-print fixed bottom-[calc(var(--footer-height)+12px)] right-4 z-40 flex items-center gap-2 pl-3 pr-1.5 py-1.5 rounded-full shadow-lg text-xs font-medium"
+        style={{ background: "var(--workshop-accent)", color: "white" }}
+        role="status"
+      >
+        <span className="size-2 rounded-full bg-white animate-pulse" aria-hidden />
+        {de ? `Diktat läuft · Notiz ${current.id}` : `Dictating · note ${current.id}`}
+        <button
+          type="button"
+          onClick={stopNoteDictation}
+          className="ml-1 inline-flex items-center gap-1 px-2 h-6 rounded-full"
+          style={{ background: "rgba(255,255,255,0.22)" }}
+        >
+          <MicOff size={12} /> {de ? "Stopp" : "Stop"}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -355,15 +426,22 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
           >
             {filled.length}
           </span>
-          <button
-            type="button"
-            onClick={onClose}
-            className="ml-auto size-8 grid place-items-center rounded-md transition-colors hover:bg-black/5"
-            title={de ? "Panel schließen" : "Close panel"}
-            aria-label={de ? "Schließen" : "Close"}
+          <Tooltip
+            content={
+              de
+                ? "Panel schließen. Alles bleibt gespeichert, ein laufendes Diktat läuft weiter."
+                : "Close the panel. Everything stays saved, a running dictation continues."
+            }
           >
-            <PanelRightClose size={18} />
-          </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="ml-auto size-8 grid place-items-center rounded-md transition-colors hover:bg-black/5"
+              aria-label={de ? "Schließen" : "Close"}
+            >
+              <PanelRightClose size={18} />
+            </button>
+          </Tooltip>
         </div>
 
         {/* Scrollable body */}
@@ -412,24 +490,29 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                 style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
               />
               {noteDictation.supported && (
-                <button
-                  type="button"
-                  onClick={noteDictation.toggle}
-                  className="absolute top-2 right-2 size-7 grid place-items-center rounded-md transition-colors"
-                  style={{
-                    background: noteDictation.listening ? "var(--workshop-accent)" : "var(--bg-elev)",
-                    color: noteDictation.listening ? "white" : "var(--fg-muted)",
-                    border: "1px solid var(--border)",
-                  }}
-                  title={
+                <Tooltip
+                  content={
                     noteDictation.listening
                       ? de ? "Diktat stoppen" : "Stop dictation"
-                      : de ? "Einsprechen" : "Dictate"
+                      : de
+                        ? "Notiz einsprechen. Beim Folienwechsel schreibt das Diktat automatisch bei der neuen Folie weiter, auch bei geschlossenem Panel."
+                        : "Dictate a note. On a slide change the dictation continues on the new slide automatically, even with the panel closed."
                   }
-                  aria-label={noteDictation.listening ? "Stop dictation" : "Dictate"}
                 >
-                  {noteDictation.listening ? <MicOff size={14} /> : <Mic size={14} />}
-                </button>
+                  <button
+                    type="button"
+                    onClick={noteDictation.toggle}
+                    className="absolute top-2 right-2 size-7 grid place-items-center rounded-md transition-colors"
+                    style={{
+                      background: noteDictation.listening ? "var(--workshop-accent)" : "var(--bg-elev)",
+                      color: noteDictation.listening ? "white" : "var(--fg-muted)",
+                      border: "1px solid var(--border)",
+                    }}
+                    aria-label={noteDictation.listening ? "Stop dictation" : "Dictate"}
+                  >
+                    {noteDictation.listening ? <MicOff size={14} /> : <Mic size={14} />}
+                  </button>
+                </Tooltip>
               )}
             </div>
             <p className="text-[10px] mt-1" style={{ color: "var(--fg-muted)" }}>
@@ -464,15 +547,23 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                 style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)", minHeight: "2.5rem" }}
               />
               <MicButton mic={newQMic} lang={lang} />
-              <button
-                type="button"
-                onClick={addQuestion}
-                className="inline-flex items-center gap-1 px-2.5 rounded-md text-xs font-medium shrink-0"
-                style={{ background: "var(--workshop-accent)", color: "white" }}
-                title={de ? "Frage hinzufügen" : "Add question"}
+              <Tooltip
+                content={
+                  de
+                    ? "Frage oder Aufgabe zu dieser Folie hinzufügen (Enter). Darunter entsteht ein Antwortfeld; mit KI-Assistent wird die Frage automatisch sauber formuliert."
+                    : "Add a question or task for this slide (Enter). An answer field appears below; with the AI assistant the question is phrased cleanly automatically."
+                }
               >
-                <Plus size={14} />
-              </button>
+                <button
+                  type="button"
+                  onClick={addQuestion}
+                  className="inline-flex items-center gap-1 px-2.5 rounded-md text-xs font-medium shrink-0"
+                  style={{ background: "var(--workshop-accent)", color: "white" }}
+                  aria-label={de ? "Frage hinzufügen" : "Add question"}
+                >
+                  <Plus size={14} />
+                </button>
+              </Tooltip>
             </div>
             {(polishingQ || questionError) && (
               <p className="text-[11px] mb-2 flex items-center gap-1" style={{ color: questionError ? "#dc2626" : "var(--fg-muted)" }}>
@@ -500,6 +591,43 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
             {filled.length > 0 && (
               <div className="mb-3">
                 <BulkPolishButton entries={filled} lang={lang} />
+              </div>
+            )}
+            {filled.length > 0 && (
+              <div className="mb-3">
+                <div className="relative">
+                  <Search
+                    size={13}
+                    className="absolute left-2 top-1/2 -translate-y-1/2"
+                    style={{ color: "var(--fg-muted)" }}
+                    aria-hidden
+                  />
+                  <Tooltip
+                    openOnFocus={false}
+                    content={
+                      de
+                        ? "Filtert die erfassten Beiträge nach Stichwort, durchsucht Fragen und Antworten"
+                        : "Filters the captured input by keyword, searches questions and answers"
+                    }
+                  >
+                    <input
+                      type="search"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder={de ? "Im Protokoll suchen…" : "Search the record…"}
+                      className="w-full text-xs rounded-md py-1.5 pl-7 pr-2"
+                      style={{ background: "var(--bg)", border: "1px solid var(--border)", color: "var(--fg)" }}
+                      aria-label={de ? "Im Protokoll suchen" : "Search the record"}
+                    />
+                  </Tooltip>
+                </div>
+                {needle && (
+                  <p className="text-[10px] mt-1" style={{ color: "var(--fg-muted)" }}>
+                    {de
+                      ? `${shown.length} von ${filled.length} Beiträgen`
+                      : `${shown.length} of ${filled.length} items`}
+                  </p>
+                )}
               </div>
             )}
             {filled.length === 0 ? (
@@ -539,7 +667,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                                 />
                               );
                             }
-                            const val = Array.isArray(e.value) ? e.value.join(", ") : e.value;
+                            const val = Array.isArray(e.value) ? e.value.join("\n") : e.value;
                             return (
                               <div
                                 key={e.id}
@@ -553,11 +681,11 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                                     (isCurrent ? "var(--workshop-accent)" : "var(--border)"),
                                 }}
                               >
+                                <Tooltip content={de ? `Zur Folie ${e.slideId} springen` : `Jump to slide ${e.slideId}`}>
                                 <button
                                   type="button"
                                   onClick={() => navigate(`/s/${e.slideId}`)}
                                   className="flex-1 text-left p-2 min-w-0 hover:bg-black/[0.03]"
-                                  title={de ? "Zur Folie springen" : "Jump to slide"}
                                 >
                                   <div className="font-medium mb-0.5 leading-snug">{e.prompt}</div>
                                   <div className="whitespace-pre-wrap" style={{ color: "var(--fg)" }}>
@@ -571,27 +699,43 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                                     {e.raw ? (de ? " · KI-überarbeitet" : " · AI-reworded") : ""} →
                                   </div>
                                 </button>
+                                </Tooltip>
                                 {isEditableText(e) && (
+                                  <Tooltip
+                                    content={
+                                      de
+                                        ? "Bearbeiten: von Hand, per Diktat oder mit KI umformulieren (Glätten, Knapper, Stichpunkte …)"
+                                        : "Edit: by hand, by dictation or reword with AI (polish, shorter, bullet points …)"
+                                    }
+                                  >
+                                    <button
+                                      type="button"
+                                      onClick={() => setEditingId(e.id)}
+                                      className="px-1.5 grid place-items-center shrink-0 hover:bg-black/5"
+                                      aria-label={de ? "Bearbeiten" : "Edit"}
+                                      style={{ color: "var(--workshop-accent)" }}
+                                    >
+                                      <Pencil size={13} />
+                                    </button>
+                                  </Tooltip>
+                                )}
+                                <Tooltip
+                                  content={
+                                    de
+                                      ? "Beitrag löschen. Er verschwindet aus dem Protokoll und aus dem Eingabefeld der Folie."
+                                      : "Delete the contribution. It disappears from the record and from the slide's input field."
+                                  }
+                                >
                                   <button
                                     type="button"
-                                    onClick={() => setEditingId(e.id)}
+                                    onClick={() => removeEntry(e.id)}
                                     className="px-1.5 grid place-items-center shrink-0 hover:bg-black/5"
-                                    title={de ? "Bearbeiten / mit KI umformulieren" : "Edit / reword with AI"}
-                                    aria-label={de ? "Bearbeiten" : "Edit"}
-                                    style={{ color: "var(--workshop-accent)" }}
+                                    aria-label={de ? "Beitrag löschen" : "Delete contribution"}
+                                    style={{ color: "var(--fg-muted)" }}
                                   >
-                                    <Pencil size={13} />
+                                    <X size={13} />
                                   </button>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => removeEntry(e.id)}
-                                  className="px-1.5 grid place-items-center shrink-0 hover:bg-black/5"
-                                  title={de ? "Beitrag löschen" : "Delete contribution"}
-                                  style={{ color: "var(--fg-muted)" }}
-                                >
-                                  <X size={13} />
-                                </button>
+                                </Tooltip>
                               </div>
                             );
                           })}
@@ -610,51 +754,88 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
           style={{ borderColor: "var(--border)" }}
         >
           <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => printProtocolPdf(lang)}
-              className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium"
-              style={{ background: "var(--workshop-accent)", color: "white" }}
-            >
-              <Printer size={14} /> PDF
-            </button>
-            <button
-              type="button"
-              onClick={() => downloadProtocolWord(lang)}
-              className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium"
-              style={{ background: "var(--workshop-accent-deep)", color: "white" }}
-            >
-              <FileType size={14} /> Word
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                downloadFile(`workshop-protokoll-${stamp}.md`, exportMarkdown(), "text/markdown")
-              }
-              className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs"
-              style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
-            >
-              <FileDown size={14} /> Markdown
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                downloadFile(`workshop-protokoll-${stamp}.json`, exportJSON(), "application/json")
-              }
-              className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs"
-              style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
-            >
-              <FileJson size={14} /> JSON
-            </button>
+            <Tooltip content={EXPORT_HINTS.pdf[lang]}>
+              <button
+                type="button"
+                onClick={() => printProtocolPdf(lang)}
+                className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium"
+                style={{ background: "var(--workshop-accent)", color: "white" }}
+              >
+                <Printer size={14} /> PDF
+              </button>
+            </Tooltip>
+            <Tooltip content={EXPORT_HINTS.word[lang]}>
+              <button
+                type="button"
+                onClick={() => downloadProtocolWord(lang)}
+                className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium"
+                style={{ background: "var(--workshop-accent-deep)", color: "white" }}
+              >
+                <FileType size={14} /> Word
+              </button>
+            </Tooltip>
+            <Tooltip content={EXPORT_HINTS.markdown[lang]}>
+              <button
+                type="button"
+                onClick={() =>
+                  downloadFile(`workshop-protokoll-${stamp}.md`, exportMarkdown(), "text/markdown")
+                }
+                className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs"
+                style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
+              >
+                <FileDown size={14} /> Markdown
+              </button>
+            </Tooltip>
+            <Tooltip content={EXPORT_HINTS.json[lang]}>
+              <button
+                type="button"
+                onClick={() =>
+                  downloadFile(`workshop-protokoll-${stamp}.json`, exportJSON(), "application/json")
+                }
+                className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-md text-xs"
+                style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
+              >
+                <FileJson size={14} /> JSON
+              </button>
+            </Tooltip>
           </div>
-          <Link
-            to="/protokoll"
-            className="inline-flex items-center gap-1.5 text-xs hover:underline"
-            style={{ color: "var(--fg-muted)" }}
-          >
-            <ExternalLink size={13} />{" "}
-            {de ? "Vollansicht · Audio · Teilnehmende" : "Full view · audio · participants"}
-          </Link>
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+            <Tooltip
+              content={
+                de
+                  ? "Vollansicht des Protokolls: Datum, Teilnehmende, Audio-Mitschnitt, Ergebnisbericht und alle Beiträge"
+                  : "Full record view: date, participants, audio recording, results report and all contributions"
+              }
+            >
+              <Link
+                to="/protokoll"
+                className="inline-flex items-center gap-1.5 text-xs hover:underline"
+                style={{ color: "var(--fg-muted)" }}
+              >
+                <FileText size={13} />{" "}
+                {de ? "Vollansicht · Audio · Teilnehmende" : "Full view · audio · participants"}
+              </Link>
+            </Tooltip>
+            <Tooltip
+              content={
+                de
+                  ? "Gesamtprotokoll in eigenem Fenster öffnen, z. B. auf dem zweiten Bildschirm. Es aktualisiert sich live mit."
+                  : "Open the full record in its own window, e.g. on a second screen. It updates live."
+              }
+            >
+              <button
+                type="button"
+                onClick={() =>
+                  // Same origin and storage: the second window updates live via storage events.
+                  window.open(`${window.location.pathname}#/protokoll`, "fbs-protokoll", "width=960,height=1000")
+                }
+                className="inline-flex items-center gap-1.5 text-xs hover:underline"
+                style={{ color: "var(--workshop-accent)" }}
+              >
+                <ExternalLink size={13} /> {de ? "In eigenem Fenster" : "Own window"}
+              </button>
+            </Tooltip>
+          </div>
         </div>
       </aside>
     </>

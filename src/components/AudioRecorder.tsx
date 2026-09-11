@@ -112,8 +112,8 @@ export function AudioRecorder() {
             <AlertTriangle size={15} className="shrink-0 mt-0.5" />
             <span>
               {lang === "de"
-                ? "Die Aufnahme bleibt vollständig lokal im Browser (kein Upload). Sie dient als Gedächtnisstütze und wird nachträglich mit dem audio-Skill ausgewertet. Aufnahme nur mit Einverständnis aller Anwesenden."
-                : "The recording stays entirely local in the browser (no upload). It serves as a memory aid and is processed afterwards with the audio skill. Record only with the consent of everyone present."}
+                ? "Die Aufnahme bleibt vollständig lokal im Browser (kein Upload). Sie dient als Gedächtnisstütze für das Protokoll und kann nach dem Workshop heruntergeladen werden. Aufnahme nur mit Einverständnis aller Anwesenden."
+                : "The recording stays entirely local in the browser (no upload). It serves as a memory aid for the record and can be downloaded after the workshop. Record only with the consent of everyone present."}
             </span>
           </div>
           <button

@@ -7,7 +7,7 @@ researchedOn: 2026-09-11
 
 # <I18n de="Wer macht was & Ressourcen" en="Who does what & resources" />
 
-<h3 style={{ marginTop: "0.25rem" }}><I18n de="Wer macht was? RACI, einfach erklärt" en="Who does what? RACI, simply explained" /></h3>
+<h3 style={{ marginTop: "0.25rem" }}><I18n de="Wer macht was? RACI, einfach erklärt" en="Who does what? RACI, simply explained" /> <HintIcon de="RACI macht Zuständigkeiten je Aufgabe eindeutig. Entscheidend ist, dass genau eine Person entscheidet (A), damit nichts zwischen den Stühlen liegen bleibt." en="RACI makes responsibilities per task unambiguous. The key point is that exactly one person decides (A), so nothing falls between the cracks." /></h3>
 
 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "0.75rem", margin: "0.5rem 0 1rem" }}>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
@@ -17,13 +17,13 @@ researchedOn: 2026-09-11
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>C</div>
-    <strong><I18n de="Unterstützt" en="Consulted" /></strong>
+    <strong><I18n de={<Hint de="Personen, deren Rat vor der Entscheidung eingeholt wird, z. B. Datenschutzbeauftragte oder einzelne Mitgliedsfirmen. Sie bringen Wissen ein, tragen aber nicht die Verantwortung." en="People whose advice is sought before the decision, e.g. the data protection officer or individual member companies. They contribute knowledge but do not carry the responsibility.">Unterstützt</Hint>} en={<Hint de="Personen, deren Rat vor der Entscheidung eingeholt wird, z. B. Datenschutzbeauftragte oder einzelne Mitgliedsfirmen. Sie bringen Wissen ein, tragen aber nicht die Verantwortung." en="People whose advice is sought before the decision, e.g. the data protection officer or individual member companies. They contribute knowledge but do not carry the responsibility.">Consulted</Hint>} /></strong>
     <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="bringt Wissen ein, wird vorher gefragt" en="contributes knowledge, is asked beforehand" /></p>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>A</div>
     <strong><I18n de="Entscheidet" en="Accountable" /></strong>
-    <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de="gibt frei und trägt die Verantwortung, genau eine Person" en="approves and carries the responsibility, exactly one person" /></p>
+    <p style={{ fontSize: "0.82rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}><I18n de={<>gibt frei und trägt die Verantwortung, <Hint de="Teilen sich mehrere die Entscheidung, fühlt sich im Zweifel niemand zuständig. Eine Person gibt frei und kann andere dabei einbinden." en="If several people share the decision, in case of doubt nobody feels responsible. One person approves and can involve others.">genau eine Person</Hint></>} en={<>approves and carries the responsibility, <Hint de="Teilen sich mehrere die Entscheidung, fühlt sich im Zweifel niemand zuständig. Eine Person gibt frei und kann andere dabei einbinden." en="If several people share the decision, in case of doubt nobody feels responsible. One person approves and can involve others.">exactly one person</Hint></>} /></p>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.8rem", color: "var(--workshop-accent)", fontWeight: 700 }}>I</div>
@@ -46,7 +46,7 @@ researchedOn: 2026-09-11
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.8rem", letterSpacing: "0.08em", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="RISIKEN & ABHÄNGIGKEITEN" en="RISKS & DEPENDENCIES" /></div>
     <ul style={{ fontSize: "0.85rem", margin: "0.4rem 0 0", paddingLeft: "1.1rem" }}>
-      <li><I18n de="Was muss vorher passieren, z. B. Beschluss, Datenschutzklärung, Daten aufbereiten?" en="What has to happen first, e.g. a resolution, data protection clarification, preparing data?" /></li>
+      <li><I18n de={<>Was muss vorher passieren, z. B. Beschluss, <Hint de="Vorab klären, welche Daten verarbeitet werden dürfen, etwa Mitgliederdaten, und welche Verträge mit externen Dienstleistern nötig sind. Das braucht Vorlauf." en="Clarify in advance which data may be processed, such as member data, and which contracts with external service providers are needed. This takes lead time.">Datenschutzklärung</Hint>, Daten aufbereiten?</>} en={<>What has to happen first, e.g. a resolution, <Hint de="Vorab klären, welche Daten verarbeitet werden dürfen, etwa Mitgliederdaten, und welche Verträge mit externen Dienstleistern nötig sind. Das braucht Vorlauf." en="Clarify in advance which data may be processed, such as member data, and which contracts with external service providers are needed. This takes lead time.">data protection clarification</Hint>, preparing data?</>} /></li>
       <li><I18n de="Wer oder was kann bremsen?" en="Who or what could slow things down?" /></li>
       <li><I18n de="Welche Risiken aus dem Realitätscheck gelten weiter?" en="Which risks from the reality check still apply?" /></li>
     </ul>
@@ -55,8 +55,8 @@ researchedOn: 2026-09-11
 
 <ExerciseCard duration="20 Min" goal="Jeder Meilenstein hat eine verantwortliche Person, der Ressourcenbedarf und die kritischen Abhängigkeiten sind benannt.">
   <I18n
-    de="10 Min Verantwortlichkeiten: Namen an die Meilensteine auf dem Zeitstrahl kleben. 5 Min Ressourcen: Kurzabfrage im Plenum. 5 Min Risiken & Abhängigkeiten: Was muss zuerst geklärt sein?"
-    en="10 min responsibilities: stick names onto the milestones on the timeline. 5 min resources: quick poll in the plenary. 5 min risks & dependencies: what has to be clarified first?"
+    de="10 Min Verantwortlichkeiten: im Plenum jedem Meilenstein auf dem gemeinsamen Zeitstrahl einen Namen zuordnen. 5 Min Ressourcen: Kurzabfrage im Plenum. 5 Min Risiken & Abhängigkeiten: Was muss zuerst geklärt sein?"
+    en="10 min responsibilities: in plenary, assign a name to each milestone on the shared timeline. 5 min resources: quick poll in the plenary. 5 min risks & dependencies: what has to be clarified first?"
   />
 </ExerciseCard>
 

@@ -14,13 +14,27 @@ import {
   SpeakerNotes,
   YouTubeEmbed,
   WorkshopInput,
+  ParticipantsList,
+  BarometerVotes,
+  CardCollector,
+  WorkshopGlossary,
+  PrintHint, PrintHintIcon,
 } from "@/components/slide-blocks";
 import { AudioRecorder } from "@/components/AudioRecorder";
-import type { ComponentType } from "react";
+import { ModuleArt } from "@/components/art/ModuleArt";
+import { isPhaseOverview } from "@/components/art/module-art";
+import type { ComponentProps, ComponentType } from "react";
+
+// Print shows the participant list as a plain table, never as input fields.
+const PrintParticipantsList = () => <ParticipantsList readOnly />;
+const PrintBarometerVotes = (props: ComponentProps<typeof BarometerVotes>) => <BarometerVotes {...props} readOnly />;
 
 const printMdxComponents = {
   I18n, Lang, De, En, CommandBox, DemoBox, ExerciseCard, NoteCard, SkillCard, SpeakerNotes, YouTubeEmbed,
-  WorkshopInput, AudioRecorder,
+  Hint: PrintHint, HintIcon: PrintHintIcon,
+  WorkshopInput, AudioRecorder, ParticipantsList: PrintParticipantsList, BarometerVotes: PrintBarometerVotes,
+  CardCollector: (props: ComponentProps<typeof CardCollector>) => <CardCollector {...props} readOnly />,
+  WorkshopGlossary: () => <WorkshopGlossary readOnly />,
 } as Record<string, ComponentType<unknown>>;
 
 /** Linear print view — all slides, no chrome, used by browser print + Playwright PDF export. */
@@ -39,6 +53,7 @@ export function Print() {
               {s.id} · {t("module", lang)} {s.module === 99 ? "Anh" : s.module}
               {s.researchedOn && ` · ${t("researchedOn", lang)}: ${formatAsOf(s.researchedOn, lang)}`}
             </div>
+            {isPhaseOverview(s.module, s.slide) && <ModuleArt module={s.module} />}
             {Component ? (
               <MDXProvider components={printMdxComponents}>
                 <Component />

@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import type { Lang, SlideMeta } from "@/types/slide";
 import { neighbours } from "@/lib/slides";
-import { t, formatAsOf } from "@/lib/i18n";
+import { t, pick, formatAsOf } from "@/lib/i18n";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 interface Props {
   lang: Lang;
@@ -31,14 +32,15 @@ export function Footer({ lang, current }: Props) {
       {/* Centre group: prev — counter — next */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         {prev ? (
-          <Link
-            to={`/s/${prev.id}`}
-            className="size-9 grid place-items-center rounded-md hover:bg-black/5 active:bg-black/10 transition-colors"
-            title={`${t("prevSlide", lang)} (${prev.id})`}
-            aria-label={t("prevSlide", lang)}
-          >
-            <ChevronLeft size={18} {...ICON} />
-          </Link>
+          <Tooltip content={`${t("prevSlide", lang)} · ${prev.id} ${pick(prev.title, lang)} (←)`}>
+            <Link
+              to={`/s/${prev.id}`}
+              className="size-9 grid place-items-center rounded-md hover:bg-black/5 active:bg-black/10 transition-colors"
+              aria-label={t("prevSlide", lang)}
+            >
+              <ChevronLeft size={18} {...ICON} />
+            </Link>
+          </Tooltip>
         ) : (
           <span className="size-9 grid place-items-center opacity-30">
             <ChevronLeft size={18} {...ICON} />
@@ -53,14 +55,15 @@ export function Footer({ lang, current }: Props) {
         </div>
 
         {next ? (
-          <Link
-            to={`/s/${next.id}`}
-            className="size-9 grid place-items-center rounded-md hover:bg-black/5 active:bg-black/10 transition-colors"
-            title={`${t("nextSlide", lang)} (${next.id})`}
-            aria-label={t("nextSlide", lang)}
-          >
-            <ChevronRight size={18} {...ICON} />
-          </Link>
+          <Tooltip content={`${t("nextSlide", lang)} · ${next.id} ${pick(next.title, lang)} (→)`}>
+            <Link
+              to={`/s/${next.id}`}
+              className="size-9 grid place-items-center rounded-md hover:bg-black/5 active:bg-black/10 transition-colors"
+              aria-label={t("nextSlide", lang)}
+            >
+              <ChevronRight size={18} {...ICON} />
+            </Link>
+          </Tooltip>
         ) : (
           <span className="size-9 grid place-items-center opacity-30">
             <ChevronRight size={18} {...ICON} />
@@ -75,15 +78,23 @@ export function Footer({ lang, current }: Props) {
             {t("researchedOn", lang)}: {formatAsOf(current.researchedOn, lang)}
           </span>
         )}
-        <Link
-          to="/print"
-          className="inline-flex items-center gap-1.5 px-2.5 h-9 rounded-md hover:bg-black/5 active:bg-black/10 transition-colors"
-          title={t("print", lang)}
-          aria-label={t("print", lang)}
+        <Tooltip
+          side="top"
+          content={
+            lang === "de"
+              ? "Druckansicht: alle Folien untereinander, ohne Eingabefelder und Sprechernotizen. Über den Browser drucken oder als PDF speichern."
+              : "Print view: all slides one after another, without input fields and speaker notes. Print from the browser or save as PDF."
+          }
         >
-          <Printer size={16} {...ICON} />
-          <span className="hidden sm:inline">{t("print", lang)}</span>
-        </Link>
+          <Link
+            to="/print"
+            className="inline-flex items-center gap-1.5 px-2.5 h-9 rounded-md hover:bg-black/5 active:bg-black/10 transition-colors"
+            aria-label={t("print", lang)}
+          >
+            <Printer size={16} {...ICON} />
+            <span className="hidden sm:inline">{t("print", lang)}</span>
+          </Link>
+        </Tooltip>
       </div>
     </footer>
   );

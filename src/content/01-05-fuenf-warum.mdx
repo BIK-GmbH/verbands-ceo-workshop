@@ -7,20 +7,36 @@ researchedOn: 2026-09-11
 
 # <I18n de="5× Warum: die Problem-Treppe" en="5 whys: the problem staircase" />
 
-<ExerciseCard duration="25 Min" goal="Die eigentliche Ursache hinter dem priorisierten Problemfeld verstehen, nicht nur das Symptom.">
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+<div>
+
+<ExerciseCard duration="10 Min" title={{ de: "Zweiergruppen: eigene Treppe", en: "Pairs: your own staircase" }}>
   <I18n
-    de="Zweiergruppen, 10 Min: Ausgehend vom priorisierten Problemfeld fünfmal „Warum?“ fragen, jede Antwort ist die nächste Stufe. Plenum, 15 Min: Die Paare stellen ihre Treppen vor, wir bauen daraus eine gemeinsame Ursachen-Treppe."
-    en="Pairs, 10 min: starting from the prioritised problem area, ask “why?” five times; each answer is the next step. Plenary, 15 min: the pairs present their staircases and we build one shared cause staircase from them."
+    de={<>Je zwei Personen fragen ausgehend vom priorisierten Problemfeld <Hint de="Fünf ist ein Richtwert. Manchmal ist die Ursache nach drei Stufen erreicht, manchmal braucht es mehr. Entscheidend ist, dass jede Antwort eine Ebene tiefer führt." en="Five is a guideline. Sometimes the cause is reached after three steps, sometimes it takes more. What matters is that each answer leads one level deeper.">fünfmal „Warum?“</Hint>. Jede Antwort ist die nächste Stufe. Notiert eure Treppe in Stichworten.</>}
+    en={<>In pairs, starting from the prioritised problem area, ask <Hint de="Fünf ist ein Richtwert. Manchmal ist die Ursache nach drei Stufen erreicht, manchmal braucht es mehr. Entscheidend ist, dass jede Antwort eine Ebene tiefer führt." en="Five is a guideline. Sometimes the cause is reached after three steps, sometimes it takes more. What matters is that each answer leads one level deeper.">“why?” five times</Hint>. Each answer is the next step. Note down your staircase in keywords.</>}
   />
 </ExerciseCard>
 
+</div>
+<div>
+
+<ExerciseCard duration="15 Min" title={{ de: "Plenum: eine gemeinsame Treppe", en: "Plenary: one shared staircase" }}>
+  <I18n
+    de={<>Die Paare stellen ihre Treppen Stufe für Stufe vor, die Moderation diktiert sie in die Warum-Felder. Dann führen wir sie im Plenum zu einer <Hint de="Verschiedene Treppen führen oft zu verwandten Ursachen. Wir suchen die Formulierung, in der sich alle wiederfinden." en="Different staircases often lead to related causes. We look for the wording everyone recognises themselves in.">gemeinsamen Ursache</Hint> zusammen.</>}
+    en={<>The pairs present their staircases step by step and the facilitators dictate them into the why fields. Then we merge them in plenary into one <Hint de="Verschiedene Treppen führen oft zu verwandten Ursachen. Wir suchen die Formulierung, in der sich alle wiederfinden." en="Different staircases often lead to related causes. We look for the wording everyone recognises themselves in.">shared cause</Hint>.</>}
+  />
+</ExerciseCard>
+
+</div>
+</div>
+
 <div style={{ display: "flex", alignItems: "flex-end", gap: "0.4rem", margin: "1.25rem 0", overflowX: "auto" }}>
-  <div style={{ flex: "1 1 0", minWidth: "110px", height: "3.5rem", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong><I18n de="Symptom" en="Symptom" /></strong></div>
+  <div style={{ flex: "1 1 0", minWidth: "110px", height: "3.5rem", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong><Hint de="Das, was spürbar ist, z. B. „Aufgaben bleiben liegen“. Das Symptom ist der Ausgangspunkt der Treppe, nicht ihr Ziel." en="What can be felt, e.g. “tasks are left undone”. The symptom is the starting point of the staircase, not its goal."><I18n de="Symptom" en="Symptom" /></Hint></strong></div>
   <div style={{ flex: "1 1 0", minWidth: "110px", height: "5rem", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong><I18n de="Warum? 1" en="Why? 1" /></strong></div>
   <div style={{ flex: "1 1 0", minWidth: "110px", height: "6.5rem", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong><I18n de="Warum? 2" en="Why? 2" /></strong></div>
   <div style={{ flex: "1 1 0", minWidth: "110px", height: "8rem", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong><I18n de="Warum? 3" en="Why? 3" /></strong></div>
   <div style={{ flex: "1 1 0", minWidth: "110px", height: "9.5rem", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong><I18n de="Warum? 4" en="Why? 4" /></strong></div>
-  <div style={{ flex: "1 1 0", minWidth: "110px", height: "11rem", border: "2px solid var(--workshop-accent)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong style={{ color: "var(--workshop-accent)" }}><I18n de="Warum? 5 → Ursache" en="Why? 5 → Cause" /></strong></div>
+  <div style={{ flex: "1 1 0", minWidth: "110px", height: "11rem", border: "2px solid var(--workshop-accent)", borderRadius: "8px", padding: "0.5rem", background: "var(--bg-elev)", fontSize: "0.8rem" }}><strong style={{ color: "var(--workshop-accent)" }}><Hint de="Die Struktur, die das Problem erzeugt, etwa wie Wissen, Aufgaben oder Entscheidungen organisiert sind, nicht eine einzelne Person." en="The structure that creates the problem, such as how knowledge, tasks or decisions are organised, not an individual person."><I18n de="Warum? 5 → Ursache" en="Why? 5 → Cause" /></Hint></strong></div>
 </div>
 
 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0 1rem" }}>
@@ -42,7 +58,7 @@ researchedOn: 2026-09-11
 
 <SpeakerNotes>
   <I18n
-    de="Paare möglichst gemischt bilden (Vorstand und Geschäftsstelle, lang und kurz im Verband). Nach 10 Min ins Plenum holen. Die Treppe an der Wand von unten nach oben aufbauen, Stufen aus mehreren Paaren zusammenführen. Aufpassen, dass niemand bei der Antwort „zu wenig Geld“ oder „zu wenig Leute“ stehen bleibt: Warum ist das so? Die Treppe endet nicht bei einer Person, sondern bei einer Struktur. Überleitung: jetzt verdichten wir auf einen Satz."
-    en="Form pairs as mixed as possible (board and office, long-standing and newer in the association). Bring everyone back to plenary after 10 min. Build the staircase on the wall from bottom to top, merging steps from several pairs. Make sure nobody stops at “too little money” or “too few people”: why is that so? The staircase ends not with a person but with a structure. Bridge: now we condense into one sentence."
+    de="25 Minuten: 10 Minuten Zweiergruppen, 15 Minuten Plenum. Paare bewusst mischen (Vorstand und Geschäftsstelle, lang und kurz im Verband). Im Plenum stellt jedes Paar seine Treppe Stufe für Stufe vor; die Moderation drückt im jeweiligen Warum-Feld das Mikrofon und diktiert die Antwort, jedes Paar mit einem kurzen Kürzel davor. Gleiche Antworten nicht doppelt aufnehmen. Abweichende Antworten nebeneinander stehen lassen und dann zusammenführen. Aufpassen, dass niemand bei der Antwort „zu wenig Geld“ oder „zu wenig Leute“ stehen bleibt: Warum ist das so? Die Treppe endet nicht bei einer Person, sondern bei einer Struktur. Die gemeinsame Ursache ins letzte Feld. Überleitung: jetzt verdichten wir auf einen Satz."
+    en="25 minutes: 10 minutes in pairs, 15 minutes in plenary. Mix the pairs deliberately (board and office, long-standing and newer in the association). In plenary each pair presents its staircase step by step; the facilitator presses the microphone in the respective why field and dictates the answer, with a short tag for each pair. Don't record identical answers twice. Let differing answers stand side by side and then merge them. Make sure nobody stops at “too little money” or “too few people”: why is that so? The staircase ends not with a person but with a structure. The shared cause goes into the last field. Bridge: now we condense into one sentence."
   />
 </SpeakerNotes>

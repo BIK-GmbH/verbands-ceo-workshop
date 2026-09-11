@@ -9,19 +9,19 @@ researchedOn: 2026-09-11
 
 <p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "0.75rem" }}>
   <I18n
-    de="Rundgang an der Wand: Sechs Poster zeigen den Weg der zwei Tage. Was fällt auf, wo ist der rote Faden?"
-    en="Walk along the wall: six posters show the path of the two days. What stands out, where is the common thread?"
+    de="Rundgang durch die Poster: Sechs Poster zeigen den Weg der zwei Tage. Was fällt auf, wo ist der rote Faden?"
+    en="Walk through the posters: six posters show the path of the two days. What stands out, where is the common thread?"
   />
 </p>
 
 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.6rem", margin: "0.5rem 0 1rem" }}>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.7rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.75rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="PHASE 1" en="PHASE 1" /></div>
-    <strong style={{ fontSize: "0.9rem" }}><I18n de="Need to Move" en="Need to move" /></strong>
+    <strong style={{ fontSize: "0.9rem" }}><I18n de={<Hint de="Das gemeinsam bestätigte Kernproblem in einem Satz: warum sich der Verband verändern muss, mit der Ursache statt dem Symptom." en="The jointly confirmed core problem in one sentence: why the association has to change, with the root cause rather than the symptom.">Need to Move</Hint>} en={<Hint de="Das gemeinsam bestätigte Kernproblem in einem Satz: warum sich der Verband verändern muss, mit der Ursache statt dem Symptom." en="The jointly confirmed core problem in one sentence: why the association has to change, with the root cause rather than the symptom.">Need to move</Hint>} /></strong>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.7rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.75rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="PHASE 2" en="PHASE 2" /></div>
-    <strong style={{ fontSize: "0.9rem" }}><I18n de="Möglichkeitsraum & Stoßrichtungen" en="Possibilities & directions" /></strong>
+    <strong style={{ fontSize: "0.9rem" }}><I18n de={<>Möglichkeitsraum & <Hint de="3–5 Richtungen mit dem größten Hebel, in die sich der KI-Geschäftsführer entwickeln soll. Sie waren der Ausgangspunkt für das Zielbild." en="3–5 directions with the biggest lever in which the AI managing director should develop. They were the starting point for the target picture.">Stoßrichtungen</Hint></>} en={<>Possibilities & <Hint de="3–5 Richtungen mit dem größten Hebel, in die sich der KI-Geschäftsführer entwickeln soll. Sie waren der Ausgangspunkt für das Zielbild." en="3–5 directions with the biggest lever in which the AI managing director should develop. They were the starting point for the target picture.">directions</Hint></>} /></strong>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.7rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.75rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="PHASE 3" en="PHASE 3" /></div>
@@ -29,11 +29,11 @@ researchedOn: 2026-09-11
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.7rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.75rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="PHASE 4" en="PHASE 4" /></div>
-    <strong style={{ fontSize: "0.9rem" }}><I18n de="Diesmal anders, weil … (GO · ADAPT · STOP)" en="This time different, because … (GO · ADAPT · STOP)" /></strong>
+    <strong style={{ fontSize: "0.9rem" }}><I18n de={<>Diesmal anders, weil … (<Hint de="Entscheidung je Baustein des Zielbilds: GO wird umgesetzt, ADAPT nur mit Anpassungen, STOP fällt heraus." en="Decision per building block of the target picture: GO is implemented, ADAPT only with adjustments, STOP is dropped.">GO · ADAPT · STOP</Hint>)</>} en={<>This time different, because … (<Hint de="Entscheidung je Baustein des Zielbilds: GO wird umgesetzt, ADAPT nur mit Anpassungen, STOP fällt heraus." en="Decision per building block of the target picture: GO is implemented, ADAPT only with adjustments, STOP is dropped.">GO · ADAPT · STOP</Hint>)</>} /></strong>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.7rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.75rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="PHASE 5" en="PHASE 5" /></div>
-    <strong style={{ fontSize: "0.9rem" }}><I18n de="Business Case" en="Business case" /></strong>
+    <strong style={{ fontSize: "0.9rem" }}><I18n de={<Hint de="Nutzen, Kosten, die Arbeitshypothese zum Break-even, der strategische Mehrwert sowie Einwände und Antworten: die Argumentation gegenüber Entscheidern." en="Benefits, costs, the break-even working hypothesis, the strategic added value, and objections and answers: the line of argument towards decision-makers.">Business Case</Hint>} en={<Hint de="Nutzen, Kosten, die Arbeitshypothese zum Break-even, der strategische Mehrwert sowie Einwände und Antworten: die Argumentation gegenüber Entscheidern." en="Benefits, costs, the break-even working hypothesis, the strategic added value, and objections and answers: the line of argument towards decision-makers.">Business case</Hint>} /></strong>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.7rem", background: "var(--bg-elev)" }}>
     <div style={{ fontSize: "0.75rem", color: "var(--workshop-accent)", fontWeight: 700 }}><I18n de="PHASE 6" en="PHASE 6" /></div>
@@ -42,21 +42,33 @@ researchedOn: 2026-09-11
 </div>
 
 <De>
-**Das Protokoll:** Alle Beiträge der zwei Tage laufen im Live-Protokoll zusammen, oben rechts bzw. auf der Seite „Protokoll“. Jeder Eintrag lässt sich per ✎ bearbeiten und per KI sprachlich glätten. Export als PDF, Word oder Markdown. Protokoll und Poster-Fotos sind zusammen die Ergebnisdokumentation.
+
+[Zur Poster-Galerie](#/poster)
+
+</De>
+
+<En>
+
+[Go to the poster gallery](#/poster)
+
+</En>
+
+<De>
+**Das Protokoll:** Alle Beiträge der zwei Tage laufen im Live-Protokoll zusammen, oben rechts bzw. auf der Seite „Protokoll“. Jeder Eintrag lässt sich per ✎ bearbeiten und per KI <Hint de="Diktierte Beiträge werden in klare Sätze gebracht, ohne den Inhalt zu verändern. Die ursprüngliche Fassung bleibt erhalten und lässt sich wiederherstellen." en="Dictated contributions are turned into clear sentences without changing the content. The original version is kept and can be restored.">sprachlich glätten</Hint>. Export als PDF, Word oder Markdown. Protokoll und Poster sind zusammen die Ergebnisdokumentation.
 
 [Zum Protokoll](#/protokoll)
 </De>
 
 <En>
-**The record:** all contributions from the two days come together in the live record, top right or on the “Record” page. Every entry can be edited via ✎ and smoothed linguistically by AI. Export as PDF, Word or Markdown. The record and the poster photos together are the documentation of results.
+**The record:** all contributions from the two days come together in the live record, top right or on the “Record” page. Every entry can be edited via ✎ and <Hint de="Diktierte Beiträge werden in klare Sätze gebracht, ohne den Inhalt zu verändern. Die ursprüngliche Fassung bleibt erhalten und lässt sich wiederherstellen." en="Dictated contributions are turned into clear sentences without changing the content. The original version is kept and can be restored.">smoothed linguistically by AI</Hint>. Export as PDF, Word or Markdown. The record and the posters together are the documentation of results.
 
 [Go to the record](#/protokoll)
 </En>
 
 <NoteCard variant="hint" title="Optional: Demo">
   <I18n
-    de="Optional: aus dem Protokoll automatisch ein Ergebnisdokument erzeugen – so kann das aussehen (eine von mehreren Möglichkeiten, keine Empfehlung)."
-    en="Optional: automatically generate a results document from the record – what it can look like (one of several options, not a recommendation)."
+    de="Optional: aus dem Protokoll automatisch ein Ergebnisdokument erzeugen – so kann das aussehen."
+    en="Optional: automatically generate a results document from the record – what it can look like."
   />
   <span style={{ display: "block", marginTop: "0.4rem" }}>
     <I18n de="Beispiel: " en="Example: " />
@@ -66,7 +78,7 @@ researchedOn: 2026-09-11
 
 <SpeakerNotes>
   <I18n
-    de="Harald: ca. 10 Minuten. Rundgang zügig, an jedem Poster ein Satz: Was haben wir hier festgehalten? Gruppe fragen, ob der rote Faden vom Kernproblem bis zur Roadmap trägt. Dann kurz das Protokoll öffnen, damit alle sehen, dass ihre Beiträge da sind. Die Demo nur zeigen, wenn Zeit bleibt und die Gruppe es möchte, und ausdrücklich als eine von mehreren Möglichkeiten rahmen. Überleitung: Was passiert ab morgen?"
-    en="Harald: about 10 minutes. Walk through briskly, one sentence at each poster: what did we record here? Ask the group whether the common thread holds from the core problem to the roadmap. Then briefly open the record so everyone sees their contributions are there. Only show the demo if there is time and the group wants it, and explicitly frame it as one of several options. Bridge: what happens from tomorrow?"
+    de="Harald: ca. 10 Minuten. Rundgang zügig, an jedem Poster ein Satz: Was haben wir hier festgehalten? Gruppe fragen, ob der rote Faden vom Kernproblem bis zur Roadmap trägt. Dann kurz das Protokoll öffnen, damit alle sehen, dass ihre Beiträge da sind. Die Demo nur zeigen, wenn Zeit bleibt und die Gruppe es möchte. Überleitung: Was passiert ab morgen?"
+    en="Harald: about 10 minutes. Walk through briskly, one sentence at each poster: what did we record here? Ask the group whether the common thread holds from the core problem to the roadmap. Then briefly open the record so everyone sees their contributions are there. Only show the demo if there is time and the group wants it. Bridge: what happens from tomorrow?"
   />
 </SpeakerNotes>

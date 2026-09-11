@@ -8,12 +8,16 @@ researchedOn: 2026-09-11
 # <I18n de="Profil des KI-Geschäftsführers" en="Profile of the AI managing director" />
 
 <ExerciseCard duration="20 Min" title={{ de: "Steckbrief erarbeiten", en: "Work out the profile" }}>
-  <I18n de="Drei Gruppen: Rolle & Fähigkeiten · Nutzen · Zusammenspiel & Leitprinzipien. Danach im Plenum zusammenführen und gemeinsam die ersten Use Cases festhalten." en="Three groups: role & capabilities · benefit · interplay & guiding principles. Then bring it together in the plenary and capture the first use cases jointly." />
+  <I18n
+    de={<>Drei Gruppen: Rolle & Fähigkeiten · Nutzen · Zusammenspiel & <Hint de="Warum: der Zweck, dem der KI-Geschäftsführer dient. Wofür: die Aufgaben und Ergebnisse, an denen wir ihn messen. Wie: die Regeln, nach denen er arbeitet, etwa „KI bereitet vor, Mensch entscheidet“." en="Why: the purpose the AI managing director serves. What for: the tasks and results we measure it by. How: the rules it works by, for example “AI prepares, humans decide”.">Leitprinzipien</Hint>. Danach im Plenum zusammenführen und gemeinsam die ersten <Hint de="Ein Use Case ist ein konkreter Anwendungsfall mit Auslöser, Ergebnis und Nutzer, z. B. „Mitgliederanfrage zur Beschlusslage wird mit Quellenangabe beantwortet“. Je konkreter, desto besser prüfbar." en="A use case is a concrete application with trigger, result and user, e.g. “a member enquiry on the resolution status is answered with a source”. The more concrete, the easier to test.">Use Cases</Hint> festhalten.</>}
+    en={<>Three groups: role & capabilities · benefit · interplay & <Hint de="Warum: der Zweck, dem der KI-Geschäftsführer dient. Wofür: die Aufgaben und Ergebnisse, an denen wir ihn messen. Wie: die Regeln, nach denen er arbeitet, etwa „KI bereitet vor, Mensch entscheidet“." en="Why: the purpose the AI managing director serves. What for: the tasks and results we measure it by. How: the rules it works by, for example “AI prepares, humans decide”.">guiding principles</Hint>. Then bring it together in the plenary and capture the first <Hint de="Ein Use Case ist ein konkreter Anwendungsfall mit Auslöser, Ergebnis und Nutzer, z. B. „Mitgliederanfrage zur Beschlusslage wird mit Quellenangabe beantwortet“. Je konkreter, desto besser prüfbar." en="A use case is a concrete application with trigger, result and user, e.g. “a member enquiry on the resolution status is answered with a source”. The more concrete, the easier to test.">use cases</Hint> jointly.</>}
+  />
 </ExerciseCard>
 
 <div style={{ border: "2px solid var(--workshop-accent)", borderRadius: "12px", padding: "0.75rem 1.1rem 0.25rem", background: "var(--bg-elev)" }}>
   <div style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--workshop-accent)", fontWeight: 700 }}>
     <I18n de="Steckbrief · Unser KI-Geschäftsführer" en="Profile · Our AI managing director" />
+    <HintIcon de="Der Steckbrief ist die Grundlage für das Zielbild-Poster auf der nächsten Folie. Dort verdichten wir ihn auf drei, vier Zeilen." en="The profile is the basis for the target picture poster on the next slide, where we condense it to three or four lines." />
   </div>
 
   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0 1rem" }}>

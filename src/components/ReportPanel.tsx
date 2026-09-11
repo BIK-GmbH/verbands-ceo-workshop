@@ -7,6 +7,7 @@ import { markdownToHtml } from "@/lib/markdown";
 import { downloadReportMarkdown, downloadReportWord, printReportPdf } from "@/lib/protocol-export";
 import { clearReport, generateReport, isReportStale, reportEntries, updateReportMarkdown, useReport } from "@/lib/report";
 import { AiKeySetup } from "@/components/ProtocolAi";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 const ERROR_COLOR = "#dc2626";
 
@@ -150,16 +151,24 @@ export function ReportPanel({ entries, lang }: { entries: CaptureEntry[]; lang: 
             />
           </label>
           <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={generate}
-              disabled={busy || count === 0}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium disabled:opacity-60"
-              style={{ background: "var(--workshop-accent)", color: "white" }}
+            <Tooltip
+              content={
+                de
+                  ? "Claude verdichtet alle Beiträge zu einem gegliederten Bericht. Die Hinweise oben steuern Zielgruppe, Umfang und Schwerpunkt. Ein erneuter Lauf ersetzt den bisherigen Bericht."
+                  : "Claude condenses all contributions into a structured report. The notes above steer audience, length and focus. Running it again replaces the current report."
+              }
             >
-              {busy ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-              {generateLabel}
-            </button>
+              <button
+                type="button"
+                onClick={generate}
+                disabled={busy || count === 0}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium disabled:opacity-60"
+                style={{ background: "var(--workshop-accent)", color: "white" }}
+              >
+                {busy ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+                {generateLabel}
+              </button>
+            </Tooltip>
             <span className="text-xs" style={{ color: "var(--fg-muted)" }} aria-live="polite">
               {busy
                 ? de
@@ -210,32 +219,52 @@ export function ReportPanel({ entries, lang }: { entries: CaptureEntry[]; lang: 
       {report && (
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => setEditing((v) => !v)}
-              className={btn}
-              style={editing ? { background: "var(--workshop-accent-deep)", color: "white" } : outline}
-              aria-pressed={editing}
+            <Tooltip
+              content={
+                editing
+                  ? de ? "Zurück zur formatierten Ansicht" : "Back to the formatted view"
+                  : de
+                    ? "Bericht als Markdown direkt bearbeiten. Änderungen werden sofort gespeichert und gehen in alle Exporte ein."
+                    : "Edit the report directly as Markdown. Changes are saved immediately and go into all exports."
+              }
             >
-              {editing ? <Eye size={13} /> : <Pencil size={13} />}
-              {editing ? (de ? "Ansicht" : "View") : de ? "Bearbeiten" : "Edit"}
-            </button>
-            <button type="button" onClick={() => printReportPdf(lang, report.markdown, info)} className={btn} style={{ background: "var(--workshop-accent)", color: "white" }}>
-              <Printer size={13} /> {de ? "Als PDF" : "As PDF"}
-            </button>
-            <button type="button" onClick={() => downloadReportWord(lang, report.markdown, info)} className={btn} style={{ background: "var(--workshop-accent-deep)", color: "white" }}>
-              <FileType size={13} /> {de ? "Als Word" : "As Word"}
-            </button>
-            <button type="button" onClick={() => downloadReportMarkdown(lang, report.markdown, info)} className={btn} style={outline}>
-              <FileDown size={13} /> {de ? "Markdown herunterladen" : "Download Markdown"}
-            </button>
-            <button type="button" onClick={copy} className={btn} style={outline}>
-              {copied ? <Check size={13} /> : <Copy size={13} />}
-              {copied ? (de ? "Kopiert" : "Copied") : de ? "Kopieren" : "Copy"}
-            </button>
-            <button type="button" onClick={discard} className={`${btn} ml-auto`} style={{ border: "1px solid var(--border)", color: ERROR_COLOR }}>
-              <Trash2 size={13} /> {de ? "Verwerfen" : "Discard"}
-            </button>
+              <button
+                type="button"
+                onClick={() => setEditing((v) => !v)}
+                className={btn}
+                style={editing ? { background: "var(--workshop-accent-deep)", color: "white" } : outline}
+                aria-pressed={editing}
+              >
+                {editing ? <Eye size={13} /> : <Pencil size={13} />}
+                {editing ? (de ? "Ansicht" : "View") : de ? "Bearbeiten" : "Edit"}
+              </button>
+            </Tooltip>
+            <Tooltip content={de ? "Bericht druckfertig öffnen, drucken oder als PDF speichern" : "Open the report print-ready; print or save as PDF"}>
+              <button type="button" onClick={() => printReportPdf(lang, report.markdown, info)} className={btn} style={{ background: "var(--workshop-accent)", color: "white" }}>
+                <Printer size={13} /> {de ? "Als PDF" : "As PDF"}
+              </button>
+            </Tooltip>
+            <Tooltip content={de ? "Bericht als Word-Datei (.doc) zum Weiterbearbeiten herunterladen" : "Download the report as a Word file (.doc) for further editing"}>
+              <button type="button" onClick={() => downloadReportWord(lang, report.markdown, info)} className={btn} style={{ background: "var(--workshop-accent-deep)", color: "white" }}>
+                <FileType size={13} /> {de ? "Als Word" : "As Word"}
+              </button>
+            </Tooltip>
+            <Tooltip content={de ? "Reiner Text mit Überschriften, z. B. für ein Wiki oder eine E-Mail" : "Plain text with headings, e.g. for a wiki or an e-mail"}>
+              <button type="button" onClick={() => downloadReportMarkdown(lang, report.markdown, info)} className={btn} style={outline}>
+                <FileDown size={13} /> {de ? "Markdown herunterladen" : "Download Markdown"}
+              </button>
+            </Tooltip>
+            <Tooltip content={de ? "Berichtstext (Markdown) in die Zwischenablage kopieren" : "Copy the report text (Markdown) to the clipboard"}>
+              <button type="button" onClick={copy} className={btn} style={outline}>
+                {copied ? <Check size={13} /> : <Copy size={13} />}
+                {copied ? (de ? "Kopiert" : "Copied") : de ? "Kopieren" : "Copy"}
+              </button>
+            </Tooltip>
+            <Tooltip content={de ? "Bericht löschen (mit Rückfrage). Die Beiträge im Protokoll bleiben unberührt." : "Delete the report (asks first). The contributions in the record stay untouched."}>
+              <button type="button" onClick={discard} className={`${btn} ml-auto`} style={{ border: "1px solid var(--border)", color: ERROR_COLOR }}>
+                <Trash2 size={13} /> {de ? "Verwerfen" : "Discard"}
+              </button>
+            </Tooltip>
           </div>
 
           <div className="text-[11px]" style={{ color: "var(--fg-muted)" }}>

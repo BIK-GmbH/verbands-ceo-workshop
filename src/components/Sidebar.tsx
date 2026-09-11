@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import clsx from "clsx";
 import { ChevronDown, ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
-import { MANIFEST } from "@/lib/slides";
+import { MANIFEST, ALL_SLIDES } from "@/lib/slides";
 import { pick, t } from "@/lib/i18n";
 import type { Lang } from "@/types/slide";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 const ICON = { strokeWidth: 2.25 } as const;
 const DRAWER_EXIT_MS = 220;
@@ -79,14 +80,17 @@ export function Sidebar({
         className="hidden md:flex border-r flex-col items-center py-3"
         style={{ borderColor: "var(--border)", background: "var(--bg-elev)", width: 48 }}
       >
-        <button
-          onClick={onToggleCollapse}
-          className="size-8 grid place-items-center rounded-md hover:bg-black/5 transition-colors"
-          aria-label="Expand sidebar"
-          title="Expand sidebar"
+        <Tooltip
+          content={lang === "de" ? "Folienübersicht wieder ausklappen" : "Expand the slide overview again"}
         >
-          <Menu size={18} {...ICON} />
-        </button>
+          <button
+            onClick={onToggleCollapse}
+            className="size-8 grid place-items-center rounded-md hover:bg-black/5 transition-colors"
+            aria-label="Expand sidebar"
+          >
+            <Menu size={18} {...ICON} />
+          </button>
+        </Tooltip>
       </aside>
     );
   }
@@ -105,14 +109,21 @@ export function Sidebar({
         </span>
         <div className="flex items-center gap-1">
           {/* Desktop collapse */}
-          <button
-            onClick={onToggleCollapse}
-            className="hidden md:grid size-7 place-items-center rounded-md hover:bg-black/5 transition-colors"
-            title="Collapse sidebar"
-            aria-label="Collapse sidebar"
+          <Tooltip
+            content={
+              lang === "de"
+                ? "Folienübersicht einklappen: mehr Platz für die Folie, z. B. am Beamer"
+                : "Collapse the slide overview: more room for the slide, e.g. on a projector"
+            }
           >
-            <ChevronLeft size={16} {...ICON} />
-          </button>
+            <button
+              onClick={onToggleCollapse}
+              className="hidden md:grid size-7 place-items-center rounded-md hover:bg-black/5 transition-colors"
+              aria-label="Collapse sidebar"
+            >
+              <ChevronLeft size={16} {...ICON} />
+            </button>
+          </Tooltip>
           {/* Mobile close */}
           <button
             onClick={onMobileClose}
@@ -176,7 +187,7 @@ export function Sidebar({
                             onClick={onMobileClose}
                             tabIndex={isOpen ? 0 : -1}
                             className={clsx(
-                              "block py-2 text-sm rounded px-2 -mx-2",
+                              "flex items-baseline gap-2 py-2 text-sm rounded px-2 -mx-2",
                               slideActive
                                 ? "font-semibold"
                                 : "hover:bg-black/5 active:bg-black/10",
@@ -188,7 +199,15 @@ export function Sidebar({
                             }
                             aria-current={slideActive ? "page" : undefined}
                           >
-                            {pick(s.title, lang)}
+                            {/* Running number, same as the "8 / 54" counter in the footer. */}
+                            <span
+                              className="font-mono text-[10px] tabular-nums w-5 shrink-0 text-right"
+                              style={{ color: "var(--fg-muted)" }}
+                              aria-hidden
+                            >
+                              {ALL_SLIDES.findIndex((x) => x.id === s.id) + 1}
+                            </span>
+                            <span className="min-w-0">{pick(s.title, lang)}</span>
                           </Link>
                         </li>
                       );

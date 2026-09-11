@@ -13,8 +13,16 @@ import {
   SpeakerNotes,
   YouTubeEmbed,
   WorkshopInput,
+  ParticipantsList,
+  BarometerVotes,
+  CardCollector,
+  WorkshopGlossary,
+  Hint, HintIcon,
 } from "./slide-blocks";
 import { AudioRecorder } from "./AudioRecorder";
+import { SlideBackdrop } from "./art/SlideBackdrop";
+import { ModuleArt } from "./art/ModuleArt";
+import { isPhaseOverview } from "./art/module-art";
 import { getSlideComponent, findSlide } from "@/lib/slides";
 import type { Lang as L } from "@/types/slide";
 import { pick, t, formatAsOf } from "@/lib/i18n";
@@ -36,8 +44,13 @@ const mdxComponents = {
   SpeakerNotes,
   YouTubeEmbed,
   WorkshopInput,
+  ParticipantsList,
+  BarometerVotes,
+  CardCollector,
+  WorkshopGlossary,
   AudioRecorder,
-  h1: (props: ChildrenProps) => (
+  Hint, HintIcon,
+  h1:(props: ChildrenProps) => (
     <h1
       className="text-4xl font-semibold leading-tight mb-6"
       style={{ color: "var(--workshop-accent)" }}
@@ -122,7 +135,12 @@ export function SlideRenderer({ slideId, lang }: Props) {
     );
   }
 
+  const phaseOverview = isPhaseOverview(meta.module, meta.slide);
+  const isCover = meta.module === 0 && meta.slide === 1;
+
   return (
+    <div className="slide-canvas">
+    <SlideBackdrop module={meta.module} watermark={!phaseOverview && !isCover} />
     <article className="slide-page max-w-4xl mx-auto px-12 py-16">
       <div className="text-xs font-mono mb-3" style={{ color: "var(--fg-muted)" }}>
         {meta.id} · {t("module", lang)} {meta.module === 99 ? "Anh" : meta.module}
@@ -130,6 +148,7 @@ export function SlideRenderer({ slideId, lang }: Props) {
           <span className="ml-3 opacity-70">· {t("researchedOn", lang)}: {formatAsOf(meta.researchedOn, lang)}</span>
         )}
       </div>
+      {phaseOverview && <ModuleArt module={meta.module} />}
       <MDXProvider components={mdxComponents}>
         <Component />
       </MDXProvider>
@@ -149,5 +168,6 @@ export function SlideRenderer({ slideId, lang }: Props) {
         </footer>
       )}
     </article>
+    </div>
   );
 }

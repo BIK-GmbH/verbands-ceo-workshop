@@ -5,6 +5,9 @@ import { Print } from "@/routes/Print";
 import { Presentation } from "@/routes/Presentation";
 import { Protocol } from "@/routes/Protocol";
 import { Landing } from "@/routes/Landing";
+import { Interviews } from "@/routes/Interviews";
+import { Poster } from "@/routes/Poster";
+import { Settings } from "@/routes/Settings";
 import { LangProvider } from "@/lib/i18n";
 import { ThemeProvider } from "@/lib/theme";
 import { MotionProvider } from "@/lib/motion";
@@ -25,6 +28,10 @@ export function App() {
                 <Route path="/p/:slideId" element={<Presentation />} />
                 <Route path="/print" element={<Print />} />
                 <Route path="/protokoll" element={<Protocol />} />
+                <Route path="/interviews" element={<Interviews />} />
+                <Route path="/einstellungen" element={<Settings />} />
+                <Route path="/poster" element={<Poster />} />
+                <Route path="/poster/:phase" element={<Poster />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </HashRouter>

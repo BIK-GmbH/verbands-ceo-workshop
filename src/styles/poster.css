@@ -1,0 +1,82 @@
+/* Poster generator (/poster). The sheet is always light, whatever the app theme.
+ * The page size (@page) is injected by Poster.tsx because it depends on the chosen format. */
+
+.poster-sheet {
+  background: #ffffff;
+  color: #181A27;
+  font-family: var(--font-sans);
+  box-shadow: 0 10px 40px rgb(0 0 0 / 0.18);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.poster-sheet *,
+.poster-sheet *::before,
+.poster-sheet *::after {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Handwriting lines for empty fields — the poster doubles as an analogue template. */
+.poster-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--line-gap, 52px) - 2px),
+    var(--line-color, #c9cbd2) calc(var(--line-gap, 52px) - 2px),
+    var(--line-color, #c9cbd2) var(--line-gap, 52px)
+  );
+}
+
+.poster-edit-area {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  font: inherit;
+  line-height: 1.3;
+  color: #181A27;
+  background: #fffbe6;
+  border: 2px dashed #CD184B;
+  border-radius: 8px;
+  padding: 6px 8px;
+  outline: none;
+}
+
+@media print {
+  html,
+  body,
+  #root {
+    height: auto !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  #splash,
+  .poster-chrome {
+    display: none !important;
+  }
+
+  .poster-page,
+  .poster-stage {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* Exactly one page: the sheet is zoomed to the page box computed in Poster.tsx. */
+  .poster-sheet {
+    zoom: var(--poster-print-zoom, 1) !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    overflow: hidden !important;
+  }
+}

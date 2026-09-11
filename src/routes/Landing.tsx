@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarDays, ClipboardList, Play, Users, Layers, LogOut } from "lucide-react";
+import { ArrowRight, CalendarDays, ClipboardList, Play, Users, Layers, LogOut, Settings } from "lucide-react";
 import type { Lang } from "@/types/slide";
 import { useLang } from "@/lib/i18n";
 import { logout } from "@/components/LoginGate";
 import { MANIFEST, ALL_SLIDES } from "@/lib/slides";
 import "@/styles/landing.css";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 const BASE = import.meta.env.BASE_URL;
 const FIRST = ALL_SLIDES[0].id;
@@ -25,6 +26,11 @@ const COPY = {
     start: "Workshop starten",
     present: "Präsentieren",
     protocol: "Protokoll",
+    startHint: "Folienansicht mit Seitenleiste, Eingabefeldern und Live-Protokoll, zum Arbeiten am Laptop",
+    presentHint: "Vollbild-Präsentation für den Beamer: ohne Menüs, Pfeiltasten blättern, N zeigt die Sprechernotizen",
+    protocolHint: "Alle erfassten Beiträge, Audio-Mitschnitt, Teilnehmende, Ergebnisbericht und Exporte",
+    settingsHint: "API-Schlüssel für die KI-Funktionen, einmal pro Gerät",
+    logoutHint: "Zugang auf diesem Gerät beenden. Eingaben und Protokoll bleiben im Browser gespeichert.",
     facts: [
       { icon: CalendarDays, label: "Termin", value: "16. und 17. September 2026" },
       { icon: Layers, label: "Format", value: "Zweitages-Workshop, interaktiv" },
@@ -63,6 +69,11 @@ const COPY = {
     start: "Start workshop",
     present: "Present",
     protocol: "Record",
+    startHint: "Slide view with sidebar, input fields and live record, for working on a laptop",
+    presentHint: "Fullscreen presentation for the projector: no menus, arrow keys to navigate, N shows speaker notes",
+    protocolHint: "All captured contributions, audio recording, participants, results report and exports",
+    settingsHint: "API keys for the AI features, once per device",
+    logoutHint: "End access on this device. Input and record stay stored in the browser.",
     facts: [
       { icon: CalendarDays, label: "Date", value: "16–17 September 2026" },
       { icon: Layers, label: "Format", value: "Two-day workshop, interactive" },
@@ -199,30 +210,36 @@ export function Landing() {
             </p>
 
             <div className="landing-rise landing-d4 mt-8 flex flex-wrap gap-3">
-              <Link
-                to={`/s/${FIRST}`}
-                className="inline-flex items-center gap-2 px-5 h-12 rounded-lg font-semibold shadow-lg transition-all hover:brightness-110 active:scale-[0.98]"
-                style={{ background: RED, color: "white" }}
-              >
-                {c.start}
-                <ArrowRight size={18} strokeWidth={2.5} />
-              </Link>
-              <Link
-                to={`/p/${FIRST}`}
-                className="inline-flex items-center gap-2 px-5 h-12 rounded-lg font-semibold transition-colors hover:bg-white/15"
-                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.3)", color: "white" }}
-              >
-                <Play size={16} strokeWidth={2.25} fill="currentColor" />
-                {c.present}
-              </Link>
-              <Link
-                to="/protokoll"
-                className="inline-flex items-center gap-2 px-5 h-12 rounded-lg font-semibold transition-colors hover:bg-white/15"
-                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.3)", color: "white" }}
-              >
-                <ClipboardList size={16} strokeWidth={2.25} />
-                {c.protocol}
-              </Link>
+              <Tooltip content={c.startHint}>
+                <Link
+                  to={`/s/${FIRST}`}
+                  className="inline-flex items-center gap-2 px-5 h-12 rounded-lg font-semibold shadow-lg transition-all hover:brightness-110 active:scale-[0.98]"
+                  style={{ background: RED, color: "white" }}
+                >
+                  {c.start}
+                  <ArrowRight size={18} strokeWidth={2.5} />
+                </Link>
+              </Tooltip>
+              <Tooltip content={c.presentHint}>
+                <Link
+                  to={`/p/${FIRST}`}
+                  className="inline-flex items-center gap-2 px-5 h-12 rounded-lg font-semibold transition-colors hover:bg-white/15"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.3)", color: "white" }}
+                >
+                  <Play size={16} strokeWidth={2.25} fill="currentColor" />
+                  {c.present}
+                </Link>
+              </Tooltip>
+              <Tooltip content={c.protocolHint}>
+                <Link
+                  to="/protokoll"
+                  className="inline-flex items-center gap-2 px-5 h-12 rounded-lg font-semibold transition-colors hover:bg-white/15"
+                  style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.3)", color: "white" }}
+                >
+                  <ClipboardList size={16} strokeWidth={2.25} />
+                  {c.protocol}
+                </Link>
+              </Tooltip>
             </div>
 
             <dl className="landing-rise landing-d5 mt-10 grid gap-3 sm:grid-cols-3">
@@ -333,6 +350,14 @@ export function Landing() {
                       className="group flex items-center gap-3 rounded-lg px-4 py-3 transition-colors hover:bg-white/10"
                       style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "white" }}
                     >
+                      <img
+                        src={`${BASE}brand/modules/m${m.index}-thumb.webp`}
+                        alt=""
+                        aria-hidden
+                        loading="lazy"
+                        className="size-11 shrink-0 rounded-md object-cover transition-transform group-hover:scale-105"
+                        style={{ mixBlendMode: "screen" }}
+                      />
                       <span
                         className="font-mono text-sm w-7 shrink-0"
                         style={{ color: m.index <= DAY1_LAST_MODULE ? RED_LIGHT : "rgba(255,255,255,0.7)" }}
@@ -360,15 +385,27 @@ export function Landing() {
         <span>Fachverband Betonbohren und -sägen Deutschland e. V. · Darmstadt</span>
         <span className="flex flex-wrap items-center gap-4">
           Innovationswerkstatt & Digital Management School × BIK GmbH · 2026
-          <button
-            type="button"
-            onClick={logout}
-            className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-colors hover:bg-white/10 hover:text-white"
-            style={{ border: "1px solid rgba(255,255,255,0.18)" }}
-          >
-            <LogOut size={13} strokeWidth={2.25} />
-            {lang === "de" ? "Abmelden" : "Sign out"}
-          </button>
+          <Tooltip content={c.settingsHint}>
+            <Link
+              to="/einstellungen"
+              className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-colors hover:bg-white/10 hover:text-white"
+              style={{ border: "1px solid rgba(255,255,255,0.18)", color: "inherit" }}
+            >
+              <Settings size={13} strokeWidth={2.25} />
+              {lang === "de" ? "KI-Einstellungen" : "AI settings"}
+            </Link>
+          </Tooltip>
+          <Tooltip content={c.logoutHint}>
+            <button
+              type="button"
+              onClick={logout}
+              className="inline-flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-colors hover:bg-white/10 hover:text-white"
+              style={{ border: "1px solid rgba(255,255,255,0.18)" }}
+            >
+              <LogOut size={13} strokeWidth={2.25} />
+              {lang === "de" ? "Abmelden" : "Sign out"}
+            </button>
+          </Tooltip>
         </span>
       </footer>
     </div>

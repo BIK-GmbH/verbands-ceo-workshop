@@ -16,7 +16,7 @@ export const MANIFEST: ModuleMeta[] = [
       { id: "00.01", module: 0, slide: 1, title: { de: "KI-Geschäftsführer: Fiktion oder Realität?", en: "AI managing director: fiction or reality?" } },
       { id: "00.02", module: 0, slide: 2, title: { de: "Willkommen", en: "Welcome" } },
       { id: "00.03", module: 0, slide: 3, title: { de: "Warum wir hier sind", en: "Why we are here" } },
-      { id: "00.04", module: 0, slide: 4, title: { de: "Rollen & Interessen offengelegt", en: "Roles & interests disclosed" } },
+      { id: "00.04", module: 0, slide: 4, title: { de: "Vorstellungsrunde", en: "Round of introductions" } },
       { id: "00.05", module: 0, slide: 5, title: { de: "Die Leitfrage & unser Weg", en: "The key question & our path" } },
       { id: "00.06", module: 0, slide: 6, title: { de: "Agenda der zwei Tage", en: "Agenda of the two days" } },
       { id: "00.07", module: 0, slide: 7, title: { de: "So arbeiten wir: Poster, Protokoll, KI-Werkzeuge", en: "How we work: posters, record, AI tools" } },

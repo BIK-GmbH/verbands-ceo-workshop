@@ -8,7 +8,10 @@ researchedOn: 2026-09-11
 # <I18n de="Fragen & Möglichkeiten sammeln" en="Collect questions & possibilities" />
 
 <ExerciseCard duration="20 Min" title={{ de: "Fragen an Stefan", en: "Questions for Stefan" }}>
-  <I18n de="Offene Fragerunde im Plenum. Leitfragen: Kann die KI das? Wo sind die Grenzen? Was bräuchte es dafür bei uns? Jede Frage ist erlaubt, auch die skeptische." en="Open Q&A in the plenary. Guiding questions: can AI do this? Where are the limits? What would it take for us? Every question is allowed, including the sceptical one." />
+  <I18n
+    de={<>Offene Fragerunde im Plenum. <Hint de="Die drei Leitfragen führen von der Machbarkeit über die Grenzen zu den Voraussetzungen im FBS: Daten, Zuständigkeiten, Budget, Akzeptanz." en="The three guiding questions lead from feasibility via limits to the prerequisites at the FBS: data, responsibilities, budget, acceptance.">Leitfragen</Hint>: Kann die KI das? Wo sind die Grenzen? Was bräuchte es dafür bei uns? Jede Frage ist erlaubt, <Hint de="Skeptische Fragen zeigen früh, wo das Zielbild tragen muss. Nach den Erfahrungen mit früheren Digitalisierungsprojekten sind sie ausdrücklich erwünscht." en="Sceptical questions show early where the target picture has to hold. Given the experience with earlier digitalisation projects, they are explicitly welcome.">auch die skeptische</Hint>.</>}
+    en={<>Open Q&A in the plenary. <Hint de="Die drei Leitfragen führen von der Machbarkeit über die Grenzen zu den Voraussetzungen im FBS: Daten, Zuständigkeiten, Budget, Akzeptanz." en="The three guiding questions lead from feasibility via limits to the prerequisites at the FBS: data, responsibilities, budget, acceptance.">Guiding questions</Hint>: can AI do this? Where are the limits? What would it take for us? Every question is allowed, <Hint de="Skeptische Fragen zeigen früh, wo das Zielbild tragen muss. Nach den Erfahrungen mit früheren Digitalisierungsprojekten sind sie ausdrücklich erwünscht." en="Sceptical questions show early where the target picture has to hold. Given the experience with earlier digitalisation projects, they are explicitly welcome.">including the sceptical one</Hint>.</>}
+  />
 </ExerciseCard>
 
 <WorkshopInput
@@ -29,21 +32,30 @@ researchedOn: 2026-09-11
 />
 
 <ExerciseCard duration="15 Min" title={{ de: "Möglichkeiten sammeln", en: "Collect possibilities" }}>
-  <I18n de="Jede und jeder schreibt Möglichkeiten auf Karten: Was könnte ein KI-Geschäftsführer für unser Kernproblem tun? Eine Idee pro Karte, dann an die Wand. Noch keine Bewertung, auch ungewöhnliche Ideen zählen." en="Everyone writes possibilities on cards: what could an AI managing director do about our core problem? One idea per card, then onto the wall. No evaluation yet; unusual ideas count too." />
+  <I18n
+    de={<><Hint de="Jede Person denkt zuerst allein. So kommen auch leisere Stimmen zum Zug, und die ersten Wortmeldungen prägen nicht gleich die ganze Runde." en="Everyone thinks alone first. That way quieter voices get heard too, and the first contributions do not shape the whole group straight away.">Stillarbeit</Hint> (5 Min): Was könnte ein KI-Geschäftsführer für unser Kernproblem tun? Jede Person schreibt ihre Ideen auf Karten, eine Idee pro Karte. Dann reihum vorlesen (10 Min), die Moderation übernimmt die Karten im <Hint de="Beim Vorlesen wird jede Idee per Diktat zu einer eigenen digitalen Karte. Die Karten landen direkt im Protokoll und lassen sich danach korrigieren, glätten und bündeln." en="While reading aloud, each idea becomes its own digital card by dictation. The cards go straight into the record and can then be corrected, polished and grouped.">Karten-Modus</Hint>. <Hint de="Bewertung würde das Sammeln bremsen. Sortiert und gewichtet wird erst im nächsten Schritt, wenn wir die Stoßrichtungen bündeln." en="Evaluating would slow down collecting. Sorting and weighting only happen in the next step, when we group the directions.">Noch keine Bewertung</Hint>, auch ungewöhnliche Ideen zählen.</>}
+    en={<><Hint de="Jede Person denkt zuerst allein. So kommen auch leisere Stimmen zum Zug, und die ersten Wortmeldungen prägen nicht gleich die ganze Runde." en="Everyone thinks alone first. That way quieter voices get heard too, and the first contributions do not shape the whole group straight away.">Silent work</Hint> (5 min): what could an AI managing director do about our core problem? Each person writes their ideas on cards, one idea per card. Then read them aloud in turn (10 min); the facilitators take the cards over in <Hint de="Beim Vorlesen wird jede Idee per Diktat zu einer eigenen digitalen Karte. Die Karten landen direkt im Protokoll und lassen sich danach korrigieren, glätten und bündeln." en="While reading aloud, each idea becomes its own digital card by dictation. The cards go straight into the record and can then be corrected, polished and grouped.">card mode</Hint>. <Hint de="Bewertung würde das Sammeln bremsen. Sortiert und gewichtet wird erst im nächsten Schritt, wenn wir die Stoßrichtungen bündeln." en="Evaluating would slow down collecting. Sorting and weighting only happen in the next step, when we group the directions.">No evaluation yet</Hint>; unusual ideas count too.</>}
+  />
 </ExerciseCard>
+
+<CardCollector
+  slideId="02.07"
+  field="karten-moeglichkeiten"
+  prompt="Möglichkeiten – vorgelesene Karten"
+/>
 
 <WorkshopInput
   slideId="02.07"
   field="moeglichkeiten"
   prompt="Gesammelte Möglichkeiten (noch ohne Bewertung)"
   kind="text"
-  rows={8}
-  placeholder="Eine Möglichkeit pro Zeile …"
+  rows={3}
+  placeholder="Ergänzungen aus der Diskussion, die nicht auf Karten stehen …"
 />
 
 <SpeakerNotes>
   <I18n
-    de="Harald moderiert, Stefan antwortet (20 Min). Fragen sichtbar mitschreiben, Antworten in Kernpunkten festhalten. Wenn eine Frage auf Anbieter oder Preise zielt: auf Phase 4 und 5 verweisen. Falls die optionale Demo lief, entsprechend kürzen. Dann Kartenrunde (15 Min): erst still schreiben lassen, dann jede Karte kurz vorlesen und an die Wand. Bewertungen freundlich stoppen, dafür ist der nächste Schritt da."
-    en="Harald facilitates, Stefan answers (20 min). Write the questions down visibly, capture the answers as key points. If a question targets vendors or prices: refer to phases 4 and 5. If the optional demo ran, shorten accordingly. Then the card round (15 min): first let people write silently, then read each card aloud briefly and put it on the wall. Stop evaluations kindly, that is what the next step is for."
+    de="Harald moderiert, Stefan antwortet (20 Min). Fragen sichtbar mitschreiben, Antworten in Kernpunkten festhalten. Wenn eine Frage auf konkrete Werkzeuge oder Preise zielt: freundlich zurück auf die strategische Ebene lenken (Was soll KI für den FBS leisten?). Falls die optionale Demo lief, entsprechend kürzen. Dann Möglichkeiten sammeln (15 Min): 5 Minuten Stillarbeit auf Karten, wirklich still. Danach vor dem Vorlesen „Karten vorlesen“ drücken; jede Person liest ihre Karten vor und setzt nach jeder Karte kurz ab, jede Pause wird eine eigene Karte. Falsch Erkanntes per Klick auf die Karte korrigieren. Bewertungen freundlich stoppen, dafür ist der nächste Schritt da. Optional „Karten glätten“ für saubere Formulierungen und zusammengeführte Dubletten; die Karten sind die Grundlage für die Stoßrichtungen auf der Poster-Folie."
+    en="Harald facilitates, Stefan answers (20 min). Write the questions down visibly, capture the answers as key points. If a question targets specific tools or prices: steer kindly back to the strategic level (what should AI do for the FBS?). If the optional demo ran, shorten accordingly. Then collect possibilities (15 min): 5 minutes of silent work on cards, really silent. Before the reading, press “Read cards aloud”; each person reads their cards and pauses briefly after each card, and every pause becomes a card of its own. Correct misrecognised text by clicking the card. Stop evaluations kindly, that is what the next step is for. Optionally “Polish cards” for clean wording and merged duplicates; the cards are the basis for the directions on the poster slide."
   />
 </SpeakerNotes>

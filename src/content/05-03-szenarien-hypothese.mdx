@@ -9,33 +9,33 @@ researchedOn: 2026-09-11
 
 <p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
   <I18n
-    de="Fünf denkbare Aufstellungen, bewusst ohne Preise und ohne Empfehlung. Bewertet jedes Szenario je Kriterium mit ＋ (günstig), ○ (neutral) oder − (ungünstig)."
-    en="Five conceivable setups, deliberately without prices and without a recommendation. Rate each scenario per criterion with ＋ (favourable), ○ (neutral) or − (unfavourable)."
+    de="Fünf denkbare Aufstellungen, bewusst ohne Preise. Bewertet jedes Szenario je Kriterium mit ＋ (günstig), ○ (neutral) oder − (ungünstig)."
+    en="Five conceivable setups, deliberately without prices. Rate each scenario per criterion with ＋ (favourable), ○ (neutral) or − (unfavourable)."
   />
 </p>
 
 <De>
 
-| Szenario | Kosten | Kapazität | Wissenssicherung | Abhängigkeit |
+| Szenario | Kosten | Kapazität | <Hint de="Bleibt Verbandswissen erhalten und abrufbar, auch wenn Personen wechseln oder ausfallen?" en="Is association knowledge preserved and retrievable, even when people change or are absent?">Wissenssicherung</Hint> | <Hint de="Wie stark hängt der Verband an einzelnen Personen oder an einem externen Anbieter? Hohe Abhängigkeit ist ein Risiko für die Handlungsfähigkeit." en="How strongly does the association depend on individual people or on an external provider? High dependence is a risk to its ability to act.">Abhängigkeit</Hint> |
 |---|---|---|---|---|
 | Früher: zwei Geschäftsführer und mehr Assistenz | … | … | … | … |
 | Heute: reduzierte Besetzung, ohne KI | … | … | … | … |
 | Neue Vollzeit-Geschäftsführung | … | … | … | … |
 | Teilzeit-Geschäftsführung mit KI-Unterstützung | … | … | … | … |
-| Externe Geschäftsstellen-Dienstleistung | … | … | … | … |
+| <Hint de="Ein externer Dienstleister, etwa eine Verbandsagentur, übernimmt die Geschäftsstelle ganz oder in Teilen gegen Honorar." en="An external provider, such as an association management agency, runs the office in full or in part for a fee.">Externe Geschäftsstellen-Dienstleistung</Hint> | … | … | … | … |
 | Euer eigenes Szenario | … | … | … | … |
 
 </De>
 
 <En>
 
-| Scenario | Cost | Capacity | Knowledge retention | Dependence |
+| Scenario | Cost | Capacity | <Hint de="Bleibt Verbandswissen erhalten und abrufbar, auch wenn Personen wechseln oder ausfallen?" en="Is association knowledge preserved and retrievable, even when people change or are absent?">Knowledge retention</Hint> | <Hint de="Wie stark hängt der Verband an einzelnen Personen oder an einem externen Anbieter? Hohe Abhängigkeit ist ein Risiko für die Handlungsfähigkeit." en="How strongly does the association depend on individual people or on an external provider? High dependence is a risk to its ability to act.">Dependence</Hint> |
 |---|---|---|---|---|
 | Before: two managing directors and more assistance | … | … | … | … |
 | Today: reduced staffing, without AI | … | … | … | … |
 | New full-time management | … | … | … | … |
 | Part-time management with AI support | … | … | … | … |
-| External office service | … | … | … | … |
+| <Hint de="Ein externer Dienstleister, etwa eine Verbandsagentur, übernimmt die Geschäftsstelle ganz oder in Teilen gegen Honorar." en="An external provider, such as an association management agency, runs the office in full or in part for a fee.">External office service</Hint> | … | … | … | … |
 | Your own scenario | … | … | … | … |
 
 </En>
@@ -43,8 +43,14 @@ researchedOn: 2026-09-11
 <h3><I18n de="Arbeitshypothese: „Die Investition rechnet sich innerhalb von drei Jahren.“" en="Working hypothesis: “The investment pays off within three years.”" /></h3>
 
 <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.9rem 1.1rem", background: "var(--bg-elev)", margin: "0.75rem 0", fontSize: "0.95rem", lineHeight: 1.7 }}>
-  <div><strong><I18n de="Nutzen über 36 Monate" en="Benefit over 36 months" /></strong> = <I18n de="Zeitgewinn (Std./Woche) × Arbeitswochen pro Jahr × 3 Jahre × Stundensatz (€)" en="time gained (hrs/week) × working weeks per year × 3 years × hourly rate (€)" /></div>
-  <div><strong><I18n de="Kosten über 36 Monate" en="Cost over 36 months" /></strong> = <I18n de="einmalige Kosten (€) + laufende Kosten (€/Monat) × 36" en="one-off costs (€) + running costs (€/month) × 36" /></div>
+  <div><strong><I18n de="Nutzen über 36 Monate" en="Benefit over 36 months" /></strong> = <I18n
+    de={<>Zeitgewinn (Std./Woche) × Arbeitswochen pro Jahr × 3 Jahre × <Hint de="Vollkosten einer Arbeitsstunde in der Geschäftsstelle: Gehalt plus Arbeitgeberanteile und Gemeinkosten, nicht nur der Bruttolohn." en="Full cost of one working hour in the office: salary plus employer contributions and overheads, not just gross pay.">Stundensatz</Hint> (€)</>}
+    en={<>time gained (hrs/week) × working weeks per year × 3 years × <Hint de="Vollkosten einer Arbeitsstunde in der Geschäftsstelle: Gehalt plus Arbeitgeberanteile und Gemeinkosten, nicht nur der Bruttolohn." en="Full cost of one working hour in the office: salary plus employer contributions and overheads, not just gross pay.">hourly rate</Hint> (€)</>}
+  /></div>
+  <div><strong><I18n de="Kosten über 36 Monate" en="Cost over 36 months" /></strong> = <I18n
+    de={<><Hint de="Zum Beispiel Einrichtung, Aufbereitung der Wissensquellen, Schulung und Begleitung in der Einführung." en="For example set-up, preparing the knowledge sources, training and support during roll-out.">einmalige Kosten</Hint> (€) + <Hint de="Zum Beispiel Nutzungs- und Lizenzgebühren, Pflege der Wissensbasis, Betreuung und regelmäßige Überprüfung." en="For example usage and licence fees, maintaining the knowledge base, support and regular reviews.">laufende Kosten</Hint> (€/Monat) × 36</>}
+    en={<><Hint de="Zum Beispiel Einrichtung, Aufbereitung der Wissensquellen, Schulung und Begleitung in der Einführung." en="For example set-up, preparing the knowledge sources, training and support during roll-out.">one-off costs</Hint> (€) + <Hint de="Zum Beispiel Nutzungs- und Lizenzgebühren, Pflege der Wissensbasis, Betreuung und regelmäßige Überprüfung." en="For example usage and licence fees, maintaining the knowledge base, support and regular reviews.">running costs</Hint> (€/month) × 36</>}
+  /></div>
   <div style={{ color: "var(--fg-muted)", marginTop: "0.3rem" }}><I18n de="Die Hypothese hält, wenn der Nutzen die Kosten mindestens deckt. Rechnet zweimal: einmal mit vorsichtigen, einmal mit optimistischen Annahmen." en="The hypothesis holds if the benefit at least covers the cost. Calculate twice: once with cautious and once with optimistic assumptions." /></div>
 </div>
 
@@ -67,7 +73,7 @@ researchedOn: 2026-09-11
 
 <SpeakerNotes>
   <I18n
-    de="10 Minuten. Die Szenarien neutral vorstellen, keines hervorheben. Die Gruppe bewertet, die Moderation hält nur fest; auffällige Bewertungen kurz ins Feld Annahmen übernehmen. Das eigene Szenario ist ausdrücklich erlaubt. Bei der Rechnung keine Zahlen vorgeben, sondern fragen: Wie viele Stunden pro Woche würde die Geschäftsstelle realistisch gewinnen, vorsichtig und optimistisch? Kosten nur als Bandbreite aus eigener Einschätzung oder vorliegenden Angeboten, nicht aus dieser Folie. Die Hypothese ist eine Hypothese: Unklar ist ein ehrliches Ergebnis und führt zu einem Prüfauftrag für die Roadmap. Überleitung: Nicht alles steckt in der Rechnung."
-    en="10 minutes. Present the scenarios neutrally, highlight none. The group rates, the facilitator only records; copy notable ratings briefly into the assumptions field. The group's own scenario is explicitly allowed. Do not give figures for the calculation, ask instead: how many hours per week would the office realistically gain, cautiously and optimistically? Costs only as a range from the group's own estimate or existing quotes, not from this slide. The hypothesis is a hypothesis: unclear is an honest result and leads to a review task for the roadmap. Bridge: not everything is in the calculation."
+    de="10 Minuten. Die Szenarien neutral vorstellen, keines hervorheben. Die Gruppe bewertet, die Moderation hält nur fest; auffällige Bewertungen kurz ins Feld Annahmen übernehmen. Das eigene Szenario ist ausdrücklich erlaubt. Bei der Rechnung keine Zahlen vorgeben, sondern fragen: Wie viele Stunden pro Woche würde die Geschäftsstelle realistisch gewinnen, vorsichtig und optimistisch? Kosten nur als Bandbreite aus eigener Einschätzung, nicht aus dieser Folie. Die Hypothese ist eine Hypothese: Unklar ist ein ehrliches Ergebnis und führt zu einem Prüfauftrag für die Roadmap. Überleitung: Nicht alles steckt in der Rechnung."
+    en="10 minutes. Present the scenarios neutrally, highlight none. The group rates, the facilitator only records; copy notable ratings briefly into the assumptions field. The group's own scenario is explicitly allowed. Do not give figures for the calculation, ask instead: how many hours per week would the office realistically gain, cautiously and optimistically? Costs only as a range from the group's own estimate, not from this slide. The hypothesis is a hypothesis: unclear is an honest result and leads to a review task for the roadmap. Bridge: not everything is in the calculation."
   />
 </SpeakerNotes>

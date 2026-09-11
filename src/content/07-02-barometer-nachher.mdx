@@ -14,12 +14,13 @@ researchedOn: 2026-09-11
   />
 </p>
 
-<WorkshopInput
+<BarometerVotes
   slideId="07.02"
   field="barometer-nachher"
   prompt="KI-Geschäftsführer: Fiktion oder Realität? – unsere Antwort jetzt"
-  kind="vote"
   options={["Fiktion", "Eher Fiktion", "Unentschieden", "Eher Realität", "Realität"]}
+  compareSlideId="00.08"
+  compareField="barometer-vorher"
 />
 
 <WorkshopInput
@@ -32,8 +33,8 @@ researchedOn: 2026-09-11
 
 <NoteCard variant="hint" title="Vorher · nachher · Before · after">
   <I18n
-    de="Vergleicht das Ergebnis mit dem Vorher-Barometer auf Folie 00.08. Beide Abstimmungen stehen im Protokoll. Jede Veränderung ist ein Ergebnis, egal in welche Richtung, und auch keine Veränderung sagt etwas aus."
-    en="Compare the result with the before barometer on slide 00.08. Both votes are in the record. Any change is a result, whichever direction it goes, and no change also tells us something."
+    de={<>Vergleicht das Ergebnis mit dem <Hint de="Zum Auftakt am ersten Tag hat jede Person dieselbe Frage beantwortet, bevor wir inhaltlich eingestiegen sind. Das ist der Ausgangspunkt für den Vergleich." en="At the kickoff on day one, everyone answered the same question before we got into the content. That is the starting point for the comparison.">Vorher-Barometer</Hint> auf Folie 00.08. Beide Abstimmungen stehen im Protokoll. Jede Veränderung ist ein Ergebnis, egal in welche Richtung, und <Hint de="Bleibt das Bild gleich, hat die Gruppe ihre Einschätzung nach zwei Tagen Arbeit bestätigt. Auch das ist eine belastbare Grundlage für den Beschluss." en="If the picture stays the same, the group has confirmed its view after two days of work. That too is a solid basis for the decision.">auch keine Veränderung sagt etwas aus</Hint>.</>}
+    en={<>Compare the result with the <Hint de="Zum Auftakt am ersten Tag hat jede Person dieselbe Frage beantwortet, bevor wir inhaltlich eingestiegen sind. Das ist der Ausgangspunkt für den Vergleich." en="At the kickoff on day one, everyone answered the same question before we got into the content. That is the starting point for the comparison.">before barometer</Hint> on slide 00.08. Both votes are in the record. Any change is a result, whichever direction it goes, and <Hint de="Bleibt das Bild gleich, hat die Gruppe ihre Einschätzung nach zwei Tagen Arbeit bestätigt. Auch das ist eine belastbare Grundlage für den Beschluss." en="If the picture stays the same, the group has confirmed its view after two days of work. That too is a solid basis for the decision.">no change also tells us something</Hint>.</>}
   />
 </NoteCard>
 

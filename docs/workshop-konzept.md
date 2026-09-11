@@ -15,11 +15,13 @@ Diese Datei ist die inhaltliche Referenz für alle Folien. Alte Folien liegen nu
 
 ## Grundprinzipien (verbindlich)
 
-1. **Objektive, herstellerneutrale Beratungsveranstaltung, keine Vertriebsshow.** Keine Vorstellung der BIK-Suite (CDBrain, Personal Digital Brain, Composer, CDBOS) und keine Produkt- oder Anbieterempfehlung. Neutrale Begriffe: „Wissensbasis", „persönlicher KI-Assistent", „Dokumenten-Generator", „KI-Agent", „Plattform".
-   Erlaubt sind höchstens **klar als optional markierte Demo-Slots** („Optional: Live-Demo – so kann das aussehen"), die zeigen, *dass* und *wie* etwas funktioniert, mit Link, z. B. CDBOS oder Composer. Immer mit dem Hinweis, dass es eine von mehreren Möglichkeiten ist.
-2. **Ergebnisoffen:** Die Antwort auf die Leitfrage erarbeitet die Gruppe. Keine vorweggenommene Empfehlung (kein „½ FTE mit KI", kein „BIK-Pilot" als gesetzter nächster Schritt). Nach Wilma ist Ergebnisoffenheit die Voraussetzung für Akzeptanz.
-3. **Sichtbare Ergebnisse:** Aus jeder Phase entsteht ein **Poster** (analog vor Ort an der Wand, parallel digital im Protokoll). Jede Phase endet mit einer Poster-Folie, deren Eingabefelder das Poster füllen (Feldnamen `poster-…`).
+1. **Sachliche, rein strategische Veranstaltung, keine Vertriebsshow.** Es geht um Warum, Zielbild, Realismus, Wirtschaftlichkeit und Weg. Es gibt **keine Tool-, Plattform- oder Anbieterauswahl**, keine Marktsichtung, keinen Anbietervergleich. Keine Produktvorstellung, keine Vorstellung der BIK-Suite (CDBrain, Personal Digital Brain, Composer, CDBOS). Neutrale Begriffe: „Wissensbasis", „persönlicher KI-Assistent", „Dokumenten-Generator", „KI-Agent", „Plattform".
+   Erlaubt sind **klar als optional markierte Demo-Slots** („Optional: Live-Demo – so kann das aussehen"), die sachlich zeigen, was heute geht, mit Link, z. B. CDBOS oder Composer. **Keine demonstrativen Disclaimer** („keine Empfehlung", „eine von mehreren Möglichkeiten", „herstellerneutral"): Sie wirken krampfhaft werbevermeidend und erzielen das Gegenteil.
+2. **Ergebnisoffen:** Die Antwort auf die Leitfrage erarbeitet die Gruppe. Keine vorweggenommene Antwort (kein „½ FTE mit KI", kein „BIK-Pilot" als gesetzter nächster Schritt). Nach Wilma ist Ergebnisoffenheit die Voraussetzung für Akzeptanz.
+3. **Sichtbare Ergebnisse:** Aus jeder Phase entsteht ein **Poster**, das wir gemeinsam festhalten (parallel digital im Protokoll; die Form vor Ort legt die Moderation fest). Jede Phase endet mit einer Poster-Folie, deren Eingabefelder das Poster füllen (Feldnamen `poster-…`).
 4. **Nicht abstrakt über KI reden,** sondern Schritt für Schritt: Ausgangslage → Need to Move → Zielbild → Aufgaben des GF → KI-Potenzial → Wirtschaftlichkeit & Argumentation → gemeinsame Antwort.
+5. **Arbeitsformen:** diskussionsorientiert, **Plenum als Grundform**, dazu **Stillarbeit** (z. B. Top-5-Karten in 01.03, Möglichkeiten in 02.07, optional Top-3-Prioritäten in 06.02), **Kleingruppen bzw. Paare** (5× Warum in Zweiergruppen, Aufgaben-Cluster in drei Kleingruppen, Pro/Contra mit Befürworter und Advocatus Diaboli) und die **Einzelinterviews** (KI-Interview) zu Beginn von Phase 1. Keine Festlegung auf Punkte-Kleben; die Priorisierungsmethode wählt die Moderation (z. B. Handzeichen oder Punkte).
+   **Ergebnisse effizient in die Plattform:** Karten werden reihum vorgelesen und im **Karten-Modus** (`CardCollector`) per Diktat übernommen, jede Sprechpause wird eine Karte. Kleingruppen stellen im Plenum vor (in drei Sätzen), die Moderation diktiert oder tippt in die Eingabefelder. Auf Klick glättet die KI die Karten (Erkennungsfehler, Dubletten) und clustert sie zu Themenfeldern (01.03 → Feld Problemfelder in 01.04). Die Spielregeln (00.07) tragen diese Arbeitsformen.
 
 ## Zeitplan
 
@@ -55,27 +57,27 @@ Anlass, Leitfrage, die Phasen, Spielregeln, Poster-Prinzip, App (Protokoll, Dikt
 - **Ablauf (Ablaufblatt 01):**
   | # | Zeit | Was wir tun | Methode | Output |
   |---|---|---|---|---|
-  | 01 | 10 Min | Einzelreflexion: Top 5 Probleme/Herausforderungen, nur Probleme, keine Lösungen | Stillarbeit | Top 5 pro Person auf Karten |
-  | 02 | 15 Min | Sammeln: alle Probleme zusammentragen, erst sammeln, nicht bewerten | Karten an die Wand | Vollständiges Bild |
-  | 03 | 15 Min | Kategorisieren: Ähnliches bündeln → 3–5 Problemfelder | Clustern | 3–5 Problemfelder |
-  | 04 | 10 Min | Priorisieren: Welches Problem ist für den Verband das wichtigste? | Dot-Voting, 3 Punkte pro Person | 1 priorisiertes Problemfeld |
-  | 05 | 25 Min | Problem-Treppe / 5× Warum bis zur eigentlichen Ursache | Zweiergruppen, dann Ursachen-Treppe im Plenum | Ursache verstanden (nicht das Symptom) |
-  | 06 | 10 Min | Verdichten auf eine klare Aussage | Formulieren | Ein Satz: unser Kernproblem |
-  | 07 | 5 Min | Commitment: gemeinsame Bestätigung | Abfrage im Kreis | Bestätigtes Kernproblem |
+  | 01 | 10 Min | Top 5 Probleme/Herausforderungen je Person, nur Probleme, keine Lösungen | Einzelinterviews (KI-Interview), dann Stillarbeit auf Karten | Top 5 pro Person |
+  | 02 | 15 Min | Sammeln: alle Karten zusammentragen, erst sammeln, nicht bewerten | Reihum vorlesen, Karten-Modus per Diktat | Vollständiges Bild |
+  | 03 | 15 Min | Kategorisieren: Ähnliches bündeln → 3–5 Problemfelder | Gemeinsam bündeln, KI-Clustervorschlag als Startpunkt | 3–5 Problemfelder |
+  | 04 | 10 Min | Priorisieren: Welches Problem ist für den Verband das wichtigste? | Gemeinsam im Plenum priorisieren (Methode offen, z. B. Handzeichen oder Punkte) | 1 priorisiertes Problemfeld |
+  | 05 | 25 Min | Problem-Treppe / 5× Warum bis zur eigentlichen Ursache | Zweiergruppen (10 Min), dann Plenum (15 Min) | Ursache verstanden (nicht das Symptom) |
+  | 06 | 10 Min | Verdichten auf eine klare Aussage | Gemeinsam formulieren | Ein Satz: unser Kernproblem |
+  | 07 | 5 Min | Commitment: gemeinsame Bestätigung | Bestätigung im Plenum | Bestätigtes Kernproblem |
 - **Formulierungshilfe:** „Unser eigentliches Problem ist nicht …, sondern …, weil heute …"
-- Hinweis: Das KI-Interview ersetzt bzw. speist die Einzelreflexion (Zeitbudget der Phase einhalten).
+- Hinweis: Die Einzelinterviews führen in die Stillarbeit (Top 5 auf Karten); die Karten werden reihum vorgelesen und im Karten-Modus erfasst. Die KI kann sie auf Klick zu 3–5 Problemfeldern clustern, als Startpunkt für das gemeinsame Bündeln (Zeitbudget der Phase einhalten).
 
 ### Phase 2 · Vision: Möglichkeitsraum (90 Min) — Modul 2
 - **Kernfrage:** Was wäre möglich, wenn wir dieses Problem völlig neu denken?
-- **Wichtig:** Noch keine konkrete Lösung oder Plattformentscheidung, nur Möglichkeitsraum und Richtungen.
+- **Wichtig:** Keine Tool-, Plattform- oder Anbieterauswahl, nur Möglichkeitsraum und Richtungen.
 - **Output:** Gemeinsames Verständnis des technologischen Möglichkeitsraums und 3–5 Stoßrichtungen für den KI-Geschäftsführer → **Möglichkeitsraum-Poster**.
-- **Ablauf (Ablaufblatt 02):** 5 Min Ausgangspunkt Kernproblem · 30 Min **Experteninput Dr. Stefan Reinheimer:** HEUTE (was ist schon möglich?) · MORGEN (was wird realistisch?) · ÜBERMORGEN (was könnte möglich werden?) zu KI-Modelle & Agenten, Automatisierung & Prozesse, Wissenssysteme & Daten, Schnittstellen & Integrationen, Plattformen & Architekturmodelle, Grenzen & Voraussetzungen; Einordnung nach Nutzenpotenzial und Umsetzbarkeit · 20 Min Fragen an Stefan (Kann die KI das? Wo sind Grenzen? Was bräuchte es?) · 15 Min Möglichkeiten sammeln (Karten, noch keine Bewertung) · 15 Min Richtungen erkennen: 3–5 Stoßrichtungen (clustern, größter Hebel) · 5 Min Abschluss: welche Richtungen gehen in Phase 3.
-- Hier passt ein **optionaler Demo-Slot** (z. B. Dokumenten-Generator oder Wissensbasis live), neutral gerahmt.
+- **Ablauf (Ablaufblatt 02):** 5 Min Ausgangspunkt Kernproblem · 30 Min **Experteninput Dr. Stefan Reinheimer:** HEUTE (was ist schon möglich?) · MORGEN (was wird realistisch?) · ÜBERMORGEN (was könnte möglich werden?) zu KI-Modelle & Agenten, Automatisierung & Prozesse, Wissenssysteme & Daten, Schnittstellen & Integrationen, Plattformen & Architekturmodelle, Grenzen & Voraussetzungen; Einordnung nach Nutzenpotenzial und Umsetzbarkeit · 20 Min Fragen an Stefan (Kann die KI das? Wo sind Grenzen? Was bräuchte es?) · 15 Min Möglichkeiten sammeln: 5 Min Stillarbeit auf Karten, 10 Min reihum vorlesen im Karten-Modus (noch keine Bewertung) · 15 Min Richtungen erkennen: 3–5 Stoßrichtungen (gemeinsam bündeln, größter Hebel) · 5 Min Abschluss: welche Richtungen gehen in Phase 3.
+- Hier passt ein **optionaler Demo-Slot** (z. B. Dokumenten-Generator oder Wissensbasis live), sachlich, ohne Disclaimer.
 
 ### Phase 3 · Zielbild: Unser KI-Geschäftsführer (90 Min) — Modul 3
 - **Kernfrage:** Wie sieht unser KI-Geschäftsführer konkret aus? Was wollen wir gemeinsam erreichen?
 - **Output:** Greifbares Zielbild mit Aufgaben, Rolle und Nutzen → **Zielbild-Poster** (Bild + Profil + prägnanter Satz).
-- **Inhalte:** Vision spiegeln (Stoßrichtungen bestätigen) · **heutige Aufgaben und Leistungen des Geschäftsführers möglichst vollständig erfassen** · je Aufgabe: **KI übernimmt / KI unterstützt / bewusst nicht (Mensch)** · Rollenbild und Kernaufgaben, Nutzen für Verband, Vorstand und Mitglieder, Leitprinzipien (Warum – Wofür – Wie), Zusammenspiel mit Menschen, erste Use Cases · Zielbild 2029 (36 Monate) auf einer Seite: Bild, Profil, Satz · Commitment-Frage „Ist das die Zukunft, die wir gemeinsam verfolgen wollen?"
+- **Inhalte:** Vision spiegeln (Stoßrichtungen bestätigen) · **heutige Aufgaben und Leistungen des Geschäftsführers möglichst vollständig erfassen** · je Aufgabe: **KI übernimmt / KI unterstützt / bewusst nicht (Mensch)** (drei Kleingruppen mit je 3–4 Clustern, 15 Min, dann Vorstellung im Plenum, 10 Min) · Rollenbild und Kernaufgaben, Nutzen für Verband, Vorstand und Mitglieder, Leitprinzipien (Warum – Wofür – Wie), Zusammenspiel mit Menschen, erste Use Cases · Zielbild 2029 (36 Monate) auf einer Seite: Bild, Profil, Satz · Commitment-Frage „Ist das die Zukunft, die wir gemeinsam verfolgen wollen?"
 - Zeithorizonte 100 Tage/12/24 Monate werden in Phase 6 (Roadmap) bearbeitet, nicht doppelt hier.
 - Beispiel-Ergebnisse (Ablaufblatt, als Anregung, nicht vorgeben): 100 Tage: erster Prototyp beantwortet definierte Verbandsfragen auf Basis geprüften Wissens, Quick Wins für Geschäftsstelle und Vorstand · 12 Monate: regelmäßige Nutzung durch Vorstand, Geschäftsstelle, Mitglieder, messbare Zeitersparnis · 24 Monate: weitere Prozesse integriert, breite Akzeptanz · 36 Monate: fester Bestandteil der Verbandsarbeit, Verband als Vorreiter der Branche.
 
@@ -91,16 +93,16 @@ Anlass, Leitfrage, die Phasen, Spielregeln, Poster-Prinzip, App (Protokoll, Dikt
 - **Zwei Argumentationslinien:** Nutzwert / zusätzliche Wirkung · Kostenersparnis / Effizienz.
 - **Arbeitshypothese:** „Die Investition rechnet sich innerhalb von drei Jahren." (als Hypothese prüfen, Bandbreiten statt Scheingenauigkeit; Vergleichsbasis: früher zwei Geschäftsführer + Assistenz, heute reduzierte Besetzung, künftig KI-unterstützt)
 - **Strategischer Mehrwert:** Marktattraktivität, Innovationskraft, moderne Positionierung des Verbandes (auch Nachwuchs, Mitgliedergewinnung).
-- **Methode:** Zweiergruppen Pro-Argument vs. Advocatus Diaboli; Einwände & Antworten.
+- **Methode:** Pro und Contra zuerst in Zweiergruppen (Befürworter und Advocatus Diaboli, 7 Min), dann gemeinsam im Plenum abwägen (8 Min); Einwände & Antworten.
 - **Output:** **Business-Case-Poster** (Nutzen, Kosten, Break-even-Hypothese, strategischer Mehrwert, Einwände & Antworten).
 
 ### Phase 6 · Roadmap (45 Min) — Modul 6
 - **Kernfrage:** Wie kommen wir vom Zielbild in die Realität?
-- **Ablauf:** 5 Min Rückblick Realitätscheck · 10 Min Prioritäten (1–3 Handlungsfelder; Kriterien Wirkung, Machbarkeit, Aufwand; Quick Wins) · 10 Min Meilensteine: **100 Tage · 12 Monate · 24 Monate · 36 Monate** · 10 Min Verantwortlichkeiten (wer macht was, RACI) · 5 Min Ressourcen & Support (Budget, Personal, Tools, Daten, externe Partner) · 5 Min Risiken & Abhängigkeiten.
+- **Ablauf:** 5 Min Rückblick Realitätscheck · 10 Min Prioritäten (1–3 Handlungsfelder; Kriterien Wirkung, Machbarkeit, Aufwand; Quick Wins; im Plenum, optional vorab Stillarbeit „Top 3 je Person“ auf Karten) · 10 Min Meilensteine: **100 Tage · 12 Monate · 24 Monate · 36 Monate** · 10 Min Verantwortlichkeiten (wer macht was, RACI) · 5 Min Ressourcen & Support (Budget, Personal, Tools, Daten, externe Partner) · 5 Min Risiken & Abhängigkeiten.
 - **Output:** **Roadmap-Poster** (Zeitstrahl mit Meilensteinen und Verantwortlichen). Motto: „Konsequent umsetzen. Gemeinsam wirken."
 
 ### Phase 7 · Commitment: Fiktion oder Realität? (30 Min + 15 Min Abschluss) — Modul 7
 - **Kernfrage:** Wozu sagen wir heute gemeinsam Ja?
 - Nachher-Barometer (Vergleich zum Auftakt) · offene Fragen · Entscheidungen, Verantwortlichkeiten, nächste Schritte · gemeinsames Commitment → **Commitment-Poster**.
 - **Nächste Schritte direkt nach der Sitzung:** Unterlagen, Ergebnisse und Entscheidungen bündeln und dokumentieren · Verantwortliche informieren und Kick-off der Arbeitsgruppen planen · erste Quick Wins starten und Review-Termine festlegen.
-- Das Protokoll (alle Beiträge, KI-geglättet) und die Poster sind die Ergebnisdokumentation. Optionaler Demo-Slot: aus dem Protokoll automatisch ein Ergebnisdokument erzeugen (neutral gerahmt).
+- Das Protokoll (alle Beiträge, KI-geglättet) und die Poster sind die Ergebnisdokumentation. Optionaler Demo-Slot: aus dem Protokoll automatisch ein Ergebnisdokument erzeugen (sachlich, ohne Disclaimer).

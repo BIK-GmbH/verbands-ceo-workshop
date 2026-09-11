@@ -10,7 +10,7 @@ import { useSyncExternalStore } from "react";
 import type { Lang } from "@/types/slide";
 import { completeText } from "./ai-assist";
 import { MANIFEST, findModule, findSlide } from "./slides";
-import { getState, type CaptureEntry, type CaptureKind } from "./workshop-store";
+import { getState, filledParticipants, type CaptureEntry, type CaptureKind } from "./workshop-store";
 import { hasValue, isAdHoc } from "./protocol-export";
 
 /* ------------------------------------------------------------------ prompt */
@@ -125,6 +125,7 @@ export interface ReportRequest {
 export function buildReportRequest(lang: Lang, hints: string): ReportRequest {
   const { meta, entries } = getState();
   const list = reportEntries(Object.values(entries)).sort((a, b) => a.id.localeCompare(b.id));
+  const people = filledParticipants(meta.participantsList).length;
 
   const byModule = new Map<number, CaptureEntry[]>();
   for (const e of list) byModule.set(e.module, [...(byModule.get(e.module) ?? []), e]);
@@ -142,6 +143,8 @@ export function buildReportRequest(lang: Lang, hints: string): ReportRequest {
     `Workshop: ${meta.title}`,
     `Termin: ${meta.date || "16./17.09.2026"}`,
     `Anzahl erfasster Beiträge: ${list.length}`,
+    // Only the head count — names, organisations and roles never leave the browser.
+    ...(people ? [`Anzahl Teilnehmende: ${people}`] : []),
     "",
     "<beitraege>",
     modules.join("\n\n"),

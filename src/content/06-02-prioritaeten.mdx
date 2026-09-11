@@ -9,8 +9,8 @@ researchedOn: 2026-09-11
 
 <p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
   <I18n
-    de="Nicht alles auf einmal. Wir suchen die 1–3 Handlungsfelder mit dem größten Hebel und die Quick Wins, mit denen wir sofort starten können."
-    en="Not everything at once. We look for the 1–3 fields of action with the biggest lever and the quick wins we can start with right away."
+    de={<>Nicht alles auf einmal. Wir suchen die 1–3 <Hint de="Ein Handlungsfeld bündelt zusammengehörige Use Cases, z. B. „Mitgliederanfragen“ oder „Gremienarbeit“. Es bekommt später Meilensteine und eine verantwortliche Person." en="A field of action bundles related use cases, e.g. “member enquiries” or “committee work”. It later gets milestones and a responsible person.">Handlungsfelder</Hint> mit dem größten Hebel und die <Hint de="Schritte mit hoher Wirkung und geringem Aufwand, möglich ohne großes Budget und ohne Beschaffung. Sie zeigen früh sichtbaren Nutzen und schaffen Vertrauen für die größeren Vorhaben." en="Steps with high impact and low effort, possible without a large budget and without procurement. They show visible benefit early and build trust for the larger projects.">Quick Wins</Hint>, mit denen wir sofort starten können.</>}
+    en={<>Not everything at once. We look for the 1–3 <Hint de="Ein Handlungsfeld bündelt zusammengehörige Use Cases, z. B. „Mitgliederanfragen“ oder „Gremienarbeit“. Es bekommt später Meilensteine und eine verantwortliche Person." en="A field of action bundles related use cases, e.g. “member enquiries” or “committee work”. It later gets milestones and a responsible person.">fields of action</Hint> with the biggest lever and the <Hint de="Schritte mit hoher Wirkung und geringem Aufwand, möglich ohne großes Budget und ohne Beschaffung. Sie zeigen früh sichtbaren Nutzen und schaffen Vertrauen für die größeren Vorhaben." en="Steps with high impact and low effort, possible without a large budget and without procurement. They show visible benefit early and build trust for the larger projects.">quick wins</Hint> we can start with right away.</>}
   />
 </p>
 
@@ -22,13 +22,13 @@ researchedOn: 2026-09-11
     </p>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
-    <strong><I18n de="Machbarkeit" en="Feasibility" /></strong>
+    <strong><Hint de="Der Filter aus Phase 4: Was dort auf STOP stand, kommt nicht in die Matrix. ADAPT-Bausteine gehen nur in ihrer angepassten Form hinein." en="The filter from phase 4: whatever was on STOP there does not go into the matrix. ADAPT building blocks go in only in their adapted form."><I18n de="Machbarkeit" en="Feasibility" /></Hint></strong>
     <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}>
       <I18n de="Haben wir Daten, Kompetenz und Akzeptanz? Hat es den Realitätscheck bestanden?" en="Do we have the data, skills and acceptance? Did it pass the reality check?" />
     </p>
   </div>
   <div style={{ border: "1px solid var(--border)", borderRadius: "10px", padding: "0.8rem", background: "var(--bg-elev)" }}>
-    <strong><I18n de="Aufwand" en="Effort" /></strong>
+    <strong><Hint de="Nicht nur die Anschaffung zählt, sondern auch Einarbeitung, Datenpflege, Abstimmung im Vorstand und laufende Betreuung durch die Geschäftsstelle." en="Not only the acquisition counts, but also onboarding, data maintenance, coordination in the board and ongoing support by the office."><I18n de="Aufwand" en="Effort" /></Hint></strong>
     <p style={{ fontSize: "0.85rem", color: "var(--fg-muted)", margin: "0.3rem 0 0" }}>
       <I18n de="Wie viel Zeit, Geld und Kapazität der Geschäftsstelle bindet es?" en="How much time, money and office capacity does it tie up?" />
     </p>
@@ -56,10 +56,16 @@ researchedOn: 2026-09-11
 
 <ExerciseCard duration="10 Min" goal="1–3 Handlungsfelder mit dem größten Hebel festlegen und Quick Wins benennen.">
   <I18n
-    de="Stoßrichtungen und Use Cases aus Zielbild und Realitätscheck als Karten in die Matrix hängen. Machbarkeit kurz prüfen. Dann Punktabfrage: 3 Punkte pro Person für die wichtigsten Handlungsfelder."
-    en="Put the directions and use cases from the target picture and the reality check into the matrix as cards. Briefly check feasibility. Then dot vote: 3 dots per person for the most important fields of action."
+    de={<>Stoßrichtungen und Use Cases aus Zielbild und Realitätscheck gemeinsam im Plenum in die Matrix einordnen. Machbarkeit kurz prüfen. Dann gemeinsam priorisieren: Welche Handlungsfelder sind für den Verband am wichtigsten? Optional vorab <Hint de="Hilfreich, wenn die Meinungen weit auseinanderliegen: Jede Person legt sich zuerst allein fest. Mehrfach genannte Karten zeigen danach, wo die Runde übereinstimmt." en="Helpful when opinions are far apart: everyone commits alone first. Cards named several times then show where the group agrees.">Stillarbeit</Hint>: Jede Person schreibt ihre Top 3 auf Karten und liest sie vor.</>}
+    en={<>Place the directions and use cases from the target picture and the reality check into the matrix together in plenary. Briefly check feasibility. Then prioritise together: which fields of action matter most for the association? Optionally, <Hint de="Hilfreich, wenn die Meinungen weit auseinanderliegen: Jede Person legt sich zuerst allein fest. Mehrfach genannte Karten zeigen danach, wo die Runde übereinstimmt." en="Helpful when opinions are far apart: everyone commits alone first. Cards named several times then show where the group agrees.">silent work</Hint> first: each person writes their top 3 on cards and reads them aloud.</>}
   />
 </ExerciseCard>
+
+<CardCollector
+  slideId="06.02"
+  field="karten-prioritaeten"
+  prompt="Top-Prioritäten – vorgelesene Karten"
+/>
 
 <WorkshopInput
   slideId="06.02"
@@ -79,7 +85,7 @@ researchedOn: 2026-09-11
 
 <SpeakerNotes>
   <I18n
-    de="Harald: 10 Minuten. Karten zügig in die Matrix sortieren lassen, nicht jede Karte diskutieren. Machbarkeit ist der Filter aus Phase 4: Was dort auf STOP stand, kommt hier nicht in die Matrix. Auf maximal drei Handlungsfelder bestehen, lieber weniger. Quick Wins müssen ohne großes Budget und ohne Beschaffung möglich sein. Überleitung: Wann soll was erreicht sein?"
-    en="Harald: 10 minutes. Have the cards sorted into the matrix quickly, don't discuss every card. Feasibility is the filter from phase 4: whatever was on STOP there does not go into the matrix here. Insist on at most three fields of action, fewer is better. Quick wins must be possible without a large budget and without procurement. Bridge: when should what be achieved?"
+    de="Harald: 10 Minuten. Stoßrichtungen und Use Cases zügig in die Matrix einordnen, nicht jeden Punkt einzeln diskutieren. Machbarkeit ist der Filter aus Phase 4: Was dort auf STOP stand, kommt hier nicht in die Matrix. Auf maximal drei Handlungsfelder bestehen, lieber weniger. Quick Wins müssen ohne großes Budget und ohne Beschaffung möglich sein. Optional, wenn die Meinungen weit auseinander liegen: 2 Minuten Stillarbeit, jede Person schreibt ihre Top 3 auf Karten; vor dem Vorlesen „Karten vorlesen“ drücken, pro Karte kurz absetzen. Mehrfach genannte Karten zeigen die Richtung, „Karten glätten“ führt Dubletten mit Anzahl zusammen. Überleitung: Wann soll was erreicht sein?"
+    en="Harald: 10 minutes. Place the directions and use cases into the matrix quickly, don't discuss every item individually. Feasibility is the filter from phase 4: whatever was on STOP there does not go into the matrix here. Insist on at most three fields of action, fewer is better. Quick wins must be possible without a large budget and without procurement. Optionally, if opinions are far apart: 2 minutes of silent work, each person writes their top 3 on cards; before the reading press “Read cards aloud” and pause briefly after each card. Cards named several times show the direction; “Polish cards” merges duplicates with a count. Bridge: when should what be achieved?"
   />
 </SpeakerNotes>

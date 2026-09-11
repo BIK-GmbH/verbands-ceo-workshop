@@ -1,8 +1,12 @@
-import { Mic, MicOff, Check } from "lucide-react";
+import { useState } from "react";
+import { Mic, MicOff, Check, Sparkles, Loader2, Undo2 } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { useCapture } from "@/lib/useWorkshop";
 import { useDictation } from "@/lib/useDictation";
-import type { CaptureKind } from "@/lib/workshop-store";
+import { getEntry, setEntry, type CaptureKind } from "@/lib/workshop-store";
+import { PRESETS, describeAiError, refineText, useApiKey } from "@/lib/ai-assist";
+import { findSlide } from "@/lib/slides";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 interface Props {
   /** Slide id this field belongs to, e.g. "01.05" */
@@ -47,6 +51,32 @@ export function WorkshopInput({
 
   const saved = Array.isArray(value) ? value.length > 0 : Boolean(value);
 
+  const apiKey = useApiKey();
+  const [polishing, setPolishing] = useState(false);
+  const [beforePolish, setBeforePolish] = useState<string | null>(null);
+  const [polishError, setPolishError] = useState("");
+
+  const polish = async () => {
+    if (polishing || !text.trim()) return;
+    setPolishing(true);
+    setPolishError("");
+    const original = text;
+    try {
+      const out = await refineText({
+        text: original,
+        instruction: PRESETS[0].instruction,
+        context: { slideId, slideTitle: findSlide(slideId)?.title.de, prompt },
+      });
+      // Keep the first dictated version restorable in the protocol, like the ✎ editor does.
+      setEntry({ id, module, slideId, kind, prompt, value: out, raw: getEntry(id)?.raw ?? original });
+      setBeforePolish(original);
+    } catch (err) {
+      setPolishError(describeAiError(err, lang));
+    } finally {
+      setPolishing(false);
+    }
+  };
+
   return (
     <div
       className="my-4 rounded-md border p-4"
@@ -64,14 +94,21 @@ export function WorkshopInput({
         </span>
         <label className="text-sm font-medium leading-snug flex-1">{prompt}</label>
         {saved && (
-          <span
-            className="inline-flex items-center gap-1 text-[11px] shrink-0 mt-0.5"
-            style={{ color: "var(--workshop-accent)" }}
-            title={lang === "de" ? "gespeichert" : "saved"}
+          <Tooltip
+            content={
+              lang === "de"
+                ? "Automatisch gespeichert (lokal in diesem Browser). Der Beitrag steht sofort im Live-Protokoll."
+                : "Saved automatically (locally in this browser). The contribution appears in the live record right away."
+            }
           >
-            <Check size={13} strokeWidth={2.5} />
-            {lang === "de" ? "erfasst" : "saved"}
-          </span>
+            <span
+              className="inline-flex items-center gap-1 text-[11px] shrink-0 mt-0.5 cursor-help"
+              style={{ color: "var(--workshop-accent)" }}
+            >
+              <Check size={13} strokeWidth={2.5} />
+              {lang === "de" ? "erfasst" : "saved"}
+            </span>
+          </Tooltip>
         )}
       </div>
 
@@ -90,24 +127,77 @@ export function WorkshopInput({
             }}
           />
           {supported && (
-            <button
-              type="button"
-              onClick={toggle}
-              className="absolute top-2 right-2 size-8 grid place-items-center rounded-md transition-colors no-print"
-              style={{
-                background: listening ? "var(--workshop-accent)" : "var(--bg-elev)",
-                color: listening ? "white" : "var(--fg-muted)",
-                border: "1px solid var(--border)",
-              }}
-              title={
+            <Tooltip
+              content={
                 listening
-                  ? lang === "de" ? "Diktat stoppen" : "Stop dictation"
-                  : lang === "de" ? "Einsprechen" : "Dictate"
+                  ? lang === "de"
+                    ? "Diktat stoppen. Der gesprochene Text steht bereits im Feld."
+                    : "Stop dictation. The spoken text is already in the field."
+                  : lang === "de"
+                    ? "Einsprechen statt tippen: Der Text wird fortlaufend angehängt. Diktierfehler lassen sich danach mit „Glätten“ bereinigen."
+                    : "Dictate instead of typing: the text is appended continuously. Dictation errors can be cleaned up afterwards with “Polish”."
               }
-              aria-label={listening ? "Stop dictation" : "Dictate"}
             >
-              {listening ? <MicOff size={15} /> : <Mic size={15} />}
-            </button>
+              <button
+                type="button"
+                onClick={toggle}
+                className="absolute top-2 right-2 size-8 grid place-items-center rounded-md transition-colors no-print"
+                style={{
+                  background: listening ? "var(--workshop-accent)" : "var(--bg-elev)",
+                  color: listening ? "white" : "var(--fg-muted)",
+                  border: "1px solid var(--border)",
+                }}
+                aria-label={listening ? "Stop dictation" : "Dictate"}
+              >
+                {listening ? <MicOff size={15} /> : <Mic size={15} />}
+              </button>
+            </Tooltip>
+          )}
+          {apiKey && (text.trim() || beforePolish !== null) && (
+            <div className="flex flex-wrap items-center justify-end gap-1.5 mt-1.5 no-print">
+              {polishError && (
+                <span className="text-[11px] mr-auto" style={{ color: "#dc2626" }}>
+                  {polishError}
+                </span>
+              )}
+              {beforePolish !== null && !polishing && (
+                <Tooltip
+                  content={
+                    lang === "de" ? "Zurück zur Fassung vor dem Glätten" : "Back to the version before polishing"
+                  }
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setValue(beforePolish);
+                      setBeforePolish(null);
+                    }}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px]"
+                    style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+                  >
+                    <Undo2 size={12} /> {lang === "de" ? "Rückgängig" : "Undo"}
+                  </button>
+                </Tooltip>
+              )}
+              <Tooltip
+                content={
+                  lang === "de"
+                    ? "KI bereinigt Diktierfehler, Füllwörter und Satzbau, der Inhalt bleibt. Die ursprüngliche Fassung bleibt im Protokoll wiederherstellbar. Der Text wird dafür an die Claude-API übertragen."
+                    : "AI cleans up dictation errors, filler words and sentence structure; the content stays. The original version remains restorable in the record. The text is sent to the Claude API for this."
+                }
+              >
+                <button
+                  type="button"
+                  onClick={polish}
+                  disabled={polishing || !text.trim()}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium disabled:opacity-50"
+                  style={{ background: "var(--workshop-accent)", color: "white" }}
+                >
+                  {polishing ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+                  {lang === "de" ? "Glätten" : "Polish"}
+                </button>
+              </Tooltip>
+            </div>
           )}
         </div>
       )}

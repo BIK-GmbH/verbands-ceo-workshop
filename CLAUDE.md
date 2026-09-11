@@ -10,14 +10,21 @@ Untertitel; der frühere Untertitel „Der KI-augmentierte Verbands-CEO" entfäl
 Antwort vorwegnimmt). Teilnehmende: Vertreter des **Fachverbands Betonbohren und -sägen
 Deutschland e. V. (FBS)**, Darmstadt (bundesweiter Fachverband).
 
-Veranstalter: **Harald Ostermann · Innovationswerkstatt & Digital Management School** (Moderation,
-federführend) und **Dr. Stefan Reinheimer · BIK GmbH** (Experteninput KI & Digitalisierung).
+Veranstalter: **Harald Ostermann · Innovationswerkstatt & Digital Management School** und
+**Dr. Stefan Reinheimer · BIK GmbH** – beide moderieren gemeinsam; Stefan gibt zusätzlich in Phase 2
+den Experteninput KI & Digitalisierung.
 Logo-Reihenfolge überall: FBS prominent, dann Innovationswerkstatt, Digital Management School, BIK.
 
-**Herstellerneutrale, ergebnisoffene Beratungsveranstaltung, keine BIK-Werbung.** Keine Vorstellung
-der BIK-Suite, keine Produkt- oder Anbieterempfehlung, keine vorweggenommene Antwort auf die
-Leitfrage. Höchstens klar als optional markierte Demo-Slots. Verbindliche inhaltliche Referenz:
-`docs/workshop-konzept.md` (Rahmen, Grundprinzipien, Zeitplan, Phasen).
+**Rein strategische, ergebnisoffene Veranstaltung, keine BIK-Werbung und keine Tool-Auswahl.** Keine
+Vorstellung der BIK-Suite, keine Produkt-/Anbieterempfehlung, keine Marktsichtung oder
+Auswahlkriterien, keine vorweggenommene Antwort auf die Leitfrage. Demos nur als optionale Slots
+(02.06, 07.05). **Keine demonstrativen Disclaimer** („keine Empfehlung", „eine von mehreren
+Möglichkeiten" usw.) – die wirken krampfhaft und erreichen das Gegenteil. Arbeitsformen: diskussions-
+orientiert, Plenum als Grundform, dazu Stillarbeit (Karten), Kleingruppen/Paare und die Einzelinterviews in
+Phase 1; keine Festlegung auf Punkte-Kleben. Ergebnisse kommen effizient in die Plattform: Karten reihum
+vorlesen im Karten-Modus (`CardCollector`, jede Sprechpause = eine Karte), Kleingruppen stellen im Plenum
+vor und die Moderation diktiert/tippt in die Eingabefelder. Wilma nicht als Menüpunkt/Überschrift (Phase 4 = „Realitätscheck FBS").
+Verbindliche inhaltliche Referenz: `docs/workshop-konzept.md` (Rahmen, Grundprinzipien, Zeitplan, Phasen).
 
 Anlass: Früher zwei Geschäftsführer + mehr Assistenz, aus Kostengründen reduziert, Aufgaben kaum
 weniger. Ein früheres Digitalisierungsprojekt („Wilma") schuf keine Akzeptanz, daher große Skepsis

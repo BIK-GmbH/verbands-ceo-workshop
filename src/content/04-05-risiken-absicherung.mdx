@@ -9,8 +9,8 @@ researchedOn: 2026-09-11
 
 <p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
   <I18n
-    de="Typische Risiken in KI-Projekten sind bekannt und beherrschbar, wenn man sie früh benennt. Legt eure Wilma-Learnings aus 04.02 daneben: Welches Risiko hat sich damals schon gezeigt?"
-    en="Typical risks in AI projects are known and manageable if you name them early. Put your Wilma learnings from 04.02 next to them: which risk already showed up back then?"
+    de="Typische Risiken in KI-Projekten sind bekannt und beherrschbar, wenn man sie früh benennt. Legt eure Erfahrungen aus 04.02 daneben: Welches Risiko hat sich damals schon gezeigt?"
+    en="Typical risks in AI projects are known and manageable if you name them early. Put your lessons learned from 04.02 next to them: which risk already showed up back then?"
   />
 </p>
 
@@ -18,12 +18,18 @@ researchedOn: 2026-09-11
   <div style={{ background: "var(--bg-elev)", borderRadius: "10px", padding: "0.9rem 1rem", borderTop: "3px solid var(--workshop-accent)" }}>
     <strong style={{ color: "var(--workshop-accent)", fontSize: "0.8rem", letterSpacing: "0.05em" }}><I18n de="RISIKO 01" en="RISK 01" /></strong>
     <p style={{ margin: "0.3rem 0 0.3rem", fontWeight: 600 }}><I18n de="Unklare Zuständigkeiten" en="Unclear responsibilities" /></p>
-    <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--fg-muted)" }}><I18n de="Niemand gibt verbindlich frei, es entstehen Schattenprozesse." en="Nobody approves bindingly, shadow processes emerge." /></p>
+    <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--fg-muted)" }}><I18n
+      de={<>Niemand gibt verbindlich frei, es entstehen <Hint de="Inoffizielle Abläufe neben dem vereinbarten Weg, z. B. private KI-Konten oder ungeprüfte Texte, die trotzdem hinausgehen. Sie entstehen, wenn Regeln und Freigaben fehlen." en="Unofficial processes alongside the agreed route, e.g. private AI accounts or unchecked texts that go out anyway. They emerge when rules and approvals are missing.">Schattenprozesse</Hint>.</>}
+      en={<>Nobody approves bindingly, <Hint de="Inoffizielle Abläufe neben dem vereinbarten Weg, z. B. private KI-Konten oder ungeprüfte Texte, die trotzdem hinausgehen. Sie entstehen, wenn Regeln und Freigaben fehlen." en="Unofficial processes alongside the agreed route, e.g. private AI accounts or unchecked texts that go out anyway. They emerge when rules and approvals are missing.">shadow processes</Hint> emerge.</>}
+    /></p>
   </div>
   <div style={{ background: "var(--bg-elev)", borderRadius: "10px", padding: "0.9rem 1rem", borderTop: "3px solid var(--workshop-accent)" }}>
     <strong style={{ color: "var(--workshop-accent)", fontSize: "0.8rem", letterSpacing: "0.05em" }}><I18n de="RISIKO 02" en="RISK 02" /></strong>
     <p style={{ margin: "0.3rem 0 0.3rem", fontWeight: 600 }}><I18n de="Schlechte Ausgangsdaten" en="Poor source data" /></p>
-    <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--fg-muted)" }}><I18n de="Veraltete oder lückenhafte Quellen führen zu plausiblen, aber falschen Antworten." en="Outdated or incomplete sources lead to plausible but wrong answers." /></p>
+    <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--fg-muted)" }}><I18n
+      de={<>Veraltete oder lückenhafte Quellen führen zu <Hint de="KI-Modelle formulieren flüssig, auch wenn die Grundlage fehlt oder veraltet ist. Abhilfe: Antworten nur mit Quellenangabe und Freigabe durch einen Menschen." en="AI models write fluently even when the basis is missing or outdated. Remedy: answers only with a source reference and approval by a human.">plausiblen, aber falschen Antworten</Hint>.</>}
+      en={<>Outdated or incomplete sources lead to <Hint de="KI-Modelle formulieren flüssig, auch wenn die Grundlage fehlt oder veraltet ist. Abhilfe: Antworten nur mit Quellenangabe und Freigabe durch einen Menschen." en="AI models write fluently even when the basis is missing or outdated. Remedy: answers only with a source reference and approval by a human.">plausible but wrong answers</Hint>.</>}
+    /></p>
   </div>
   <div style={{ background: "var(--bg-elev)", borderRadius: "10px", padding: "0.9rem 1rem", borderTop: "3px solid var(--workshop-accent)" }}>
     <strong style={{ color: "var(--workshop-accent)", fontSize: "0.8rem", letterSpacing: "0.05em" }}><I18n de="RISIKO 03" en="RISK 03" /></strong>
@@ -44,8 +50,8 @@ researchedOn: 2026-09-11
 
 <NoteCard variant="tip">
   <I18n
-    de="Mögliche Erfolgsfaktoren als Anregung: eine benannte fachliche Verantwortung im Verband · Wissensverantwortliche je Kernbereich · ein definierter Freigabekreis · klein starten mit sichtbarem Nutzen · Mitglieder früh einbinden · Pflege und regelmäßiges Review fest einplanen."
-    en="Possible success factors as a prompt: a named business owner in the association · knowledge owners per core area · a defined approval circle · start small with visible benefit · involve members early · plan maintenance and regular reviews firmly."
+    de={<>Mögliche Erfolgsfaktoren als Anregung: eine benannte fachliche Verantwortung im Verband · <Hint de="Eine benannte Person je Themenfeld, z. B. Normen, Seminare, Beschlüsse, die Inhalte aktuell hält und Änderungen freigibt." en="A named person per topic area, e.g. standards, seminars, resolutions, who keeps content up to date and approves changes.">Wissensverantwortliche je Kernbereich</Hint> · ein definierter <Hint de="Eine kleine, feste Gruppe, die entscheidet, was die KI nutzen und nach außen geben darf. Kurze Wege statt Abstimmung im gesamten Gremium." en="A small, fixed group that decides what the AI may use and pass on externally. Short routes instead of a vote in the full committee.">Freigabekreis</Hint> · klein starten mit sichtbarem Nutzen · Mitglieder früh einbinden · Pflege und regelmäßiges Review fest einplanen.</>}
+    en={<>Possible success factors as a prompt: a named business owner in the association · <Hint de="Eine benannte Person je Themenfeld, z. B. Normen, Seminare, Beschlüsse, die Inhalte aktuell hält und Änderungen freigibt." en="A named person per topic area, e.g. standards, seminars, resolutions, who keeps content up to date and approves changes.">knowledge owners per core area</Hint> · a defined <Hint de="Eine kleine, feste Gruppe, die entscheidet, was die KI nutzen und nach außen geben darf. Kurze Wege statt Abstimmung im gesamten Gremium." en="A small, fixed group that decides what the AI may use and pass on externally. Short routes instead of a vote in the full committee.">approval circle</Hint> · start small with visible benefit · involve members early · plan maintenance and regular reviews firmly.</>}
   />
 </NoteCard>
 

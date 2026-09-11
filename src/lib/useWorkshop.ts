@@ -17,7 +17,7 @@ export function useAllEntries(): CaptureEntry[] {
   return useSyncExternalStore(subscribe, getAllEntries, getAllEntries);
 }
 
-/** Live workshop meta (title/date/participants). */
+/** Live workshop meta (title/date/participants/participantsList). */
 export function useWorkshopMeta(): [WorkshopMeta, (p: Partial<WorkshopMeta>) => void] {
   const meta = useSyncExternalStore(subscribe, getMeta, getMeta);
   return [meta, setMeta];
