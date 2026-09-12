@@ -23,8 +23,8 @@ researchedOn: 2026-09-11
 
 <ExerciseCard duration="20 Min" title={{ de: "Lernrunde: eigene Erfahrungen", en: "Learning round: our own experience" }}>
   <I18n
-    de="Drei Fragen, in dieser Reihenfolge: 1. Was ist bei Wilma gelungen? 2. Wo lagen die Herausforderungen? 3. Was lernen wir daraus, was machen wir diesmal anders? Moderierte Runde im Plenum, jede Person kommt zu Wort, wir halten die Stichworte gemeinsam fest."
-    en="Three questions, in this order: 1. What worked with Wilma? 2. Where were the challenges? 3. What do we learn from it, what do we do differently this time? Facilitated round in plenary, everyone gets a say, we capture the keywords together."
+    de="Drei Fragen als Rahmen, in dieser Reihenfolge: 1. Was ist bei Wilma gelungen? 2. Wo lagen die Herausforderungen? 3. Was lernen wir daraus, was machen wir diesmal anders? Wenn uns eine weitere Frage wichtig ist, nehmen wir sie dazu. Offene Runde im Plenum, jede Person kommt zu Wort, wir halten die Stichworte gemeinsam fest."
+    en="Three questions as a frame, in this order: 1. What worked with Wilma? 2. Where were the challenges? 3. What do we learn from it, what do we do differently this time? If another question matters to us, we add it. Open round in plenary, everyone gets a say, we capture the keywords together."
   />
 </ExerciseCard>
 
@@ -72,7 +72,16 @@ researchedOn: 2026-09-11
   field="wilma-dimension"
   prompt="Wo lag das Hauptproblem?"
   kind="checklist"
-  options={["Technik", "Akzeptanz", "Nutzung", "Plattform", "Organisation"]}
+  options={["Technik", "Akzeptanz", "Nutzung", "Plattform", "Organisation", "Sonstiges"]}
+/>
+
+<WorkshopInput
+  slideId="04.02"
+  field="wilma-dimension-sonstiges"
+  prompt="Sonstiges – was genau?"
+  kind="text"
+  rows={2}
+  placeholder="Nur ausfüllen, wenn oben „Sonstiges“ markiert ist …"
 />
 
 <WorkshopInput

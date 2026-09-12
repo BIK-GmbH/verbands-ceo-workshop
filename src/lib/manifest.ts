@@ -13,10 +13,13 @@ export const MANIFEST: ModuleMeta[] = [
     title: { de: "Auftakt: Die Leitfrage", en: "Kickoff: The key question" },
     description: { de: "Tag 1 · 12:45–13:00", en: "Day 1 · 12:45–13:00" },
     slides: [
+      // The round of introductions opens the workshop, before the title slide.
+      { id: "00.04", module: 0, slide: 4, title: { de: "Vorstellungsrunde", en: "Round of introductions" } },
       { id: "00.01", module: 0, slide: 1, title: { de: "KI-Geschäftsführer: Fiktion oder Realität?", en: "AI managing director: fiction or reality?" } },
       { id: "00.02", module: 0, slide: 2, title: { de: "Willkommen", en: "Welcome" } },
       { id: "00.03", module: 0, slide: 3, title: { de: "Warum wir hier sind", en: "Why we are here" } },
-      { id: "00.04", module: 0, slide: 4, title: { de: "Vorstellungsrunde", en: "Round of introductions" } },
+      // Starting context: what the association actually does today — belongs before the key question.
+      { id: "00.09", module: 0, slide: 9, title: { de: "Was der FBS heute leistet", en: "What the FBS does today" } },
       { id: "00.05", module: 0, slide: 5, title: { de: "Die Leitfrage & unser Weg", en: "The key question & our path" } },
       { id: "00.06", module: 0, slide: 6, title: { de: "Agenda der zwei Tage", en: "Agenda of the two days" } },
       { id: "00.07", module: 0, slide: 7, title: { de: "So arbeiten wir: Poster, Protokoll, KI-Werkzeuge", en: "How we work: posters, record, AI tools" } },
@@ -43,7 +46,12 @@ export const MANIFEST: ModuleMeta[] = [
     slides: [
       { id: "02.01", module: 2, slide: 1, title: { de: "Phase 2: Was wäre möglich?", en: "Phase 2: What would be possible?" } },
       { id: "02.02", module: 2, slide: 2, title: { de: "Heute · Morgen · Übermorgen", en: "Today · tomorrow · the day after" } },
-      { id: "02.03", module: 2, slide: 3, title: { de: "Lösungskategorien & Auswahlkriterien", en: "Solution categories & selection criteria" } },
+      // Knowledge before tools: the foundation every kind of AI support builds on.
+      { id: "02.09", module: 2, slide: 9, title: { de: "Wissen als Grundlage", en: "Knowledge as the foundation" } },
+      { id: "02.10", module: 2, slide: 10, title: { de: "Wissensplattform: Talk & Work with your Knowledge", en: "Knowledge platform: talk and work with your knowledge" } },
+      { id: "02.11", module: 2, slide: 11, title: { de: "RAG und K-RAG: Dokumente oder semantisches Netz", en: "RAG and K-RAG: documents or semantic network" } },
+      { id: "02.03", module: 2, slide: 3, title: { de: "Arten von KI-Unterstützung", en: "Types of AI support" } },
+      { id: "02.12", module: 2, slide: 12, title: { de: "Cloud-LLM oder lokales LLM", en: "Cloud LLM or local LLM" } },
       { id: "02.04", module: 2, slide: 4, title: { de: "Was KI in der Verbandsarbeit leisten kann", en: "What AI can do in association work" } },
       { id: "02.05", module: 2, slide: 5, title: { de: "Grenzen & Voraussetzungen", en: "Limits & prerequisites" } },
       { id: "02.06", module: 2, slide: 6, title: { de: "Optional: Live-Demo – so kann das aussehen", en: "Optional: live demo – what it can look like" } },
@@ -112,6 +120,8 @@ export const MANIFEST: ModuleMeta[] = [
       { id: "07.04", module: 7, slide: 4, title: { de: "Beschluss: unser nächster Schritt", en: "Decision: our next step" } },
       { id: "07.05", module: 7, slide: 5, title: { de: "Poster-Galerie & Protokoll", en: "Poster gallery & record" } },
       { id: "07.06", module: 7, slide: 6, title: { de: "Nächste Schritte direkt nach der Sitzung", en: "Next steps right after the session" } },
+      // Closing slide of the whole workshop: thanks and feedback — before the appendix.
+      { id: "07.07", module: 7, slide: 7, title: { de: "Danke – und wie geht es weiter?", en: "Thank you – and what comes next?" } },
     ],
   },
   {
@@ -119,9 +129,7 @@ export const MANIFEST: ModuleMeta[] = [
     title: { de: "Anhang", en: "Appendix" },
     slides: [
       { id: "99.01", module: 99, slide: 1, title: { de: "Glossar", en: "Glossary" } },
-      { id: "99.02", module: 99, slide: 2, title: { de: "Was der FBS heute leistet", en: "What the FBS does today" } },
       { id: "99.03", module: 99, slide: 3, title: { de: "Quellen", en: "Sources" } },
-      { id: "99.04", module: 99, slide: 4, title: { de: "Changelog", en: "Changelog" } },
     ],
   },
 ];

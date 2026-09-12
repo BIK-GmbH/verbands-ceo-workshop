@@ -10,6 +10,8 @@
  * the facilitator opts into the AI assistant (see ai-assist.ts).
  */
 
+import { formatCardLine } from "./cards";
+
 export type CaptureKind = "text" | "decision" | "vote" | "checklist";
 
 export interface CaptureEntry {
@@ -246,7 +248,7 @@ export function subscribe(cb: () => void): () => void {
 }
 
 function valueToText(v: CaptureEntry["value"]): string {
-  return Array.isArray(v) ? v.join(", ") : v;
+  return Array.isArray(v) ? v.map(formatCardLine).join(", ") : v;
 }
 
 /** Structured Markdown protocol — input for the /konzept-neu regeneration skill. */

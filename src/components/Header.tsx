@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Menu, Play, Search, Sun, Moon, ClipboardList, Settings as SettingsIcon } from "lucide-react";
+import { Menu, Play, Search, Sun, Moon, ClipboardList, LayoutGrid, Mic, Settings as SettingsIcon } from "lucide-react";
 import { useApiKey } from "@/lib/ai-assist";
 import type { Lang, Theme } from "@/types/slide";
 import { t } from "@/lib/i18n";
@@ -143,6 +143,42 @@ export function Header({
           <ClipboardList size={16} {...ICON} />
           <span className="hidden sm:inline">{lang === "de" ? "Protokoll" : "Record"}</span>
         </button>
+        </Tooltip>
+
+        <Tooltip
+          content={
+            lang === "de"
+              ? "Poster-Galerie: die Poster der sieben Phasen ansehen, bearbeiten und drucken, von A4 bis A0, auch als leere Vorlage."
+              : "Poster gallery: view, edit and print the posters of the seven phases, from A4 to A0, also as a blank template."
+          }
+        >
+          <Link
+            to="/poster"
+            className={`inline-flex items-center gap-2 px-3 h-9 rounded-md transition-colors text-xs font-semibold ${SOFT_HOVER}`}
+            style={{ ...SOFT, color: "inherit", textDecoration: "none" }}
+            aria-label={lang === "de" ? "Poster-Galerie" : "Poster gallery"}
+          >
+            <LayoutGrid size={16} {...ICON} />
+            <span className="hidden lg:inline">Poster</span>
+          </Link>
+        </Tooltip>
+
+        <Tooltip
+          content={
+            lang === "de"
+              ? "KI-Interviews: Einzelinterviews aufnehmen oder hochladen, transkribieren und daraus die Meinungsbilder erstellen."
+              : "AI interviews: record or upload one-to-one interviews, transcribe them and create the opinion pictures."
+          }
+        >
+          <Link
+            to="/interviews"
+            className={`inline-flex items-center gap-2 px-3 h-9 rounded-md transition-colors text-xs font-semibold ${SOFT_HOVER}`}
+            style={{ ...SOFT, color: "inherit", textDecoration: "none" }}
+            aria-label={lang === "de" ? "KI-Interviews" : "AI interviews"}
+          >
+            <Mic size={16} {...ICON} />
+            <span className="hidden xl:inline">Interviews</span>
+          </Link>
         </Tooltip>
 
         <Tooltip

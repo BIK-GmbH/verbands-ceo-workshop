@@ -9,10 +9,12 @@ researchedOn: 2026-09-11
 
 <p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
   <I18n
-    de="Fünf denkbare Aufstellungen, bewusst ohne Preise. Bewertet jedes Szenario je Kriterium mit ＋ (günstig), ○ (neutral) oder − (ungünstig)."
-    en="Five conceivable setups, deliberately without prices. Rate each scenario per criterion with ＋ (favourable), ○ (neutral) or − (unfavourable)."
+    de="Fünf denkbare Aufstellungen, bewusst ohne Preise. Wir bewerten jedes Szenario je Kriterium mit ＋ (günstig), ○ (neutral) oder − (ungünstig). Fehlt uns ein Kriterium, nehmen wir es dazu."
+    en="Five conceivable setups, deliberately without prices. We rate each scenario per criterion with ＋ (favourable), ○ (neutral) or − (unfavourable). If we are missing a criterion, we add it."
   />
 </p>
+
+<ZoomBox title="Vergleichsszenarien" titleEn="Comparison scenarios">
 
 <De>
 
@@ -23,7 +25,7 @@ researchedOn: 2026-09-11
 | Neue Vollzeit-Geschäftsführung | … | … | … | … |
 | Teilzeit-Geschäftsführung mit KI-Unterstützung | … | … | … | … |
 | <Hint de="Ein externer Dienstleister, etwa eine Verbandsagentur, übernimmt die Geschäftsstelle ganz oder in Teilen gegen Honorar." en="An external provider, such as an association management agency, runs the office in full or in part for a fee.">Externe Geschäftsstellen-Dienstleistung</Hint> | … | … | … | … |
-| Euer eigenes Szenario | … | … | … | … |
+| Unser eigenes Szenario | … | … | … | … |
 
 </De>
 
@@ -36,9 +38,11 @@ researchedOn: 2026-09-11
 | New full-time management | … | … | … | … |
 | Part-time management with AI support | … | … | … | … |
 | <Hint de="Ein externer Dienstleister, etwa eine Verbandsagentur, übernimmt die Geschäftsstelle ganz oder in Teilen gegen Honorar." en="An external provider, such as an association management agency, runs the office in full or in part for a fee.">External office service</Hint> | … | … | … | … |
-| Your own scenario | … | … | … | … |
+| Our own scenario | … | … | … | … |
 
 </En>
+
+</ZoomBox>
 
 <h3><I18n de="Arbeitshypothese: „Die Investition rechnet sich innerhalb von drei Jahren.“" en="Working hypothesis: “The investment pays off within three years.”" /></h3>
 
@@ -51,7 +55,7 @@ researchedOn: 2026-09-11
     de={<><Hint de="Zum Beispiel Einrichtung, Aufbereitung der Wissensquellen, Schulung und Begleitung in der Einführung." en="For example set-up, preparing the knowledge sources, training and support during roll-out.">einmalige Kosten</Hint> (€) + <Hint de="Zum Beispiel Nutzungs- und Lizenzgebühren, Pflege der Wissensbasis, Betreuung und regelmäßige Überprüfung." en="For example usage and licence fees, maintaining the knowledge base, support and regular reviews.">laufende Kosten</Hint> (€/Monat) × 36</>}
     en={<><Hint de="Zum Beispiel Einrichtung, Aufbereitung der Wissensquellen, Schulung und Begleitung in der Einführung." en="For example set-up, preparing the knowledge sources, training and support during roll-out.">one-off costs</Hint> (€) + <Hint de="Zum Beispiel Nutzungs- und Lizenzgebühren, Pflege der Wissensbasis, Betreuung und regelmäßige Überprüfung." en="For example usage and licence fees, maintaining the knowledge base, support and regular reviews.">running costs</Hint> (€/month) × 36</>}
   /></div>
-  <div style={{ color: "var(--fg-muted)", marginTop: "0.3rem" }}><I18n de="Die Hypothese hält, wenn der Nutzen die Kosten mindestens deckt. Rechnet zweimal: einmal mit vorsichtigen, einmal mit optimistischen Annahmen." en="The hypothesis holds if the benefit at least covers the cost. Calculate twice: once with cautious and once with optimistic assumptions." /></div>
+  <div style={{ color: "var(--fg-muted)", marginTop: "0.3rem" }}><I18n de="Die Hypothese hält, wenn der Nutzen die Kosten mindestens deckt. Wir rechnen zweimal: einmal mit vorsichtigen, einmal mit optimistischen Annahmen." en="The hypothesis holds if the benefit at least covers the cost. We calculate twice: once with cautious and once with optimistic assumptions." /></div>
 </div>
 
 <WorkshopInput

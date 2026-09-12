@@ -16,6 +16,7 @@ import {
   RotateCcw,
   Sparkles,
   Trash2,
+  Wand2,
   X,
 } from "lucide-react";
 import "@/styles/poster.css";
@@ -25,7 +26,18 @@ import { useAllEntries, useWorkshopMeta } from "@/lib/useWorkshop";
 import { describeAiError, useApiKey } from "@/lib/ai-assist";
 import { AiKeySetup } from "@/components/ProtocolAi";
 import { PosterSheet } from "@/components/PosterSheet";
-import { POSTERS, SHEET_PX, findPoster, pageMm, type Orientation, type PaperFormat, type PosterDef } from "@/lib/posters";
+import {
+  POSTERS,
+  SHEET_PX,
+  filledCount,
+  findPoster,
+  pageMm,
+  posterDate,
+  posterValues,
+  type Orientation,
+  type PaperFormat,
+  type PosterDef,
+} from "@/lib/posters";
 import {
   resetPosterFields,
   setPosterField,
@@ -36,7 +48,8 @@ import {
   usePosterPrefs,
   type PosterDraft,
 } from "@/lib/poster-store";
-import { condensePoster } from "@/lib/poster-ai";
+import { condensePoster, draftPoster } from "@/lib/poster-ai";
+import { lastSlidePath } from "@/lib/last-slide";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 type Mode = "content" | "blank";
@@ -58,23 +71,9 @@ function useProtocolValues(): Record<string, string> {
 }
 
 /** Poster wording wins over the record; a blank template shows nothing at all. */
-function posterValues(def: PosterDef, protocol: Record<string, string>, draft: PosterDraft | undefined, mode: Mode) {
-  const out: Record<string, string> = {};
-  for (const f of def.fields) {
-    out[f.entryId] = mode === "blank" ? "" : (draft?.fields[f.entryId] ?? protocol[f.entryId] ?? "");
-  }
-  return out;
-}
-
-const filledCount = (def: PosterDef, values: Record<string, string>) =>
-  def.fields.filter((f) => values[f.entryId]?.trim()).length;
-
-function displayDate(iso: string, lang: Lang): string {
-  const d = iso ? new Date(`${iso}T12:00:00`) : null;
-  if (d && !Number.isNaN(d.getTime())) {
-    return d.toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
-  }
-  return lang === "de" ? "16./17. September 2026" : "16–17 September 2026";
+function sheetValues(def: PosterDef, protocol: Record<string, string>, draft: PosterDraft | undefined, mode: Mode) {
+  if (mode === "blank") return Object.fromEntries(def.fields.map((f) => [f.entryId, ""]));
+  return posterValues(def, protocol, draft?.fields);
 }
 
 /** Downscales to at most `max` px on the long side and re-encodes as JPEG (keeps localStorage small). */
@@ -103,10 +102,11 @@ async function downscaleImage(file: File, max: number): Promise<string> {
   }
 }
 
-function PageHeader({ lang, fallback, title, children }: { lang: Lang; fallback: string; title: string; children?: ReactNode }) {
+function PageHeader({ lang, title, children }: { lang: Lang; title: string; children?: ReactNode }) {
   const navigate = useNavigate();
   const de = lang === "de";
-  // Same behaviour as the record page: back into the deck if we came from there.
+  // Same behaviour as the record page: back into the deck if we came from there,
+  // otherwise to the slide last shown.
   const canGoBack = ((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0;
   return (
     <header
@@ -115,7 +115,7 @@ function PageHeader({ lang, fallback, title, children }: { lang: Lang; fallback:
     >
       <button
         type="button"
-        onClick={() => (canGoBack ? navigate(-1) : navigate(fallback))}
+        onClick={() => (canGoBack ? navigate(-1) : navigate(lastSlidePath()))}
         className="inline-flex items-center gap-2 text-sm font-medium rounded-md px-2.5 h-9 transition-colors hover:bg-[color-mix(in_oklch,var(--fg)_11%,transparent)]"
         style={{ background: "color-mix(in oklch, var(--fg) 6%, transparent)", border: "1px solid var(--border)" }}
       >
@@ -142,14 +142,14 @@ function Gallery({ lang }: { lang: Lang }) {
   const protocol = useProtocolValues();
   const drafts = usePosterDrafts();
   const [meta] = useWorkshopMeta();
-  const date = displayDate(meta.date, lang);
+  const date = posterDate(meta.date, lang);
 
   return (
     <div className="poster-page" style={{ background: "var(--bg)", color: "var(--fg)", minHeight: "100svh" }}>
-      <PageHeader lang={lang} fallback="/s/07.05" title={de ? "Poster-Galerie" : "Poster gallery"} />
+      <PageHeader lang={lang} title={de ? "Poster-Galerie" : "Poster gallery"} />
       <main className="max-w-6xl mx-auto px-5 sm:px-8 py-8">
         <h1 className="text-3xl font-semibold mb-2" style={{ color: "var(--workshop-accent)" }}>
-          {de ? "Die sieben Poster" : "The seven posters"}
+          {de ? "Die sieben Poster – und das Filmplakat" : "The seven posters – and the movie poster"}
         </h1>
         <p className="text-sm mb-2 max-w-3xl" style={{ color: "var(--fg)" }}>
           <strong>
@@ -160,12 +160,12 @@ function Gallery({ lang }: { lang: Lang }) {
         </p>
         <p className="text-sm mb-7 max-w-3xl" style={{ color: "var(--fg-muted)" }}>
           {de
-            ? "Jede Phase endet mit einem Poster. Die Inhalte kommen aus den Eingaben auf den Poster-Folien und dem Protokoll. Jedes Poster lässt sich mit Inhalten oder als leere Vorlage zum Ausfüllen an der Wand drucken, von A4 bis A0."
-            : "Every phase ends with a poster. The content comes from the inputs on the poster slides and the record. Each poster can be printed with content or as a blank template to fill in on the wall, from A4 to A0."}
+            ? "Jede Phase endet mit einem Poster. Die Inhalte kommen aus den Eingaben auf den Poster-Folien und dem Protokoll. Jedes Poster lässt sich mit Inhalten oder als leere Vorlage zum Ausfüllen an der Wand drucken, von A4 bis A0. Das achte Blatt ist ein Sonderformat: das Filmplakat zum Workshop, dunkel und im Kinoformat."
+            : "Every phase ends with a poster. The content comes from the inputs on the poster slides and the record. Each poster can be printed with content or as a blank template to fill in on the wall, from A4 to A0. The eighth sheet is a special format: the movie poster for the workshop, dark and cinematic."}
         </p>
         <div className="grid gap-5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))" }}>
           {POSTERS.map((def) => {
-            const values = posterValues(def, protocol, drafts[def.key], "content");
+            const values = sheetValues(def, protocol, drafts[def.key], "content");
             const filled = filledCount(def, values);
             const total = def.fields.length;
             return (
@@ -174,7 +174,11 @@ function Gallery({ lang }: { lang: Lang }) {
                 to={`/poster/${def.key}`}
                 data-poster-tile={def.key}
                 className="rounded-lg border overflow-hidden flex flex-col transition-shadow hover:shadow-lg hover:no-underline"
-                style={{ borderColor: "var(--border)", background: "var(--bg-elev)", color: "var(--fg)" }}
+                style={{
+                  borderColor: def.special ? "var(--workshop-accent)" : "var(--border)",
+                  background: "var(--bg-elev)",
+                  color: "var(--fg)",
+                }}
               >
                 <div
                   className="flex justify-center py-4"
@@ -194,7 +198,7 @@ function Gallery({ lang }: { lang: Lang }) {
                 </div>
                 <div className="p-4 flex flex-col gap-1.5 flex-1">
                   <div className="text-xs font-bold tracking-wider uppercase" style={{ color: "var(--workshop-accent)" }}>
-                    Phase {def.phase}
+                    {def.special ? (def.badge?.[lang] ?? (de ? "Sonderformat" : "Special format")) : `Phase ${def.phase}`}
                   </div>
                   <div className="font-semibold leading-snug">{def.title[lang]}</div>
                   <div className="text-sm leading-snug" style={{ color: "var(--fg-muted)" }}>
@@ -254,6 +258,7 @@ function ToolButton({
   active,
   primary,
   title,
+  nativeHint,
   children,
 }: {
   onClick: () => void;
@@ -261,6 +266,8 @@ function ToolButton({
   active?: boolean;
   primary?: boolean;
   title?: string;
+  /** Explain via the browser's own title attribute instead of the tooltip bubble. */
+  nativeHint?: boolean;
   children: ReactNode;
 }) {
   const style = primary
@@ -268,20 +275,28 @@ function ToolButton({
     : active
       ? { background: "color-mix(in oklch, var(--workshop-accent) 14%, transparent)", color: "var(--workshop-accent)", border: "1px solid var(--workshop-accent)" }
       : { color: "var(--fg)", border: "1px solid var(--border)" };
-  return (
-    <Tooltip content={title}>
-      <button
-        type="button"
-        onClick={onClick}
-        disabled={disabled}
-        aria-pressed={active}
-        className="inline-flex items-center gap-1.5 px-2.5 h-8 rounded-md text-xs font-medium shrink-0 disabled:opacity-50 transition-colors"
-        style={style}
-      >
-        {children}
-      </button>
-    </Tooltip>
+  const button = (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-pressed={active}
+      title={nativeHint ? title : undefined}
+      className="inline-flex items-center gap-1.5 px-2.5 h-8 rounded-md text-xs font-medium shrink-0 disabled:opacity-50 transition-colors"
+      style={style}
+    >
+      {children}
+    </button>
   );
+  return nativeHint ? button : <Tooltip content={title}>{button}</Tooltip>;
+}
+
+/** One proposed field of a draft: what the AI suggests and what it would replace. */
+interface ProposedField {
+  entryId: string;
+  label: string;
+  text: string;
+  replaces: string;
 }
 
 function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
@@ -293,8 +308,14 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
   const [meta] = useWorkshopMeta();
   const apiKey = useApiKey();
   const [mode, setMode] = useState<Mode>("content");
+  // Posters may open in their own paper size (the film poster does); changing it
+  // still updates the shared print settings.
+  const [formatChoice, setFormatChoice] = useState<PaperFormat | null>(def.defaultFormat ?? null);
   const [editing, setEditing] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<"condense" | "draft" | null>(null);
+  // A draft from the record is shown first and only written on "Übernehmen".
+  const [proposal, setProposal] = useState<ProposedField[] | null>(null);
+  const [picked, setPicked] = useState<Record<string, boolean>>({});
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [keySetup, setKeySetup] = useState(false);
@@ -303,10 +324,17 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const values = posterValues(def, protocol, draft, mode);
+  const entries = useAllEntries();
+  // What the poster says with content — also while a blank template is on screen,
+  // so a draft never mistakes the empty template for empty fields.
+  const contentValues = posterValues(def, protocol, draft?.fields);
+  const values = mode === "blank" ? sheetValues(def, protocol, draft, mode) : contentValues;
   const overrides = Object.keys(draft?.fields ?? {}).length;
-  const [sw, sh] = SHEET_PX[prefs.orientation];
-  const [pw, ph] = pageMm(prefs.format, prefs.orientation);
+  const chosen = proposal?.filter((f) => picked[f.entryId]) ?? [];
+  const format = formatChoice ?? prefs.format;
+  const orientation = def.fixedOrientation ?? prefs.orientation;
+  const [sw, sh] = SHEET_PX[orientation];
+  const [pw, ph] = pageMm(format, orientation);
   // A hair under the page box so rounding can never spill onto a second page.
   const printZoom = Math.min((pw * MM_TO_PX) / sw, (ph * MM_TO_PX) / sh) * 0.995;
   const fitWidth = avail.w / sw;
@@ -351,6 +379,7 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
   };
 
   const changePrefs = (patch: Parameters<typeof setPosterPrefs>[0]) => {
+    if (patch.format) setFormatChoice(patch.format);
     save(() => setPosterPrefs(patch));
   };
 
@@ -373,6 +402,7 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
   const condense = async () => {
     setError("");
     setNotice("");
+    setProposal(null);
     if (!apiKey) {
       setKeySetup(true);
       return;
@@ -391,7 +421,7 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
     ) {
       return;
     }
-    setBusy(true);
+    setBusy("condense");
     try {
       const out = await condensePoster(def, inputs);
       if (save(() => setPosterFields(def.key, out))) {
@@ -406,7 +436,64 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
     } catch (err) {
       setError(describeAiError(err, lang));
     } finally {
-      setBusy(false);
+      setBusy(null);
+    }
+  };
+
+  /**
+   * Proposes a whole poster from everything captured up to this phase. The result
+   * is shown as a draft only: nothing is stored until "Übernehmen", and fields
+   * that already say something are not pre-selected.
+   */
+  const propose = async () => {
+    setError("");
+    setNotice("");
+    setProposal(null);
+    if (!apiKey) {
+      setKeySetup(true);
+      return;
+    }
+    setBusy("draft");
+    try {
+      const out = await draftPoster(def, entries, { current: contentValues });
+      const fields: ProposedField[] = def.fields
+        .filter((f) => f.kind === "text" && out[f.entryId])
+        .map((f) => ({
+          entryId: f.entryId,
+          label: f.label[lang],
+          text: out[f.entryId],
+          replaces: (contentValues[f.entryId] ?? "").trim(),
+        }));
+      if (fields.length === 0) {
+        setError(
+          de
+            ? "Aus dem Protokoll lässt sich für dieses Poster noch kein Entwurf ableiten – dafür ist bisher zu wenig erfasst."
+            : "No draft can be derived from the record for this poster yet – too little has been captured so far.",
+        );
+        return;
+      }
+      setProposal(fields);
+      // Empty fields are filled, filled fields only on an explicit tick.
+      setPicked(Object.fromEntries(fields.map((f) => [f.entryId, !f.replaces])));
+      setMode("content");
+    } catch (err) {
+      setError(describeAiError(err, lang));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const applyProposal = () => {
+    if (chosen.length === 0) return;
+    const fields = Object.fromEntries(chosen.map((f) => [f.entryId, f.text]));
+    if (save(() => setPosterFields(def.key, fields))) {
+      const n = chosen.length;
+      setProposal(null);
+      setNotice(
+        de
+          ? `${n} ${n === 1 ? "Feld" : "Felder"} aus dem Protokoll übernommen. Über „Bearbeiten“ direkt auf dem Poster anpassbar; das Protokoll bleibt unverändert.`
+          : `${n} ${n === 1 ? "field" : "fields"} taken from the record. Adjust directly on the poster via “Edit”; the record stays unchanged.`,
+      );
     }
   };
 
@@ -454,7 +541,7 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
     <div className="poster-page flex flex-col" style={{ background: "var(--bg)", color: "var(--fg)", height: "100svh" }}>
       <style>{`@page { size: ${pw}mm ${ph}mm; margin: 0; }`}</style>
 
-      <PageHeader lang={lang} fallback={`/s/${def.slideId}`} title={`Phase ${def.phase} · ${def.title[lang]}`}>
+      <PageHeader lang={lang} title={def.special ? def.title[lang] : `Phase ${def.phase} · ${def.title[lang]}`}>
         <Link
           to="/poster"
           className="inline-flex items-center gap-2 text-sm rounded-md px-2.5 h-9 transition-colors hover:bg-[color-mix(in_oklch,var(--fg)_8%,transparent)]"
@@ -491,7 +578,7 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
           </div>
           <Segmented<PaperFormat>
             label={de ? "Papierformat" : "Paper size"}
-            value={prefs.format}
+            value={format}
             options={FORMATS.map((f) => ({
               value: f,
               label: f,
@@ -506,15 +593,17 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
             }))}
             onChange={(format) => changePrefs({ format })}
           />
-          <Segmented<Orientation>
-            label={de ? "Ausrichtung" : "Orientation"}
-            value={prefs.orientation}
-            options={[
-              { value: "portrait", label: de ? "Hoch" : "Portrait" },
-              { value: "landscape", label: de ? "Quer" : "Landscape" },
-            ]}
-            onChange={(orientation) => changePrefs({ orientation })}
-          />
+          {!def.fixedOrientation && (
+            <Segmented<Orientation>
+              label={de ? "Ausrichtung" : "Orientation"}
+              value={orientation}
+              options={[
+                { value: "portrait", label: de ? "Hoch" : "Portrait" },
+                { value: "landscape", label: de ? "Quer" : "Landscape" },
+              ]}
+              onChange={(o) => changePrefs({ orientation: o })}
+            />
+          )}
           <Segmented<Mode>
             label={de ? "Inhalt" : "Content"}
             value={mode}
@@ -543,16 +632,35 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
             <Pencil size={14} /> {editing ? (de ? "Fertig" : "Done") : de ? "Bearbeiten" : "Edit"}
           </ToolButton>
           <ToolButton
+            onClick={() => void propose()}
+            disabled={busy !== null}
+            nativeHint
+            title={
+              de
+                ? "Claude liest alle Beiträge dieser und der vorherigen Phasen und schlägt daraus einen vollständigen Posterentwurf vor. Der Entwurf wird erst angezeigt und erst nach „Übernehmen“ gespeichert; Abstimmungen und das Protokoll bleiben unverändert."
+                : "Claude reads all contributions from this and the previous phases and proposes a complete poster draft. The draft is shown first and only stored after “Apply”; votes and the record stay unchanged."
+            }
+          >
+            {busy === "draft" ? <Loader2 size={14} className="animate-spin" /> : <Wand2 size={14} />}
+            {busy === "draft"
+              ? de
+                ? "Entwerfe …"
+                : "Drafting …"
+              : de
+                ? "Aus dem Protokoll vorschlagen"
+                : "Draft from the record"}
+          </ToolButton>
+          <ToolButton
             onClick={condense}
-            disabled={busy}
+            disabled={busy !== null}
             title={
               de
                 ? "Claude kürzt die Protokolltexte je Feld auf posterreife Stichworte. Das Ergebnis ist eine eigene Posterfassung; das Protokoll bleibt unverändert."
                 : "Claude shortens the record texts per field to poster-ready keywords. The result is a separate poster wording; the record stays unchanged."
             }
           >
-            {busy ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-            {busy ? (de ? "Verdichte …" : "Condensing …") : de ? "Mit KI verdichten" : "Condense with AI"}
+            {busy === "condense" ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+            {busy === "condense" ? (de ? "Verdichte …" : "Condensing …") : de ? "Mit KI verdichten" : "Condense with AI"}
           </ToolButton>
           <ToolButton
             onClick={reset}
@@ -596,8 +704,8 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
               primary
               title={
                 de
-                  ? `Genau eine Seite im gewählten Format (${prefs.format}). Im Druckdialog Skalierung „Standard“ und Hintergrundgrafiken aktivieren.`
-                  : `Exactly one page in the chosen format (${prefs.format}). In the print dialog use default scaling and enable background graphics.`
+                  ? `Genau eine Seite im gewählten Format (${format}). Im Druckdialog Skalierung „Standard“ und Hintergrundgrafiken aktivieren.`
+                  : `Exactly one page in the chosen format (${format}). In the print dialog use default scaling and enable background graphics.`
               }
             >
               <Printer size={14} /> {de ? "Drucken / Als PDF speichern" : "Print / save as PDF"}
@@ -625,6 +733,79 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
             {notice}
           </p>
         )}
+        {proposal && (
+          <div
+            className="rounded-md text-xs"
+            style={{ background: "var(--bg-elev)", border: "1px solid var(--workshop-accent)" }}
+            data-poster-proposal
+            role="group"
+            aria-label={de ? "Entwurf aus dem Protokoll" : "Draft from the record"}
+          >
+            <p className="font-semibold px-3 pt-3 pb-2">
+              {de
+                ? `Entwurf aus dem Protokoll: ${proposal.length} ${proposal.length === 1 ? "Vorschlag" : "Vorschläge"}. Noch nichts gespeichert – erst „Übernehmen“ schreibt die angehakten Felder ins Poster.`
+                : `Draft from the record: ${proposal.length} ${proposal.length === 1 ? "suggestion" : "suggestions"}. Nothing is stored yet – only “Apply” writes the ticked fields to the poster.`}
+            </p>
+            {/* Only the list scrolls: the decision buttons stay reachable at the wall. */}
+            <div className="px-3 space-y-2 overflow-y-auto" style={{ maxHeight: "26vh" }}>
+              {proposal.map((f) => (
+                <label key={f.entryId} className="flex gap-2 items-start" data-proposal-field={f.entryId}>
+                  <input
+                    type="checkbox"
+                    checked={Boolean(picked[f.entryId])}
+                    onChange={(e) => setPicked((p) => ({ ...p, [f.entryId]: e.target.checked }))}
+                    className="mt-0.5 shrink-0"
+                    style={{ accentColor: "var(--workshop-accent)" }}
+                  />
+                  <span className="flex-1 min-w-0">
+                    <span className="font-semibold">{f.label}</span>
+                    <span className="block whitespace-pre-wrap leading-snug" data-proposal-text>
+                      {f.text}
+                    </span>
+                    {f.replaces && (
+                      <span className="block mt-1 leading-snug" style={{ color: "var(--fg-muted)" }}>
+                        {de ? "Ersetzt die bisherige Fassung: " : "Replaces the current wording: "}
+                        <span style={{ textDecoration: "line-through" }}>{f.replaces}</span>
+                      </span>
+                    )}
+                  </span>
+                </label>
+              ))}
+            </div>
+            <div className="px-3 pt-2 pb-3 mt-2 space-y-2 border-t" style={{ borderColor: "var(--border)" }}>
+              <p style={{ color: "var(--fg-muted)" }}>
+                {de
+                  ? "Felder, in denen schon etwas steht, sind nicht vorausgewählt – anhaken, wenn der Vorschlag sie ersetzen soll."
+                  : "Fields that already say something are not pre-selected – tick them if the suggestion should replace them."}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={applyProposal}
+                  disabled={chosen.length === 0}
+                  className="px-2.5 py-1 rounded-md font-medium disabled:opacity-50"
+                  style={{ background: "var(--workshop-accent)", color: "white" }}
+                  title={
+                    de
+                      ? "Die angehakten Vorschläge als Posterfassung speichern. Das Protokoll bleibt unverändert."
+                      : "Store the ticked suggestions as the poster wording. The record stays unchanged."
+                  }
+                >
+                  {de ? `Übernehmen (${chosen.length})` : `Apply (${chosen.length})`}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProposal(null)}
+                  className="px-2.5 py-1 rounded-md"
+                  style={{ border: "1px solid var(--border)", color: "var(--fg)" }}
+                  title={de ? "Entwurf verwerfen – das Poster bleibt unverändert." : "Discard the draft – the poster stays unchanged."}
+                >
+                  {de ? "Verwerfen" : "Discard"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <p className="text-[11px]" style={{ color: "var(--fg-muted)" }}>
           {mode === "blank"
             ? de
@@ -638,8 +819,8 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
                 ? "Das Poster zeigt den aktuellen Protokollstand."
                 : "The poster shows the current record."}{" "}
           {de
-            ? `Druck: ${prefs.format} ${prefs.orientation === "portrait" ? "hoch" : "quer"}, genau eine Seite. Im Druckdialog Skalierung „Standard“ und Hintergrundgrafiken aktivieren; A2–A0 als PDF speichern und in der Druckerei ausgeben.`
-            : `Print: ${prefs.format} ${prefs.orientation}, exactly one page. In the print dialog use default scaling and enable background graphics; save A2–A0 as PDF for a print shop.`}
+            ? `Druck: ${format} ${orientation === "portrait" ? "hoch" : "quer"}, genau eine Seite. Im Druckdialog Skalierung „Standard“ und Hintergrundgrafiken aktivieren; A2–A0 als PDF speichern und in der Druckerei ausgeben.`
+            : `Print: ${format} ${orientation}, exactly one page. In the print dialog use default scaling and enable background graphics; save A2–A0 as PDF for a print shop.`}
         </p>
       </div>
 
@@ -651,12 +832,12 @@ function PosterView({ def, lang }: { def: PosterDef; lang: Lang }) {
         <PosterSheet
           def={def}
           lang={lang}
-          orientation={prefs.orientation}
+          orientation={orientation}
           values={values}
           image={mode === "blank" ? undefined : draft?.image}
           editing={editing && mode === "content"}
           onEdit={onEdit}
-          date={displayDate(meta.date, lang)}
+          date={posterDate(meta.date, lang)}
           zoom={zoom}
           printZoom={printZoom}
         />

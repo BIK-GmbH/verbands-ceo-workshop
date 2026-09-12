@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, FileText, Home, ListChecks, Mic, Upload } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import { ALL_SLIDES } from "@/lib/slides";
+import { lastSlidePath } from "@/lib/last-slide";
 import { useInterviews } from "@/lib/interview-store";
 import { InterviewSetup } from "@/components/interviews/InterviewSetup";
 import { InterviewRecorder } from "@/components/interviews/InterviewRecorder";
@@ -30,7 +30,7 @@ export function Interviews() {
 
   // Same back behaviour as the protocol page: return to the slide, else deck start.
   const canGoBack = ((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0;
-  const goBack = () => (canGoBack ? navigate(-1) : navigate(`/s/${ALL_SLIDES[0].id}`));
+  const goBack = () => (canGoBack ? navigate(-1) : navigate(lastSlidePath()));
 
   const tabs: { id: Tab; label: string; icon: typeof Mic; hint: string }[] = [
     {

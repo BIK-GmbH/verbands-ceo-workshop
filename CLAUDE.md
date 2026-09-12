@@ -23,7 +23,7 @@ Möglichkeiten" usw.) – die wirken krampfhaft und erreichen das Gegenteil. Arb
 orientiert, Plenum als Grundform, dazu Stillarbeit (Karten), Kleingruppen/Paare und die Einzelinterviews in
 Phase 1; keine Festlegung auf Punkte-Kleben. Ergebnisse kommen effizient in die Plattform: Karten reihum
 vorlesen im Karten-Modus (`CardCollector`, jede Sprechpause = eine Karte), Kleingruppen stellen im Plenum
-vor und die Moderation diktiert/tippt in die Eingabefelder. Wilma nicht als Menüpunkt/Überschrift (Phase 4 = „Realitätscheck FBS").
+vor und die Moderation diktiert/tippt in die Eingabefelder. **Gemeinsames Wir:** Folientexte sprechen durchgehend von „wir/uns/unsere" statt „ihr/euch/eure", ohne Rollentrennung Moderation ↔ Teilnehmende – wir entwickeln die relevanten Fragen gemeinsam und suchen dann gemeinsam die Antworten (vorgegebene Leitfragen sind Vorschläge, eigene Fragen kommen im Protokoll unter „Eigene Frage / Aufgabe" dazu); SpeakerNotes dürfen weiterhin Harald und Stefan direkt ansprechen. Wilma nicht als Menüpunkt/Überschrift (Phase 4 = „Realitätscheck FBS").
 Verbindliche inhaltliche Referenz: `docs/workshop-konzept.md` (Rahmen, Grundprinzipien, Zeitplan, Phasen).
 
 Anlass: Früher zwei Geschäftsführer + mehr Assistenz, aus Kostengründen reduziert, Aufgaben kaum
@@ -35,7 +35,7 @@ inhaltlich aber komplett ersetzt und um eine **interaktive Erfassungs- und Gener
 erweitert.
 
 - **Format:** zwei Tage, erarbeitend; jede Phase endet mit einer Poster-Folie (Felder `poster-…`); Tag 1 = Module 0–3, Tag 2 = Module 4–7
-- **Module:** 0 Auftakt · 1 Analyse: Need to Move · 2 Vision · 3 Zielbild · 4 Realitätscheck FBS · 5 Wirtschaftlichkeit & Argumentation · 6 Roadmap · 7 Commitment · 99 Anhang (54 Folien, siehe `src/lib/manifest.ts`)
+- **Module:** 0 Auftakt · 1 Analyse: Need to Move · 2 Vision · 3 Zielbild · 4 Realitätscheck FBS · 5 Wirtschaftlichkeit & Argumentation · 6 Roadmap · 7 Commitment · 99 Anhang (58 Folien, siehe `src/lib/manifest.ts`)
 - **Einstieg:** Route `/` ist die Landing Page (`src/routes/Landing.tsx`, Hero `public/brand/hero-ki-beton.webp`); Folien unter `/s/:id`
 - **Login:** Die ganze App liegt hinter einem clientseitigen Soft-Gate (`src/components/LoginGate.tsx`, SHA-256 von `user:passwort`, localStorage-Key `verbands-ceo.auth.v1`). Kein echter Schutz, nur gegen Zufallsbesucher. Für Playwright/Screenshots den Hash per `addInitScript` in localStorage setzen (siehe `scripts/shot.mjs`).
 - **Sprache:** Deutsch-first, EN-Toggle bleibt erhalten

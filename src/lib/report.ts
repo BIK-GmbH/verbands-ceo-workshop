@@ -12,6 +12,7 @@ import { completeText } from "./ai-assist";
 import { MANIFEST, findModule, findSlide } from "./slides";
 import { getState, filledParticipants, type CaptureEntry, type CaptureKind } from "./workshop-store";
 import { hasValue, isAdHoc } from "./protocol-export";
+import { formatCardLine } from "./cards";
 
 /* ------------------------------------------------------------------ prompt */
 
@@ -99,7 +100,7 @@ const attr = (s: string) => s.replace(/["<>\n]/g, " ").trim();
 
 function answerText(e: CaptureEntry): string {
   if (!hasValue(e)) return "(offen)";
-  if (Array.isArray(e.value)) return e.value.map((v) => `\n- ${v}`).join("");
+  if (Array.isArray(e.value)) return e.value.map((v) => `\n- ${formatCardLine(v)}`).join("");
   return e.value.trim();
 }
 

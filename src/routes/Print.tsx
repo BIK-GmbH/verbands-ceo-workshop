@@ -16,8 +16,13 @@ import {
   WorkshopInput,
   ParticipantsList,
   BarometerVotes,
+  ZoomBox,
   CardCollector,
   WorkshopGlossary,
+  GlossaryTable,
+  PosterPreviewPrint,
+  AiSuggest,
+  WhyLadder,
   PrintHint, PrintHintIcon,
 } from "@/components/slide-blocks";
 import { AudioRecorder } from "@/components/AudioRecorder";
@@ -32,9 +37,15 @@ const PrintBarometerVotes = (props: ComponentProps<typeof BarometerVotes>) => <B
 const printMdxComponents = {
   I18n, Lang, De, En, CommandBox, DemoBox, ExerciseCard, NoteCard, SkillCard, SpeakerNotes, YouTubeEmbed,
   Hint: PrintHint, HintIcon: PrintHintIcon,
-  WorkshopInput, AudioRecorder, ParticipantsList: PrintParticipantsList, BarometerVotes: PrintBarometerVotes,
+  WorkshopInput, AudioRecorder, ParticipantsList: PrintParticipantsList, ZoomBox, BarometerVotes: PrintBarometerVotes,
   CardCollector: (props: ComponentProps<typeof CardCollector>) => <CardCollector {...props} readOnly />,
   WorkshopGlossary: () => <WorkshopGlossary readOnly />,
+  // Print gets the full alphabetical glossary, never the search field.
+  GlossaryTable: () => <GlossaryTable readOnly />,
+  // The print view only names the poster; the live preview would bloat every page.
+  PosterPreview: PosterPreviewPrint,
+  AiSuggest: (props: ComponentProps<typeof AiSuggest>) => <AiSuggest {...props} readOnly />,
+  WhyLadder: (props: ComponentProps<typeof WhyLadder>) => <WhyLadder {...props} readOnly />,
 } as Record<string, ComponentType<unknown>>;
 
 /** Linear print view — all slides, no chrome, used by browser print + Playwright PDF export. */

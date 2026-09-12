@@ -1,0 +1,124 @@
+---
+title:
+  de: "Cloud-LLM oder lokales LLM"
+  en: "Cloud LLM or local LLM"
+researchedOn: 2026-09-12
+---
+
+# <I18n de="Cloud-LLM oder lokales LLM" en="Cloud LLM or local LLM" />
+
+<p style={{ fontSize: "1rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1rem" }}>
+  <I18n de="Eine strategische Frage, bevor es um einzelne Werkzeuge geht: Wo läuft das " en="A strategic question before we get to individual tools: where does the " />
+  <Hint
+    de="LLM steht für Large Language Model, ein großes Sprachmodell. Es formuliert Texte, fasst zusammen und beantwortet Fragen. Es ist das Werkzeug — das Wissen liegt woanders."
+    en="LLM stands for large language model. It writes text, summarises and answers questions. It is the tool — the knowledge sits elsewhere."
+  ><I18n de="Sprachmodell (LLM)" en="language model (LLM)" /></Hint>
+  <I18n de=" — beim Anbieter in der Cloud oder als " en=" run — at a provider in the cloud, or as a " />
+  <Hint
+    de="Ein Modell, das auf eigener Hardware in der Geschäftsstelle oder auf klar zugeordneten Servern eines Dienstleisters läuft. Die Inhalte verlassen diese Umgebung nicht."
+    en="A model that runs on our own hardware in the office or on clearly assigned servers at a service provider. Content does not leave that environment."
+  ><I18n de="lokales Modell" en="local model" /></Hint>
+  <I18n de=" auf eigener Hardware in der Geschäftsstelle oder beim Dienstleister? Die Antwort verschiebt nicht nur Technik, sondern Verantwortung, Kosten und Beweglichkeit." en=" on our own hardware in the office or at a service provider? The answer shifts not just technology, but responsibility, cost and flexibility." />
+</p>
+
+<ZoomBox title="Cloud-Modell oder lokales Modell" titleEn="Cloud model or local model">
+
+<De>
+
+| Worum es geht | Cloud-Modell | Lokales Modell |
+|---|---|---|
+| **Datenhoheit und Datenschutz** | Inhalte werden beim Anbieter verarbeitet. Zu klären sind Verarbeitungsort (etwa ein Rechenzentrum in der EU), <Hint de="Auftragsverarbeitung nach DSGVO: Ein Dienstleister verarbeitet personenbezogene Daten in unserem Auftrag und nach unserer Weisung. Grundlage ist ein Vertrag, der Zweck, Speicherort, Löschung und Unterauftragnehmer regelt." en="Processing on our behalf under the GDPR: a provider processes personal data for us and on our instructions. The basis is a contract covering purpose, storage location, deletion and sub-processors.">Auftragsverarbeitung</Hint> und ob Eingaben zum Training verwendet werden | Inhalte bleiben im eigenen Haus oder in einer fest zugeordneten Umgebung beim Dienstleister. Speicherort und Zugriff bestimmen wir selbst |
+| **Leistungsfähigkeit der Modelle** | Die stärksten Modelle laufen heute in der Cloud, vor allem bei langen Unterlagen und anspruchsvollen Aufgaben | Kleinere Modelle, für viele Alltagsaufgaben ausreichend: zusammenfassen, Entwürfe schreiben, aus geprüften Quellen Auskunft geben |
+| **Aktualität** | Der Anbieter aktualisiert laufend. Neue Fähigkeiten kommen ohne unser Zutun, das Verhalten kann sich dabei ändern | Wir entscheiden selbst, wann wir wechseln. Stabil und planbar, aber Fortschritt kommt nur, wenn wir ihn holen |
+| **Kosten** | Laufende Nutzung nach Verbrauch, kein eigener Aufbau. Der Betrag wächst mit der Nutzung | Anschaffung und Betrieb im Voraus, danach weitgehend unabhängig von der Nutzungsmenge. Hardware und Betreuung binden Mittel |
+| **Betrieb, Pflege, Sicherheit** | Liegt beim Anbieter: Wartung, Updates, Absicherung, Ausfallvorsorge | Liegt bei uns oder einem beauftragten Dienstleister — mit allem, was dazugehört: Wartung, Updates, Absicherung, Ausfallvorsorge |
+| **Verfügbarkeit und Skalierung** | Lastspitzen federt der Anbieter ab. Dafür sind wir von der Internetverbindung und von Störungen beim Anbieter abhängig | Unabhängig von der Internetverbindung, aber begrenzt durch die eigene Hardware. Lastspitzen planen wir selbst ein |
+| **Abhängigkeit und Beweglichkeit** | Ein Wechsel kostet Aufwand, wenn Daten und Abläufe eng am Anbieter hängen. Offene Formate und die Möglichkeit, Daten vollständig mitzunehmen, halten uns beweglich | Größere Unabhängigkeit vom Anbieter. Die Bindung entsteht eher an die eigene Technik und an die Personen, die sie beherrschen |
+| **Kompetenz im Haus** | Wenig technisches Wissen nötig, dafür klare Regeln: wer was eingeben darf und wer Ergebnisse prüft | Braucht Betriebs-Know-how und eine benannte Zuständigkeit, im Haus oder eingekauft |
+
+</De>
+
+<En>
+
+| What it is about | Cloud model | Local model |
+|---|---|---|
+| **Data sovereignty and data protection** | Content is processed at the provider. To be clarified: the place of processing (for example a data centre in the EU), <Hint de="Auftragsverarbeitung nach DSGVO: Ein Dienstleister verarbeitet personenbezogene Daten in unserem Auftrag und nach unserer Weisung. Grundlage ist ein Vertrag, der Zweck, Speicherort, Löschung und Unterauftragnehmer regelt." en="Processing on our behalf under the GDPR: a provider processes personal data for us and on our instructions. The basis is a contract covering purpose, storage location, deletion and sub-processors.">processing on our behalf</Hint> and whether inputs are used for training | Content stays in our own house or in a clearly assigned environment at a service provider. We determine storage location and access ourselves |
+| **Capability of the models** | The strongest models run in the cloud today, especially for long documents and demanding tasks | Smaller models, sufficient for many everyday tasks: summarising, drafting, answering from verified sources |
+| **Currency** | The provider updates continuously. New capabilities arrive without our doing, and behaviour can change with them | We decide ourselves when to switch. Stable and predictable, but progress only comes if we go and get it |
+| **Cost** | Ongoing use by consumption, no build-up of our own. The amount grows with usage | Acquisition and operation up front, then largely independent of how much we use it. Hardware and support tie up funds |
+| **Operation, upkeep, security** | Sits with the provider: maintenance, updates, safeguards, contingency | Sits with us or a commissioned service provider — with everything that entails: maintenance, updates, safeguards, contingency |
+| **Availability and scaling** | The provider absorbs peak loads. In return we depend on the internet connection and on outages at the provider | Independent of the internet connection, but limited by our own hardware. We plan for peak loads ourselves |
+| **Dependency and flexibility** | Switching costs effort once data and workflows are tied closely to the provider. Open formats and being able to take all data along keep us flexible | Greater independence from providers. The tie is rather to our own technology and to the people who master it |
+| **Skills in house** | Little technical knowledge needed, but clear rules: who may enter what, and who reviews results | Needs operational know-how and a named responsibility, in house or bought in |
+
+</En>
+
+</ZoomBox>
+
+<h2 style={{ fontSize: "1.05rem", color: "var(--workshop-accent)", margin: "1.1rem 0 0.5rem" }}>
+  <I18n de="Der dritte Weg: gemischter Betrieb" en="The third way: mixed operation" />
+</h2>
+
+<div style={{ border: "1px solid var(--border)", borderLeft: "3px solid var(--workshop-accent)", borderRadius: "10px", padding: "0.9rem 1.1rem", background: "var(--bg-elev)" }}>
+  <p style={{ margin: "0 0 0.7rem", fontSize: "0.95rem", lineHeight: 1.5 }}>
+    <I18n de="Es ist keine Entweder-oder-Frage. Sensible Inhalte laufen lokal oder in einer abgeschotteten Umgebung, allgemeine Aufgaben in der Cloud. Entscheidend ist nicht, welches Modell wir wählen, sondern welche Daten es sehen darf." en="This is not an either-or question. Sensitive content runs locally or in a sealed-off environment, general tasks in the cloud. What matters is not which model we choose, but which data it is allowed to see." />
+  </p>
+  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.6rem" }}>
+    <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.6rem 0.8rem", background: "var(--bg)", fontSize: "0.85rem" }}>
+      <strong style={{ color: "var(--workshop-accent-deep)" }}><I18n de="Nach Schutzbedarf trennen" en="Separate by protection need" /></strong><br />
+      <I18n de="Wir sortieren nicht Werkzeuge, sondern Daten: Was ist vertraulich, was ist unkritisch?" en="We sort data, not tools: what is confidential, what is uncritical?" />
+    </div>
+    <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.6rem 0.8rem", background: "var(--bg)", fontSize: "0.85rem" }}>
+      <strong style={{ color: "var(--workshop-accent-deep)" }}><I18n de="Wissensbasis bleibt eigenständig" en="Knowledge base stays separate" /></strong><br />
+      <I18n de="Unser geprüftes Wissen liegt unabhängig vom Modell. Modelle sind austauschbar, das Wissen bleibt." en="Our verified knowledge sits independently of the model. Models are interchangeable, the knowledge stays." />
+    </div>
+    <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.6rem 0.8rem", background: "var(--bg)", fontSize: "0.85rem" }}>
+      <strong style={{ color: "var(--workshop-accent-deep)" }}>
+        <Hint
+          de="Digitale Souveränität: selbst bestimmen können, wo unsere Daten liegen, wer sie verarbeitet und ob wir den Weg jederzeit wieder verlassen können — ohne das Wissen zu verlieren."
+          en="Digital sovereignty: being able to decide ourselves where our data sits, who processes it and whether we can leave that path again at any time — without losing the knowledge."
+        ><I18n de="Souveränität als Ergebnis" en="Sovereignty as an outcome" /></Hint>
+      </strong><br />
+      <I18n de="Souveränität entsteht durch Regeln, offene Formate und Zuständigkeit, nicht allein durch den Serverstandort." en="Sovereignty comes from rules, open formats and ownership, not from the server location alone." />
+    </div>
+  </div>
+</div>
+
+<h2 style={{ fontSize: "1.05rem", color: "var(--workshop-accent)", margin: "1.1rem 0 0.5rem" }}>
+  <I18n de="Für den FBS zugespitzt" en="Brought to a point for the FBS" />
+</h2>
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+  <span style={{ border: "1px solid var(--border)", borderRadius: "999px", padding: "0.3rem 0.8rem", background: "var(--bg-elev)", fontSize: "0.85rem" }}><I18n de="Welche Daten dürfen die Geschäftsstelle nicht verlassen?" en="Which data may not leave the office?" /></span>
+  <span style={{ border: "1px solid var(--border)", borderRadius: "999px", padding: "0.3rem 0.8rem", background: "var(--bg-elev)", fontSize: "0.85rem" }}><I18n de="Welche Fragen sind völlig unkritisch?" en="Which questions are entirely uncritical?" /></span>
+  <span style={{ border: "1px solid var(--border)", borderRadius: "999px", padding: "0.3rem 0.8rem", background: "var(--bg-elev)", fontSize: "0.85rem" }}><I18n de="Mitgliederdaten: Wer darf sie sehen, wer verarbeitet sie?" en="Member data: who may see it, who processes it?" /></span>
+  <span style={{ border: "1px solid var(--border)", borderRadius: "999px", padding: "0.3rem 0.8rem", background: "var(--bg-elev)", fontSize: "0.85rem" }}><I18n de="Verträge und Gremienunterlagen: wo liegt die Grenze?" en="Contracts and committee papers: where is the line?" /></span>
+  <span style={{ border: "1px solid var(--border)", borderRadius: "999px", padding: "0.3rem 0.8rem", background: "var(--bg-elev)", fontSize: "0.85rem" }}><I18n de="Wer entscheidet das bei uns — und hält es nach?" en="Who decides that for us — and keeps track of it?" /></span>
+</div>
+
+<NoteCard variant="hint">
+  <I18n de="Diese Abwägung führt zu keiner Festlegung heute. Wir klären erst den Möglichkeitsraum; Datenschutz, Zuständigkeit und Verantwortung vertiefen wir im Realitätscheck (Phase 4)." en="This trade-off does not lead to a decision today. We first clarify the space of possibilities; data protection, ownership and responsibility go deeper in the reality check (phase 4)." />
+</NoteCard>
+
+<WorkshopInput
+  slideId="02.12"
+  field="daten-im-haus"
+  prompt="Welche unserer Daten dürfen das Haus nicht verlassen?"
+  kind="text"
+  rows={4}
+/>
+
+<WorkshopInput
+  slideId="02.12"
+  field="gemischter-betrieb"
+  prompt="Wo wäre uns ein gemischter Betrieb recht — was darf in die Cloud, was bleibt lokal?"
+  kind="text"
+  rows={3}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Stefan: etwa 5 Minuten, direkt nach den Arten von KI-Unterstützung. Einstieg über die Frage im Raum: Wo läuft das Modell eigentlich? Die Tabelle nicht Zeile für Zeile vorlesen, sondern drei Zeilen ansteuern, die hier tragen: Datenhoheit, Leistungsfähigkeit, Kompetenz im Haus. Wichtig ist der Dreh am Ende: Die Trennlinie verläuft nicht zwischen Cloud und lokal, sondern zwischen den Daten — was darf das Modell sehen? Damit knüpfen wir an Wissen als Grundlage an: Das Wissen ist das Bleibende, das Modell ist ein Werkzeug und austauschbar. Keine Produkt- oder Modellnamen, keine Preise; wenn danach gefragt wird, auf die Dimension zurückführen (Verbrauch gegen Anschaffung). Die beiden Eingaben liefern Material für den Realitätscheck; dort vertiefen wir Datenschutz und Verantwortung. Überleitung: Was heißt das konkret für die Verbandsarbeit?"
+    en="Stefan: about 5 minutes, right after the types of AI support. Open with the question in the room: where does the model actually run? Do not read the table row by row; pick the three rows that carry this group: data sovereignty, model capability, skills in house. The key turn comes at the end: the dividing line does not run between cloud and local, but between the data — what may the model see? That ties back to knowledge as the foundation: the knowledge is what lasts, the model is a tool and interchangeable. No product or model names, no prices; if asked, lead back to the dimension (consumption versus acquisition). The two inputs provide material for the reality check, where we go deeper on data protection and responsibility. Bridge: what does this mean concretely for association work?"
+  />
+</SpeakerNotes>

@@ -770,7 +770,270 @@ function CommitmentLayout() {
   );
 }
 
-const LAYOUTS: Record<PosterLayout, () => ReactNode> = {
+/* ───────────────────────── Film poster (the one dark sheet) ───────────────────────── */
+
+const FILM_TITLE: Record<Lang, [string, string]> = {
+  de: ["KI-GESCHÄFTSFÜHRER", "FIKTION ODER REALITÄT?"],
+  en: ["AI MANAGING DIRECTOR", "FICTION OR REALITY?"],
+};
+
+const FILM_BILLING: Record<Lang, string> = {
+  de: "Fachverband Betonbohren und -sägen Deutschland e. V. präsentiert",
+  en: "Fachverband Betonbohren und -sägen Deutschland e. V. presents",
+};
+
+const FILM_HOUSE: Record<Lang, string> = {
+  de: "Fachverband Betonbohren und -sägen Deutschland e. V. · Darmstadt",
+  en: "Fachverband Betonbohren und -sägen Deutschland e. V. · Darmstadt, Germany",
+};
+
+const FILM_CREDITS: Record<Lang, string[]> = {
+  de: ["Moderation Harald Ostermann · Innovationswerkstatt & Digital Management School", "Dr. Stefan Reinheimer · BIK GmbH"],
+  en: ["Facilitation Harald Ostermann · Innovationswerkstatt & Digital Management School", "Dr. Stefan Reinheimer · BIK GmbH"],
+};
+
+const FILM_LOGOS: [string, string, number][] = [
+  ["fbs-logo-white.png", "FBS", 54],
+  ["innovationswerkstatt-white.png", "Innovationswerkstatt", 25],
+  ["dms-logo-white.png", "Digital Management School", 52],
+  ["bik-logo-white.svg", "BIK GmbH", 46],
+];
+
+/** Cinema titles never wrap: the size follows the line length. */
+function titleSize(text: string, avail: number, max: number): number {
+  return Math.min(max, avail / (text.length * 0.575));
+}
+
+function FilmRule({ width = "100%", strong }: { width?: string | number; strong?: boolean }) {
+  return <div style={{ height: strong ? 2 : 1, width, background: strong ? RED : "rgba(255,255,255,0.3)", margin: "0 auto", flex: "0 0 auto" }} />;
+}
+
+function FilmTagline() {
+  const { ctx, field, value } = useField("tagline");
+  const text = value.trim() || ctx.def.motto?.[ctx.lang] || "";
+  const n = text.length;
+  const size = n > 150 ? 25 : n > 105 ? 29 : n > 68 ? 34 : n > 40 ? 39 : 44;
+  return (
+    <div style={{ position: "relative", height: 176, marginTop: 30, flex: "0 0 auto" }}>
+      {ctx.editing && ctx.onEdit ? (
+        <textarea
+          className="poster-edit-area"
+          value={value}
+          onChange={(e) => ctx.onEdit?.(field.entryId, e.target.value)}
+          aria-label={field.label[ctx.lang]}
+          placeholder={ctx.lang === "de" ? "Tagline …" : "Tagline …"}
+          style={{ position: "absolute", inset: 0, fontSize: 24, textAlign: "center" }}
+        />
+      ) : (
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: size,
+              lineHeight: 1.3,
+              fontStyle: "italic",
+              fontWeight: 500,
+              color: value.trim() ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.62)",
+              textShadow: "0 2px 26px rgba(0,0,0,0.9)",
+              padding: "0 4%",
+            }}
+          >
+            {text}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Optional line from the after-barometer, in the tone of a critic's quote. */
+function FilmCritic() {
+  const { ctx, field, value } = useField("kritik");
+  const options = field.options ?? [];
+  const counts = barometerCounts(value, options);
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const votes = entries.reduce((sum, [, n]) => sum + n, 0);
+  const de = ctx.lang === "de";
+
+  if (ctx.editing && ctx.onEdit) {
+    const onEdit = ctx.onEdit;
+    return (
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginBottom: 22, flex: "0 0 auto" }}>
+        {options.map((o) => {
+          const on = Boolean(counts[o]);
+          return (
+            <button
+              key={o}
+              type="button"
+              onClick={() => onEdit(field.entryId, on ? "" : o)}
+              style={{
+                padding: "6px 14px",
+                borderRadius: 999,
+                fontSize: 17,
+                fontWeight: 700,
+                cursor: "pointer",
+                background: on ? RED : "rgba(255,255,255,0.08)",
+                color: "#fff",
+                border: `2px solid ${on ? RED : "rgba(255,255,255,0.35)"}`,
+              }}
+            >
+              {o}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
+  if (entries.length === 0) return null;
+  const [best] = entries;
+  return (
+    <div style={{ marginBottom: 26, flex: "0 0 auto" }}>
+      <div style={{ fontSize: 23, fontWeight: 700, letterSpacing: "0.04em", color: "rgba(255,255,255,0.92)" }}>
+        {de ? "Das Publikum urteilt: " : "The audience says: "}
+        <span style={{ color: RED }}>{de ? `„${best[0]}“` : `“${best[0]}”`}</span>
+      </div>
+      {votes > 0 && (
+        <div style={{ fontSize: 16, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)", marginTop: 7 }}>
+          {de ? `${votes} ${votes === 1 ? "Stimme" : "Stimmen"} im Saal` : `${votes} ${votes === 1 ? "vote" : "votes"} in the room`}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FilmSheet({ date }: { date: string }) {
+  const { lang, portrait } = useSheet();
+  const [line1, line2] = FILM_TITLE[lang];
+  const pad = portrait ? 72 : 110;
+  const avail = SHEET_PX[portrait ? "portrait" : "landscape"][0] - 2 * pad;
+  const s1 = titleSize(line1, avail, 112);
+  const s2 = Math.min(s1, titleSize(line2, avail, 112));
+  // Default: the two workshop days as one billing line.
+  const termin = date.replace(/^16\.\/17\./, "16. und 17.");
+
+  return (
+    <>
+      <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", background: "#05060a" }}>
+        <img
+          src={`${BASE}brand/poster/filmplakat.webp`}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%" }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(5,6,10,0.93) 0%, rgba(5,6,10,0.6) 20%, rgba(5,6,10,0.2) 42%, rgba(5,6,10,0.3) 56%, rgba(5,6,10,0.72) 76%, rgba(5,6,10,0.97) 100%)",
+          }}
+        />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(115% 52% at 52% 58%, rgba(205,24,75,0.26), rgba(5,6,10,0) 70%)" }} />
+      </div>
+
+      <div
+        style={{
+          position: "relative",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          textAlign: "center",
+          padding: `${Math.round(pad * 0.82)}px ${pad}px ${Math.round(pad * 0.7)}px`,
+          boxSizing: "border-box",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 16,
+            fontWeight: 600,
+            // Wide enough to read as a billing line, tight enough to stay on one.
+            letterSpacing: "0.19em",
+            textTransform: "uppercase",
+            whiteSpace: "nowrap",
+            color: "rgba(255,255,255,0.68)",
+            lineHeight: 1.5,
+            flex: "0 0 auto",
+          }}
+        >
+          {FILM_BILLING[lang]}
+        </div>
+
+        <div style={{ marginTop: 42, flex: "0 0 auto" }}>
+          <div
+            style={{
+              fontSize: s1,
+              fontWeight: 900,
+              letterSpacing: "-0.02em",
+              lineHeight: 0.95,
+              whiteSpace: "nowrap",
+              textShadow: "0 8px 44px rgba(0,0,0,0.9)",
+            }}
+          >
+            {line1}
+          </div>
+          <div
+            style={{
+              fontSize: s2,
+              fontWeight: 900,
+              letterSpacing: "-0.015em",
+              lineHeight: 1.02,
+              whiteSpace: "nowrap",
+              color: RED,
+              textShadow: "0 0 60px rgba(205,24,75,0.55), 0 8px 40px rgba(0,0,0,0.85)",
+            }}
+          >
+            {line2}
+          </div>
+        </div>
+
+        <FilmTagline />
+
+        <div style={{ flex: 1, minHeight: 24 }} />
+
+        <FilmCritic />
+        <FilmRule width="46%" strong />
+
+        <div style={{ marginTop: 22, flex: "0 0 auto" }}>
+          <div style={{ fontSize: 27, fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", lineHeight: 1.2 }}>{termin}</div>
+          <div
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.7)",
+              marginTop: 10,
+              lineHeight: 1.4,
+            }}
+          >
+            {FILM_HOUSE[lang]}
+          </div>
+        </div>
+
+        <div style={{ margin: "20px auto 0", width: "72%", flex: "0 0 auto" }}>
+          <FilmRule />
+        </div>
+
+        <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 7, flex: "0 0 auto" }}>
+          {FILM_CREDITS[lang].map((c) => (
+            <div key={c} style={{ fontSize: 15, fontWeight: 600, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(255,255,255,0.82)", lineHeight: 1.35 }}>
+              {c}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 26, display: "flex", alignItems: "center", justifyContent: "center", gap: 40, flex: "0 0 auto" }}>
+          {FILM_LOGOS.map(([file, alt, h]) => (
+            <img key={file} src={`${BASE}brand/${file}`} alt={alt} style={{ height: h, width: "auto", opacity: 0.95 }} />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+const LAYOUTS: Record<Exclude<PosterLayout, "filmplakat">, () => ReactNode> = {
   staircase: StaircaseLayout,
   horizons: HorizonsLayout,
   target: TargetLayout,
@@ -866,19 +1129,22 @@ export interface PosterSheetProps {
 export function PosterSheet({ def, lang, orientation, values, image, editing, onEdit, date, zoom, printZoom = 1 }: PosterSheetProps) {
   const [w, h] = SHEET_PX[orientation];
   const portrait = orientation === "portrait";
-  const Layout = LAYOUTS[def.layout];
+  const film = def.layout === "filmplakat";
+  const Layout = film ? null : LAYOUTS[def.layout as Exclude<PosterLayout, "filmplakat">];
   return (
     <Ctx.Provider value={{ def, lang, values, image, editing, onEdit, portrait }}>
       <div
         className="poster-sheet"
         data-poster={def.key}
+        data-film={film ? "" : undefined}
         style={
           {
             width: w,
             height: h,
             zoom,
-            padding: portrait ? "56px 64px 36px" : "44px 64px 30px",
-            display: "flex",
+            position: "relative",
+            padding: film ? 0 : portrait ? "56px 64px 36px" : "44px 64px 30px",
+            display: film ? "block" : "flex",
             flexDirection: "column",
             boxSizing: "border-box",
             overflow: "hidden",
@@ -887,11 +1153,17 @@ export function PosterSheet({ def, lang, orientation, values, image, editing, on
           } as CSSProperties
         }
       >
-        <SheetHeader />
-        <main style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 22 }}>
-          <Layout />
-        </main>
-        <SheetFooter date={date} />
+        {Layout ? (
+          <>
+            <SheetHeader />
+            <main style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 22 }}>
+              <Layout />
+            </main>
+            <SheetFooter date={date} />
+          </>
+        ) : (
+          <FilmSheet date={date} />
+        )}
       </div>
     </Ctx.Provider>
   );

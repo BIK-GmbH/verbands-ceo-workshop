@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode, AnchorHTMLAttributes } from "react";
+import { useEffect, type ComponentType, type ReactNode, type AnchorHTMLAttributes } from "react";
 import { MDXProvider } from "@mdx-js/react";
 import {
   I18n,
@@ -15,8 +15,13 @@ import {
   WorkshopInput,
   ParticipantsList,
   BarometerVotes,
+  ZoomBox,
   CardCollector,
   WorkshopGlossary,
+  GlossaryTable,
+  PosterPreview,
+  AiSuggest,
+  WhyLadder,
   Hint, HintIcon,
 } from "./slide-blocks";
 import { AudioRecorder } from "./AudioRecorder";
@@ -24,6 +29,7 @@ import { SlideBackdrop } from "./art/SlideBackdrop";
 import { ModuleArt } from "./art/ModuleArt";
 import { isPhaseOverview } from "./art/module-art";
 import { getSlideComponent, findSlide } from "@/lib/slides";
+import { rememberSlide } from "@/lib/last-slide";
 import type { Lang as L } from "@/types/slide";
 import { pick, t, formatAsOf } from "@/lib/i18n";
 
@@ -46,8 +52,13 @@ const mdxComponents = {
   WorkshopInput,
   ParticipantsList,
   BarometerVotes,
+  ZoomBox,
   CardCollector,
   WorkshopGlossary,
+  GlossaryTable,
+  PosterPreview,
+  AiSuggest,
+  WhyLadder,
   AudioRecorder,
   Hint, HintIcon,
   h1:(props: ChildrenProps) => (
@@ -116,6 +127,11 @@ interface Props {
 export function SlideRenderer({ slideId, lang }: Props) {
   const Component = getSlideComponent(slideId);
   const meta = findSlide(slideId);
+
+  // Full-page views (record, posters, interviews, settings) return to this slide.
+  useEffect(() => {
+    rememberSlide(slideId);
+  }, [slideId]);
 
   if (!Component || !meta) {
     return (

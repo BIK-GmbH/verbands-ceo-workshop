@@ -1,10 +1,11 @@
 /**
- * The seven phase posters of the workshop. Every phase ends with a poster that is
- * made analogue on the wall; the poster generator (/poster) redraws it from the
- * captured `WorkshopInput` fields. Entry ids are `"<slideId>:<field>"` exactly as
- * used on the slides — keep them in sync with the MDX files.
+ * The seven phase posters of the workshop plus the film poster. Every phase ends
+ * with a poster that is made analogue on the wall; the poster generator (/poster)
+ * redraws it from the captured `WorkshopInput` fields. Entry ids are
+ * `"<slideId>:<field>"` exactly as used on the slides — keep them in sync with the
+ * MDX files.
  */
-import type { Bilingual } from "@/types/slide";
+import type { Bilingual, Lang } from "@/types/slide";
 
 export type PosterKey =
   | "need-to-move"
@@ -13,18 +14,29 @@ export type PosterKey =
   | "go-adapt-stop"
   | "business-case"
   | "roadmap"
-  | "commitment";
+  | "commitment"
+  | "filmplakat";
 
-export type PosterLayout = "staircase" | "horizons" | "target" | "traffic" | "canvas" | "timeline" | "commitment";
+export type PosterLayout =
+  | "staircase"
+  | "horizons"
+  | "target"
+  | "traffic"
+  | "canvas"
+  | "timeline"
+  | "commitment"
+  | "filmplakat";
 
 /** How the AI condenses a text field for the poster. */
-export type CondenseMode = "sentence" | "bullets" | "short";
+export type CondenseMode = "sentence" | "bullets" | "short" | "tagline";
 
 export interface PosterField {
   /** Local key the layout uses to place the field. */
   key: string;
   /** Workshop store entry id, `"<slideId>:<field>"`. */
   entryId: string;
+  /** Further entry ids to read when `entryId` is empty — first non-empty wins. */
+  alsoFrom?: string[];
   label: Bilingual;
   kind: "text" | "choice";
   /** Answer options of vote/decision fields (as stored, German). */
@@ -44,6 +56,13 @@ export interface PosterDef {
   output: Bilingual;
   layout: PosterLayout;
   motto?: Bilingual;
+  /** Not one of the seven phase posters: own badge instead of "Phase n". */
+  special?: boolean;
+  badge?: Bilingual;
+  /** Paper size this poster opens with (the print settings are otherwise global). */
+  defaultFormat?: PaperFormat;
+  /** Posters that only work in one orientation (the film poster is portrait). */
+  fixedOrientation?: Orientation;
   fields: PosterField[];
 }
 
@@ -248,7 +267,50 @@ export const POSTERS: PosterDef[] = [
       { key: "termin", entryId: "07.06:naechster-termin", label: { de: "Nächster Termin", en: "Next date" }, kind: "text", condense: "short", lines: 1 },
     ],
   },
+  {
+    key: "filmplakat",
+    // Not a phase: the eighth sheet is the poster of the workshop itself.
+    phase: 8,
+    slideId: "07.05",
+    special: true,
+    badge: { de: "Sonderformat · Kinoplakat", en: "Special format · movie poster" },
+    defaultFormat: "A2",
+    fixedOrientation: "portrait",
+    title: { de: "Filmplakat: Fiktion oder Realität?", en: "Movie poster: fiction or reality?" },
+    question: {
+      de: "Wie würde das Plakat zu diesen zwei Tagen aussehen?",
+      en: "What would the poster for these two days look like?",
+    },
+    output: {
+      de: "Der Titel, die Tagline aus unserer Arbeit, das Team – wie im Kino.",
+      en: "The title, the tagline from our work, the team – like in a cinema.",
+    },
+    layout: "filmplakat",
+    // Used as the neutral tagline as long as nothing is captured.
+    motto: { de: "Zwei Tage. Eine ehrliche Frage.", en: "Two days. One honest question." },
+    fields: [
+      {
+        key: "tagline",
+        entryId: "03.05:poster-leitsatz",
+        alsoFrom: ["07.06:poster-antwort", "01.06:poster-kernproblem"],
+        label: { de: "Tagline", en: "Tagline" },
+        kind: "text",
+        condense: "tagline",
+        lines: 2,
+      },
+      {
+        key: "kritik",
+        entryId: "07.02:barometer-nachher",
+        label: { de: "Das Publikum urteilt", en: "The audience says" },
+        kind: "choice",
+        options: BAROMETER,
+      },
+    ],
+  },
 ];
+
+/** The seven phase posters, without the film poster. */
+export const PHASE_POSTERS = POSTERS.filter((p) => !p.special);
 
 export function findPoster(key: string | undefined): PosterDef | undefined {
   return POSTERS.find((p) => p.key === key);
@@ -258,6 +320,39 @@ export function posterField(def: PosterDef, key: string): PosterField {
   const f = def.fields.find((x) => x.key === key);
   if (!f) throw new Error(`Poster ${def.key} has no field "${key}"`);
   return f;
+}
+
+/** What the record holds for one field: `entryId` first, then the fallbacks. */
+export function recordValue(field: PosterField, record: Record<string, string>): string {
+  for (const id of [field.entryId, ...(field.alsoFrom ?? [])]) {
+    const v = record[id]?.trim();
+    if (v) return v;
+  }
+  return "";
+}
+
+/** entry id → text shown on the poster: the poster wording wins over the record. */
+export function posterValues(
+  def: PosterDef,
+  record: Record<string, string>,
+  draft?: Record<string, string>,
+): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const f of def.fields) out[f.entryId] = draft?.[f.entryId] ?? recordValue(f, record);
+  return out;
+}
+
+/** The workshop date as printed on every sheet; the two workshop days by default. */
+export function posterDate(iso: string, lang: Lang): string {
+  const d = iso ? new Date(`${iso}T12:00:00`) : null;
+  if (d && !Number.isNaN(d.getTime())) {
+    return d.toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+  }
+  return lang === "de" ? "16./17. September 2026" : "16–17 September 2026";
+}
+
+export function filledCount(def: PosterDef, values: Record<string, string>): number {
+  return def.fields.filter((f) => values[f.entryId]?.trim()).length;
 }
 
 export const WORKSHOP_TITLE: Bilingual = {

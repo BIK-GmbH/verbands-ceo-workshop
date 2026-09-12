@@ -20,11 +20,13 @@ import { useApiKey } from "@/lib/ai-assist";
 import { deleteInterview, getInterview, updateInterview, type Interview } from "@/lib/interview-store";
 import {
   INTERVIEW_QUESTIONS,
+  deriveScales,
   isInProtocol,
   removeInterviewFromProtocol,
   summarizeInterview,
   writeInterviewToProtocol,
 } from "@/lib/interview-opinion";
+import { EMPTY_SCALES, SCALES, hasScaleValues, type InterviewScales, type ScaleId } from "@/lib/interview-metrics";
 import { TranscribeError, extensionForMime, fileExtension, isAcceptedAudioName, transcribeAudio, useOpenAiKey } from "@/lib/transcribe";
 import { bilingualError, describeProcessingError, isFatal } from "./errors";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -34,6 +36,7 @@ import {
   ERROR_COLOR,
   MiniMarkdown,
   Notice,
+  WARN_COLOR,
   accentOutline,
   card,
   danger,
@@ -70,8 +73,9 @@ async function transcribeOne(iv: Interview): Promise<Interview> {
 }
 
 async function summarizeOne(iv: Interview): Promise<Interview> {
-  const opinion = await summarizeInterview(iv.transcript ?? "", `interview ${iv.id}`);
-  const patch = { opinion, opinionAt: new Date().toISOString(), error: undefined };
+  const { text, scales } = await summarizeInterview(iv.transcript ?? "", `interview ${iv.id}`);
+  // No usable JSON block: keep the text, mark the card as "ohne Skalenwerte".
+  const patch = { opinion: text, opinionAt: new Date().toISOString(), scales: scales ?? undefined, error: undefined };
   // Written straight into the protocol (slide 01.02) so it shows up in /protokoll, PDF/Word and posters.
   const synced = writeInterviewToProtocol({ ...iv, ...patch });
   return (await updateInterview(iv.id, { ...patch, ...synced })) ?? { ...iv, ...patch, ...synced };
@@ -546,6 +550,8 @@ function InterviewCard({
         </details>
       )}
 
+      {iv.opinion !== undefined && <ScalePanel iv={iv} lang={lang} disabled={disabled} />}
+
       {iv.opinion !== undefined && (
         <details className="rounded-md" style={{ background: "var(--bg)", border: "1px solid var(--border)" }} data-testid="opinion-details">
           <summary className="cursor-pointer px-3 py-2 text-sm font-medium">
@@ -601,5 +607,128 @@ function InterviewCard({
 
       {saveError && <Notice tone="error">{saveError}</Notice>}
     </article>
+  );
+}
+
+/**
+ * The four 1–4 scales Claude derived with the opinion picture. The facilitator
+ * can overrule every value; the group figures recompute immediately.
+ */
+function ScalePanel({ iv, lang, disabled }: { iv: Interview; lang: Lang; disabled: boolean }) {
+  const de = lang === "de";
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const scales = iv.scales;
+  const hasValues = hasScaleValues(scales);
+  const terms = [...(scales?.begriffe ?? []), ...(scales?.einsatzgebiete ?? [])];
+
+  function setValue(id: ScaleId, raw: string) {
+    setError("");
+    const next: InterviewScales = { ...EMPTY_SCALES, ...scales, [id]: raw ? Number(raw) : null };
+    updateInterview(iv.id, { scales: next }).catch((err: unknown) => {
+      console.error("[interviews] saving a scale value failed", { id: iv.id, scale: id, err });
+      setError(de ? "Der Wert konnte nicht gespeichert werden." : "The value could not be saved.");
+    });
+  }
+
+  async function derive() {
+    const transcript = iv.transcript?.trim();
+    if (!transcript || busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      const next = await deriveScales(transcript, `interview ${iv.id} scales`);
+      if (!next) {
+        setError(
+          de
+            ? "Die KI hat keine verwertbaren Skalenwerte geliefert. Bitte von Hand eintragen."
+            : "The AI returned no usable scale values. Please set them by hand.",
+        );
+        return;
+      }
+      await updateInterview(iv.id, { scales: next });
+    } catch (err) {
+      setError(describeProcessingError(err, "summarize", lang));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="rounded-md p-3 space-y-2" style={{ background: "var(--bg)", border: "1px solid var(--border)" }} data-testid="interview-scales">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-medium">{de ? "Skalenwerte" : "Scale values"}</span>
+        {!hasValues && (
+          <span className="text-[11px] px-1.5 py-0.5 rounded-full" style={{ border: `1px solid ${WARN_COLOR}`, color: WARN_COLOR }}>
+            {de ? "ohne Skalenwerte" : "no scale values"}
+          </span>
+        )}
+        <span className="text-[11px] ml-auto" style={muted}>
+          {de ? "korrigierbar – die Gruppenauswertung rechnet sofort neu" : "correctable – the group figures recompute at once"}
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {SCALES.map((def) => (
+          <label key={def.id} className="block text-[11px] space-y-1">
+            <span className="block truncate" style={muted}>
+              {def.label[lang]}
+            </span>
+            <select
+              value={scales?.[def.id] ?? ""}
+              onChange={(e) => setValue(def.id, e.target.value)}
+              disabled={disabled || busy}
+              className="w-full rounded-md p-1.5 text-xs"
+              style={field}
+              aria-label={`${def.label[lang]} · ${iv.pseudonym}`}
+              data-testid={`scale-${def.id}`}
+            >
+              <option value="">{de ? "keine Angabe" : "not stated"}</option>
+              {def.levels.map((level, i) => (
+                <option key={level.de} value={i + 1}>
+                  {i + 1} · {level[lang]}
+                </option>
+              ))}
+            </select>
+          </label>
+        ))}
+      </div>
+
+      {terms.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {scales?.begriffe.map((term) => (
+            <span
+              key={`b-${term}`}
+              className="text-[11px] px-1.5 py-0.5 rounded-full"
+              style={{ background: "color-mix(in oklch, var(--workshop-accent) 12%, transparent)", color: "var(--workshop-accent)" }}
+            >
+              {term}
+            </span>
+          ))}
+          {scales?.einsatzgebiete.map((term) => (
+            <span key={`e-${term}`} className="text-[11px] px-1.5 py-0.5 rounded-full" style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}>
+              {term}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {!hasValues && iv.transcript?.trim() && (
+        <Tooltip
+          content={
+            de
+              ? "Claude liest nur die vier Skalenwerte samt Begriffen neu aus dem Transkript; das Meinungsbild bleibt unverändert"
+              : "Claude re-reads only the four scale values and terms from the transcript; the opinion picture stays as it is"
+          }
+        >
+          <button type="button" onClick={() => void derive()} disabled={disabled || busy} className={BTN_SM} style={accentOutline}>
+            {busy ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+            {de ? "Skalenwerte nachtragen" : "Derive scale values"}
+          </button>
+        </Tooltip>
+      )}
+
+      {error && <Notice tone="error">{error}</Notice>}
+    </div>
   );
 }

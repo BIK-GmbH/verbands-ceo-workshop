@@ -5,8 +5,9 @@
  */
 import type { Bilingual } from "@/types/slide";
 import { completeText } from "@/lib/ai-assist";
-import { removeEntry, setEntry } from "@/lib/workshop-store";
+import { getEntry, removeEntry, setEntry } from "@/lib/workshop-store";
 import type { Interview } from "@/lib/interview-store";
+import { parseOpinion, parseScalesOnly, type InterviewScales, type ParsedOpinion } from "@/lib/interview-metrics";
 
 export const INTERVIEW_QUESTIONS: Bilingual[] = [
   { de: "Wie stehst du grundsätzlich zum Thema KI?", en: "What is your basic attitude towards AI?" },
@@ -32,6 +33,19 @@ export const TARGET_SECONDS = 5 * 60;
 const CONTEXT =
   "Kontext: Workshop „KI-Geschäftsführer: Fiktion oder Realität?“ des Fachverbands Betonbohren und -sägen Deutschland e. V. (FBS), Phase 1 „Need to Move“. Vor dem Workshop wurden mit den Teilnehmenden (Vorstand und Mitglieder des Verbands) kurze Einzelinterviews von etwa fünf Minuten zu ihrer Einstellung zu KI und zum Nutzen für den FBS geführt.";
 
+/** Machine-readable part of the answer: one JSON block, parsed by interview-metrics. */
+const SCALE_BLOCK = `\`\`\`json
+{"haltung": 3, "kompetenz": 2, "relevanzHeute": 2, "relevanzMorgen": 4, "begriffe": ["chatgpt", "automatisierung", "datenschutz"], "einsatzgebiete": ["Angebote schreiben", "Normen recherchieren"]}
+\`\`\``;
+
+const SCALE_RULES = `- haltung: 1 skeptisch · 2 abwartend · 3 neugierig · 4 überzeugt
+- kompetenz: 1 Einsteiger · 2 Grundkenntnisse · 3 Fortgeschritten · 4 Experte
+- relevanzHeute und relevanzMorgen: 1 gering · 2 mittel · 3 hoch · 4 sehr hoch
+- Diese vier Werte sind je eine ganze Zahl von 1 bis 4 – oder null, wenn das Transkript dazu nichts hergibt. Nicht raten.
+- begriffe: die im Interview genannten Begriffe zu KI, klein geschrieben, höchstens 5, sonst [].
+- einsatzgebiete: höchstens 5 Kurzphrasen mit je 1–4 Wörtern, sonst [].
+- Keine Namen, keine zusätzlichen Schlüssel, keine Kommentare, gültiges JSON.`;
+
 const OPINION_SYSTEM = `${CONTEXT}
 
 Du erhältst das Transkript eines solchen Interviews. Es stammt aus einer automatischen Spracherkennung, trennt die Sprecher nicht und kann Erkennungsfehler enthalten. Die interviewende Person liest die Leitfragen vor; ihre Worte sind nicht die Meinung der befragten Person.
@@ -56,13 +70,31 @@ Erstelle ein Meinungsbild der befragten Person. Regeln:
 ## Top-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte
 ## Markante Zitate
 ## Kurzfazit
-(1–2 Sätze)`;
+(1–2 Sätze)
+
+Hänge danach genau einen Codeblock an und sonst nichts. Er wird maschinell ausgewertet und nicht angezeigt:
+
+${SCALE_BLOCK}
+
+Regeln für den Codeblock:
+${SCALE_RULES}`;
+
+const SCALES_SYSTEM = `${CONTEXT}
+
+Du erhältst das Transkript eines solchen Interviews und ordnest es vier Skalen zu. Antworte ausschließlich mit genau diesem Codeblock, ohne Einleitung, ohne Erklärung, ohne weiteren Text:
+
+${SCALE_BLOCK}
+
+Regeln:
+${SCALE_RULES}`;
 
 const GROUP_SYSTEM = `${CONTEXT}
 
 Du erhältst die Meinungsbilder aller bisher ausgewerteten Einzelinterviews. Erstelle daraus ein gemeinsames Meinungsbild der Gruppe als Diskussionsgrundlage für Phase 1. Regeln:
 - Nur auf Basis der Meinungsbilder. Nichts erfinden.
-- Verteilungen exakt auszählen und immer als „x von n“ angeben (z. B. „4 von 7 neugierig“); „nicht angesprochen“ gesondert zählen, wenn es relevant ist.
+- Die Kennzahlen (Verteilung, Mittelwert Ø, Streuung σ, Spanne, Lücke heute → morgen) sind bereits ausgezählt und stehen im Abschnitt <kennzahlen>. Übernimm Zahlen ausschließlich von dort, rechne nichts nach und erfinde keine abweichenden Verteilungen.
+- Greife Mittelwert und Streuung in Worten auf (einig, gemischt, uneinig) und benenne die Lücke zwischen Relevanz heute und morgen.
+- Punkte ohne Kennzahl exakt aus den Meinungsbildern auszählen und als „x von n“ angeben (z. B. „4 von 7 neugierig“); „nicht angesprochen“ gesondert zählen, wenn es relevant ist.
 - Streng anonym: keine Namen, keine Pseudonyme, keine Interview-Nummern und keine Details, die eine einzelne Person erkennbar machen.
 - Zitate nur wörtlich aus den Meinungsbildern übernehmen, ohne Zuordnung, höchstens 5.
 - Sachlich und knapp, Deutsch, neue Rechtschreibung, Stichpunkte mit „- “ wo es passt.
@@ -79,9 +111,8 @@ Du erhältst die Meinungsbilder aller bisher ausgewerteten Einzelinterviews. Ers
 (genau drei, nummeriert)
 ## Ausgewählte Zitate`;
 
-/** Opinion picture for one interview. The pseudonym is deliberately not sent. Throws AiAssistError. */
-export function summarizeInterview(transcript: string, logLabel: string): Promise<string> {
-  const prompt = [
+function transcriptPrompt(transcript: string): string {
+  return [
     "Leitfragen des Interviews:",
     ...INTERVIEW_QUESTIONS.map((q, i) => `${i + 1}. ${q.de}`),
     "",
@@ -89,16 +120,41 @@ export function summarizeInterview(transcript: string, logLabel: string): Promis
     transcript,
     "</transkript>",
   ].join("\n");
-  return completeText({ system: OPINION_SYSTEM, prompt, effort: "medium", logLabel });
 }
 
-/** Anonymous group opinion over all per-interview opinions. Throws AiAssistError. */
-export function summarizeGroup(opinions: string[]): Promise<string> {
+/**
+ * Opinion picture plus scale values for one interview, in a single call. The
+ * pseudonym is deliberately not sent. `scales` is null when the model returned
+ * no usable JSON block — the text is kept either way. Throws AiAssistError.
+ */
+export async function summarizeInterview(transcript: string, logLabel: string): Promise<ParsedOpinion> {
+  const raw = await completeText({ system: OPINION_SYSTEM, prompt: transcriptPrompt(transcript), effort: "medium", logLabel });
+  const parsed = parseOpinion(raw);
+  if (!parsed.scales) console.error("[interviews] no usable scale values in the answer", { feature: logLabel });
+  return parsed;
+}
+
+/** Re-derives only the scale values, e.g. after a failed block. Throws AiAssistError. */
+export async function deriveScales(transcript: string, logLabel: string): Promise<InterviewScales | null> {
+  const raw = await completeText({ system: SCALES_SYSTEM, prompt: transcriptPrompt(transcript), effort: "low", logLabel });
+  return parseScalesOnly(raw);
+}
+
+/**
+ * Anonymous group opinion over all per-interview opinions. `metrics` is the
+ * locally computed summary (see interview-metrics) so the text matches the figures.
+ * Throws AiAssistError.
+ */
+export function summarizeGroup(opinions: string[], metrics: string): Promise<string> {
   const prompt = [
     `Anzahl ausgewerteter Interviews: ${opinions.length}`,
     "",
-    ...opinions.map((o, i) => `<meinungsbild nr="${i + 1}">\n${o.trim()}\n</meinungsbild>`),
-  ].join("\n\n");
+    "<kennzahlen>",
+    metrics.trim() || "Keine Kennzahlen verfügbar.",
+    "</kennzahlen>",
+    "",
+    ...opinions.map((o, i) => `<meinungsbild nr="${i + 1}">\n${o.trim()}\n</meinungsbild>\n`),
+  ].join("\n");
   return completeText({ system: GROUP_SYSTEM, prompt, effort: "medium", logLabel: "interview group opinion" });
 }
 
@@ -107,6 +163,7 @@ export function summarizeGroup(opinions: string[]): Promise<string> {
 
 const SLIDE_ID = "01.02";
 export const GROUP_PROTOCOL_ID = `${SLIDE_ID}:meinungsbild-gesamt`;
+export const GROUP_METRICS_PROTOCOL_ID = `${SLIDE_ID}:gruppenbild-kennzahlen`;
 export const interviewProtocolId = (interviewId: string) => `${SLIDE_ID}:interview-${interviewId}`;
 
 /**
@@ -155,6 +212,26 @@ export function writeGroupToProtocol(text: string) {
     prompt: "Gemeinsames Meinungsbild aus den KI-Interviews",
     value: markdownToPlain(text),
   });
+}
+
+/**
+ * The locally computed figures, as a second entry next to the AI text. Written
+ * on every change, so a corrected scale value lands in the protocol right away.
+ */
+export function writeGroupMetricsToProtocol(text: string) {
+  if (getEntry(GROUP_METRICS_PROTOCOL_ID)?.value === text) return;
+  setEntry({
+    id: GROUP_METRICS_PROTOCOL_ID,
+    module: 1,
+    slideId: SLIDE_ID,
+    kind: "text",
+    prompt: "Gruppenbild: Kennzahlen aus den KI-Interviews",
+    value: text,
+  });
+}
+
+export function removeGroupMetricsFromProtocol() {
+  if (getEntry(GROUP_METRICS_PROTOCOL_ID)) removeEntry(GROUP_METRICS_PROTOCOL_ID);
 }
 
 export const isInProtocol = (iv: Interview) =>

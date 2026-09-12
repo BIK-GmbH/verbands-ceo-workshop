@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { KeyRound, Loader2, Mic, MicOff, RotateCcw, Sparkles, Undo2, Wand2 } from "lucide-react";
-import type { Lang } from "@/types/slide";
+import type { Bilingual, Lang } from "@/types/slide";
 import { getEntry, setEntry, type CaptureEntry } from "@/lib/workshop-store";
 import { useDictation } from "@/lib/useDictation";
 import { findSlide } from "@/lib/slides";
@@ -402,6 +402,122 @@ export function EntryEditor({
           </Tooltip>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** The four wordings offered directly at a dictatable field (bullet points stay in the ✎ editor). */
+const BAR_PRESETS = PRESETS.filter((p) => p.id !== "bullets");
+
+const BAR_TOOLTIP: Record<string, Bilingual> = {
+  polish: {
+    de: "Bereinigt Diktierfehler, Füllwörter und Satzbau. Der Inhalt bleibt, die ursprüngliche Fassung bleibt wiederherstellbar.",
+    en: "Cleans up dictation errors, filler words and sentence structure. The content stays and the original remains restorable.",
+  },
+  shorter: {
+    de: "Kürzt auf die Kernaussagen, ohne Wesentliches wegzulassen.",
+    en: "Shortens to the key statements without dropping anything essential.",
+  },
+  longer: {
+    de: "Formuliert ausführlicher aus und macht Zusammenhänge klarer. Es kommen keine neuen Fakten dazu.",
+    en: "Expands the text and makes connections clearer. No new facts are added.",
+  },
+  professional: {
+    de: "Formuliert sachlicher, im Stil eines offiziellen Verbandsprotokolls.",
+    en: "Rewrites it more formally, in the style of an official association record.",
+  },
+};
+
+/**
+ * Compact AI row under any dictatable field: polish, shorter, longer, more professional.
+ * `onResult` receives the new text plus the text it replaced, so callers can keep the original.
+ */
+export function PolishBar({
+  text,
+  slideId,
+  prompt,
+  lang,
+  onResult,
+}: {
+  text: string;
+  slideId: string;
+  prompt: string;
+  lang: Lang;
+  onResult: (next: string, replaced: string) => void;
+}) {
+  const de = lang === "de";
+  const apiKey = useApiKey();
+  const [busy, setBusy] = useState<string | null>(null);
+  const [previous, setPrevious] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  if (!apiKey) return null;
+  if (!text.trim() && previous === null) return null;
+
+  const run = async (id: string, instruction: string) => {
+    if (busy || !text.trim()) return;
+    setBusy(id);
+    setError("");
+    const original = text;
+    try {
+      const out = await refineText({
+        text: original,
+        instruction,
+        context: { slideId, slideTitle: findSlide(slideId)?.title.de, prompt },
+      });
+      onResult(out, original);
+      setPrevious(original);
+    } catch (err) {
+      setError(describeAiError(err, lang));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 mt-1.5 no-print">
+      {error && (
+        <span className="text-[11px] w-full" style={{ color: ERROR_COLOR }}>
+          {error}
+        </span>
+      )}
+      {BAR_PRESETS.map((p) => (
+        <Tooltip key={p.id} content={BAR_TOOLTIP[p.id]?.[lang] ?? ""}>
+          <button
+            type="button"
+            onClick={() => run(p.id, p.instruction)}
+            disabled={busy !== null || !text.trim()}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium disabled:opacity-50"
+            style={
+              p.id === "polish"
+                ? { background: "var(--workshop-accent)", color: "white" }
+                : { border: "1px solid var(--workshop-accent)", color: "var(--workshop-accent)" }
+            }
+          >
+            {busy === p.id ? (
+              <Loader2 size={12} className="animate-spin" />
+            ) : p.id === "polish" ? (
+              <Sparkles size={12} />
+            ) : null}
+            {p.label[lang]}
+          </button>
+        </Tooltip>
+      ))}
+      {previous !== null && busy === null && (
+        <Tooltip content={de ? "Zurück zur Fassung vor der letzten KI-Änderung" : "Back to the version before the last AI change"}>
+          <button
+            type="button"
+            onClick={() => {
+              onResult(previous, text);
+              setPrevious(null);
+            }}
+            className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px]"
+            style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+          >
+            <Undo2 size={12} /> {de ? "Rückgängig" : "Undo"}
+          </button>
+        </Tooltip>
+      )}
     </div>
   );
 }

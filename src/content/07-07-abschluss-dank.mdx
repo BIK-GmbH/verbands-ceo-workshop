@@ -1,0 +1,230 @@
+---
+title:
+  de: "Danke – und wie geht es weiter?"
+  en: "Thank you – and what comes next?"
+researchedOn: 2026-09-12
+---
+
+export const ZK_NODES = [
+  { x: 110, y: 296, de: "Mitglieder", en: "Members" },
+  { x: 195, y: 195, de: "Gremien", en: "Committees" },
+  { x: 343, y: 141, de: "Regelwerke", en: "Standards" },
+  { x: 457, y: 141, de: "Seminare", en: "Training" },
+  { x: 605, y: 195, de: "Geschäftsstelle", en: "Head office" },
+  { x: 690, y: 296, de: "Branche", en: "Industry" },
+];
+
+export const ZK_PATHS = [
+  "M400 352 Q255 294 110 296",
+  "M400 352 Q298 243 195 195",
+  "M400 352 Q372 216 343 141",
+  "M400 352 Q429 216 457 141",
+  "M400 352 Q503 243 605 195",
+  "M400 352 Q545 294 690 296",
+];
+
+<style>{`
+.zk-svg { display: block; width: 100%; height: auto; max-width: 880px; margin: 0 auto; }
+.zk-line { fill: none; stroke: var(--workshop-accent); stroke-width: 1.1; opacity: .38; }
+/* A single round dot travelling from the core to a field: zero-length dash + round cap. */
+.zk-pulse {
+  fill: none; stroke: var(--workshop-accent); stroke-width: 4.6; stroke-linecap: round;
+  opacity: .9; stroke-dasharray: 0.01 674; stroke-dashoffset: 674;
+  animation: zkFlow 15s linear infinite;
+}
+.zk-halo {
+  fill: none; stroke: var(--workshop-accent); stroke-width: 1; stroke-dasharray: 2.5 9;
+  opacity: .45; transform-origin: 400px 352px; animation: zkSpin 120s linear infinite;
+}
+.zk-glow { animation: zkBreath 14s ease-in-out infinite; }
+.zk-core { fill: var(--bg); stroke: var(--workshop-accent); stroke-opacity: .55; stroke-width: 1.6; }
+.zk-core-inner { fill: none; stroke: var(--workshop-accent); stroke-opacity: .22; stroke-width: 1; }
+.zk-lattice { fill: none; stroke: var(--workshop-accent); stroke-opacity: .4; stroke-width: 1; stroke-linejoin: round; }
+.zk-dot { fill: var(--workshop-accent); fill-opacity: .85; }
+.zk-chip { fill: var(--bg); stroke: var(--workshop-accent); stroke-opacity: .45; stroke-width: 1.2; }
+.zk-chip-tint { fill: var(--workshop-accent); fill-opacity: .07; }
+.zk-head { fill: var(--workshop-accent); fill-opacity: .9; }
+.zk-body { fill: none; stroke: var(--workshop-accent); stroke-opacity: .9; stroke-width: 2; stroke-linecap: round; }
+.zk-text { text-anchor: middle; }
+.zk-label { fill: var(--fg); font-size: 17px; font-weight: 600; }
+.zk-cap { fill: var(--workshop-accent); font-size: 18px; font-weight: 700; }
+.zk-sub { fill: var(--fg-muted); font-size: 14px; }
+.zk-legend { display: none; }
+
+[data-theme="dark"] .zk-line { opacity: .44; }
+[data-theme="dark"] .zk-lattice { stroke-opacity: .52; }
+[data-theme="dark"] .zk-chip { stroke-opacity: .6; }
+
+@keyframes zkFlow { from { stroke-dashoffset: 674; } to { stroke-dashoffset: 0; } }
+@keyframes zkSpin { to { transform: rotate(360deg); } }
+@keyframes zkBreath { 0%, 100% { opacity: .78; } 50% { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .zk-pulse { display: none; }
+  .zk-halo, .zk-glow { animation: none; }
+}
+html[data-motion="off"] .zk-pulse { display: none; }
+html[data-motion="off"] .zk-halo,
+html[data-motion="off"] .zk-glow { animation: none; }
+@media print {
+  .zk-pulse { display: none; }
+  .zk-halo, .zk-glow { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .zk-text { display: none; }
+  .zk-legend {
+    display: block; text-align: center; font-size: .85rem;
+    color: var(--fg-muted); margin: .4rem 0 0;
+  }
+}
+`}</style>
+
+# <I18n de="Danke – und wie geht es weiter?" en="Thank you – and what comes next?" />
+
+<p style={{ fontSize: "1.05rem", marginTop: "-0.25rem", marginBottom: "0.75rem" }}>
+  <I18n
+    de="Zwei Tage, eine ehrliche Frage und ziemlich viel Arbeit: erst das Kernproblem, dann das Zielbild, der Realitätscheck, die Zahlen und der Weg. Danke, dass wir so offen miteinander gesprochen haben."
+    en="Two days, one honest question and a fair amount of work: first the core problem, then the target picture, the reality check, the numbers and the path. Thank you for talking so openly with each other."
+  />
+</p>
+
+<p style={{ color: "var(--fg-muted)", marginTop: "0", marginBottom: "0.5rem" }}>
+  <I18n
+    de="Besonderer Dank für die skeptischen Fragen. Sie haben am meisten gekostet und am meisten gebracht: Ohne sie wäre aus zwei Tagen ein Wunschzettel geworden statt eines Ergebnisses, das wir dem Vorstand und den Mitgliedern erklären können."
+    en="Special thanks for the sceptical questions. They cost the most and gave the most: without them, two days would have produced a wish list instead of a result we can explain to the board and the members."
+  />
+</p>
+
+<p style={{ color: "var(--fg-muted)", fontSize: "0.9rem", margin: "0 0 0.25rem" }}>
+  <I18n
+    de="Danke für zwei Tage Vertrauen, Geduld und Klartext. — Harald Ostermann und Dr. Stefan Reinheimer"
+    en="Thank you for two days of trust, patience and plain speaking. — Harald Ostermann and Dr. Stefan Reinheimer"
+  />
+</p>
+
+<p style={{ textAlign: "center", fontSize: "0.78rem", letterSpacing: "0.09em", textTransform: "uppercase", color: "var(--workshop-accent)", fontWeight: 700, margin: "1.25rem 0 0" }}>
+  <I18n de="Worauf wir aufbauen" en="What we build on" />
+</p>
+
+<svg className="zk-svg" viewBox="0 92 800 368" preserveAspectRatio="xMidYMid meet" role="img">
+  <title>
+    <I18n
+      de="Ein Wissenskern, aus dem Verbindungen zu den Handlungsfeldern des Verbandes laufen: Mitglieder, Gremien, Regelwerke, Seminare, Geschäftsstelle, Branche."
+      en="A core of knowledge with connections running out to the association fields of action: members, committees, standards, training, head office, industry."
+    />
+  </title>
+  <defs>
+    <radialGradient id="zkGlow">
+      <stop offset="0%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0.3 }} />
+      <stop offset="55%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0.1 }} />
+      <stop offset="100%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0 }} />
+    </radialGradient>
+    <linearGradient id="zkGround" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0 }} />
+      <stop offset="24%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0.45 }} />
+      <stop offset="50%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0.75 }} />
+      <stop offset="76%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0.45 }} />
+      <stop offset="100%" style={{ stopColor: "var(--workshop-accent)", stopOpacity: 0 }} />
+    </linearGradient>
+  </defs>
+
+  <circle className="zk-glow" cx="400" cy="352" r="94" fill="url(#zkGlow)" />
+  <rect x="60" y="396" width="680" height="3" rx="1.5" fill="url(#zkGround)" />
+
+  {ZK_PATHS.map((d) => (
+    <path key={d} className="zk-line" d={d} />
+  ))}
+  {ZK_PATHS.map((d, i) => (
+    <path key={`p-${d}`} className="zk-pulse" d={d} style={{ animationDelay: `${-i * 2.4}s` }} />
+  ))}
+
+  <circle className="zk-halo" cx="400" cy="352" r="70" />
+  <circle className="zk-core" cx="400" cy="352" r="54" />
+  <circle className="zk-core-inner" cx="400" cy="352" r="40" />
+  <path className="zk-lattice" d="M400 328 L421 340 L421 364 L400 376 L379 364 L379 340 Z" />
+  <path className="zk-lattice" d="M400 352 L400 328 M400 352 L421 340 M400 352 L421 364 M400 352 L400 376 M400 352 L379 364 M400 352 L379 340" />
+  <circle className="zk-dot" cx="400" cy="352" r="3.6" />
+  <circle className="zk-dot" cx="400" cy="328" r="2.8" />
+  <circle className="zk-dot" cx="421" cy="340" r="2.8" />
+  <circle className="zk-dot" cx="421" cy="364" r="2.8" />
+  <circle className="zk-dot" cx="400" cy="376" r="2.8" />
+  <circle className="zk-dot" cx="379" cy="364" r="2.8" />
+  <circle className="zk-dot" cx="379" cy="340" r="2.8" />
+
+  {ZK_NODES.map((n) => (
+    <g key={n.en}>
+      <circle className="zk-chip" cx={n.x} cy={n.y} r="21" />
+      <circle className="zk-chip-tint" cx={n.x} cy={n.y} r="21" />
+      <circle className="zk-head" cx={n.x} cy={n.y - 4.5} r="4.2" />
+      <path className="zk-body" d={`M${n.x - 7.6} ${n.y + 8.4} A 7.6 7.6 0 0 1 ${n.x + 7.6} ${n.y + 8.4}`} />
+    </g>
+  ))}
+
+  {ZK_NODES.map((n) => (
+    <text key={`t-${n.en}`} className="zk-text zk-label" x={n.x} y={n.y - 31}>
+      <I18n de={n.de} en={n.en} />
+    </text>
+  ))}
+
+  <text className="zk-text zk-cap" x="400" y="424">
+    <I18n de="Unser Wissen" en="Our knowledge" />
+  </text>
+  <text className="zk-text zk-sub" x="400" y="446">
+    <I18n
+      de="Dokumente · Regelwerke · Erfahrung · die Köpfe im Verband"
+      en="Documents · standards · experience · the people who know"
+    />
+  </text>
+</svg>
+
+<p className="zk-legend">
+  <I18n
+    de="Unser Wissen trägt: Mitglieder · Gremien · Regelwerke · Seminare · Geschäftsstelle · Branche."
+    en="Our knowledge carries: members · committees · standards · training · head office · industry."
+  />
+</p>
+
+<p style={{ textAlign: "center", color: "var(--fg-muted)", maxWidth: "46rem", margin: "0.75rem auto 1.25rem" }}>
+  <I18n
+    de="Das Wissen des Verbandes ist die Grundlage: Dokumente, Regelwerke, Erfahrung und das, was in den Köpfen steckt. Was daraus wird, entscheiden die Menschen, die damit arbeiten – in den Gremien, in der Geschäftsstelle, in den Betrieben. Genau daran hängt die Antwort auf unsere Leitfrage, nicht an der Technik."
+    en="The knowledge of the association is the foundation: documents, standards, experience and what sits in people's heads. What comes of it is decided by the people who work with it – in the committees, in the head office, in the member companies. That is what the answer to our guiding question depends on, not on the technology."
+  />
+</p>
+
+**<I18n de="Unser Feedback" en="Our feedback" />**
+
+<p style={{ color: "var(--fg-muted)", margin: "0.25rem 0 0.5rem" }}>
+  <I18n
+    de="Ehrliches Feedback hilft uns mehr als Höflichkeit – kritisches ausdrücklich eingeschlossen. Alles läuft direkt ins Protokoll und in den Export."
+    en="Honest feedback helps us more than politeness – critical feedback explicitly included. Everything goes straight into the record and the export."
+  />
+</p>
+
+<WorkshopInput
+  slideId="07.07"
+  field="feedback-gesamt"
+  prompt="Wie war der Workshop für uns?"
+  kind="vote"
+  options={["Sehr gut", "Gut", "Gemischt", "Mäßig", "Nicht gut"]}
+/>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "0 1rem" }}>
+  <WorkshopInput slideId="07.07" field="feedback-gewinn" prompt="Was hat uns am meisten gebracht?" kind="text" rows={3} />
+  <WorkshopInput slideId="07.07" field="feedback-anders" prompt="Was sollten wir beim nächsten Mal anders machen? Kritik ist willkommen." kind="text" rows={3} />
+</div>
+
+<WorkshopInput
+  slideId="07.07"
+  field="feedback-sechs-monate"
+  prompt="Woran merken wir in sechs Monaten, dass sich die zwei Tage gelohnt haben?"
+  kind="text"
+  rows={2}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Harald und Stefan gemeinsam, rund 5 Minuten, ganz am Schluss. Erst der Dank, ruhig und ohne Eile: zwei Tage, offene Diskussion, auch die unbequemen Fragen. Namen nennen, wo es passt, und nicht pauschal loben. Dann kurz auf die Grafik zeigen: Das Wissen des Verbandes ist die Grundlage, entscheiden werden es die Menschen, die damit arbeiten. Die Leitfrage hier nicht nachträglich beantworten – die Antwort steht auf dem Commitment-Poster. Danach die Feedback-Felder ausfüllen: Bewertung schnell im Raum abfragen, dann zwei bis drei Stimmen zu „am meisten gebracht“ und „nächstes Mal anders“ aufnehmen und eintippen oder einsprechen. Ausdrücklich sagen, dass kritische Rückmeldungen erwünscht sind und unverändert im Protokoll landen. Zum Schluss: Protokoll und Poster gehen zeitnah raus, der nächste Termin steht auf Folie 07.06."
+    en="Harald and Stefan together, about 5 minutes, right at the end. First the thanks, calmly and without rushing: two days, open discussion, including the uncomfortable questions. Name names where it fits, and avoid blanket praise. Then point briefly at the graphic: the knowledge of the association is the foundation, and the people who work with it will decide. Do not answer the guiding question again here – the answer is on the commitment poster. Then fill in the feedback fields: take the rating quickly in the room, then capture two or three voices on ‘what helped most’ and ‘what to do differently’ by typing or dictating. Say explicitly that critical feedback is wanted and goes into the record unchanged. To close: the record and the posters will go out shortly, the next date is on slide 07.06."
+  />
+</SpeakerNotes>

@@ -9,7 +9,9 @@ import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { AudioRecorder } from "@/components/AudioRecorder";
 import { ParticipantsEditor } from "@/components/ParticipantsEditor";
 import { ReportPanel } from "@/components/ReportPanel";
-import { findModule, ALL_SLIDES } from "@/lib/slides";
+import { findModule } from "@/lib/slides";
+import { lastSlidePath } from "@/lib/last-slide";
+import { formatCardLine } from "@/lib/cards";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { EXPORT_HINTS } from "@/components/LiveProtocolPanel";
 
@@ -27,8 +29,7 @@ export function Protocol() {
   // protocol was opened directly (no in-app history). React Router tracks the
   // history position in window.history.state.idx.
   const canGoBack = ((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0;
-  const goBack = () =>
-    canGoBack ? navigate(-1) : navigate(`/s/${ALL_SLIDES[0].id}`);
+  const goBack = () => (canGoBack ? navigate(-1) : navigate(lastSlidePath()));
 
   const needle = query.trim().toLowerCase();
   const shown = needle
@@ -221,7 +222,7 @@ export function Protocol() {
                       if (editingId === e.id) {
                         return <EntryEditor key={e.id} entry={e} lang={lang} onClose={() => setEditingId(null)} />;
                       }
-                      const val = Array.isArray(e.value) ? e.value.join("\n") : e.value;
+                      const val = Array.isArray(e.value) ? e.value.map(formatCardLine).join("\n") : e.value;
                       return (
                         <div key={e.id} className="rounded-md p-3" style={{ background: "var(--bg-elev)", border: "1px solid var(--border)" }}>
                           <div className="flex items-start gap-2 mb-1">

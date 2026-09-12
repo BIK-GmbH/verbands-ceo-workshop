@@ -89,6 +89,18 @@ code, pre {
   font-family: var(--font-mono);
 }
 
+/* Lists written as raw <ul>/<ol> in a slide bypass the MDXProvider mapping (which
+   adds list-disc/list-decimal) and would lose their markers to the Tailwind
+   preflight. Without markers, a wrapped line reads like a new item. */
+.slide-page ul:not([class]) {
+  list-style: disc;
+  padding-left: 1.15rem;
+}
+.slide-page ol:not([class]) {
+  list-style: decimal;
+  padding-left: 1.15rem;
+}
+
 /* Presentation-mode tweaks. */
 .presentation-slide .slide-page {
   padding: 1.25rem 1.25rem !important;

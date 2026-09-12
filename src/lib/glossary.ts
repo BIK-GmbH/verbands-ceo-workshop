@@ -12,6 +12,7 @@
  */
 import { useSyncExternalStore } from "react";
 import staticGlossarySource from "@/content/99-01-glossar.mdx?raw";
+import type { Lang } from "@/types/slide";
 import { completeText } from "./ai-assist";
 import { getAllEntries, getEntry, removeEntry, setEntry, type CaptureEntry } from "./workshop-store";
 import { hasValue, isAdHoc } from "./protocol-export";
@@ -50,13 +51,32 @@ const GLOSSARY_ENTRY_PROMPT = "Glossar – im Workshop ergänzt";
 
 /* ------------------------------------------------------------ static terms */
 
-/** Bold terms from the German table of the static glossary slide (e.g. „KI / LLM (Sprachmodell)“). */
-function extractStaticTerms(source: string): string[] {
-  const de = /<De>([\s\S]*?)<\/De>/.exec(source)?.[1] ?? "";
-  return [...de.matchAll(/^\|\s*\*\*(.+?)\*\*\s*\|/gm)].map((m) => m[1].trim());
+export interface StaticGlossaryTerm {
+  term: string;
+  definition: string;
 }
 
-export const STATIC_TERMS: string[] = extractStaticTerms(staticGlossarySource);
+/** Row of the GFM table on the glossary slide: "| **Begriff** | Bedeutung |". */
+const TABLE_ROW_RE = /^\s*\|\s*\*\*(.+?)\*\*\s*\|\s*(.+?)\s*\|\s*$/;
+
+/**
+ * The fixed glossary of slide 99.01, read from the slide source itself, sorted
+ * alphabetically by term in the given language. The `<De>`/`<En>` tables in the
+ * MDX file stay the single source of truth — the export (export-model.ts) parses
+ * the very same rows for the PDF and Word documents.
+ */
+export function staticGlossaryTerms(lang: Lang): StaticGlossaryTerm[] {
+  const tag = lang === "en" ? "En" : "De";
+  const block = new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`).exec(staticGlossarySource)?.[1] ?? "";
+  const terms: StaticGlossaryTerm[] = [];
+  for (const line of block.split(/\r?\n/)) {
+    const m = TABLE_ROW_RE.exec(line);
+    if (m) terms.push({ term: m[1].trim(), definition: m[2].trim() });
+  }
+  return terms.sort((a, b) => a.term.localeCompare(b.term, lang, { sensitivity: "base" }));
+}
+
+export const STATIC_TERMS: string[] = staticGlossaryTerms("de").map((t) => t.term);
 
 const normalize = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "");
 

@@ -192,14 +192,19 @@ export function Sidebar({
                                 ? "font-semibold"
                                 : "hover:bg-black/5 active:bg-black/10",
                             )}
+                            // The current slide gets colour, a tinted row and an accent bar — bold alone is too subtle.
                             style={
                               slideActive
-                                ? { color: "var(--workshop-accent)" }
+                                ? {
+                                    color: "var(--workshop-accent)",
+                                    background: "color-mix(in oklch, var(--workshop-accent) 13%, transparent)",
+                                    boxShadow: "inset 3px 0 0 var(--workshop-accent)",
+                                  }
                                 : undefined
                             }
                             aria-current={slideActive ? "page" : undefined}
                           >
-                            {/* Running number, same as the "8 / 54" counter in the footer. */}
+                            {/* Running number, same as the counter in the footer. */}
                             <span
                               className="font-mono text-[10px] tabular-nums w-5 shrink-0 text-right"
                               style={{ color: "var(--fg-muted)" }}

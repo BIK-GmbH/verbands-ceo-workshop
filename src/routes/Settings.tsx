@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Home, Info } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import { ALL_SLIDES } from "@/lib/slides";
+import { lastSlidePath } from "@/lib/last-slide";
 import { InterviewSetup } from "@/components/interviews/InterviewSetup";
 import { Tooltip } from "@/components/ui/Tooltip";
 
@@ -14,7 +14,7 @@ export function Settings() {
   const de = lang === "de";
   const navigate = useNavigate();
   const canGoBack = ((window.history.state as { idx?: number } | null)?.idx ?? 0) > 0;
-  const goBack = () => (canGoBack ? navigate(-1) : navigate(`/s/${ALL_SLIDES[0].id}`));
+  const goBack = () => (canGoBack ? navigate(-1) : navigate(lastSlidePath()));
 
   const facts = de
     ? [

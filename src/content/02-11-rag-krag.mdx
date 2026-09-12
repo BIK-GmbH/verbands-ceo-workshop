@@ -1,0 +1,174 @@
+---
+title:
+  de: "RAG und K-RAG: Dokumente oder semantisches Netz"
+  en: "RAG and K-RAG: documents or semantic network"
+researchedOn: 2026-09-12
+---
+
+# <I18n de="RAG und K-RAG: Dokumente oder semantisches Netz" en="RAG and K-RAG: documents or semantic network" />
+
+<p style={{ fontSize: "1.02rem", color: "var(--fg-muted)", marginTop: "-0.25rem", marginBottom: "1.1rem" }}>
+  <I18n
+    de="Unser Wissen ist die Grundlage – jetzt geht es darum, wie daraus eine Antwort wird. Dafür gibt es zwei Wege: die Antwort aus einzelnen Dokumenten oder die Antwort aus einem Netz von Dingen und Beziehungen."
+    en="Our knowledge is the foundation – now it is about how an answer comes out of it. There are two ways: the answer from individual documents, or the answer from a network of things and relationships."
+  />
+</p>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: "1rem", margin: "0 0 1.2rem" }}>
+
+  <div style={{ border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden", background: "var(--bg-elev)" }}>
+    <div style={{ padding: "0.55rem 0.9rem", background: "var(--bg)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
+      <strong style={{ fontSize: "1.05rem", color: "var(--fg)" }}>
+        <Hint de="Retrieval-Augmented Generation: Die KI sucht passende Textstellen in geprüften Dokumenten und formuliert die Antwort daraus, mit Verweis auf die Quelle." en="Retrieval-augmented generation: the AI searches verified documents for relevant passages and builds its answer from them, citing the source.">RAG</Hint>
+      </strong>
+      <span style={{ fontSize: "0.85rem", color: "var(--fg-muted)" }}><I18n de="Antwort aus Dokumenten" en="Answer from documents" /></span>
+    </div>
+    <div style={{ padding: "0.9rem" }}>
+      <p style={{ margin: "0 0 0.8rem", fontSize: "0.93rem" }}>
+        <I18n
+          de="Die KI sucht passende Textstellen in geprüften Dokumenten und formuliert die Antwort daraus – mit Quellenangabe."
+          en="The AI searches verified documents for matching passages and formulates the answer from them – with a source reference."
+        />
+      </p>
+      <strong style={{ display: "block", fontSize: "0.78rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--workshop-accent)", marginBottom: "0.35rem" }}><I18n de="Stärken" en="Strengths" /></strong>
+      <ul style={{ margin: "0 0 0.8rem", paddingLeft: "1.1rem", fontSize: "0.9rem" }}>
+        <li><I18n de="Schnell aufgebaut" en="Quick to build" /></li>
+        <li><I18n de="Jede Aussage bleibt nachprüfbar" en="Every statement stays verifiable" /></li>
+        <li><I18n de="Nutzt die Ablage, wie sie ist" en="Uses the file storage as it is" /></li>
+      </ul>
+      <strong style={{ display: "block", fontSize: "0.78rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--fg-muted)", marginBottom: "0.35rem" }}><I18n de="Grenzen" en="Limits" /></strong>
+      <ul style={{ margin: 0, paddingLeft: "1.1rem", fontSize: "0.9rem", color: "var(--fg-muted)" }}>
+        <li><I18n de="Findet vor allem, was ähnlich dasteht" en="Mostly finds what is worded similarly" /></li>
+        <li><I18n de="Zusammenhänge über mehrere Dokumente hinweg bleiben oft unentdeckt" en="Connections across several documents often stay undiscovered" /></li>
+        <li><I18n de="Dubletten und veraltete Fassungen schlagen durch" en="Duplicates and outdated versions come through" /></li>
+        <li><I18n de="Implizites Erfahrungswissen ist nicht erfasst" en="Implicit experience is not captured" /></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style={{ border: "1px solid var(--workshop-accent)", borderRadius: "12px", overflow: "hidden", background: "var(--bg-elev)" }}>
+    <div style={{ padding: "0.55rem 0.9rem", background: "var(--workshop-accent)", color: "#ffffff", display: "flex", alignItems: "baseline", gap: "0.5rem", flexWrap: "wrap" }}>
+      <strong style={{ fontSize: "1.05rem" }}>
+        <Hint de="Knowledge-Augmented Generation: Zusätzlich zu den Dokumenten liegt ein Wissensgraph darunter. Die KI folgt den Beziehungen zwischen den Dingen und antwortet mit Kontext statt mit einzelnen Fundstellen." en="Knowledge-augmented generation: on top of the documents there is a knowledge graph. The AI follows the relationships between things and answers with context instead of isolated hits.">K-RAG</Hint>
+      </strong>
+      <span style={{ fontSize: "0.85rem", opacity: 0.9 }}><I18n de="Antwort aus einem semantischen Netz" en="Answer from a semantic network" /></span>
+    </div>
+    <div style={{ padding: "0.9rem" }}>
+      <p style={{ margin: "0 0 0.7rem", fontSize: "0.93rem" }}>
+        <I18n
+          de="Zusätzlich zu den Dokumenten werden die Dinge und ihre Beziehungen modelliert – ein "
+          en="In addition to the documents, the things and their relationships are modelled – a "
+        />
+        <Hint de="Wissensgraph (semantisches Netz): eine Darstellung, in der Dinge als Knoten und ihre Beziehungen als Verbindungen abgebildet sind – etwa: Beschluss ändert Regelwerk, Regelwerk gilt in Verfahren, Person verantwortet Verfahren." en="Knowledge graph (semantic network): a representation in which things appear as nodes and their relationships as links – for example: resolution amends rulebook, rulebook applies in procedure, person owns procedure.">
+          <I18n de="Wissensgraph" en="knowledge graph" />
+        </Hint>
+        <I18n de=". So kommt die Antwort mit Kontext statt als Stichworttreffer." en=". That way the answer comes with context instead of as a keyword hit." />
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginBottom: "0.8rem" }}>
+        <span style={{ fontSize: "0.78rem", color: "var(--fg-muted)", alignSelf: "center", marginRight: "0.15rem" }}>
+          <Hint de="Entität: ein einzelnes Ding im Netz, das für sich benannt und mit anderen verknüpft werden kann – eine Person, ein Dokument, ein Beschluss, ein Termin." en="Entity: a single thing in the network that can be named on its own and linked to others – a person, a document, a resolution, a date.">
+            <I18n de="Entitäten" en="Entities" />
+          </Hint>
+        </span>
+        {["Person", "Dokument", "Regelwerk", "Beschluss", "Gremium", "Projekt", "Prozess", "Organisation", "Fassung", "Termin"].map((n) => (
+          <span key={n} style={{ border: "1px solid var(--border)", borderRadius: "999px", padding: "0.15rem 0.55rem", background: "var(--bg)", fontSize: "0.78rem" }}>{n}</span>
+        ))}
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "0.45rem", marginBottom: "0.8rem" }}>
+        <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "var(--bg)" }}>
+          <strong style={{ display: "block", fontSize: "0.85rem", color: "var(--workshop-accent)" }}><I18n de="Strukturiert abbilden" en="Model it structurally" /></strong>
+          <span style={{ fontSize: "0.8rem", color: "var(--fg-muted)" }}><I18n de="Dinge und Beziehungen sauber modelliert" en="Things and relationships cleanly modelled" /></span>
+        </div>
+        <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "var(--bg)" }}>
+          <strong style={{ display: "block", fontSize: "0.85rem", color: "var(--workshop-accent)" }}><I18n de="Beziehungen sichtbar machen" en="Make relationships visible" /></strong>
+          <span style={{ fontSize: "0.8rem", color: "var(--fg-muted)" }}><I18n de="Komplexe Zusammenhänge werden navigierbar" en="Complex connections become navigable" /></span>
+        </div>
+        <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "var(--bg)" }}>
+          <strong style={{ display: "block", fontSize: "0.85rem", color: "var(--workshop-accent)" }}><I18n de="Kontext statt Treffer" en="Context instead of hits" /></strong>
+          <span style={{ fontSize: "0.8rem", color: "var(--fg-muted)" }}><I18n de="Antworten mit Bedeutung, nicht nur Stichworte" en="Answers with meaning, not just keywords" /></span>
+        </div>
+        <div style={{ border: "1px solid var(--border)", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "var(--bg)" }}>
+          <strong style={{ display: "block", fontSize: "0.85rem", color: "var(--workshop-accent)" }}><I18n de="Erfahrungswissen sichern" en="Secure experience" /></strong>
+          <span style={{ fontSize: "0.8rem", color: "var(--fg-muted)" }}><I18n de="Implizites Wissen bleibt erhalten, teilbar, nutzbar" en="Implicit knowledge stays available, shareable, usable" /></span>
+        </div>
+      </div>
+      <strong style={{ display: "block", fontSize: "0.78rem", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--fg-muted)", marginBottom: "0.35rem" }}><I18n de="Grenzen" en="Limits" /></strong>
+      <ul style={{ margin: 0, paddingLeft: "1.1rem", fontSize: "0.9rem", color: "var(--fg-muted)" }}>
+        <li><I18n de="Modellierung und Pflege kosten Arbeit" en="Modelling and upkeep take work" /></li>
+        <li><I18n de="Es braucht Zuständigkeit und einheitliche Begriffe" en="It needs ownership and consistent terms" /></li>
+        <li><I18n de="Höherer Aufwand am Anfang" en="Higher effort at the start" /></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<h2 style={{ fontSize: "1.05rem", color: "var(--workshop-accent)", margin: "0 0 0.2rem" }}>
+  <I18n de="Beispiel: eine Mitgliederanfrage" en="Example: an enquiry from a member" />
+</h2>
+
+<p style={{ margin: "0 0 0.7rem", fontSize: "0.92rem", color: "var(--fg-muted)" }}>
+  <I18n
+    de="Ein Mitgliedsbetrieb fragt: Welche Regelung gilt für diese Arbeit in unserem Fall? (Beispiel mit Platzhaltern, keine echten Aktenzeichen.)"
+    en="A member company asks: which rule applies to this job in our case? (Example with placeholders, no real reference numbers.)"
+  />
+</p>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: "1rem", margin: "0 0 1.2rem" }}>
+
+  <div style={{ border: "1px solid var(--border)", borderRadius: "12px", padding: "0.9rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", fontSize: "0.92rem", marginBottom: "0.5rem" }}><I18n de="Stichwort-Treffer" en="Keyword hit" /></strong>
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", fontSize: "0.9rem" }}>
+      <span style={{ borderLeft: "3px solid var(--border)", paddingLeft: "0.55rem" }}><I18n de="Drei Fundstellen aus zwei Dokumenten" en="Three passages from two documents" /></span>
+      <span style={{ borderLeft: "3px solid var(--border)", paddingLeft: "0.55rem" }}><I18n de="Textausschnitte ohne Zusammenhang" en="Text excerpts without context" /></span>
+      <span style={{ borderLeft: "3px solid var(--border)", paddingLeft: "0.55rem" }}><I18n de="Fassung unklar – gilt das noch?" en="Version unclear – is this still valid?" /></span>
+    </div>
+    <p style={{ margin: "0.7rem 0 0", fontSize: "0.85rem", color: "var(--fg-muted)" }}>
+      <I18n de="Die Einordnung machen wir selbst." en="We do the interpretation ourselves." />
+    </p>
+  </div>
+
+  <div style={{ border: "1px solid var(--workshop-accent)", borderRadius: "12px", padding: "0.9rem", background: "var(--bg-elev)" }}>
+    <strong style={{ display: "block", fontSize: "0.92rem", marginBottom: "0.5rem", color: "var(--workshop-accent)" }}><I18n de="Kontext-Antwort" en="Context answer" /></strong>
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", fontSize: "0.9rem" }}>
+      <span style={{ borderLeft: "3px solid var(--workshop-accent)", paddingLeft: "0.55rem" }}><I18n de="Regelwerk X, geltende Fassung" en="Rulebook X, valid version" /></span>
+      <span style={{ borderLeft: "3px solid var(--workshop-accent)", paddingLeft: "0.55rem" }}><I18n de="Beschluss des Fachausschusses, der sie festgelegt hat" en="Resolution of the technical committee that set it" /></span>
+      <span style={{ borderLeft: "3px solid var(--workshop-accent)", paddingLeft: "0.55rem" }}><I18n de="Verfahren, in dem sie angewendet wird" en="Procedure in which it is applied" /></span>
+      <span style={{ borderLeft: "3px solid var(--workshop-accent)", paddingLeft: "0.55rem" }}><I18n de="Zuständigkeit in der Geschäftsstelle" en="Ownership in the office" /></span>
+    </div>
+    <p style={{ margin: "0.7rem 0 0", fontSize: "0.85rem", color: "var(--fg-muted)" }}>
+      <I18n de="Mit Quellen – die Einordnung kommt mit." en="With sources – the interpretation comes along." />
+    </p>
+  </div>
+
+</div>
+
+<NoteCard variant="tip" title="Kein Entweder-oder">
+  <I18n
+    de="K-RAG baut auf demselben geprüften Bestand auf wie RAG – wir fangen nicht zweimal an. Die Entscheidung ist deshalb keine Werkzeugfrage, sondern die Frage, wie vernetzt unser Wissen sein muss, damit unsere Antworten tragen."
+    en="K-RAG builds on the same verified base as RAG – we do not start twice. So the decision is not a tool question but a question of how connected our knowledge has to be for our answers to hold."
+  />
+</NoteCard>
+
+<WorkshopInput
+  slideId="02.11"
+  field="kontextfragen"
+  prompt="Welche unserer Fragen lassen sich nur mit Zusammenhängen beantworten?"
+  kind="text"
+  rows={4}
+/>
+
+<WorkshopInput
+  slideId="02.11"
+  field="einmal-ordnen"
+  prompt="Was müssten wir dafür einmal sauber ordnen?"
+  kind="text"
+  rows={3}
+/>
+
+<SpeakerNotes>
+  <I18n
+    de="Stefan, etwa 5 Minuten, direkt nach der Wissensplattform (02.10) und vor den Arten von KI-Unterstützung. Anknüpfen an 02.09: Das Wissen ist die Grundlage, hier geht es darum, wie daraus eine Antwort wird. Erst die linke Karte erklären (Dokumente durchsuchen, Antwort mit Quelle), dann die rechte (Dinge und Beziehungen, Antwort mit Kontext). Die Entitäten-Reihe kurz durchgehen und an einem FBS-Beispiel festmachen: ein Beschluss ändert ein Regelwerk, das Regelwerk gilt in einem Verfahren, eine Person ist dafür zuständig. Beim Beispiel deutlich sagen, dass Regelwerk X und Fachausschuss Platzhalter sind. Wichtig ist der Preis der rechten Seite: Modellierung, Pflege, einheitliche Begriffe, Zuständigkeit – das ist der Punkt, an dem die Runde ehrlich abwägen soll. Die beiden Eingaben liefern Material für die Stoßrichtungen und für den Realitätscheck in Phase 4. Überleitung: Welche Arten von KI-Unterstützung setzen darauf auf?"
+    en="Stefan, about 5 minutes, right after the knowledge platform (02.10) and before the types of AI support. Link back to 02.09: the knowledge is the foundation, here it is about how an answer comes out of it. Explain the left card first (search documents, answer with a source), then the right one (things and relationships, answer with context). Walk briefly through the row of entities and anchor it in an FBS example: a resolution amends a rulebook, the rulebook applies in a procedure, a person owns it. With the example, say clearly that rulebook X and the technical committee are placeholders. What matters is the price of the right-hand side: modelling, upkeep, consistent terms, ownership – that is where the group should weigh things honestly. The two inputs provide material for the directions and for the reality check in phase 4. Bridge: which types of AI support build on this?"
+  />
+</SpeakerNotes>

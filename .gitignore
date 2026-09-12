@@ -19,3 +19,6 @@ assets/
 
 # Claude Code session-local state (cron locks etc.)
 .claude/scheduled_tasks.lock
+
+# Verification screenshots from scripts/shot.mjs — local only
+scripts/_shot-*.png

@@ -17,6 +17,19 @@
   print-color-adjust: exact;
 }
 
+/* The film poster is the one dark sheet: black ground, white type, red accent. */
+.poster-sheet[data-film] {
+  background: #05060a;
+  color: #ffffff;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.42);
+}
+
+.poster-sheet[data-film] .poster-edit-area {
+  background: rgb(0 0 0 / 0.72);
+  color: #ffffff;
+  border-color: #CD184B;
+}
+
 /* Handwriting lines for empty fields — the poster doubles as an analogue template. */
 .poster-lines {
   background-image: repeating-linear-gradient(

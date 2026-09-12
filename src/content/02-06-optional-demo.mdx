@@ -8,11 +8,11 @@ researchedOn: 2026-09-11
 # <I18n de="Optional: Live-Demo – so kann das aussehen" en="Optional: live demo – what it can look like" />
 
 <div style={{ display: "inline-block", border: "2px dashed var(--workshop-accent)", borderRadius: "8px", padding: "0.35rem 0.9rem", fontWeight: 700, color: "var(--workshop-accent)", marginBottom: "0.75rem" }}>
-  <I18n de="OPTIONAL · 5–10 Min · nur auf Nachfrage" en="OPTIONAL · 5–10 min · only on request" />
+  <I18n de="OPTIONAL · 15–30 Min · nur auf Nachfrage" en="OPTIONAL · 15–30 min · only on request" />
 </div>
 
 <p style={{ marginTop: 0 }}>
-  <I18n de="Wir zeigen die Demo nur, wenn ihr fragt: „Wie sähe das konkret aus?“ Sie zeigt, dass und wie so etwas heute funktioniert." en="We only show the demo if you ask: “What would this look like in practice?” It shows that and how something like this works today." />
+  <I18n de="Die Demo läuft nur, wenn wir die Frage stellen: „Wie sähe das konkret aus?“ Sie zeigt, dass und wie so etwas heute funktioniert. Wenn wir sie sehen wollen, nehmen wir uns 15 bis 30 Minuten und stellen unsere Fragen direkt am Beispiel: Die Fragerunde geht dann in der Demo auf, der Input davor fällt entsprechend kürzer aus." en="The demo only runs if we ask the question: “What would this look like in practice?” It shows that and how something like this works today. If we want to see it, we take 15 to 30 minutes and ask our questions directly at the example: the Q&A then merges into the demo and the input before it is shortened accordingly." />
 </p>
 
 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem", margin: "1rem 0" }}>
@@ -31,21 +31,56 @@ researchedOn: 2026-09-11
 </div>
 
 <p style={{ fontSize: "0.9rem" }}>
-  <strong><I18n de="Worauf ihr beim Zuschauen achten könnt: " en="What to watch for: " /></strong>
+  <strong><I18n de="Worauf wir beim Zuschauen achten: " en="What we watch for: " /></strong>
   <I18n de="Woher kommt die Antwort? Was müsste ein Mensch prüfen? Was bräuchte es beim FBS, damit das funktioniert?" en="Where does the answer come from? What would a human need to check? What would the FBS need for this to work?" />
 </p>
 
-<p style={{ fontSize: "0.9rem", color: "var(--fg-muted)" }}>
-  <I18n de="Beispiele für die Demo: " en="Demo examples: " />
-  <a href="https://cdbos.de" target="_blank" rel="noreferrer" style={{ color: "var(--workshop-accent)" }}>cdbos.de</a>
-  <I18n de=" (Fragen an eine Wissensbasis) · " en=" (asking a knowledge base) · " />
-  <a href="https://composer.cdbos.de" target="_blank" rel="noreferrer" style={{ color: "var(--workshop-accent)" }}>composer.cdbos.de</a>
-  <I18n de=" (Dokumente aus Stichpunkten erzeugen)" en=" (generating documents from notes)" />
-</p>
+<h2 style={{ fontSize: "1.05rem", color: "var(--workshop-accent)", margin: "1.2rem 0 0.6rem" }}>
+  <I18n de="Beispiele für die Demo" en="Demo examples" />
+</h2>
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem" }}>
+  <a
+    href="https://cdbos.de"
+    target="_blank"
+    rel="noreferrer"
+    style={{ display: "block", border: "1px solid var(--border)", borderRadius: "10px", overflow: "hidden", background: "var(--bg-elev)", color: "var(--fg)", textDecoration: "none" }}
+  >
+    <img
+      src={`${import.meta.env.BASE_URL}brand/demo/demo-wissensplattform.webp`}
+      alt="Wissensplattform: Quellen, semantische Wissensbasis und Nutzung"
+      style={{ display: "block", width: "100%", height: "150px", objectFit: "cover", objectPosition: "50% 42%" }}
+    />
+    <div style={{ padding: "0.7rem 0.9rem" }}>
+      <strong style={{ color: "var(--workshop-accent)" }}>cdbos.de</strong>
+      <p style={{ fontSize: "0.88rem", color: "var(--fg-muted)", margin: "0.25rem 0 0" }}>
+        <I18n de="Fragen an eine Wissensbasis – Antwort mit Quelle" en="Questions to a knowledge base – answer with a source" />
+      </p>
+    </div>
+  </a>
+  <a
+    href="https://composer.cdbos.de"
+    target="_blank"
+    rel="noreferrer"
+    style={{ display: "block", border: "1px solid var(--border)", borderRadius: "10px", overflow: "hidden", background: "var(--bg-elev)", color: "var(--fg)", textDecoration: "none" }}
+  >
+    <img
+      src={`${import.meta.env.BASE_URL}brand/demo/demo-wissensgraph.webp`}
+      alt="Wissensgraph: Dinge und ihre Beziehungen, Kontext statt Stichworttreffer"
+      style={{ display: "block", width: "100%", height: "150px", objectFit: "cover", objectPosition: "50% 42%" }}
+    />
+    <div style={{ padding: "0.7rem 0.9rem" }}>
+      <strong style={{ color: "var(--workshop-accent)" }}>composer.cdbos.de</strong>
+      <p style={{ fontSize: "0.88rem", color: "var(--fg-muted)", margin: "0.25rem 0 0" }}>
+        <I18n de="Aus Stichpunkten ein fertiges Dokument" en="From bullet points to a finished document" />
+      </p>
+    </div>
+  </a>
+</div>
 
 <SpeakerNotes>
   <I18n
-    de="Stefan: Nur zeigen, wenn die Gruppe ausdrücklich fragt, und die Zeit von der Fragerunde abziehen (maximal 10 Min). Sachlich zeigen, was heute geht. Beispiele verbandsnah wählen, etwa eine Frage zu einem Ausschussbeschluss oder ein Rundschreiben zum nächsten Seminar. Nach der Demo die drei Beobachtungsfragen an die Gruppe zurückgeben und in die Fragerunde überleiten. Fragen zum Werkzeug selbst freundlich zurück auf die strategische Ebene lenken."
-    en="Stefan: only show it if the group explicitly asks, and take the time out of the Q&A (10 min max). Show factually what works today. Choose examples close to the association, e.g. a question on a committee resolution or a circular about the next seminar. After the demo, hand the three observation questions back to the group and move into the Q&A. Steer questions about the tool itself kindly back to the strategic level."
+    de="Stefan: Nur zeigen, wenn die Gruppe ausdrücklich fragt — dann aber richtig, mit 15 bis 30 Minuten. Die Fragerunde geht in der Demo auf (Fragen direkt am Beispiel beantworten), der Experteninput davor wird auf rund 20 Minuten gestrafft. Sachlich zeigen, was heute geht. Beispiele verbandsnah wählen, etwa eine Frage zu einem Ausschussbeschluss oder ein Rundschreiben zum nächsten Seminar. Nach der Demo die drei Beobachtungsfragen an die Gruppe zurückgeben und in die Fragerunde überleiten. Fragen zum Werkzeug selbst freundlich zurück auf die strategische Ebene lenken."
+    en="Stefan: only show it if the group explicitly asks — but then properly, with 15 to 30 minutes. The Q&A merges into the demo (answer questions right at the example) and the expert input before it is shortened to about 20 minutes. Show factually what works today. Choose examples close to the association, e.g. a question on a committee resolution or a circular about the next seminar. After the demo, hand the three observation questions back to the group and move into the Q&A. Steer questions about the tool itself kindly back to the strategic level."
   />
 </SpeakerNotes>

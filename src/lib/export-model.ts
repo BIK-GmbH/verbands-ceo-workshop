@@ -9,6 +9,7 @@
 import type { Lang } from "@/types/slide";
 import { getState, filledParticipants, type CaptureEntry } from "./workshop-store";
 import { MANIFEST, findModule, findSlide } from "./slides";
+import { formatCardLine } from "./cards";
 import glossaryMdx from "@/content/99-01-glossar.mdx?raw";
 
 /* ------------------------------------------------------------------ types */
@@ -580,7 +581,13 @@ function entryBlock(e: CaptureEntry): Block {
     if (barometer) return { type: "entry", question, body: [], open: false, polished, highlight: true, barometer };
   }
   const body: Block[] = Array.isArray(e.value)
-    ? [{ type: "list", ordered: false, items: e.value.filter((v) => v.trim()).map((v) => ({ level: 0, runs: parseInline(v) })) }]
+    ? [
+        {
+          type: "list",
+          ordered: false,
+          items: e.value.filter((v) => v.trim()).map((v) => ({ level: 0, runs: parseInline(formatCardLine(v)) })),
+        },
+      ]
     : textBlocks(e.value);
   return { type: "entry", question, body, open: false, polished, highlight: e.kind === "vote" || e.kind === "decision" };
 }

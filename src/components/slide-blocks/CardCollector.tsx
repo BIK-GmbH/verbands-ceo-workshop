@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Layers, Loader2, Mic, MicOff, Plus, Sparkles, Undo2, X } from "lucide-react";
+import { Check, Layers, Loader2, Mic, MicOff, Plus, Sparkles, Tags, Undo2, X } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries, useCapture } from "@/lib/useWorkshop";
 import { useDictation } from "@/lib/useDictation";
@@ -16,6 +16,14 @@ interface Props {
   prompt: string;
   /** Optional small groups, e.g. ["Gruppe 1", "Gruppe 2"]; stored as prefix "[Gruppe 1] Text" */
   groups?: string[];
+  /** Label in front of the group chips; defaults to the small-group wording */
+  groupsLabel?: string;
+  groupsLabelEn?: string;
+  /** Optional second dimension per card, e.g. a time horizon; stored as prefix "{Heute} Text" */
+  tags?: string[];
+  /** Label in front of the tag chips */
+  tagLabel?: string;
+  tagLabelEn?: string;
   /** Entry id ("<slideId>:<field>") the AI clustering is written to, e.g. "01.04:problemfelder" */
   clusterTarget?: string;
   /** Prompt for the target entry if it does not exist yet (should match the target slide's field) */
@@ -27,18 +35,38 @@ interface Props {
 
 interface Card {
   group: string;
+  tag: string;
   text: string;
 }
 
 const GROUP_PREFIX = /^\[([^\]]+)\]\s*/;
+const TAG_PREFIX = /^\{([^}]+)\}\s*/;
 const ERROR_COLOR = "#dc2626";
 
-function parseCard(line: string, withGroups: boolean): Card {
-  const m = withGroups ? GROUP_PREFIX.exec(line) : null;
-  return m ? { group: m[1], text: line.slice(m[0].length) } : { group: "", text: line };
+/** Two optional prefixes: "[Gruppe] {Tag} Kartentext". Both are stripped for display. */
+function parseCard(line: string, withGroups: boolean, withTags: boolean): Card {
+  let rest = line;
+  let group = "";
+  let tag = "";
+  if (withGroups) {
+    const m = GROUP_PREFIX.exec(rest);
+    if (m) {
+      group = m[1];
+      rest = rest.slice(m[0].length);
+    }
+  }
+  if (withTags) {
+    const m = TAG_PREFIX.exec(rest);
+    if (m) {
+      tag = m[1];
+      rest = rest.slice(m[0].length);
+    }
+  }
+  return { group, tag, text: rest };
 }
 
-const serialize = (c: Card) => (c.group ? `[${c.group}] ${c.text}` : c.text);
+const serialize = (c: Card) =>
+  `${c.group ? `[${c.group}] ` : ""}${c.tag ? `{${c.tag}} ` : ""}${c.text}`;
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -58,14 +86,14 @@ Bereinige die Kartenliste:
 - Korrigiere Rechtschreibung und offensichtliche Erkennungsfehler aus dem Kontext.
 - Führe inhaltsgleiche Karten (Dubletten) zu einer Karte zusammen und hänge die Anzahl an, z. B. „(2×)“. Ähnliche, aber verschiedene Aussagen bleiben getrennt.
 - Kurz und prägnant wie auf einer Karte. Sinn und Haltung bleiben unverändert. Erfinde nichts, lass keine Aussage weg.
-- Steht vor einer Karte ein Präfix in eckigen Klammern (z. B. „[Gruppe 2]“), übernimm es unverändert. Dubletten nur innerhalb derselben Gruppe zusammenführen.
+- Steht vor einer Karte ein Präfix in eckigen Klammern (z. B. „[Gruppe 2]“) oder in geschweiften Klammern (z. B. „{Heute}“), übernimm beide unverändert und in derselben Reihenfolge. Dubletten nur innerhalb derselben Gruppe zusammenführen.
 - Antworte ausschließlich mit der Kartenliste: eine Karte pro Zeile, ohne Aufzählungszeichen, ohne Einleitung, ohne Erklärung.`;
 
 const CLUSTER_SYSTEM = `${CONTEXT}
 
 Ordne die Karten 3 bis 5 Themenfeldern zu:
 - Verwende ausschließlich die gelieferten Karten. Erfinde keine Karten, Themen, Fakten oder Zahlen.
-- Jede Karte genau einem Themenfeld zuordnen. Karten nahezu wörtlich übernehmen, offensichtliche Erkennungsfehler korrigieren, Präfixe in eckigen Klammern weglassen. Inhaltsgleiche Karten nur einmal aufführen und die Anzahl anhängen, z. B. „(2×)“.
+- Jede Karte genau einem Themenfeld zuordnen. Karten nahezu wörtlich übernehmen, offensichtliche Erkennungsfehler korrigieren, Präfixe in eckigen und geschweiften Klammern weglassen. Inhaltsgleiche Karten nur einmal aufführen und die Anzahl anhängen, z. B. „(2×)“.
 - Titel kurz und sachlich; geht es um Probleme, den Titel als Problem formulieren, nicht als Lösung.
 - Format, reiner Text ohne Markdown außer Spiegelstrichen, keine Einleitung, kein Schlusssatz:
 Themenfeld 1: Titel
@@ -87,6 +115,11 @@ export function CardCollector({
   field,
   prompt,
   groups = [],
+  groupsLabel,
+  groupsLabelEn,
+  tags = [],
+  tagLabel,
+  tagLabelEn,
   clusterTarget,
   clusterPrompt,
   placeholder,
@@ -97,20 +130,26 @@ export function CardCollector({
   const module = Number.parseInt(slideId, 10);
   const id = `${slideId}:${field}`;
   const withGroups = groups.length > 0;
+  const withTags = tags.length > 0;
   const [value, setValue] = useCapture({ id, module, slideId, kind: "checklist", prompt, removeWhenEmpty: true });
   const lines = Array.isArray(value) ? value : [];
-  const cards = lines.map((l) => parseCard(l, withGroups));
+  const cards = lines.map((l) => parseCard(l, withGroups, withTags));
 
   const [activeGroup, setActiveGroup] = useState(groups[0] ?? "");
+  const [activeTag, setActiveTag] = useState("");
   const [draft, setDraft] = useState("");
   const [editing, setEditing] = useState<{ index: number; text: string } | null>(null);
 
   const apiKey = useApiKey();
   const entries = useAllEntries();
-  const [busy, setBusy] = useState<"polish" | "cluster" | null>(null);
+  const [busy, setBusy] = useState<"polish" | "cluster" | "classify" | null>(null);
   const [aiError, setAiError] = useState("");
   const [showKeySetup, setShowKeySetup] = useState(false);
-  const [polishPreview, setPolishPreview] = useState<{ sent: string[]; proposed: string[] } | null>(null);
+  const [polishPreview, setPolishPreview] = useState<{
+    sent: string[];
+    proposed: string[];
+    kind: "polish" | "classify";
+  } | null>(null);
   const [undoLines, setUndoLines] = useState<string[] | null>(null);
   const [confirmOverwrite, setConfirmOverwrite] = useState(false);
   const [clusterResult, setClusterResult] = useState<string | null>(null);
@@ -130,7 +169,10 @@ export function CardCollector({
   const addCards = (texts: string[]) => {
     const fresh = texts.map((t) => capitalize(t.trim())).filter(Boolean);
     if (!fresh.length) return;
-    setValue([...currentLines(), ...fresh.map((text) => serialize({ group: withGroups ? activeGroup : "", text }))]);
+    setValue([
+      ...currentLines(),
+      ...fresh.map((text) => serialize({ group: withGroups ? activeGroup : "", tag: withTags ? activeTag : "", text })),
+    ]);
     setUndoLines(null);
   };
 
@@ -143,7 +185,7 @@ export function CardCollector({
 
   const commitEdit = () => {
     if (!editing) return;
-    const next = currentLines().map((l) => parseCard(l, withGroups));
+    const next = currentLines().map((l) => parseCard(l, withGroups, withTags));
     const text = editing.text.trim();
     const updated = text
       ? next.map((c, i) => (i === editing.index ? { ...c, text } : c))
@@ -155,6 +197,12 @@ export function CardCollector({
   const removeCard = (index: number) => {
     setValue(currentLines().filter((_, i) => i !== index));
     setEditing(null);
+  };
+
+  const setCardTag = (index: number, tag: string) => {
+    setValue(
+      currentLines().map((l, i) => (i === index ? serialize({ ...parseCard(l, withGroups, withTags), tag }) : l)),
+    );
   };
 
   const needKey = () => {
@@ -175,7 +223,46 @@ export function CardCollector({
         prompt: `Aufgabe der Karten: ${prompt}\n\n<karten>\n${sent.join("\n")}\n</karten>`,
         logLabel: `cards-polish ${id}`,
       });
-      setPolishPreview({ sent, proposed: parseLines(out) });
+      setPolishPreview({ sent, proposed: parseLines(out), kind: "polish" });
+    } catch (err) {
+      setAiError(describeAiError(err, lang));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  /**
+   * Sorts the cards into the configured dimensions without touching their wording.
+   * The proposal is shown first and only written when the plenum accepts it.
+   */
+  const classify = async () => {
+    if (busy || needKey()) return;
+    const sent = currentLines();
+    if (!sent.length) return;
+    setBusy("classify");
+    setAiError("");
+    const rules = [
+      withGroups ? `- Kategorie in eckigen Klammern, genau eine aus dieser Liste: ${groups.join(" | ")}.` : "",
+      withTags ? `- Zeithorizont in geschweiften Klammern, genau einer aus dieser Liste: ${tags.join(" | ")}.` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+    const format = `${withGroups ? "[Kategorie] " : ""}${withTags ? "{Horizont} " : ""}Kartentext`;
+    try {
+      const out = await completeText({
+        system: `${CONTEXT}
+
+Ordne jede Karte ein:
+${rules}
+- Wortlaut, Reihenfolge und Anzahl der Karten bleiben unverändert. Erfinde nichts, lass keine Karte weg.
+- Vorhandene Einordnungen darfst du korrigieren, wenn sie erkennbar nicht passen.
+- Ist eine Karte nicht eindeutig, wähle die naheliegendste Einordnung; lass keine Karte ohne Einordnung.
+- Antworte ausschließlich mit einer Zeile je Karte im Format: ${format}`,
+        prompt: `Aufgabe der Karten: ${prompt}\n\n<karten>\n${sent.join("\n")}\n</karten>`,
+        effort: "medium",
+        logLabel: `cards-classify ${id}`,
+      });
+      setPolishPreview({ sent, proposed: parseLines(out), kind: "classify" });
     } catch (err) {
       setAiError(describeAiError(err, lang));
     } finally {
@@ -236,6 +323,18 @@ export function CardCollector({
     : [{ group: "", items: indexed }];
   const countLabel = (n: number) => (de ? `${n} ${n === 1 ? "Karte" : "Karten"}` : `${n} ${n === 1 ? "card" : "cards"}`);
   const groupLabel = (g: string) => g || (de ? "Ohne Gruppe" : "No group");
+  const tagHeading = (de ? tagLabel : (tagLabelEn ?? tagLabel)) ?? (de ? "Einordnung:" : "Classification:");
+
+  /** "Heute 3 · Morgen 2 · offen 1" per section, so the split is readable at a glance. */
+  const tagSummary = (items: { card: Card }[]) => {
+    const open = items.filter((x) => !x.card.tag).length;
+    const parts = tags
+      .map((t) => ({ t, n: items.filter((x) => x.card.tag === t).length }))
+      .filter((x) => x.n > 0)
+      .map((x) => `${x.t} ${x.n}`);
+    if (open) parts.push(`${de ? "offen" : "open"} ${open}`);
+    return parts.join(" · ");
+  };
 
   if (readOnly) {
     return (
@@ -253,7 +352,10 @@ export function CardCollector({
                 {withGroups && <p className="text-xs font-semibold">{groupLabel(s.group)}</p>}
                 <ul className="text-xs list-disc pl-5">
                   {s.items.map(({ card, index }) => (
-                    <li key={index}>{card.text}</li>
+                    <li key={index}>
+                      {card.text}
+                      {card.tag && <span className="ml-1 opacity-70">({card.tag})</span>}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -308,6 +410,26 @@ export function CardCollector({
             {card.text}
           </button>
         )}
+        {withTags && (
+          <select
+            value={card.tag}
+            onChange={(e) => setCardTag(index, e.target.value)}
+            className="mt-1.5 w-full text-[11px] rounded px-1 py-0.5 no-print"
+            style={{
+              background: "var(--bg-elev)",
+              border: "1px solid var(--border)",
+              color: card.tag ? "var(--workshop-accent)" : "var(--fg-muted)",
+            }}
+            aria-label={tagHeading}
+          >
+            <option value="">{de ? "— noch offen" : "— still open"}</option>
+            {[...new Set([...tags, ...(card.tag ? [card.tag] : [])])].map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        )}
         <button
           type="button"
           onClick={() => removeCard(index)}
@@ -348,7 +470,9 @@ export function CardCollector({
       <div className="no-print space-y-3">
         {withGroups && (
           <div className="flex flex-wrap items-center gap-1.5 text-xs">
-            <span style={{ color: "var(--fg-muted)" }}>{de ? "Karten gehören zu:" : "Cards belong to:"}</span>
+            <span style={{ color: "var(--fg-muted)" }}>
+              {(de ? groupsLabel : (groupsLabelEn ?? groupsLabel)) ?? (de ? "Karten gehören zu:" : "Cards belong to:")}
+            </span>
             {groups.map((g) => {
               const active = g === activeGroup;
               return (
@@ -368,6 +492,34 @@ export function CardCollector({
                 </button>
               );
             })}
+          </div>
+        )}
+
+        {withTags && (
+          <div className="flex flex-wrap items-center gap-1.5 text-xs">
+            <span style={{ color: "var(--fg-muted)" }}>{tagHeading}</span>
+            {["", ...tags].map((t) => {
+              const active = t === activeTag;
+              return (
+                <button
+                  key={t || "-"}
+                  type="button"
+                  onClick={() => setActiveTag(t)}
+                  className="px-2.5 py-1 rounded-full transition-colors"
+                  style={{
+                    background: active ? "var(--workshop-accent-deep)" : "var(--bg)",
+                    color: active ? "white" : "var(--fg)",
+                    border: "1px solid " + (active ? "var(--workshop-accent-deep)" : "var(--border)"),
+                  }}
+                  aria-pressed={active}
+                >
+                  {t || (de ? "noch offen" : "still open")}
+                </button>
+              );
+            })}
+            <span style={{ color: "var(--fg-muted)" }}>
+              {de ? "· lässt sich je Karte ändern" : "· can be changed per card"}
+            </span>
           </div>
         )}
 
@@ -437,10 +589,11 @@ export function CardCollector({
           {sections.map((s) => (
             <div key={s.group || "-"}>
               {withGroups && (
-                <div className="text-xs font-semibold mb-1.5 flex items-center gap-1.5">
+                <div className="text-xs font-semibold mb-1.5 flex flex-wrap items-center gap-1.5">
                   {groupLabel(s.group)}
                   <span className="font-normal" style={{ color: "var(--fg-muted)" }}>
                     · {countLabel(s.items.length)}
+                    {withTags && s.items.length > 0 && ` · ${tagSummary(s.items)}`}
                   </span>
                 </div>
               )}
@@ -472,6 +625,23 @@ export function CardCollector({
               {busy === "polish" ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
               {de ? "Karten glätten" : "Polish cards"}
             </button>
+            {(withGroups || withTags) && (
+              <button
+                type="button"
+                onClick={() => void classify()}
+                disabled={busy !== null}
+                className={secondaryBtn}
+                style={{ border: "1px solid var(--workshop-accent)", color: "var(--workshop-accent)", background: "var(--bg)" }}
+                title={
+                  de
+                    ? "Jede Karte einer Kategorie und einem Zeithorizont zuordnen — Vorschlag der KI, den wir gemeinsam prüfen"
+                    : "Sort every card into a category and a time horizon — an AI proposal we review together"
+                }
+              >
+                {busy === "classify" ? <Loader2 size={14} className="animate-spin" /> : <Tags size={14} />}
+                {de ? "Karten einordnen" : "Classify cards"}
+              </button>
+            )}
             {clusterTarget && (
               <button
                 type="button"
@@ -528,12 +698,27 @@ export function CardCollector({
           {polishPreview && (
             <div className="rounded-md p-2.5 text-xs space-y-2" style={{ background: "var(--bg-elev)", border: "1px solid var(--workshop-accent)" }} data-polish-preview>
               <p className="font-semibold">
-                {de ? "Vorschlag der KI" : "AI suggestion"}: {countLabel(polishPreview.sent.length)} → {countLabel(polishPreview.proposed.length)}
+                {polishPreview.kind === "classify"
+                  ? de
+                    ? `Einordnungs-Vorschlag der KI (${countLabel(polishPreview.proposed.length)})`
+                    : `AI classification proposal (${countLabel(polishPreview.proposed.length)})`
+                  : `${de ? "Vorschlag der KI" : "AI suggestion"}: ${countLabel(polishPreview.sent.length)} → ${countLabel(polishPreview.proposed.length)}`}
               </p>
               <ul className="list-disc pl-5 space-y-0.5 text-sm">
-                {polishPreview.proposed.map((l, i) => (
-                  <li key={i}>{l}</li>
-                ))}
+                {polishPreview.proposed.map((l, i) => {
+                  const c = parseCard(l, withGroups, withTags);
+                  const badge = [c.group, c.tag].filter(Boolean).join(" · ");
+                  return (
+                    <li key={i}>
+                      {badge && (
+                        <span className="text-[10px] uppercase tracking-wider mr-1.5" style={{ color: "var(--workshop-accent)" }}>
+                          {badge}
+                        </span>
+                      )}
+                      {c.text}
+                    </li>
+                  );
+                })}
               </ul>
               <div className="flex gap-1.5">
                 <button type="button" onClick={acceptPolish} className="px-2.5 py-1 rounded-md font-medium" style={{ background: "var(--workshop-accent)", color: "white" }}>

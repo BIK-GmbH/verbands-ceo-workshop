@@ -11,6 +11,7 @@
  */
 import { useSyncExternalStore } from "react";
 import type { Bilingual } from "@/types/slide";
+import { SCALES, sanitizeScales, type InterviewScales } from "@/lib/interview-metrics";
 
 export type InterviewSource = "recorded" | "uploaded";
 
@@ -45,6 +46,11 @@ export interface Interview {
   transcriptModel?: string;
   opinion?: string;
   opinionAt?: string;
+  /**
+   * Scale values 1–4 derived with the opinion picture (and correctable by hand).
+   * Absent when the model returned no usable block — the list marks that.
+   */
+  scales?: InterviewScales;
   /** Opinion text + pseudonym as last written to the workshop protocol */
   protocolText?: string;
   protocolPseudonym?: string;
@@ -318,6 +324,7 @@ function parseRecord(raw: unknown): Interview | null {
     transcriptModel: optStr(r.transcriptModel),
     opinion: optStr(r.opinion),
     opinionAt: optStr(r.opinionAt),
+    scales: sanitizeScales(r.scales) ?? undefined,
   };
 }
 
@@ -418,11 +425,17 @@ export function useGroupOpinion(): GroupOpinion | null {
   return useSyncExternalStore(subscribeGroup, getGroupOpinion, () => null);
 }
 
+/** Corrected scale values change the group figures, so they belong in the fingerprint. */
+function scaleSignature(scales?: InterviewScales): string {
+  if (!scales) return "-";
+  return SCALES.map((s) => scales[s.id] ?? "x").join(",");
+}
+
 /** Stable fingerprint of all interview opinions that feed the group opinion. */
 export function opinionFingerprint(interviews: Interview[]): string {
   return interviews
     .filter((i) => i.opinion?.trim())
-    .map((i) => `${i.id}@${i.opinionAt ?? ""}`)
+    .map((i) => `${i.id}@${i.opinionAt ?? ""}#${scaleSignature(i.scales)}`)
     .sort()
     .join("|");
 }

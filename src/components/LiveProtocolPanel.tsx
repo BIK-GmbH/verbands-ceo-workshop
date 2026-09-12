@@ -34,7 +34,7 @@ import {
 import { describeAiError, useApiKey } from "@/lib/ai-assist";
 import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { MANIFEST, findModule } from "@/lib/slides";
-import { BulkPolishButton, EntryEditor, MicButton, isEditableText, polishQuestion } from "@/components/ProtocolAi";
+import { BulkPolishButton, EntryEditor, MicButton, PolishBar, isEditableText, polishQuestion } from "@/components/ProtocolAi";
 import { Tooltip } from "@/components/ui/Tooltip";
 
 interface Props {
@@ -257,6 +257,23 @@ function AdhocField({
           </Tooltip>
         )}
       </div>
+      <PolishBar
+        text={text}
+        slideId={entry.slideId}
+        prompt={entry.prompt}
+        lang={lang}
+        onResult={(next, replaced) =>
+          setEntry({
+            id: entry.id,
+            module: entry.module,
+            slideId: entry.slideId,
+            kind: "text",
+            prompt: entry.prompt,
+            value: next,
+            raw: getEntry(entry.id)?.raw ?? replaced,
+          })
+        }
+      />
     </div>
   );
 }
@@ -515,6 +532,24 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                 </Tooltip>
               )}
             </div>
+            <PolishBar
+              text={noteText}
+              slideId={current.id}
+              prompt={de ? `Notiz · ${current.title.de}` : `Note · ${current.title.en}`}
+              lang={lang}
+              onResult={(next, replaced) => {
+                const noteId = `${current.id}:notiz`;
+                setEntry({
+                  id: noteId,
+                  module: current.module,
+                  slideId: current.id,
+                  kind: "text",
+                  prompt: de ? `Notiz · ${current.title.de}` : `Note · ${current.title.en}`,
+                  value: next,
+                  raw: getEntry(noteId)?.raw ?? replaced,
+                });
+              }}
+            />
             <p className="text-[10px] mt-1" style={{ color: "var(--fg-muted)" }}>
               {de
                 ? "Tipp: Text komplett löschen entfernt die Notiz aus dem Protokoll."
