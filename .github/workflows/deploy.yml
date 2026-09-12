@@ -24,11 +24,9 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      # Public Pages serve under /<repo>/, which is the default BASE_PATH in
+      # vite.config.ts — do not override it here.
       - run: npm run build
-        env:
-          # Private (Enterprise) Pages serve at the root of a random
-          # *.pages.github.io subdomain, not under /<repo>/.
-          BASE_PATH: /
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
