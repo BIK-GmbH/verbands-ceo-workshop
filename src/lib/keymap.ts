@@ -10,6 +10,36 @@ export interface KeymapHandlers {
   onTogglePalette?: () => void;
 }
 
+/** True while the keyboard is busy with a text field — those keys belong to the field. */
+function typing(target: EventTarget | null): boolean {
+  const el = target as HTMLElement | null;
+  return Boolean(
+    el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable),
+  );
+}
+
+/**
+ * „?" opens the help — from every route, not just the slide view, which is why it
+ * has its own listener instead of riding along in useKeymap (that one also claims
+ * the arrow keys for the deck). Registered here so all bindings stay in one file.
+ */
+export function useHelpKey(onOpen: () => void, enabled = true) {
+  const ref = useRef(onOpen);
+  ref.current = onOpen;
+
+  useEffect(() => {
+    if (!enabled) return;
+    function handler(e: KeyboardEvent) {
+      if (e.key !== "?" || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (typing(e.target)) return;
+      e.preventDefault();
+      ref.current();
+    }
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [enabled]);
+}
+
 /** Global keyboard bindings for slide navigation.
  *  Uses a ref so the listener stays stable across re-renders while still
  *  calling the latest handler closures. */
@@ -19,15 +49,7 @@ export function useKeymap(h: KeymapHandlers) {
 
   useEffect(() => {
     function handler(e: KeyboardEvent) {
-      const target = e.target as HTMLElement | null;
-      if (
-        target &&
-        (target.tagName === "INPUT" ||
-          target.tagName === "TEXTAREA" ||
-          target.isContentEditable)
-      ) {
-        return;
-      }
+      if (typing(e.target)) return;
 
       const cur = ref.current;
 

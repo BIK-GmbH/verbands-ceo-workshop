@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Menu, Play, Search, Sun, Moon, ClipboardList, LayoutGrid, Mic, Type, Settings as SettingsIcon } from "lucide-react";
 import { useApiKey } from "@/lib/ai-assist";
@@ -13,7 +12,9 @@ import type { Lang, Theme } from "@/types/slide";
 import { t } from "@/lib/i18n";
 import { ALL_SLIDES } from "@/lib/slides";
 import { Tooltip } from "@/components/ui/Tooltip";
-import { RecordingBadge } from "@/components/RecordingBadge";
+import { SOFT, SOFT_HOVER } from "@/components/ui/soft-control";
+import { RecorderMenu } from "@/components/RecorderMenu";
+import { HelpButton } from "@/components/HelpButton";
 
 interface Props {
   lang: Lang;
@@ -31,13 +32,6 @@ const ICON = { strokeWidth: 2.25 } as const;
 const FONT_ICON_SIZE: Record<FontScale, number> = { normal: 14, large: 16, xlarge: 18 };
 const IS_MAC = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent);
 const BASE = import.meta.env.BASE_URL;
-
-/** Quiet surface for header controls — adapts to light and dark theme. */
-const SOFT: CSSProperties = {
-  background: "color-mix(in oklch, var(--fg) 6%, transparent)",
-  border: "1px solid color-mix(in oklch, var(--fg) 8%, transparent)",
-};
-const SOFT_HOVER = "hover:bg-[color-mix(in_oklch,var(--fg)_11%,transparent)] active:bg-[color-mix(in_oklch,var(--fg)_16%,transparent)]";
 
 /** Host logos, in the agreed order after the FBS seal. Light = dark artwork, dark = white artwork. */
 const HOST_LOGOS = [
@@ -129,8 +123,9 @@ export function Header({
       </Link>
 
       <div className="ml-auto flex items-center gap-1.5">
-        {/* Only visible while the session recorder runs — it keeps recording across slides. */}
-        <RecordingBadge />
+        {/* Operates the session recorder from any slide; while it runs, this is
+            also the running-time display. A click only opens the menu. */}
+        <RecorderMenu />
 
         <Tooltip
           content={
@@ -267,6 +262,8 @@ export function Header({
           {lang}
         </button>
         </Tooltip>
+
+        <HelpButton lang={lang} />
 
         <Tooltip
           content={
