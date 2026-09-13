@@ -15,6 +15,7 @@ import {
 import { useLang } from "@/lib/i18n";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { SOFT, SOFT_HOVER } from "@/components/ui/soft-control";
+import { localDateStamp } from "@/lib/local-date";
 import {
   discardRecording,
   discardRecovery,
@@ -75,7 +76,7 @@ export function RecorderMenu() {
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const panelId = useId();
-  const stamp = new Date().toISOString().slice(0, 10);
+  const stamp = localDateStamp();
 
   const close = useCallback((refocus = false) => {
     setOpen(false);

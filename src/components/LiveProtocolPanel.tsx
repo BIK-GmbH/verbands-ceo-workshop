@@ -36,6 +36,7 @@ import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { MANIFEST, findModule } from "@/lib/slides";
 import { BulkPolishButton, EntryEditor, MicButton, PolishBar, isEditableText, polishQuestion } from "@/components/ProtocolAi";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { localDateStamp } from "@/lib/local-date";
 
 interface Props {
   open: boolean;
@@ -51,8 +52,8 @@ export const EXPORT_HINTS = {
     en: "Prepare the record for printing; print it or save it as PDF from the print dialog",
   },
   word: {
-    de: "Protokoll als Word-Datei (.doc) herunterladen, zum Weiterbearbeiten und Versenden",
-    en: "Download the record as a Word file (.doc) for further editing and sending",
+    de: "Protokoll als Word-Datei (.docx) herunterladen, zum Weiterbearbeiten und Versenden",
+    en: "Download the record as a Word file (.docx) for further editing and sending",
   },
   markdown: {
     de: "Reiner Text mit Überschriften, z. B. für ein Wiki oder zur Weiterverarbeitung mit KI",
@@ -391,7 +392,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const modulesWithInput = moduleOrder.length;
   const totalModules = MANIFEST.length;
   const pct = totalModules ? Math.round((modulesWithInput / totalModules) * 100) : 0;
-  const stamp = new Date().toISOString().slice(0, 10);
+  const stamp = localDateStamp();
 
   if (!open) {
     // Closing the drawer keeps the dictation running; show where it writes and offer a stop.

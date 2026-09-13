@@ -12,6 +12,7 @@ import { MANIFEST, findModule, findSlide } from "./slides";
 import { compareEntries } from "./field-order";
 import { formatCardLine } from "./cards";
 import glossaryMdx from "@/content/99-01-glossar.mdx?raw";
+import { localDateStamp } from "@/lib/local-date";
 
 /* ------------------------------------------------------------------ types */
 
@@ -502,7 +503,7 @@ function glossaryChapter(lang: Lang, number: number, entries: Record<string, Cap
 
 /* ------------------------------------------------------------------ helpers */
 
-const today = () => new Date().toISOString().slice(0, 10);
+const today = () => localDateStamp();
 
 function formatDate(iso: string, lang: Lang): string {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso || "—";

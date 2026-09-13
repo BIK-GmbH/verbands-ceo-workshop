@@ -164,12 +164,13 @@ export function Tooltip({ content, children, side = "top", touch = "hold", openO
     };
   }, [open, content, side, hide]);
 
-  // While open: Esc closes (without triggering page-level Esc handlers), a tap outside closes.
+  // While open: Esc closes, a tap outside closes. Esc still reaches the page — a
+  // tooltip that merely sits under the mouse must not eat the Esc that ends the
+  // presentation or closes a dialog.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      e.stopPropagation();
       suppressed.current = true;
       hide();
     };

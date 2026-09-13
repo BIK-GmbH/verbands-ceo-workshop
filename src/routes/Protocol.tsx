@@ -14,6 +14,7 @@ import { lastSlidePath } from "@/lib/last-slide";
 import { formatCardLine } from "@/lib/cards";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { EXPORT_HINTS } from "@/components/LiveProtocolPanel";
+import { localDateStamp } from "@/lib/local-date";
 
 export function Protocol() {
   const [lang] = useLang();
@@ -21,7 +22,7 @@ export function Protocol() {
   const entries = useAllEntries();
   const [meta, setMeta] = useWorkshopMeta();
   const de = lang === "de";
-  const stamp = new Date().toISOString().slice(0, 10);
+  const stamp = localDateStamp();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 

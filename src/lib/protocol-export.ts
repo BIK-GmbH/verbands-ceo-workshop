@@ -10,10 +10,11 @@ import type { Lang } from "@/types/slide";
 import { getState, downloadFile } from "./workshop-store";
 import { buildProtocolModel, buildReportModel, labelsFor, type ExportDoc, type ReportInfo } from "./export-model";
 import { printHtml, renderHtml } from "./export-html";
+import { localDateStamp } from "@/lib/local-date";
 
 export { hasValue, isAdHoc, type ReportInfo } from "./export-model";
 
-const today = () => new Date().toISOString().slice(0, 10);
+const today = () => localDateStamp();
 
 function downloadBlob(filename: string, blob: Blob) {
   const url = URL.createObjectURL(blob);

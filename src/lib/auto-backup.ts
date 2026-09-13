@@ -681,14 +681,20 @@ async function doWriteToFolder(meta: SnapshotMeta, json: string): Promise<void> 
   }
 }
 
-/** Writes the newest snapshot if the folder does not have it yet (after connecting or re-granting). */
+/**
+ * Brings the folder up to the current state (after connecting or re-granting).
+ * The newest snapshot can be up to 15 minutes old, so a fresh one is taken first;
+ * it writes itself to the folder. Only when nothing changed since does the newest
+ * stored snapshot go out instead.
+ */
 async function syncFolder(): Promise<void> {
+  const fresh = await createSnapshot("manual").catch((err: unknown) => {
+    console.error("[auto-backup] snapshot for the folder failed", err);
+    return null;
+  });
+  if (fresh) return;
   const newest = (await readMetas())[0];
-  if (!newest) {
-    // Nothing stored yet — take one now, which writes itself to the folder.
-    await createSnapshot("manual").catch((err: unknown) => console.error("[auto-backup] first snapshot for the folder failed", err));
-    return;
-  }
+  if (!newest) return;
   const json = await readPayload(newest.id);
   if (json) await writeSnapshotToFolder(newest, json);
 }

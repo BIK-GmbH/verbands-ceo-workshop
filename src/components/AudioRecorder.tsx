@@ -1,5 +1,6 @@
 import { Mic, Square, Download, Trash2, AlertTriangle, Pause, RotateCcw, ShieldCheck } from "lucide-react";
 import { useLang } from "@/lib/i18n";
+import { localDateStamp } from "@/lib/local-date";
 import {
   discardRecording,
   discardRecovery,
@@ -27,7 +28,7 @@ export function AudioRecorder() {
   const de = lang === "de";
   const { supported, consented, recording, paused, seconds, url, extension, recovery, busy, error } =
     useSessionRecorder();
-  const stamp = new Date().toISOString().slice(0, 10);
+  const stamp = localDateStamp();
 
   if (!supported) {
     return (
