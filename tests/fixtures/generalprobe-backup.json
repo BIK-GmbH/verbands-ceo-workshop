@@ -1,0 +1,1748 @@
+{
+  "format": "verbands-ceo-backup",
+  "version": 1,
+  "createdAt": "2026-09-17T10:35:12.000Z",
+  "withAudio": false,
+  "stores": {
+    "workshop": {
+      "meta": {
+        "title": "PROBEDATEN Generalprobe – KI-Geschäftsführer: Fiktion oder Realität?",
+        "date": "2026-09-16",
+        "participants": "",
+        "participantsList": [
+          {
+            "id": "p-mf1a0001-a1b2c3d4",
+            "lastName": "A",
+            "firstName": "Teilnehmer",
+            "organisation": "FBS-Geschäftsstelle (fiktiv)",
+            "role": "Geschäftsführung"
+          },
+          {
+            "id": "p-mf1a0002-b2c3d4e5",
+            "lastName": "B",
+            "firstName": "Teilnehmer",
+            "organisation": "Mitgliedsbetrieb (fiktiv)",
+            "role": "Vorstandsvorsitz"
+          },
+          {
+            "id": "p-mf1a0003-c3d4e5f6",
+            "lastName": "C",
+            "firstName": "Teilnehmer",
+            "organisation": "Mitgliedsbetrieb (fiktiv)",
+            "role": "Vorstand"
+          },
+          {
+            "id": "p-mf1a0004-d4e5f6a7",
+            "lastName": "D",
+            "firstName": "Teilnehmer",
+            "organisation": "FBS-Geschäftsstelle (fiktiv)",
+            "role": "Assistenz der Geschäftsstelle"
+          },
+          {
+            "id": "p-mf1a0005-e5f6a7b8",
+            "lastName": "E",
+            "firstName": "Teilnehmer",
+            "organisation": "Mitgliedsbetrieb (fiktiv)",
+            "role": "Mitglied"
+          },
+          {
+            "id": "p-mf1a0006-f6a7b8c9",
+            "lastName": "F",
+            "firstName": "Teilnehmer",
+            "organisation": "Mitgliedsbetrieb (fiktiv)",
+            "role": "Technik-Ausschuss"
+          },
+          {
+            "id": "p-mf1a0007-a7b8c9d0",
+            "lastName": "G",
+            "firstName": "Teilnehmer",
+            "organisation": "Mitgliedsbetrieb (fiktiv)",
+            "role": "Mitglied, junger Unternehmer"
+          }
+        ]
+      },
+      "entries": {
+        "00.04:erwartungen": {
+          "id": "00.04:erwartungen",
+          "module": 0,
+          "slideId": "00.04",
+          "kind": "text",
+          "prompt": "Erwartungen aus der Vorstellungsrunde: Was muss am Donnerstagmittag passiert sein?",
+          "value": "- Ehrliche Antwort, ob KI die Geschäftsstelle wirklich entlastet oder nur zusätzliche Arbeit macht\n- Kein zweites Wilma: erst verstehen, dann entscheiden\n- Etwas Konkretes für die nächste Vorstandssitzung in der Hand haben\n- Klarheit, was das kostet und wer es betreut\n- Verstehen, was KI heute schon kann, ohne Verkaufsgespräch",
+          "updatedAt": "2026-09-16T10:51:37.000Z"
+        },
+        "00.08:barometer-vorher-stimmen": {
+          "id": "00.08:barometer-vorher-stimmen",
+          "module": 0,
+          "slideId": "00.08",
+          "kind": "checklist",
+          "prompt": "KI-Geschäftsführer: Fiktion oder Realität? – unser Bauchgefühl jetzt – Einzelstimmen",
+          "value": [
+            "Unentschieden — Teilnehmer A",
+            "Fiktion — Teilnehmer B",
+            "Eher Fiktion — Teilnehmer C",
+            "Eher Realität — Teilnehmer D",
+            "Eher Fiktion — Teilnehmer E",
+            "Unentschieden — Teilnehmer F",
+            "Eher Fiktion — Teilnehmer G"
+          ],
+          "updatedAt": "2026-09-16T10:53:14.000Z"
+        },
+        "00.08:barometer-vorher": {
+          "id": "00.08:barometer-vorher",
+          "module": 0,
+          "slideId": "00.08",
+          "kind": "vote",
+          "prompt": "KI-Geschäftsführer: Fiktion oder Realität? – unser Bauchgefühl jetzt",
+          "value": "Fiktion: 1 · Eher Fiktion: 3 · Unentschieden: 2 · Eher Realität: 1 (7 Stimmen)",
+          "updatedAt": "2026-09-16T10:54:51.000Z"
+        },
+        "00.08:barometer-vorher-warum": {
+          "id": "00.08:barometer-vorher-warum",
+          "module": 0,
+          "slideId": "00.08",
+          "kind": "text",
+          "prompt": "Warum? Stimmen und Begründungen aus der Runde",
+          "value": "- Fiktion: Wir haben mit Wilma erlebt, wie schnell so etwas versandet.\n- Eher Fiktion: Einen Geschäftsführer ersetzt keine Software, Verbandsarbeit lebt von Beziehungen.\n- Unentschieden: Einzelne Aufgaben ja, die Rolle als Ganzes eher nicht.\n- Eher Realität: Schreibarbeit und wiederkehrende Anfragen könnte KI schon heute übernehmen.\n- Mehrfach genannt: Es kommt darauf an, was wir unter „Geschäftsführer“ verstehen.",
+          "updatedAt": "2026-09-16T10:56:28.000Z"
+        },
+        "01.02:i7-meinungsbild-gesamt": {
+          "id": "01.02:i7-meinungsbild-gesamt",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Gemeinsames Meinungsbild aus den KI-Interviews",
+          "value": "Gesamtbild der Haltungen:\n• 1 von 3 skeptisch, 1 von 3 abwartend, 1 von 3 neugierig\n• Mittelwert Ø 2,0 von 4, Streuung σ 0,82: Die Gruppe ist gemischt.\n\nHäufigste Begriffe:\n• Datenschutz (3 von 3)\n• ChatGPT und Automatisierung (je 2 von 3)\n• Einzelnennungen: Texte schreiben, Fehler, Zeitersparnis, Kontrollverlust, Kosten, Assistenz, Wissensdatenbank\n\nKI-Kompetenz in der Gruppe:\n• Ø 2,0 von 4, von Einsteiger bis Fortgeschritten: gemischt\n\nRelevanz heute vs. morgen:\n• Heute Ø 1,7, morgen Ø 3,3 – die Gruppe ist sich in beiden Einschätzungen einig\n• Lücke +1,7 Stufen: ein deutlicher Sprung\n\nGemeinsame Einsatzgebiete:\n• Mitgliederanfragen beantworten (2 von 3)\n• Protokolle schreiben (2 von 3)\n• Normen recherchieren (2 von 3)\n\nTop-Herausforderungen (nach Häufigkeit gerankt):\n1. Belastung und Wissen der Geschäftsstelle (2 von 3)\n2. Nachwuchs und junge Betriebe gewinnen (2 von 3)\n3. Vertrauen der Mitglieder und Kosten (1 von 3)\n\nUnterschiede und Spannungen:\n• Ein Interview verbindet KI mit dem Risiko eines erneuten Vertrauensverlusts, ein anderes mit Zeitersparnis aus eigener Praxis.\n• Einigkeit besteht darin, dass KI-Ergebnisse geprüft werden müssen.\n\nDrei Kernaussagen als Diskussionsimpuls:\n1. Die Relevanz von KI wird für morgen deutlich höher eingeschätzt als für heute.\n2. Der größte Nutzen wird bei wiederkehrender Schreib- und Recherchearbeit gesehen.\n3. Vertrauen und Datenschutz sind die Bedingungen, an denen sich alles entscheidet.\n\nAusgewählte Zitate:\n• „Wenn wir das verschlafen, sind wir für junge Betriebe nicht mehr interessant.“\n• „Aber jemand muss das prüfen.“\n• „Wenn da jemand ausfällt, steht der Verband.“",
+          "updatedAt": "2026-09-16T11:48:00.000Z"
+        },
+        "01.02:i9-ergaenzungen": {
+          "id": "01.02:i9-ergaenzungen",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Ergänzungen und Auffälligkeiten aus der Runde",
+          "value": "- Nur drei Interviews geschafft, die Einschätzungen der übrigen vier fehlen – das Bild ist ein Ausschnitt.\n- Auffällig: Die Relevanz morgen wird deutlich höher gesehen als heute.\n- Datenschutz taucht in allen drei Interviews auf.\n- Widerspruch aus der Runde: Die KI-Kompetenz in der Geschäftsstelle ist höher, als die Interviews zeigen.",
+          "updatedAt": "2026-09-16T10:59:42.000Z"
+        },
+        "01.03:karten-herausforderungen": {
+          "id": "01.03:karten-herausforderungen",
+          "module": 1,
+          "slideId": "01.03",
+          "kind": "checklist",
+          "prompt": "Top-Herausforderungen – vorgelesene Karten",
+          "value": [
+            "Mitgliederanfragen binden die Geschäftsführung jeden Tag stundenlang",
+            "Wissen zu Normen und Merkblättern steckt in wenigen Köpfen",
+            "Wer übernimmt, wenn die Geschäftsführung ausfällt?",
+            "Protokolle und Vorlagen für Gremien kosten zu viel Zeit",
+            "Nachwuchs fehlt in den Mitgliedsbetrieben (Bauwerksmechaniker)",
+            "Mitgliederzahl stagniert, junge Betriebe sehen den Nutzen des Verbands nicht",
+            "Ehrenamt im Vorstand ist am Limit",
+            "Normungsarbeit läuft nebenher, obwohl sie wichtig ist",
+            "Ablage verstreut: Laufwerk, E-Mail-Postfächer, Papierordner",
+            "Mitglieder sind nach Wilma skeptisch gegenüber neuen digitalen Angeboten",
+            "Anfragen wiederholen sich, trotzdem wird jede neu beantwortet (2×)",
+            "Weiterbildungsangebote werden zu spät geplant",
+            "Arbeitsschutzthemen der BG Bau ändern sich schneller, als wir informieren können",
+            "Budget ist knapp, eine zusätzliche Stelle ist nicht finanzierbar"
+          ],
+          "updatedAt": "2026-09-16T11:01:19.000Z"
+        },
+        "01.03:herausforderungen-gesammelt": {
+          "id": "01.03:herausforderungen-gesammelt",
+          "module": 1,
+          "slideId": "01.03",
+          "kind": "text",
+          "prompt": "Alle genannten Herausforderungen – 1:1 festgehalten",
+          "value": "- Behörden und Kammern fragen Stellungnahmen mit kurzen Fristen an.\n- Mitgliedsbetriebe erwarten schnellere Antworten als früher.\n- Die Vertretung bei Urlaub und Krankheit der Geschäftsführung ist nicht geregelt.",
+          "raw": "behörden und kammern fragen stellungnahmen mit kurzen fristen an mitgliedsbetriebe erwarten schnellere antworten als früher die vertretung bei urlaub und krankheit der geschäftsführung ist nicht geregelt",
+          "updatedAt": "2026-09-16T11:02:56.000Z"
+        },
+        "01.03:wo-hilft-ki": {
+          "id": "01.03:wo-hilft-ki",
+          "module": 1,
+          "slideId": "01.03",
+          "kind": "text",
+          "prompt": "Wo könnte KI dabei konkret helfen?",
+          "value": "- Wiederkehrende Mitgliederanfragen vorbereiten\n- Protokolle aus Sitzungsnotizen entwerfen\n- Normen und Merkblätter schneller durchsuchen\n(geparkt, noch nicht diskutiert)",
+          "updatedAt": "2026-09-16T11:04:33.000Z"
+        },
+        "01.04:problemfelder": {
+          "id": "01.04:problemfelder",
+          "module": 1,
+          "slideId": "01.04",
+          "kind": "text",
+          "prompt": "Unsere 3–5 Problemfelder (Name + wichtigste Beiträge)",
+          "value": "Themenfeld 1: Verbandswissen ist an Personen gebunden\n- Wissen zu Normen und Merkblättern steckt in wenigen Köpfen\n- Wer übernimmt, wenn die Geschäftsführung ausfällt?\n- Ablage verstreut: Laufwerk, E-Mail-Postfächer, Papierordner\n\nThemenfeld 2: Überlastung der Geschäftsführung durch Einzelanfragen und Gremienarbeit\n- Mitgliederanfragen binden die Geschäftsführung jeden Tag stundenlang\n- Anfragen wiederholen sich, trotzdem wird jede neu beantwortet (2×)\n- Protokolle und Vorlagen für Gremien kosten zu viel Zeit\n- Normungsarbeit läuft nebenher, obwohl sie wichtig ist\n\nThemenfeld 3: Nachwuchs und Mitgliederbindung\n- Nachwuchs fehlt in den Mitgliedsbetrieben (Bauwerksmechaniker)\n- Mitgliederzahl stagniert, junge Betriebe sehen den Nutzen des Verbands nicht\n- Ehrenamt im Vorstand ist am Limit\n\nThemenfeld 4: Vertrauen der Mitglieder in digitale Angebote\n- Mitglieder sind nach Wilma skeptisch gegenüber neuen digitalen Angeboten",
+          "updatedAt": "2026-09-16T11:06:10.000Z"
+        },
+        "01.04:dot-voting-ergebnis": {
+          "id": "01.04:dot-voting-ergebnis",
+          "module": 1,
+          "slideId": "01.04",
+          "kind": "text",
+          "prompt": "Ergebnis der Priorisierung",
+          "value": "Priorisierung per Handzeichen, 7 Personen, je 2 Stimmen:\n- Verbandswissen ist an Personen gebunden: 6\n- Überlastung der Geschäftsführung: 5\n- Nachwuchs und Mitgliederbindung: 2\n- Vertrauen in digitale Angebote: 1",
+          "updatedAt": "2026-09-16T11:07:47.000Z"
+        },
+        "01.04:prioritaet": {
+          "id": "01.04:prioritaet",
+          "module": 1,
+          "slideId": "01.04",
+          "kind": "text",
+          "prompt": "Das priorisierte Problemfeld",
+          "value": "Verbandswissen ist an Personen gebunden (eng verknüpft mit der Überlastung der Geschäftsführung)",
+          "updatedAt": "2026-09-16T11:09:24.000Z"
+        },
+        "01.05:warum-1": {
+          "id": "01.05:warum-1",
+          "module": 1,
+          "slideId": "01.05",
+          "kind": "text",
+          "prompt": "Warum? – Stufe 1",
+          "value": "Weil jede Fachfrage bei der Geschäftsführung landet – nur dort liegt die Antwort.",
+          "updatedAt": "2026-09-16T11:11:01.000Z"
+        },
+        "01.05:warum-2": {
+          "id": "01.05:warum-2",
+          "module": 1,
+          "slideId": "01.05",
+          "kind": "text",
+          "prompt": "Warum? – Stufe 2",
+          "value": "Weil Antworten, Stellungnahmen und Beschlüsse nirgends so abgelegt sind, dass andere sie finden.",
+          "updatedAt": "2026-09-16T11:12:38.000Z"
+        },
+        "01.05:warum-3": {
+          "id": "01.05:warum-3",
+          "module": 1,
+          "slideId": "01.05",
+          "kind": "text",
+          "prompt": "Warum? – Stufe 3",
+          "value": "Weil es früher zwei Geschäftsführer und mehr Assistenz gab, die das Wissen mündlich weitergegeben haben.",
+          "updatedAt": "2026-09-16T11:14:15.000Z"
+        },
+        "01.05:warum-4": {
+          "id": "01.05:warum-4",
+          "module": 1,
+          "slideId": "01.05",
+          "kind": "text",
+          "prompt": "Warum? – Stufe 4",
+          "value": "Weil nach der Verkleinerung niemand den Auftrag hatte, das Wissen zu sichern – das Tagesgeschäft ging vor.",
+          "updatedAt": "2026-09-16T11:15:52.000Z"
+        },
+        "01.05:warum-5": {
+          "id": "01.05:warum-5",
+          "module": 1,
+          "slideId": "01.05",
+          "kind": "text",
+          "prompt": "Warum? – Stufe 5",
+          "value": "Weil der Verband keine Struktur hat, in der Wissen als gemeinsames Gut gepflegt wird; Wilma war als Portal gedacht, nicht als Wissensbasis.",
+          "updatedAt": "2026-09-16T11:17:29.000Z"
+        },
+        "01.05:ursache": {
+          "id": "01.05:ursache",
+          "module": 1,
+          "slideId": "01.05",
+          "kind": "text",
+          "prompt": "Die eigentliche Ursache",
+          "value": "Das Verbandswissen ist nicht als gemeinsames, gepflegtes Gut organisiert, sondern hängt an der Geschäftsführung.",
+          "updatedAt": "2026-09-16T11:19:06.000Z"
+        },
+        "01.06:poster-kernproblem": {
+          "id": "01.06:poster-kernproblem",
+          "module": 1,
+          "slideId": "01.06",
+          "kind": "text",
+          "prompt": "Unser Kernproblem in einem Satz",
+          "value": "Unser eigentliches Problem ist nicht zu wenig Personal, sondern dass unser Verbandswissen an einer Person hängt, weil heute niemand es systematisch sichert und teilt.",
+          "raw": "unser eigentliches problem ist nicht zu wenig personal sondern dass unser verbandswissen an einer person hängt weil heute niemand das systematisch sichert und teilt",
+          "updatedAt": "2026-09-16T11:20:43.000Z"
+        },
+        "01.06:poster-problemfelder": {
+          "id": "01.06:poster-problemfelder",
+          "module": 1,
+          "slideId": "01.06",
+          "kind": "text",
+          "prompt": "Die Problemfelder (priorisiertes Feld markieren)",
+          "value": "- **Verbandswissen ist an Personen gebunden (priorisiert)**\n- Überlastung der Geschäftsführung durch Einzelanfragen und Gremienarbeit\n- Nachwuchs und Mitgliederbindung\n- Vertrauen der Mitglieder in digitale Angebote",
+          "updatedAt": "2026-09-16T11:22:20.000Z"
+        },
+        "01.06:poster-ursachen": {
+          "id": "01.06:poster-ursachen",
+          "module": 1,
+          "slideId": "01.06",
+          "kind": "text",
+          "prompt": "Die Ursachen-Treppe in Kurzform",
+          "value": "- Fachfragen landen immer bei der Geschäftsführung\n- Antworten und Beschlüsse sind nicht auffindbar abgelegt\n- Wissen wurde früher mündlich weitergegeben\n- Nach der Verkleinerung hat niemand es gesichert\n- Keine Struktur für Wissen als gemeinsames Gut",
+          "updatedAt": "2026-09-16T11:23:57.000Z"
+        },
+        "01.06:poster-bestaetigt": {
+          "id": "01.06:poster-bestaetigt",
+          "module": 1,
+          "slideId": "01.06",
+          "kind": "decision",
+          "prompt": "Commitment: Ist das unser Kernproblem?",
+          "value": "Gemeinsam bestätigt",
+          "updatedAt": "2026-09-16T11:25:34.000Z"
+        },
+        "02.09:wissensquellen": {
+          "id": "02.09:wissensquellen",
+          "module": 2,
+          "slideId": "02.09",
+          "kind": "text",
+          "prompt": "Wo liegt unser Wissen heute – und was davon ist digital greifbar?",
+          "value": "- Merkblätter und technische Hinweise: digital als PDF, aber verstreut\n- Beschlüsse und Protokolle: teils digital, ältere nur in Ordnern\n- Antworten auf Mitgliederanfragen: in den E-Mail-Postfächern der Geschäftsführung\n- Erfahrungswissen zu Kalkulation und Streitfällen: nur in Köpfen",
+          "updatedAt": "2026-09-16T11:27:11.000Z"
+        },
+        "02.09:wissensrisiko": {
+          "id": "02.09:wissensrisiko",
+          "module": 2,
+          "slideId": "02.09",
+          "kind": "text",
+          "prompt": "Was geht verloren, wenn eine Person den Verband verlässt?",
+          "value": "Fast das gesamte Wissen zu laufenden Normungsverfahren, zu Ansprechpartnern bei Behörden und zur Geschichte früherer Beschlüsse. Aus der Runde: „Dann fangen wir bei null an.“",
+          "updatedAt": "2026-09-16T11:28:48.000Z"
+        },
+        "02.10:quellen-zuerst": {
+          "id": "02.10:quellen-zuerst",
+          "module": 2,
+          "slideId": "02.10",
+          "kind": "text",
+          "prompt": "Welche unserer Quellen gehören zuerst in eine solche Wissensbasis?",
+          "value": "1. Merkblätter und technische Hinweise des Verbands\n2. Beschlüsse und Protokolle der letzten fünf Jahre\n3. Häufige Mitgliederanfragen mit geprüften Antworten",
+          "updatedAt": "2026-09-16T11:30:25.000Z"
+        },
+        "02.10:talk-oder-work": {
+          "id": "02.10:talk-oder-work",
+          "module": 2,
+          "slideId": "02.10",
+          "kind": "text",
+          "prompt": "Wofür brauchen wir zuerst Talk, wofür Work?",
+          "value": "Talk zuerst für Fachfragen aus der Geschäftsstelle; Work zuerst für Protokolle und Rundschreiben.",
+          "updatedAt": "2026-09-16T11:32:02.000Z"
+        },
+        "02.11:kontextfragen": {
+          "id": "02.11:kontextfragen",
+          "module": 2,
+          "slideId": "02.11",
+          "kind": "text",
+          "prompt": "Welche unserer Fragen lassen sich nur mit Zusammenhängen beantworten?",
+          "value": "- Welche Beschlüsse gelten zu einem Thema noch, welche wurden später geändert?\n- Welche Norm betrifft welches Verfahren (Kernbohrung, Wandsäge, Seilsäge), und welches Merkblatt gehört dazu?",
+          "updatedAt": "2026-09-16T11:33:39.000Z"
+        },
+        "02.11:einmal-ordnen": {
+          "id": "02.11:einmal-ordnen",
+          "module": 2,
+          "slideId": "02.11",
+          "kind": "text",
+          "prompt": "Was müssten wir dafür einmal sauber ordnen?",
+          "value": "Beschlusslage nach Thema und Datum, Merkblätter mit Gültigkeitsstand, Zuordnung von Normen zu Verfahren.",
+          "updatedAt": "2026-09-16T11:35:16.000Z"
+        },
+        "02.12:daten-im-haus": {
+          "id": "02.12:daten-im-haus",
+          "module": 2,
+          "slideId": "02.12",
+          "kind": "text",
+          "prompt": "Welche unserer Daten dürfen das Haus nicht verlassen?",
+          "value": "Mitgliederdaten mit Umsätzen und Beitragsstufen, Personalthemen der Geschäftsstelle, vertrauliche Streitfälle zwischen Mitgliedern.",
+          "updatedAt": "2026-09-16T11:36:53.000Z"
+        },
+        "02.12:gemischter-betrieb": {
+          "id": "02.12:gemischter-betrieb",
+          "module": 2,
+          "slideId": "02.12",
+          "kind": "text",
+          "prompt": "Wo wäre uns ein gemischter Betrieb recht — was darf in die Cloud, was bleibt lokal?",
+          "value": "Öffentliche Merkblätter und allgemeine Normenfragen dürfen in die Cloud, wenn die Verarbeitung in der EU liegt; alles mit Mitglieds- oder Personenbezug bleibt lokal oder wird vorher anonymisiert. Offen, ob sich ein lokaler Betrieb für uns lohnt.",
+          "updatedAt": "2026-09-16T11:38:30.000Z"
+        },
+        "02.07:fragen-an-experten": {
+          "id": "02.07:fragen-an-experten",
+          "module": 2,
+          "slideId": "02.07",
+          "kind": "text",
+          "prompt": "Unsere Fragen an den Experten",
+          "value": "- Kann die KI Fragen zu unseren Merkblättern zuverlässig beantworten, ohne sich etwas auszudenken?\n- Was passiert mit Mitgliederdaten, wenn wir ein Cloud-Modell nutzen?\n- Wie viel Aufwand ist es, unsere Ablage erst einmal zu ordnen?\n- Wer haftet, wenn eine KI-Antwort an ein Mitglied falsch ist?",
+          "updatedAt": "2026-09-16T11:40:07.000Z"
+        },
+        "02.07:antworten-kernpunkte": {
+          "id": "02.07:antworten-kernpunkte",
+          "module": 2,
+          "slideId": "02.07",
+          "kind": "text",
+          "prompt": "Kernpunkte aus den Antworten",
+          "value": "- Antworten nur mit Quellenangabe aus geprüften Dokumenten; ohne Quelle keine Antwort.\n- Personenbezogene Daten gehören nicht ungeprüft in ein Cloud-Modell; es gibt Betriebsformen mit Verarbeitung in der EU oder lokal.\n- Das Ordnen der Ablage ist der größte Aufwand, lässt sich aber schrittweise erledigen.\n- Die Verantwortung bleibt beim Verband: KI bereitet vor, ein Mensch gibt frei.",
+          "updatedAt": "2026-09-16T11:41:44.000Z"
+        },
+        "02.07:karten-moeglichkeiten": {
+          "id": "02.07:karten-moeglichkeiten",
+          "module": 2,
+          "slideId": "02.07",
+          "kind": "checklist",
+          "prompt": "Möglichkeiten – vorgelesene Karten",
+          "value": [
+            "[Wissen] {Heute} Fragen zu Merkblättern mit Quellenangabe beantworten",
+            "[Wissen] {Heute} Beschlüsse der letzten Jahre durchsuchbar machen",
+            "[Wissen] {Morgen} Stellungnahmen aus früheren Stellungnahmen vorbereiten",
+            "[Assistenz] {Heute} Protokollentwurf aus Sitzungsnotizen",
+            "[Assistenz] {Heute} Rundschreiben und Newsletter vorformulieren",
+            "[Assistenz] {Morgen} Antwortvorschläge für wiederkehrende Mitgliederanfragen",
+            "[Assistenz] {Morgen} Onboarding neuer Mitgliedsbetriebe mit einem Info-Assistenten",
+            "[Automatisierung] {Morgen} Einladungen, Fristen und Erinnerungen für Gremien",
+            "[Automatisierung] {Übermorgen} KI-Agent, der Routineabläufe selbstständig anstößt",
+            "[Analyse] {Morgen} Mitgliederumfragen auswerten",
+            "[Analyse] {Übermorgen} Frühwarnung bei Normänderungen",
+            "[Wissen] {Übermorgen} Branchenwissen als Service für Mitgliedsbetriebe"
+          ],
+          "updatedAt": "2026-09-16T11:43:21.000Z"
+        },
+        "02.07:moeglichkeiten": {
+          "id": "02.07:moeglichkeiten",
+          "module": 2,
+          "slideId": "02.07",
+          "kind": "text",
+          "prompt": "Gesammelte Möglichkeiten (noch ohne Bewertung)",
+          "value": "- Seminarunterlagen aus vorhandenen Merkblättern zusammenstellen\n- Vorbereitung auf Normenausschusssitzungen",
+          "updatedAt": "2026-09-16T11:44:58.000Z"
+        },
+        "02.08:poster-heute": {
+          "id": "02.08:poster-heute",
+          "module": 2,
+          "slideId": "02.08",
+          "kind": "text",
+          "prompt": "HEUTE: relevante Möglichkeiten",
+          "value": "- Wissensbasis aus Merkblättern, technischen Hinweisen und Beschlüssen\n- Entwürfe für Protokolle und Rundschreiben\n- Recherche in eigenen Dokumenten mit Quellenangabe",
+          "updatedAt": "2026-09-16T11:46:35.000Z"
+        },
+        "02.08:poster-morgen": {
+          "id": "02.08:poster-morgen",
+          "module": 2,
+          "slideId": "02.08",
+          "kind": "text",
+          "prompt": "MORGEN: relevante Möglichkeiten",
+          "value": "- Antwortvorschläge für Mitgliederanfragen, Freigabe durch die Geschäftsstelle\n- Sitzungsvorbereitung: Vorlagen und Beschlusslage auf Knopfdruck\n- Auswertung von Mitgliederumfragen",
+          "updatedAt": "2026-09-16T11:48:12.000Z"
+        },
+        "02.08:poster-uebermorgen": {
+          "id": "02.08:poster-uebermorgen",
+          "module": 2,
+          "slideId": "02.08",
+          "kind": "text",
+          "prompt": "ÜBERMORGEN: relevante Möglichkeiten",
+          "value": "- KI-Agent, der Routineabläufe (Einladungen, Fristen, Rückfragen) selbstständig anstößt\n- Branchenwissen als Service für Mitgliedsbetriebe\n- Frühwarnung bei Normänderungen",
+          "updatedAt": "2026-09-16T11:49:49.000Z"
+        },
+        "02.08:poster-stossrichtungen": {
+          "id": "02.08:poster-stossrichtungen",
+          "module": 2,
+          "slideId": "02.08",
+          "kind": "text",
+          "prompt": "3–5 Stoßrichtungen für unseren KI-Geschäftsführer",
+          "value": "1. Verbandswissen sichern und zugänglich machen\n2. Geschäftsstelle bei Anfragen entlasten (KI bereitet vor, Mensch gibt frei)\n3. Gremienarbeit unterstützen: Protokolle, Vorlagen, Beschlusslage\n4. Mitgliederkommunikation modernisieren",
+          "updatedAt": "2026-09-16T11:51:26.000Z"
+        },
+        "02.08:poster-weiter-in-phase-3": {
+          "id": "02.08:poster-weiter-in-phase-3",
+          "module": 2,
+          "slideId": "02.08",
+          "kind": "text",
+          "prompt": "Diese Richtungen nehmen wir mit in Phase 3",
+          "value": "Stoßrichtungen 1–3 gehen in Phase 3; Kommunikation (4) nehmen wir als Nutzen mit, nicht als eigenen Schwerpunkt.",
+          "updatedAt": "2026-09-16T11:53:03.000Z"
+        },
+        "03.01:richtung-bestaetigt": {
+          "id": "03.01:richtung-bestaetigt",
+          "module": 3,
+          "slideId": "03.01",
+          "kind": "decision",
+          "prompt": "Vision spiegeln: Tragen die Stoßrichtungen aus Phase 2?",
+          "value": "Ja, mit Anpassungen",
+          "updatedAt": "2026-09-16T11:54:40.000Z"
+        },
+        "03.01:anpassungen": {
+          "id": "03.01:anpassungen",
+          "module": 3,
+          "slideId": "03.01",
+          "kind": "text",
+          "prompt": "Anpassungen an den Stoßrichtungen",
+          "value": "Stoßrichtung 2 präzisiert: Die KI beantwortet Mitgliedern nichts direkt, sondern bereitet Antworten für die Geschäftsstelle vor. Stoßrichtung 4 (Kommunikation) läuft nur als Nutzen mit.",
+          "updatedAt": "2026-09-16T11:56:17.000Z"
+        },
+        "03.02:aufgaben-ergaenzt": {
+          "id": "03.02:aufgaben-ergaenzt",
+          "module": 3,
+          "slideId": "03.02",
+          "kind": "text",
+          "prompt": "Was fehlt? Was ist anders?",
+          "value": "- Vertretung des Verbands in Normenausschüssen fehlt in der Liste\n- Vermittlung bei Streit zwischen Mitgliedsbetrieben und Auftraggebern\n- Kontaktpflege zu BG Bau und Berufsschulen\n- Anders als gedacht: Die Geschäftsführung erledigt die Buchhaltung mit",
+          "updatedAt": "2026-09-16T11:57:54.000Z"
+        },
+        "03.02:aufgaben-zeitfresser": {
+          "id": "03.02:aufgaben-zeitfresser",
+          "module": 3,
+          "slideId": "03.02",
+          "kind": "text",
+          "prompt": "Größte Zeitfresser heute",
+          "value": "- Telefonische und E-Mail-Anfragen von Mitgliedern (geschätzt ein Drittel der Woche)\n- Protokolle und Nachbereitung von Sitzungen\n- Suche nach alten Beschlüssen und Stellungnahmen",
+          "updatedAt": "2026-09-16T11:59:31.000Z"
+        },
+        "03.03:cluster-strategie": {
+          "id": "03.03:cluster-strategie",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Strategie & Jahresplanung",
+          "value": "Bewusst beim Menschen",
+          "updatedAt": "2026-09-16T12:01:08.000Z"
+        },
+        "03.03:cluster-gremien": {
+          "id": "03.03:cluster-gremien",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Vorstand & Gremien",
+          "value": "KI unterstützt",
+          "updatedAt": "2026-09-16T12:02:45.000Z"
+        },
+        "03.03:cluster-mitglieder": {
+          "id": "03.03:cluster-mitglieder",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Mitgliedermanagement & Bindung",
+          "value": "KI unterstützt",
+          "updatedAt": "2026-09-16T12:04:22.000Z"
+        },
+        "03.03:cluster-gewinnung-partner": {
+          "id": "03.03:cluster-gewinnung-partner",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Mitgliedergewinnung & Partnerpflege",
+          "value": "Bewusst beim Menschen",
+          "updatedAt": "2026-09-16T12:05:59.000Z"
+        },
+        "03.03:cluster-lobby-normen": {
+          "id": "03.03:cluster-lobby-normen",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Lobby · Normen · Ausschüsse",
+          "value": "KI unterstützt",
+          "updatedAt": "2026-09-16T12:07:36.000Z"
+        },
+        "03.03:cluster-sitzungen-protokolle": {
+          "id": "03.03:cluster-sitzungen-protokolle",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Sitzungen, MV & Protokolle",
+          "value": "KI übernimmt (mit Freigabe)",
+          "updatedAt": "2026-09-16T12:09:13.000Z"
+        },
+        "03.03:cluster-veranstaltungen": {
+          "id": "03.03:cluster-veranstaltungen",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Veranstaltungen & Weiterbildung",
+          "value": "KI unterstützt",
+          "updatedAt": "2026-09-16T12:10:50.000Z"
+        },
+        "03.03:cluster-budget": {
+          "id": "03.03:cluster-budget",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Budget, Haushalt, Controlling",
+          "value": "Bewusst beim Menschen",
+          "updatedAt": "2026-09-16T12:12:27.000Z"
+        },
+        "03.03:cluster-kommunikation": {
+          "id": "03.03:cluster-kommunikation",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "PR · Newsletter · Web · Social",
+          "value": "KI übernimmt (mit Freigabe)",
+          "updatedAt": "2026-09-16T12:14:04.000Z"
+        },
+        "03.03:cluster-wissen": {
+          "id": "03.03:cluster-wissen",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Wissensmanagement, Satzung, Beschlüsse",
+          "value": "KI übernimmt (mit Freigabe)",
+          "updatedAt": "2026-09-16T12:15:41.000Z"
+        },
+        "03.03:cluster-verwaltung": {
+          "id": "03.03:cluster-verwaltung",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "decision",
+          "prompt": "Verwaltung · Datenschutz · Compliance",
+          "value": "KI unterstützt",
+          "updatedAt": "2026-09-16T12:17:18.000Z"
+        },
+        "03.03:begruendung": {
+          "id": "03.03:begruendung",
+          "module": 3,
+          "slideId": "03.03",
+          "kind": "text",
+          "prompt": "Begründung, Mischfälle und Ausnahmen je Cluster",
+          "value": "- Strategie und Budget bleiben beim Menschen: Das ist Verantwortung des Vorstands.\n- Sitzungen und Protokolle: KI entwirft, die Geschäftsführung gibt frei – zwei Personen wollten nur „unterstützt“.\n- Kommunikation: Entwürfe durch KI, Veröffentlichung nur nach Freigabe.\n- Mitglieder: Anfragen vorbereiten ja, direkt an Mitglieder antworten nein.\n- Mischfall Lobby und Normen: Recherche unterstützt, Positionen bleiben beim Menschen.",
+          "updatedAt": "2026-09-16T12:18:55.000Z"
+        },
+        "03.04:rolle": {
+          "id": "03.04:rolle",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Rolle: Was ist er, was ist er nicht?",
+          "value": "Er ist ein Assistent der Geschäftsstelle, der Wissen findet, Entwürfe schreibt und Routine vorbereitet. Er ist kein Geschäftsführer: Er entscheidet nichts, vertritt den Verband nicht nach außen und spricht nicht im Namen des Vorstands.",
+          "updatedAt": "2026-09-16T12:20:32.000Z"
+        },
+        "03.04:faehigkeiten": {
+          "id": "03.04:faehigkeiten",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Fähigkeiten: Was kann er?",
+          "value": "- Fragen aus geprüften Verbandsdokumenten mit Quelle beantworten\n- Protokoll- und Rundschreibenentwürfe erstellen\n- Beschlusslage zu einem Thema zusammenstellen\n- Anfragen sortieren und Antwortvorschläge machen",
+          "updatedAt": "2026-09-16T12:22:09.000Z"
+        },
+        "03.04:nutzen-verband": {
+          "id": "03.04:nutzen-verband",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Nutzen für den Verband",
+          "value": "Wissen bleibt im Verband, auch wenn Personen gehen; die Geschäftsstelle gewinnt Zeit für Normungsarbeit und Mitgliederkontakt.",
+          "updatedAt": "2026-09-16T12:23:46.000Z"
+        },
+        "03.04:nutzen-vorstand": {
+          "id": "03.04:nutzen-vorstand",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Nutzen für den Vorstand",
+          "value": "Schnellere und vollständige Sitzungsunterlagen; die Beschlusslage ist jederzeit nachvollziehbar.",
+          "updatedAt": "2026-09-16T12:25:23.000Z"
+        },
+        "03.04:nutzen-mitglieder": {
+          "id": "03.04:nutzen-mitglieder",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Nutzen für die Mitglieder",
+          "value": "Schnellere Antworten auf Fachfragen und einheitliche Auskünfte.",
+          "updatedAt": "2026-09-16T12:27:00.000Z"
+        },
+        "03.04:zusammenspiel-mensch": {
+          "id": "03.04:zusammenspiel-mensch",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Zusammenspiel mit Menschen: Geschäftsstelle, Vorstand, Ausschüsse",
+          "value": "Die Geschäftsstelle prüft und gibt frei; der Vorstand legt fest, was die KI darf; die Ausschüsse liefern und prüfen Fachinhalte, zum Beispiel der Technik-Ausschuss die Merkblätter.",
+          "updatedAt": "2026-09-16T12:28:37.000Z"
+        },
+        "03.04:leitprinzipien": {
+          "id": "03.04:leitprinzipien",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Leitprinzipien: Warum – Wofür – Wie",
+          "value": "Warum: damit Verbandswissen nicht an einer Person hängt. Wofür: Entlastung der Geschäftsstelle und bessere Leistung für Mitglieder. Wie: KI bereitet vor, Mensch entscheidet; nur geprüfte Quellen; klein anfangen, sichtbar nutzen.",
+          "updatedAt": "2026-09-16T12:30:14.000Z"
+        },
+        "03.04:erste-use-cases": {
+          "id": "03.04:erste-use-cases",
+          "module": 3,
+          "slideId": "03.04",
+          "kind": "text",
+          "prompt": "Erste Use Cases",
+          "value": "Fachfragen-Assistent für die Geschäftsstelle (Merkblätter, Normen, Beschlüsse)\nProtokollentwurf aus Sitzungsnotizen\nBeschlusslage zu einem Thema auf Knopfdruck\nAntwortvorschläge für wiederkehrende Mitgliederanfragen",
+          "updatedAt": "2026-09-16T12:31:51.000Z"
+        },
+        "03.05:poster-bild": {
+          "id": "03.05:poster-bild",
+          "module": 3,
+          "slideId": "03.05",
+          "kind": "text",
+          "prompt": "So sieht unser Bild aus",
+          "value": "In der Geschäftsstelle ruft ein Mitgliedsbetrieb mit einer Frage zur Seilsäge an. Die Assistenz fragt den Assistenten, der eine Antwort mit Quelle aus dem Merkblatt vorschlägt; die Geschäftsführung gibt sie frei und hat Zeit für den Normenausschuss.",
+          "updatedAt": "2026-09-16T12:33:28.000Z"
+        },
+        "03.05:poster-profil": {
+          "id": "03.05:poster-profil",
+          "module": 3,
+          "slideId": "03.05",
+          "kind": "text",
+          "prompt": "Profil in Kurzfassung",
+          "value": "- Rolle: Assistent der Geschäftsstelle, kein Entscheider\n- Kann: Wissen finden, Entwürfe schreiben, Beschlusslage zeigen\n- Arbeitet nur mit geprüften Quellen\n- Jede Ausgabe gibt ein Mensch frei",
+          "updatedAt": "2026-09-16T12:35:05.000Z"
+        },
+        "03.05:poster-leitsatz": {
+          "id": "03.05:poster-leitsatz",
+          "module": 3,
+          "slideId": "03.05",
+          "kind": "text",
+          "prompt": "Unser Leitsatz",
+          "value": "Unser Wissen arbeitet für uns – der Mensch entscheidet.",
+          "updatedAt": "2026-09-16T12:36:42.000Z"
+        },
+        "03.05:poster-commitment": {
+          "id": "03.05:poster-commitment",
+          "module": 3,
+          "slideId": "03.05",
+          "kind": "decision",
+          "prompt": "Ist das die Zukunft, die wir gemeinsam verfolgen wollen?",
+          "value": "Ja, mit Vorbehalt",
+          "updatedAt": "2026-09-16T12:38:19.000Z"
+        },
+        "03.06:tag1-mitnehmen": {
+          "id": "03.06:tag1-mitnehmen",
+          "module": 3,
+          "slideId": "03.06",
+          "kind": "text",
+          "prompt": "Was wir von Tag 1 mitnehmen",
+          "value": "- Das Kernproblem ist bestätigt: Wissen hängt an einer Person\n- Wissen vor Werkzeug\n- Die Stoßrichtungen tragen",
+          "updatedAt": "2026-09-16T12:39:56.000Z"
+        },
+        "03.06:tag1-offen": {
+          "id": "03.06:tag1-offen",
+          "module": 3,
+          "slideId": "03.06",
+          "kind": "text",
+          "prompt": "Offen für morgen",
+          "value": "- Was kostet das realistisch?\n- Warum soll es diesmal anders laufen als bei Wilma?\n- Wer pflegt die Wissensbasis?",
+          "updatedAt": "2026-09-16T12:41:33.000Z"
+        },
+        "04.00:rueckblick-fuenf-saetze": {
+          "id": "04.00:rueckblick-fuenf-saetze",
+          "module": 4,
+          "slideId": "04.00",
+          "kind": "text",
+          "prompt": "Rückblick Tag 1 in fünf Sätzen",
+          "value": "Gestern haben wir unser Kernproblem bestätigt: Unser Verbandswissen hängt an einer Person, weil es niemand systematisch sichert und teilt. Im Möglichkeitsraum haben wir vier Stoßrichtungen gefunden, von der Wissensbasis bis zur Mitgliederkommunikation. Unser Zielbild ist ein Assistent der Geschäftsstelle, der Wissen findet und Entwürfe vorbereitet, aber nichts entscheidet. Die Stimmung zum Auftakt war überwiegend skeptisch. Offen geblieben sind die Kosten, die Pflege der Wissensbasis und die Frage, warum es diesmal anders laufen soll.",
+          "raw": "Gestern haben wir unser Kernproblem bestätigt: Unser Verbandswissen hängt an einer Person. Im Möglichkeitsraum haben wir vier Stoßrichtungen gefunden. Unser Zielbild ist ein Assistent der Geschäftsstelle. Die Stimmung zum Auftakt war skeptisch. Offen sind Kosten, Pflege und die Frage, warum es diesmal anders läuft.",
+          "updatedAt": "2026-09-17T06:36:37.000Z"
+        },
+        "04.00:traegt-noch": {
+          "id": "04.00:traegt-noch",
+          "module": 4,
+          "slideId": "04.00",
+          "kind": "text",
+          "prompt": "Was davon trägt noch? Was sehen wir heute anders?",
+          "value": "- Das Kernproblem trägt, alle einverstanden.\n- Heute anders: Der Begriff „KI-Geschäftsführer“ weckt bei Mitgliedern falsche Erwartungen.\n- Zwei Personen sehen Antwortvorschläge für Mitgliederanfragen über Nacht kritischer.",
+          "updatedAt": "2026-09-17T06:38:14.000Z"
+        },
+        "04.01:zielbild-kurz": {
+          "id": "04.01:zielbild-kurz",
+          "module": 4,
+          "slideId": "04.01",
+          "kind": "text",
+          "prompt": "Unsere Kernziele in einem Satz: Was soll unser KI-Geschäftsführer für den Verband leisten?",
+          "value": "Unser KI-Geschäftsführer sichert das Verbandswissen, bereitet Antworten und Unterlagen vor und entlastet die Geschäftsstelle – entscheiden und vertreten tun weiterhin Menschen.",
+          "updatedAt": "2026-09-17T06:39:51.000Z"
+        },
+        "04.02:wilma-gelungen": {
+          "id": "04.02:wilma-gelungen",
+          "module": 4,
+          "slideId": "04.02",
+          "kind": "text",
+          "prompt": "Was ist bei Wilma gelungen?",
+          "value": "- Das Mitgliederverzeichnis ist seitdem digital und aktuell.\n- Einige Betriebe haben die Online-Anmeldung zu Seminaren genutzt.\n- Wir wissen jetzt, was wir nicht wollen.",
+          "updatedAt": "2026-09-17T06:41:28.000Z"
+        },
+        "04.02:wilma-herausforderungen": {
+          "id": "04.02:wilma-herausforderungen",
+          "module": 4,
+          "slideId": "04.02",
+          "kind": "text",
+          "prompt": "Wo lagen die Herausforderungen?",
+          "value": "- Mitglieder wurden erst zum Start informiert, nicht vorher gefragt.\n- Zu viele Funktionen auf einmal, keine davon hat den Alltag der Betriebe erleichtert.\n- Nach dem Start fehlte eine Zuständigkeit für die Pflege, Inhalte veralteten.\n- Zugangsdaten und Bedienung waren für viele Betriebe eine Hürde.",
+          "updatedAt": "2026-09-17T06:43:05.000Z"
+        },
+        "04.02:wilma-dimension": {
+          "id": "04.02:wilma-dimension",
+          "module": 4,
+          "slideId": "04.02",
+          "kind": "checklist",
+          "prompt": "Wo lag das Hauptproblem?",
+          "value": [
+            "Akzeptanz",
+            "Nutzung",
+            "Sonstiges"
+          ],
+          "updatedAt": "2026-09-17T06:44:42.000Z"
+        },
+        "04.02:wilma-dimension-sonstiges": {
+          "id": "04.02:wilma-dimension-sonstiges",
+          "module": 4,
+          "slideId": "04.02",
+          "kind": "text",
+          "prompt": "Sonstiges – was genau?",
+          "value": "Keine feste Zuständigkeit für Pflege und Betreuung nach dem Start",
+          "updatedAt": "2026-09-17T06:46:19.000Z"
+        },
+        "04.02:wilma-lernen": {
+          "id": "04.02:wilma-lernen",
+          "module": 4,
+          "slideId": "04.02",
+          "kind": "text",
+          "prompt": "Was lernen wir daraus? Diesmal machen wir anders: …",
+          "value": "Diesmal machen wir anders:\n- klein anfangen, mit einem Anwendungsfall, der sofort Zeit spart\n- Mitgliedsbetriebe vorher einbinden (Pilotgruppe)\n- Zuständigkeit und Zeit für die Pflege von Anfang an festlegen\n- erst intern in der Geschäftsstelle nutzen, dann für Mitglieder öffnen",
+          "updatedAt": "2026-09-17T06:47:56.000Z"
+        },
+        "04.03:ampel-technisch": {
+          "id": "04.03:ampel-technisch",
+          "module": 4,
+          "slideId": "04.03",
+          "kind": "vote",
+          "prompt": "Ampel technisch: Wie machbar ist das Zielbild technisch?",
+          "value": "Grün: machbar",
+          "updatedAt": "2026-09-17T06:49:33.000Z"
+        },
+        "04.03:einschaetzung-technisch": {
+          "id": "04.03:einschaetzung-technisch",
+          "module": 4,
+          "slideId": "04.03",
+          "kind": "text",
+          "prompt": "Begründung technisch: Lösungen, Integration, Datenbasis, Risiken",
+          "value": "Ein Assistent auf eigenen Dokumenten ist heute machbar. Der Aufwand steckt in der Datenbasis: Ablage ordnen, Gültigkeit der Merkblätter klären. Anbindung an E-Mail und Laufwerk erst im zweiten Schritt. Risiko: falsche Antworten ohne Quellenprüfung.",
+          "updatedAt": "2026-09-17T06:51:10.000Z"
+        },
+        "04.03:ampel-organisatorisch": {
+          "id": "04.03:ampel-organisatorisch",
+          "module": 4,
+          "slideId": "04.03",
+          "kind": "vote",
+          "prompt": "Ampel organisatorisch: Wie machbar ist das Zielbild für unsere Organisation?",
+          "value": "Gelb: mit Anpassungen",
+          "updatedAt": "2026-09-17T06:52:47.000Z"
+        },
+        "04.03:einschaetzung-organisatorisch": {
+          "id": "04.03:einschaetzung-organisatorisch",
+          "module": 4,
+          "slideId": "04.03",
+          "kind": "text",
+          "prompt": "Begründung organisatorisch: Prozesse, Rollen, Ressourcen, Change",
+          "value": "Die Geschäftsstelle hat kaum Zeit für die Einführung. Es braucht eine benannte Person für Pflege und Freigaben und klare Regeln. Grundkompetenz in der Assistenz ist vorhanden, Schulung ist nötig.",
+          "updatedAt": "2026-09-17T06:54:24.000Z"
+        },
+        "04.03:ampel-mitglieder": {
+          "id": "04.03:ampel-mitglieder",
+          "module": 4,
+          "slideId": "04.03",
+          "kind": "vote",
+          "prompt": "Ampel Mitglieder & Verband: Tragen die Mitglieder das Zielbild mit?",
+          "value": "Gelb: mit Anpassungen",
+          "updatedAt": "2026-09-17T06:56:01.000Z"
+        },
+        "04.03:einschaetzung-mitglieder": {
+          "id": "04.03:einschaetzung-mitglieder",
+          "module": 4,
+          "slideId": "04.03",
+          "kind": "text",
+          "prompt": "Begründung Mitglieder & Verband: Nutzen, Akzeptanz, Einbindung, Strategie",
+          "value": "Nach Wilma ist die Skepsis groß. Die Mitglieder tragen es mit, wenn sie schnell einen spürbaren Nutzen haben und nicht wieder ein Portal bedienen müssen. Pilotbetriebe einbinden.",
+          "updatedAt": "2026-09-17T06:57:38.000Z"
+        },
+        "04.04:regeln-fuer-uns": {
+          "id": "04.04:regeln-fuer-uns",
+          "module": 4,
+          "slideId": "04.04",
+          "kind": "text",
+          "prompt": "Welche Regeln brauchen wir? Was darf die KI bei uns, was nicht, und wer gibt frei?",
+          "value": "- KI darf: Entwürfe schreiben, in geprüften Verbandsdokumenten suchen, Anfragen vorsortieren\n- KI darf nicht: Mitgliedern direkt antworten, Stellungnahmen versenden, Mitglieds- oder Personaldaten ohne Vertrag zur Auftragsverarbeitung verarbeiten\n- Freigabe: Geschäftsführung, bei Stellungnahmen zusätzlich der Vorstand\n- KI-Entwürfe sind intern als solche gekennzeichnet",
+          "updatedAt": "2026-09-17T06:59:15.000Z"
+        },
+        "04.05:top-risiken": {
+          "id": "04.05:top-risiken",
+          "module": 4,
+          "slideId": "04.05",
+          "kind": "text",
+          "prompt": "Unsere Top-Risiken: Was könnte das Vorhaben scheitern lassen?",
+          "value": "- Falsche Antworten gehen ungeprüft an Mitglieder\n- Die Pflege der Wissensbasis bleibt wieder liegen\n- Mitglieder sehen es als „Wilma 2“ und machen nicht mit\n- Die Kosten laufen aus dem Ruder",
+          "updatedAt": "2026-09-17T07:00:52.000Z"
+        },
+        "04.05:gegenmassnahmen": {
+          "id": "04.05:gegenmassnahmen",
+          "module": 4,
+          "slideId": "04.05",
+          "kind": "text",
+          "prompt": "Gegenmaßnahmen: Wie sichern wir uns gegen diese Risiken ab?",
+          "value": "- Freigabe durch einen Menschen, Antworten nur mit Quelle\n- Pflege als feste Aufgabe mit Stundenbudget\n- Pilotgruppe aus Mitgliedsbetrieben, offene Kommunikation zu Wilma\n- Budgetdeckel und Überprüfung nach 12 Monaten",
+          "updatedAt": "2026-09-17T07:02:29.000Z"
+        },
+        "04.05:erfolgsfaktoren": {
+          "id": "04.05:erfolgsfaktoren",
+          "module": 4,
+          "slideId": "04.05",
+          "kind": "text",
+          "prompt": "Erfolgsfaktoren: Was muss diesmal unbedingt gegeben sein?",
+          "value": "- Ein benannter Kümmerer in der Geschäftsstelle\n- Der Vorstand steht sichtbar dahinter\n- Erster Nutzen innerhalb von 100 Tagen spürbar",
+          "updatedAt": "2026-09-17T07:04:06.000Z"
+        },
+        "04.06:poster-go": {
+          "id": "04.06:poster-go",
+          "module": 4,
+          "slideId": "04.06",
+          "kind": "text",
+          "prompt": "GO: Was setzen wir 1:1 um?",
+          "value": "- Wissensbasis aus Merkblättern und Beschlüssen aufbauen\n- Protokollentwürfe mit Freigabe\n- Regel „KI bereitet vor, Mensch entscheidet“",
+          "updatedAt": "2026-09-17T07:05:43.000Z"
+        },
+        "04.06:poster-adapt": {
+          "id": "04.06:poster-adapt",
+          "module": 4,
+          "slideId": "04.06",
+          "kind": "text",
+          "prompt": "ADAPT: Was passen wir an, und wie?",
+          "value": "- Mitgliederanfragen: erst intern vorbereiten, nicht direkt beantworten\n- Datenhaltung: Mitgliedsdaten nur lokal oder anonymisiert\n- Einführung: Pilotgruppe statt Start für alle",
+          "updatedAt": "2026-09-17T07:07:20.000Z"
+        },
+        "04.06:poster-stop": {
+          "id": "04.06:poster-stop",
+          "module": 4,
+          "slideId": "04.06",
+          "kind": "text",
+          "prompt": "STOP: Was lassen wir bewusst weg?",
+          "value": "- Kein neues Mitgliederportal\n- Keine automatische Kommunikation nach außen\n- Keine Einführung ohne Zuständigkeit für die Pflege",
+          "updatedAt": "2026-09-17T07:08:57.000Z"
+        },
+        "04.06:poster-diesmal-anders": {
+          "id": "04.06:poster-diesmal-anders",
+          "module": 4,
+          "slideId": "04.06",
+          "kind": "text",
+          "prompt": "Diesmal anders, weil …",
+          "value": "Diesmal anders, weil wir klein und intern anfangen, die Mitglieder vorher einbinden und die Pflege von Anfang an jemandem gehört.",
+          "updatedAt": "2026-09-17T07:10:34.000Z"
+        },
+        "05.02:nutzwert-argumente": {
+          "id": "05.02:nutzwert-argumente",
+          "module": 5,
+          "slideId": "05.02",
+          "kind": "text",
+          "prompt": "Unsere stärksten Nutzwert-Argumente",
+          "value": "- Wissen bleibt im Verband, auch bei Personalwechsel\n- Schnellere, einheitliche Antworten für Mitglieder\n- Mehr Zeit für Normungsarbeit und Interessenvertretung",
+          "updatedAt": "2026-09-17T07:12:11.000Z"
+        },
+        "05.02:effizienz-argumente": {
+          "id": "05.02:effizienz-argumente",
+          "module": 5,
+          "slideId": "05.02",
+          "kind": "text",
+          "prompt": "Unsere stärksten Effizienz-Argumente",
+          "value": "- Anfragen: geschätzt 4–6 Stunden pro Woche weniger Aufwand\n- Protokolle: je Sitzung 2–3 Stunden weniger Nacharbeit\n- Weniger Suchzeit nach Beschlüssen und Stellungnahmen",
+          "updatedAt": "2026-09-17T07:13:48.000Z"
+        },
+        "05.03:annahmen": {
+          "id": "05.03:annahmen",
+          "module": 5,
+          "slideId": "05.03",
+          "kind": "text",
+          "prompt": "Unsere Annahmen: Zeitgewinn, Kosten, Nutzen (jeweils als Bandbreite)",
+          "value": "- Zeitgewinn der Geschäftsstelle: 5–8 Stunden pro Woche nach der Einführungsphase\n- Einmalig: Aufbau und Ordnen der Ablage 15.000–30.000 € inklusive interner Zeit\n- Laufend: 3.000–8.000 € pro Jahr\n- Vergleich: Eine zusätzliche Assistenz in Teilzeit wäre deutlich teurer\n- Alles grobe Schätzungen der Runde, keine Angebote",
+          "updatedAt": "2026-09-17T07:15:25.000Z"
+        },
+        "05.03:hypothese": {
+          "id": "05.03:hypothese",
+          "module": 5,
+          "slideId": "05.03",
+          "kind": "vote",
+          "prompt": "Die Investition rechnet sich innerhalb von drei Jahren. Hält die Hypothese?",
+          "value": "Hält eher",
+          "updatedAt": "2026-09-17T07:17:02.000Z"
+        },
+        "05.04:mehrwert-wichtigste": {
+          "id": "05.04:mehrwert-wichtigste",
+          "module": 5,
+          "slideId": "05.04",
+          "kind": "checklist",
+          "prompt": "Welcher strategische Mehrwert ist für uns am wichtigsten? (zwei bis drei auswählen)",
+          "value": [
+            "Moderne Positionierung des Verbandes",
+            "Mitgliedergewinnung & -bindung",
+            "Sonstiges"
+          ],
+          "updatedAt": "2026-09-17T07:18:39.000Z"
+        },
+        "05.04:mehrwert-sonstiges": {
+          "id": "05.04:mehrwert-sonstiges",
+          "module": 5,
+          "slideId": "05.04",
+          "kind": "text",
+          "prompt": "Sonstiges – welcher Mehrwert genau?",
+          "value": "Entlastung des Ehrenamts im Vorstand",
+          "updatedAt": "2026-09-17T07:20:16.000Z"
+        },
+        "05.04:mehrwert-begruendung": {
+          "id": "05.04:mehrwert-begruendung",
+          "module": 5,
+          "slideId": "05.04",
+          "kind": "text",
+          "prompt": "Warum gerade diese? Woran würden wir den Mehrwert in drei Jahren erkennen?",
+          "value": "Junge Betriebe erwarten einen modernen Verband. Den Mehrwert erkennen wir in drei Jahren an mehr Neumitgliedern, kürzeren Antwortzeiten und daran, dass Vorstandsämter wieder leichter zu besetzen sind.",
+          "updatedAt": "2026-09-17T07:21:53.000Z"
+        },
+        "05.05:poster-nutzen": {
+          "id": "05.05:poster-nutzen",
+          "module": 5,
+          "slideId": "05.05",
+          "kind": "text",
+          "prompt": "Nutzen: Was gewinnen Verband, Vorstand und Mitglieder?",
+          "value": "- Wissen gesichert\n- Geschäftsstelle entlastet\n- Schnellere Antworten für Mitglieder\n- Mehr Zeit für Normungsarbeit",
+          "updatedAt": "2026-09-17T07:23:30.000Z"
+        },
+        "05.05:poster-kosten": {
+          "id": "05.05:poster-kosten",
+          "module": 5,
+          "slideId": "05.05",
+          "kind": "text",
+          "prompt": "Kosten: einmalig und laufend, als Bandbreite",
+          "value": "- Einmalig: 15.000–30.000 € (inkl. interner Zeit)\n- Laufend: 3.000–8.000 € pro Jahr\n- Interne Zeit für die Pflege: ca. 2 Stunden pro Woche",
+          "updatedAt": "2026-09-17T07:25:07.000Z"
+        },
+        "05.05:poster-hypothese": {
+          "id": "05.05:poster-hypothese",
+          "module": 5,
+          "slideId": "05.05",
+          "kind": "text",
+          "prompt": "Break-even-Hypothese und Annahmen",
+          "value": "Rechnet sich eher innerhalb von drei Jahren, wenn mindestens 5 Stunden Entlastung pro Woche erreicht werden; unsicher sind Pflegeaufwand und Akzeptanz.",
+          "updatedAt": "2026-09-17T07:26:44.000Z"
+        },
+        "05.05:poster-strategie": {
+          "id": "05.05:poster-strategie",
+          "module": 5,
+          "slideId": "05.05",
+          "kind": "text",
+          "prompt": "Strategischer Mehrwert",
+          "value": "- Moderner Verband für junge Betriebe\n- Bessere Mitgliederbindung\n- Entlastung des Ehrenamts",
+          "updatedAt": "2026-09-17T07:28:21.000Z"
+        },
+        "05.05:poster-einwaende": {
+          "id": "05.05:poster-einwaende",
+          "module": 5,
+          "slideId": "05.05",
+          "kind": "text",
+          "prompt": "Einwände & unsere Antworten",
+          "value": "- „Das hatten wir schon mit Wilma.“ → Diesmal intern und klein, mit Pilotgruppe und Zuständigkeit.\n- „KI erfindet Antworten.“ → Nur mit Quelle, ein Mensch gibt frei.\n- „Zu teuer für unseren Haushalt.“ → Budgetdeckel, Überprüfung nach 12 Monaten.\n- „Unsere Daten gehen in die Cloud.“ → Mitgliedsdaten bleiben lokal oder anonymisiert.",
+          "updatedAt": "2026-09-17T07:29:58.000Z"
+        },
+        "05.05:poster-pitch": {
+          "id": "05.05:poster-pitch",
+          "module": 5,
+          "slideId": "05.05",
+          "kind": "text",
+          "prompt": "Unser Argument für den Vorstand in drei Sätzen",
+          "value": "Unser Wissen hängt heute an einer Person, das ist ein Risiko für den Verband. Mit einem begrenzten Pilot sichern wir dieses Wissen und entlasten die Geschäftsstelle messbar. Nach 12 Monaten entscheiden wir auf Basis echter Zahlen, ob wir weitergehen.",
+          "updatedAt": "2026-09-17T07:31:35.000Z"
+        },
+        "06.01:rueckblick-realitaetscheck": {
+          "id": "06.01:rueckblick-realitaetscheck",
+          "module": 6,
+          "slideId": "06.01",
+          "kind": "text",
+          "prompt": "Rückblick: Was nehmen wir aus dem Realitätscheck mit (GO · ADAPT · STOP)?",
+          "value": "GO: Wissensbasis und Protokollentwürfe. ADAPT: Anfragen nur intern vorbereiten, Pilotgruppe. STOP: kein neues Portal, nichts automatisch nach außen.",
+          "updatedAt": "2026-09-17T07:33:12.000Z"
+        },
+        "06.02:karten-prioritaeten": {
+          "id": "06.02:karten-prioritaeten",
+          "module": 6,
+          "slideId": "06.02",
+          "kind": "checklist",
+          "prompt": "Top-Prioritäten – vorgelesene Karten",
+          "value": [
+            "Wissensbasis aus Merkblättern und Beschlüssen (4×)",
+            "Protokollentwürfe (3×)",
+            "Zuständigkeit für die Pflege klären (2×)",
+            "Pilotgruppe mit Mitgliedsbetrieben",
+            "Regeln für die KI-Nutzung beschließen",
+            "Ablage aufräumen"
+          ],
+          "updatedAt": "2026-09-17T07:34:49.000Z"
+        },
+        "06.02:handlungsfelder": {
+          "id": "06.02:handlungsfelder",
+          "module": 6,
+          "slideId": "06.02",
+          "kind": "text",
+          "prompt": "Unsere 1–3 Handlungsfelder",
+          "value": "1. Verbandswissen sichern (Wissensbasis)\n2. Geschäftsstelle entlasten (Anfragen und Protokolle)\n3. Mitglieder einbinden (Pilotgruppe, Kommunikation)",
+          "updatedAt": "2026-09-17T07:36:26.000Z"
+        },
+        "06.02:quick-wins": {
+          "id": "06.02:quick-wins",
+          "module": 6,
+          "slideId": "06.02",
+          "kind": "text",
+          "prompt": "Quick Wins: Womit können wir sofort starten?",
+          "value": "- Liste der 20 häufigsten Mitgliederanfragen mit geprüften Antworten\n- Regeln für die KI-Nutzung als Entwurf für den Vorstand\n- Beschlüsse der letzten fünf Jahre an einem Ort sammeln",
+          "updatedAt": "2026-09-17T07:38:03.000Z"
+        },
+        "06.03:meilenstein-100-tage": {
+          "id": "06.03:meilenstein-100-tage",
+          "module": 6,
+          "slideId": "06.03",
+          "kind": "text",
+          "prompt": "Meilensteine in 100 Tagen",
+          "value": "Arbeitsgruppe steht, Regeln beschlossen, Ablage für Merkblätter und Beschlüsse geordnet, erster interner Test mit 20 Anfragen",
+          "updatedAt": "2026-09-17T07:39:40.000Z"
+        },
+        "06.03:meilenstein-12-monate": {
+          "id": "06.03:meilenstein-12-monate",
+          "module": 6,
+          "slideId": "06.03",
+          "kind": "text",
+          "prompt": "Meilensteine in 12 Monaten",
+          "value": "Wissensbasis im Alltag der Geschäftsstelle genutzt, Protokollentwürfe sind Standard, Pilotgruppe mit 5 Mitgliedsbetrieben, Zeitersparnis gemessen",
+          "updatedAt": "2026-09-17T07:41:17.000Z"
+        },
+        "06.03:meilenstein-24-monate": {
+          "id": "06.03:meilenstein-24-monate",
+          "module": 6,
+          "slideId": "06.03",
+          "kind": "text",
+          "prompt": "Meilensteine in 24 Monaten",
+          "value": "Entscheidung über die Öffnung für Mitglieder; weitere Abläufe (Seminare, Stellungnahmen) angebunden",
+          "updatedAt": "2026-09-17T07:42:54.000Z"
+        },
+        "06.03:meilenstein-36-monate": {
+          "id": "06.03:meilenstein-36-monate",
+          "module": 6,
+          "slideId": "06.03",
+          "kind": "text",
+          "prompt": "Meilensteine in 36 Monaten",
+          "value": "Fester Bestandteil der Verbandsarbeit; Bericht an die Mitgliederversammlung",
+          "updatedAt": "2026-09-17T07:44:31.000Z"
+        },
+        "06.04:verantwortliche": {
+          "id": "06.04:verantwortliche",
+          "module": 6,
+          "slideId": "06.04",
+          "kind": "text",
+          "prompt": "Wer übernimmt was?",
+          "value": "- Arbeitsgruppe: Geschäftsführung, ein Vorstandsmitglied, eine Person aus dem Technik-Ausschuss, zwei Mitgliedsbetriebe\n- Pflege der Wissensbasis: Assistenz der Geschäftsstelle (Stundenbudget offen)\n- Regeln und Freigaben: Vorstand",
+          "updatedAt": "2026-09-17T07:46:08.000Z"
+        },
+        "06.04:ressourcen": {
+          "id": "06.04:ressourcen",
+          "module": 6,
+          "slideId": "06.04",
+          "kind": "text",
+          "prompt": "Ressourcen & Support: Was brauchen wir (Budget, Personal, Tools, Daten, Partner)?",
+          "value": "- Budget für die Pilotphase: Rahmen legt der Vorstand fest (offen)\n- Zeit: 2 Stunden pro Woche Assistenz, 1 Stunde Geschäftsführung\n- Externe Unterstützung für Aufbau und Datenschutzprüfung\n- Daten: Merkblätter, Beschlüsse, Anfragen mit geprüften Antworten",
+          "updatedAt": "2026-09-17T07:47:45.000Z"
+        },
+        "06.04:abhaengigkeiten": {
+          "id": "06.04:abhaengigkeiten",
+          "module": 6,
+          "slideId": "06.04",
+          "kind": "text",
+          "prompt": "Risiken & Abhängigkeiten: Was muss zuerst geklärt sein?",
+          "value": "- Budgetfreigabe durch den Vorstand\n- Datenschutzprüfung vor dem ersten Test mit echten Anfragen\n- Klären, ob die Ablage auf dem Laufwerk vollständig ist",
+          "updatedAt": "2026-09-17T07:49:22.000Z"
+        },
+        "06.05:poster-100-tage": {
+          "id": "06.05:poster-100-tage",
+          "module": 6,
+          "slideId": "06.05",
+          "kind": "text",
+          "prompt": "Poster · 100 Tage",
+          "value": "- Arbeitsgruppe gestartet\n- Regeln beschlossen\n- Ablage geordnet\n- Test mit 20 Anfragen",
+          "updatedAt": "2026-09-17T07:50:59.000Z"
+        },
+        "06.05:poster-12-monate": {
+          "id": "06.05:poster-12-monate",
+          "module": 6,
+          "slideId": "06.05",
+          "kind": "text",
+          "prompt": "Poster · 12 Monate",
+          "value": "- Im Alltag genutzt\n- Pilotgruppe mit 5 Betrieben\n- Zeitersparnis gemessen",
+          "updatedAt": "2026-09-17T07:52:36.000Z"
+        },
+        "06.05:poster-24-monate": {
+          "id": "06.05:poster-24-monate",
+          "module": 6,
+          "slideId": "06.05",
+          "kind": "text",
+          "prompt": "Poster · 24 Monate",
+          "value": "- Entscheidung über Öffnung für Mitglieder\n- Weitere Abläufe angebunden",
+          "updatedAt": "2026-09-17T07:54:13.000Z"
+        },
+        "06.05:poster-36-monate": {
+          "id": "06.05:poster-36-monate",
+          "module": 6,
+          "slideId": "06.05",
+          "kind": "text",
+          "prompt": "Poster · 36 Monate",
+          "value": "- Fester Bestandteil der Verbandsarbeit\n- Bericht an die Mitgliederversammlung",
+          "updatedAt": "2026-09-17T07:55:50.000Z"
+        },
+        "06.05:poster-verantwortliche": {
+          "id": "06.05:poster-verantwortliche",
+          "module": 6,
+          "slideId": "06.05",
+          "kind": "text",
+          "prompt": "Poster · Verantwortliche",
+          "value": "- Arbeitsgruppe: Geschäftsführung, Vorstand, Technik-Ausschuss, 2 Betriebe\n- Pflege: Assistenz\n- Regeln: Vorstand",
+          "updatedAt": "2026-09-17T07:57:27.000Z"
+        },
+        "07.02:barometer-nachher-stimmen": {
+          "id": "07.02:barometer-nachher-stimmen",
+          "module": 7,
+          "slideId": "07.02",
+          "kind": "checklist",
+          "prompt": "KI-Geschäftsführer: Fiktion oder Realität? – unsere Antwort jetzt – Einzelstimmen",
+          "value": [
+            "Eher Realität — Teilnehmer A",
+            "Eher Fiktion — Teilnehmer B",
+            "Eher Realität — Teilnehmer C",
+            "Eher Realität — Teilnehmer D",
+            "Unentschieden — Teilnehmer E",
+            "Unentschieden — Teilnehmer F",
+            "Eher Realität — Teilnehmer G"
+          ],
+          "updatedAt": "2026-09-17T07:59:04.000Z"
+        },
+        "07.02:barometer-nachher": {
+          "id": "07.02:barometer-nachher",
+          "module": 7,
+          "slideId": "07.02",
+          "kind": "vote",
+          "prompt": "KI-Geschäftsführer: Fiktion oder Realität? – unsere Antwort jetzt",
+          "value": "Eher Fiktion: 1 · Unentschieden: 2 · Eher Realität: 4 (7 Stimmen)",
+          "updatedAt": "2026-09-17T08:00:41.000Z"
+        },
+        "07.02:barometer-nachher-analyse": {
+          "id": "07.02:barometer-nachher-analyse",
+          "module": 7,
+          "slideId": "07.02",
+          "kind": "text",
+          "prompt": "Analyse: Veränderung der Haltung (vorher → nachher)",
+          "value": "Gesamtbild\nVorher lag die Runde überwiegend bei Fiktion und Eher Fiktion, nachher überwiegend bei Eher Realität. Die mittlere Position stieg von 1,4 auf 2,4. Niemand hat „Realität“ gewählt.\n\nBewegungen\nFünf von sieben Personen haben sich in Richtung Realität bewegt, zwei davon um zwei Stufen. Zwei Personen sind bei ihrer Einschätzung geblieben. Keine Bewegung in Richtung Fiktion.\n\nGründe\nGenannt wurde, dass nicht der Geschäftsführer ersetzt wird, aber ein Teil seiner Arbeit gut unterstützt werden kann. Zurückhaltung begründet die Runde mit Kosten, Pflegeaufwand und dem noch fehlenden Pilot.\n\nKommentar für die Moderation\nDie Bewegung ist deutlich, aber vorsichtig. Mögliche Anschlussfrage: Was müsste der Pilot zeigen, damit die Unentschiedenen sagen „Realität“?",
+          "updatedAt": "2026-09-17T08:02:18.000Z"
+        },
+        "07.02:barometer-veraenderung": {
+          "id": "07.02:barometer-veraenderung",
+          "module": 7,
+          "slideId": "07.02",
+          "kind": "text",
+          "prompt": "Was hat sich seit gestern verändert – und warum?",
+          "value": "- Von Fiktion zu Eher Realität: Nicht der Geschäftsführer wird ersetzt, aber ein Teil seiner Arbeit kann gut unterstützt werden.\n- Unentschieden geblieben: überzeugt erst, wenn der Pilot funktioniert.\n- Eher Fiktion: Kosten und Pflegeaufwand sind noch zu unsicher.\n- Mehrfach: Der Begriff „KI-Geschäftsführer“ passt nicht, eher „KI-Assistenz der Geschäftsstelle“.",
+          "updatedAt": "2026-09-17T08:03:55.000Z"
+        },
+        "07.03:offene-fragen": {
+          "id": "07.03:offene-fragen",
+          "module": 7,
+          "slideId": "07.03",
+          "kind": "text",
+          "prompt": "Welche Fragen sind noch offen – und welche Grenzen wollen wir festhalten?",
+          "value": "- Wie hoch ist das Budget, das der Vorstand für den Pilot freigeben kann?\n- Wer pflegt die Wissensbasis dauerhaft, wenn die Assistenz ausfällt?\n- Welche Betriebsform (Cloud mit Verarbeitung in der EU oder lokal) passt zu unseren Daten?\n- Grenze, die wir festhalten: Die KI antwortet Mitgliedern nie ohne Freigabe.",
+          "updatedAt": "2026-09-17T08:05:32.000Z"
+        },
+        "07.03:wer-klaert": {
+          "id": "07.03:wer-klaert",
+          "module": 7,
+          "slideId": "07.03",
+          "kind": "text",
+          "prompt": "Wer klärt welche Frage bis wann?",
+          "value": "- Budget: Vorstand, bis zur Vorstandssitzung im November\n- Pflege: Geschäftsführung, bis Ende Oktober\n- Betriebsform: Arbeitsgruppe mit externer Datenschutzberatung, innerhalb der ersten 100 Tage",
+          "updatedAt": "2026-09-17T08:07:09.000Z"
+        },
+        "07.04:naechster-schritt": {
+          "id": "07.04:naechster-schritt",
+          "module": 7,
+          "slideId": "07.04",
+          "kind": "decision",
+          "prompt": "Unser nächster Schritt",
+          "value": "Arbeitsgruppe einsetzen, die das Zielbild konkretisiert",
+          "updatedAt": "2026-09-17T08:08:46.000Z"
+        },
+        "07.04:bedingungen": {
+          "id": "07.04:bedingungen",
+          "module": 7,
+          "slideId": "07.04",
+          "kind": "text",
+          "prompt": "Bedingungen: Was muss erfüllt sein?",
+          "value": "- Budgetrahmen durch den Vorstand\n- Datenschutzprüfung vor Tests mit echten Daten\n- Benannte Zuständigkeit für die Pflege\n- Mitgliedsbetriebe sitzen in der Arbeitsgruppe",
+          "updatedAt": "2026-09-17T08:10:23.000Z"
+        },
+        "07.04:verantwortlich": {
+          "id": "07.04:verantwortlich",
+          "module": 7,
+          "slideId": "07.04",
+          "kind": "text",
+          "prompt": "Verantwortlich (Name/Rolle) und bis wann?",
+          "value": "Geschäftsführung koordiniert, der Vorstand entscheidet über das Budget; erste Sitzung der Arbeitsgruppe bis 31.10.2026",
+          "updatedAt": "2026-09-17T08:12:00.000Z"
+        },
+        "07.04:beschluss-text": {
+          "id": "07.04:beschluss-text",
+          "module": 7,
+          "slideId": "07.04",
+          "kind": "text",
+          "prompt": "Beschlussvorschlag im Wortlaut",
+          "value": "Die Teilnehmenden empfehlen dem Vorstand, eine Arbeitsgruppe einzusetzen, die bis zur Vorstandssitzung im Frühjahr 2027 einen Pilot für eine KI-gestützte Wissensbasis der Geschäftsstelle konkretisiert, einschließlich Regeln, Budgetrahmen und Zuständigkeiten.",
+          "updatedAt": "2026-09-17T08:13:37.000Z"
+        },
+        "07.06:poster-antwort": {
+          "id": "07.06:poster-antwort",
+          "module": 7,
+          "slideId": "07.06",
+          "kind": "text",
+          "prompt": "Unsere Antwort auf die Leitfrage",
+          "value": "Ein KI-Geschäftsführer bleibt Fiktion – eine KI-Assistenz, die unser Wissen sichert und die Geschäftsstelle entlastet, wird Realität, wenn wir klein anfangen und der Mensch entscheidet.",
+          "updatedAt": "2026-09-17T08:15:14.000Z"
+        },
+        "07.06:poster-beschluesse": {
+          "id": "07.06:poster-beschluesse",
+          "module": 7,
+          "slideId": "07.06",
+          "kind": "text",
+          "prompt": "Unsere Beschlüsse",
+          "value": "- Arbeitsgruppe wird dem Vorstand vorgeschlagen\n- Regel „KI bereitet vor, Mensch entscheidet“ als Entwurf\n- Quick Wins starten sofort (Liste häufiger Anfragen, Beschlusssammlung)",
+          "updatedAt": "2026-09-17T08:16:51.000Z"
+        },
+        "07.06:owner": {
+          "id": "07.06:owner",
+          "module": 7,
+          "slideId": "07.06",
+          "kind": "text",
+          "prompt": "Wer koordiniert und bis wann?",
+          "value": "Geschäftsführung, bis 31.10.2026",
+          "updatedAt": "2026-09-17T08:18:28.000Z"
+        },
+        "07.06:naechster-termin": {
+          "id": "07.06:naechster-termin",
+          "module": 7,
+          "slideId": "07.06",
+          "kind": "text",
+          "prompt": "Nächster Termin",
+          "value": "Kick-off der Arbeitsgruppe am 29.10.2026 in Darmstadt",
+          "updatedAt": "2026-09-17T08:20:05.000Z"
+        },
+        "07.07:feedback-gesamt": {
+          "id": "07.07:feedback-gesamt",
+          "module": 7,
+          "slideId": "07.07",
+          "kind": "vote",
+          "prompt": "Wie war der Workshop für uns?",
+          "value": "Gut",
+          "updatedAt": "2026-09-17T08:21:42.000Z"
+        },
+        "07.07:feedback-gewinn": {
+          "id": "07.07:feedback-gewinn",
+          "module": 7,
+          "slideId": "07.07",
+          "kind": "text",
+          "prompt": "Was hat uns am meisten gebracht?",
+          "value": "Dass wir erst über unser Problem gesprochen haben und nicht über Technik.",
+          "updatedAt": "2026-09-17T08:23:19.000Z"
+        },
+        "07.07:feedback-anders": {
+          "id": "07.07:feedback-anders",
+          "module": 7,
+          "slideId": "07.07",
+          "kind": "text",
+          "prompt": "Was sollten wir beim nächsten Mal anders machen? Kritik ist willkommen.",
+          "value": "Phase 5 war zu kurz für die Kostenfrage; die Interviews sollten mit allen geführt werden.",
+          "updatedAt": "2026-09-17T08:24:56.000Z"
+        },
+        "07.07:feedback-sechs-monate": {
+          "id": "07.07:feedback-sechs-monate",
+          "module": 7,
+          "slideId": "07.07",
+          "kind": "text",
+          "prompt": "Woran merken wir in sechs Monaten, dass sich die zwei Tage gelohnt haben?",
+          "value": "Die Arbeitsgruppe hat getagt, die Liste häufiger Anfragen existiert und die Geschäftsstelle testet den Assistenten intern.",
+          "updatedAt": "2026-09-17T08:26:33.000Z"
+        },
+        "01.02:i1-haltung": {
+          "id": "01.02:i1-haltung",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Grundhaltung zu KI – aus den Interviews",
+          "value": "Ø 2,0 von 4 (1 Skeptisch … 4 Überzeugt) · σ 0,82 (gemischt) · Spanne 1–3 · n = 3",
+          "updatedAt": "2026-09-16T12:43:10.000Z"
+        },
+        "01.02:i3-kompetenz": {
+          "id": "01.02:i3-kompetenz",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Eigene KI-Kompetenz – aus den Interviews",
+          "value": "Ø 2,0 von 4 (1 Einsteiger … 4 Experte) · σ 0,82 (gemischt) · Spanne 1–3 · n = 3",
+          "updatedAt": "2026-09-16T12:44:47.000Z"
+        },
+        "01.02:i4-relevanz-heute": {
+          "id": "01.02:i4-relevanz-heute",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Relevanz von KI für den Verband heute – aus den Interviews",
+          "value": "Ø 1,7 von 4 (1 gering … 4 sehr hoch) · σ 0,47 (einig) · Spanne 1–2 · n = 3",
+          "updatedAt": "2026-09-16T12:46:24.000Z"
+        },
+        "01.02:i5-relevanz-morgen": {
+          "id": "01.02:i5-relevanz-morgen",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Relevanz von KI für den Verband morgen – aus den Interviews",
+          "value": "Ø 3,3 von 4 (1 gering … 4 sehr hoch) · σ 0,47 (einig) · Spanne 3–4 · n = 3",
+          "updatedAt": "2026-09-16T12:48:01.000Z"
+        },
+        "01.02:i2-begriffe": {
+          "id": "01.02:i2-begriffe",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Unsere Begriffe zu KI – häufigste Nennungen",
+          "value": "datenschutz (3) · automatisierung (2) · chatgpt (2) · assistenz (1) · fehler (1) · kontrollverlust (1) · kosten (1) · texte schreiben (1)",
+          "updatedAt": "2026-09-16T12:49:38.000Z"
+        },
+        "01.02:i6-einsatzgebiete": {
+          "id": "01.02:i6-einsatzgebiete",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Einsatzgebiete für KI – häufigste Nennungen",
+          "value": "Mitgliederanfragen beantworten (2) · Normen recherchieren (2) · Protokolle schreiben (2) · Newsletter erstellen (1) · Rundschreiben entwerfen (1)",
+          "updatedAt": "2026-09-16T12:51:15.000Z"
+        },
+        "01.02:i8-gruppenbild-kennzahlen": {
+          "id": "01.02:i8-gruppenbild-kennzahlen",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Gruppenbild: Kennzahlen aus den KI-Interviews",
+          "value": "Grundlage: 3 von 3 Interviews mit Skalenwerten. Lokal berechnet aus den Einzel-Meinungsbildern, ohne KI.\n\nHaltung zu KI (1 Skeptisch … 4 Überzeugt): Ø 2,0 von 4 · Streuung σ 0,82 (gemischt) · Spanne 1–3 · 3 Angaben\n  Skeptisch 1 · Abwartend 1 · Neugierig 1 · Überzeugt 0\nKI-Kompetenz (1 Einsteiger … 4 Experte): Ø 2,0 von 4 · Streuung σ 0,82 (gemischt) · Spanne 1–3 · 3 Angaben\n  Einsteiger 1 · Grundkenntnisse 1 · Fortgeschritten 1 · Experte 0\nRelevanz heute (1 gering … 4 sehr hoch): Ø 1,7 von 4 · Streuung σ 0,47 (einig) · Spanne 1–2 · 3 Angaben\n  gering 1 · mittel 2 · hoch 0 · sehr hoch 0\nRelevanz morgen (1 gering … 4 sehr hoch): Ø 3,3 von 4 · Streuung σ 0,47 (einig) · Spanne 3–4 · 3 Angaben\n  gering 0 · mittel 0 · hoch 2 · sehr hoch 1\n\nLücke Relevanz heute → morgen: +1,7 Stufen (deutlicher Sprung)\nHäufigste Begriffe: datenschutz (3) · automatisierung (2) · chatgpt (2) · assistenz (1) · fehler (1) · kontrollverlust (1) · kosten (1) · texte schreiben (1)\nMeistgenannte Einsatzgebiete: Mitgliederanfragen beantworten (2) · Normen recherchieren (2) · Protokolle schreiben (2) · Newsletter erstellen (1) · Rundschreiben entwerfen (1)",
+          "updatedAt": "2026-09-16T12:52:52.000Z"
+        },
+        "01.02:interview-a3f19c20": {
+          "id": "01.02:interview-a3f19c20",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Meinungsbild · Interview 1",
+          "value": "Haltung zu KI:\nabwartend – sieht die Entwicklung kommen, will aber zuerst einen belegbaren Nutzen für den Verband sehen.\n\nFünf Begriffe:\n• ChatGPT\n• Texte schreiben\n• Datenschutz\n• Fehler\n• Zeitersparnis\n\nSelbsteinschätzung KI-Kompetenz:\nGrundkenntnisse – private Nutzung für einen Brief.\n\nRelevanz für den FBS heute / morgen:\n• Heute: mittel, niemand nutzt es bisher richtig\n• Morgen: hoch, sonst verliert der Verband an Attraktivität für junge Betriebe\n\nKonkrete Einsatzgebiete:\n• Mitgliederanfragen beantworten (wiederkehrende Fragen zu Merkblättern)\n• Protokolle schreiben\n• Normen recherchieren\n\nTop-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte:\n• Nachwuchs (Bauwerksmechaniker) – hier sieht die befragte Person wenig Beitrag von KI\n• Geschäftsstelle stemmt alles allein – KI könnte Routine abnehmen\n\nMarkante Zitate:\n• „ich will erst sehen, dass es bei uns im Verband wirklich was bringt.“\n• „Wenn wir das verschlafen, sind wir für junge Betriebe nicht mehr interessant.“\n\nKurzfazit:\nAbwartend, aber offen: KI wird als Entlastung für Routinearbeit gesehen, sofern der Nutzen für den Verband nachgewiesen ist.",
+          "updatedAt": "2026-09-16T11:40:00.000Z"
+        },
+        "01.02:interview-b7d204e1": {
+          "id": "01.02:interview-b7d204e1",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Meinungsbild · Interview 2",
+          "value": "Haltung zu KI:\nskeptisch – geprägt von der Erfahrung mit dem früheren Digitalisierungsprojekt; lehnt ein Projekt ab, das nur aus dem allgemeinen Trend entsteht.\n\nFünf Begriffe:\n• Datenschutz\n• Kontrollverlust\n• Automatisierung\n• Kosten\n(vier Begriffe genannt)\n\nSelbsteinschätzung KI-Kompetenz:\nEinsteiger – bisher keine eigene Nutzung.\n\nRelevanz für den FBS heute / morgen:\n• Heute: gering\n• Morgen: hoch, weil Mitgliedsbetriebe bereits damit arbeiten\n\nKonkrete Einsatzgebiete:\n• Protokolle schreiben\n• Rundschreiben entwerfen\n• jeweils nur mit menschlicher Prüfung\n\nTop-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte:\n• Vertrauen der Mitglieder – KI hilft hier aus Sicht der befragten Person nicht, bei Fehlern eher im Gegenteil\n• Kosten, keine Beitragserhöhung\n\nMarkante Zitate:\n• „Wir haben mit Wilma viel Geld und Nerven gelassen und am Ende hat es keiner benutzt.“\n• „Aber jemand muss das prüfen.“\n\nKurzfazit:\nSkeptisch und kostenbewusst; akzeptiert KI allenfalls für Schreibarbeit mit Prüfung und warnt vor einem Vertrauensverlust bei den Mitgliedern.",
+          "updatedAt": "2026-09-16T11:42:00.000Z"
+        },
+        "01.02:interview-c52e9f8a": {
+          "id": "01.02:interview-c52e9f8a",
+          "module": 1,
+          "slideId": "01.02",
+          "kind": "text",
+          "prompt": "Meinungsbild · Interview 3",
+          "value": "Haltung zu KI:\nneugierig – nutzt KI bereits im eigenen Betrieb und erlebt eine Zeitersparnis.\n\nFünf Begriffe:\n• ChatGPT\n• Assistenz\n• Wissensdatenbank\n• Automatisierung\n• Datenschutz\n\nSelbsteinschätzung KI-Kompetenz:\nFortgeschritten – nahezu tägliche Nutzung, ohne technischen Hintergrund.\n\nRelevanz für den FBS heute / morgen:\n• Heute: mittel\n• Morgen: sehr hoch\n\nKonkrete Einsatzgebiete:\n• Mitgliederanfragen beantworten\n• Normen recherchieren\n• Newsletter erstellen\n• Schulungsunterlagen für Seminare\n\nTop-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte:\n• Wissen in der Geschäftsstelle ist gefährdet, wenn jemand ausfällt – KI könnte es festhalten und auffindbar machen\n• Junge Unternehmer gewinnen, die einen modernen Verband erwarten\n\nMarkante Zitate:\n• „In fünf Jahren fragt keiner mehr, ob, sondern nur noch wie.“\n• „Wenn da jemand ausfällt, steht der Verband.“\n\nKurzfazit:\nPositiv eingestellt und praxiserfahren; sieht den größten Hebel im Sichern des Wissens der Geschäftsstelle.",
+          "updatedAt": "2026-09-16T11:44:00.000Z"
+        },
+        "02.06:notiz": {
+          "id": "02.06:notiz",
+          "module": 2,
+          "slideId": "02.06",
+          "kind": "text",
+          "prompt": "Notiz · Optional: Live-Demo – so kann das aussehen",
+          "value": "Demo auf Wunsch der Gruppe kurz gezeigt (15 Min): Fragen an eigene Dokumente, Antworten mit Quellenangabe. Rückfrage aus der Runde, ob das auch mit alten eingescannten Protokollen geht – nicht abschließend beantwortet.",
+          "updatedAt": "2026-09-16T12:54:29.000Z"
+        },
+        "02.12:q-mf2k8a1c-4d7h": {
+          "id": "02.12:q-mf2k8a1c-4d7h",
+          "module": 2,
+          "slideId": "02.12",
+          "kind": "text",
+          "prompt": "Was passiert mit unseren Daten, wenn wir später den Anbieter wechseln?",
+          "value": "Dokumente und Regeln müssen beim Verband bleiben und bei einem Wechsel vollständig mitgenommen werden können. Als Anforderung festhalten.",
+          "updatedAt": "2026-09-16T12:56:06.000Z"
+        },
+        "04.04:q-mf3a1b2c-9x2k": {
+          "id": "04.04:q-mf3a1b2c-9x2k",
+          "module": 4,
+          "slideId": "04.04",
+          "kind": "text",
+          "prompt": "Brauchen wir eine Datenschutz-Folgenabschätzung?",
+          "value": "",
+          "updatedAt": "2026-09-17T08:28:10.000Z"
+        },
+        "05.03:q-mf3b4c5d-k8p1": {
+          "id": "05.03:q-mf3b4c5d-k8p1",
+          "module": 5,
+          "slideId": "05.03",
+          "kind": "text",
+          "prompt": "Dürfen wir ChatGPT schon jetzt nutzen, wenn wir nur öffentliche Merkblätter eingeben?",
+          "value": "",
+          "updatedAt": "2026-09-17T08:29:47.000Z"
+        },
+        "99.01:glossar-workshop": {
+          "id": "99.01:glossar-workshop",
+          "module": 99,
+          "slideId": "99.01",
+          "kind": "text",
+          "prompt": "Glossar – im Workshop ergänzt",
+          "value": "Bauwerksmechaniker: Ausbildungsberuf für Arbeiten wie Betonbohren und -sägen, Abbruch und Rückbau. (nicht freigegeben)\nBeschlusslage: Die Gesamtheit der aktuell gültigen Beschlüsse von Vorstand und Mitgliederversammlung zu einem Thema.\nPilotgruppe: Eine kleine Auswahl von Mitgliedsbetrieben, die ein neues Angebot zuerst erprobt und Rückmeldung gibt, bevor es für alle geöffnet wird.",
+          "updatedAt": "2026-09-17T10:28:00.000Z"
+        }
+      }
+    },
+    "glossary": {
+      "terms": [
+        {
+          "id": "g-mf3x0003-3c4d5e6f",
+          "term": "Bauwerksmechaniker",
+          "definition": "Ausbildungsberuf für Arbeiten wie Betonbohren und -sägen, Abbruch und Rückbau.",
+          "approved": false,
+          "createdAt": "2026-09-17T10:21:00.000Z",
+          "source": "workshop"
+        },
+        {
+          "id": "g-mf3x0001-1a2b3c4d",
+          "term": "Beschlusslage",
+          "definition": "Die Gesamtheit der aktuell gültigen Beschlüsse von Vorstand und Mitgliederversammlung zu einem Thema.",
+          "approved": true,
+          "createdAt": "2026-09-17T10:20:00.000Z",
+          "source": "manual"
+        },
+        {
+          "id": "g-mf3x0002-2b3c4d5e",
+          "term": "Pilotgruppe",
+          "definition": "Eine kleine Auswahl von Mitgliedsbetrieben, die ein neues Angebot zuerst erprobt und Rückmeldung gibt, bevor es für alle geöffnet wird.",
+          "approved": true,
+          "createdAt": "2026-09-17T10:21:00.000Z",
+          "source": "workshop"
+        }
+      ],
+      "suggestions": [
+        {
+          "id": "s-mf3x0004-4d5e6f7a",
+          "term": "Freigabe",
+          "definition": "Prüfung und Bestätigung eines KI-Entwurfs durch eine verantwortliche Person, bevor er verwendet oder versendet wird."
+        }
+      ]
+    },
+    "poster": {
+      "drafts": {
+        "need-to-move": {
+          "fields": {
+            "01.06:poster-kernproblem": "Unser Wissen hängt an einer Person – niemand sichert und teilt es.",
+            "01.04:prioritaet": "Verbandswissen an Personen gebunden"
+          },
+          "updatedAt": "2026-09-16T12:28:00.000Z"
+        },
+        "zielbild": {
+          "fields": {
+            "03.04:erste-use-cases": "- Fachfragen-Assistent\n- Protokollentwurf\n- Beschlusslage auf Knopfdruck\n- Antwortvorschläge für Anfragen"
+          },
+          "updatedAt": "2026-09-16T16:05:00.000Z"
+        },
+        "go-adapt-stop": {
+          "fields": {
+            "04.02:wilma-lernen": "- Klein und intern anfangen\n- Mitglieder vorher einbinden\n- Pflege hat einen Namen"
+          },
+          "updatedAt": "2026-09-17T07:58:00.000Z"
+        },
+        "commitment": {
+          "fields": {
+            "07.06:poster-antwort": "KI-Geschäftsführer: Fiktion. KI-Assistenz der Geschäftsstelle: Realität – wenn der Mensch entscheidet."
+          },
+          "updatedAt": "2026-09-17T10:12:00.000Z"
+        },
+        "filmplakat": {
+          "fields": {
+            "03.05:poster-leitsatz": "Unser Wissen arbeitet für uns."
+          },
+          "updatedAt": "2026-09-17T10:30:00.000Z"
+        }
+      },
+      "prefs": {
+        "format": "A3",
+        "orientation": "portrait"
+      }
+    },
+    "report": {
+      "markdown": "## Management Summary\nDer erste Workshoptag hat das Kernproblem des Verbands herausgearbeitet und gemeinsam bestätigt: Das Verbandswissen hängt an einer Person, weil es niemand systematisch sichert und teilt. Im Möglichkeitsraum entstanden vier Stoßrichtungen, von der Wissensbasis bis zur Mitgliederkommunikation. Das Zielbild beschreibt einen Assistenten der Geschäftsstelle, der Wissen findet und Entwürfe vorbereitet. Die Gruppe hat das Zielbild ohne Einschränkung bestätigt. Eine Antwort auf die Leitfrage ist noch nicht erfasst. Das Barometer vorher zeigt eine überwiegend skeptische Haltung.\n\n## Ausgangslage & Meinungsbild\nDie Interviews zeigen eine gemischte Haltung und eine deutlich höhere erwartete Relevanz von KI für morgen als für heute.\n\n## Phase 1 – Need to Move: Kernproblem\nKernproblem: Das Verbandswissen hängt an einer Person. Priorisiertes Problemfeld: Verbandswissen ist an Personen gebunden.\n\n## Phase 2 – Möglichkeitsraum & Stoßrichtungen\nVier Stoßrichtungen: Wissen sichern, Geschäftsstelle entlasten, Gremienarbeit unterstützen, Kommunikation modernisieren.\n\n## Phase 3 – Zielbild\nLeitsatz: „Unser Wissen arbeitet für uns – der Mensch entscheidet.“\n\n## Phase 4 – Realitätscheck FBS (eigene Erfahrungen, GO/ADAPT/STOP)\nKeine Beiträge erfasst.\n\n## Phase 5 – Wirtschaftlichkeit & Argumentation\nKeine Beiträge erfasst.\n\n## Phase 6 – Roadmap\nKeine Beiträge erfasst.\n\n## Phase 7 – Commitment & Beschluss\nKeine Beiträge erfasst.\n\n## Offene Fragen\n- Was kostet das realistisch?\n- Wer pflegt die Wissensbasis?\n\n## Nächste Schritte & Verantwortliche\nKeine Beiträge erfasst.",
+      "createdAt": "2026-09-16T16:20:00.000Z",
+      "entryCount": 88,
+      "lang": "de",
+      "hints": "Kurz halten, Stand Ende Tag 1"
+    },
+    "interviewsGroup": {
+      "text": "## Gesamtbild der Haltungen\n- 1 von 3 skeptisch, 1 von 3 abwartend, 1 von 3 neugierig\n- Mittelwert Ø 2,0 von 4, Streuung σ 0,82: Die Gruppe ist gemischt.\n\n## Häufigste Begriffe\n- Datenschutz (3 von 3)\n- ChatGPT und Automatisierung (je 2 von 3)\n- Einzelnennungen: Texte schreiben, Fehler, Zeitersparnis, Kontrollverlust, Kosten, Assistenz, Wissensdatenbank\n\n## KI-Kompetenz in der Gruppe\n- Ø 2,0 von 4, von Einsteiger bis Fortgeschritten: gemischt\n\n## Relevanz heute vs. morgen\n- Heute Ø 1,7, morgen Ø 3,3 – die Gruppe ist sich in beiden Einschätzungen einig\n- Lücke +1,7 Stufen: ein deutlicher Sprung\n\n## Gemeinsame Einsatzgebiete\n- Mitgliederanfragen beantworten (2 von 3)\n- Protokolle schreiben (2 von 3)\n- Normen recherchieren (2 von 3)\n\n## Top-Herausforderungen (nach Häufigkeit gerankt)\n1. Belastung und Wissen der Geschäftsstelle (2 von 3)\n2. Nachwuchs und junge Betriebe gewinnen (2 von 3)\n3. Vertrauen der Mitglieder und Kosten (1 von 3)\n\n## Unterschiede und Spannungen\n- Ein Interview verbindet KI mit dem Risiko eines erneuten Vertrauensverlusts, ein anderes mit Zeitersparnis aus eigener Praxis.\n- Einigkeit besteht darin, dass KI-Ergebnisse geprüft werden müssen.\n\n## Drei Kernaussagen als Diskussionsimpuls\n1. Die Relevanz von KI wird für morgen deutlich höher eingeschätzt als für heute.\n2. Der größte Nutzen wird bei wiederkehrender Schreib- und Recherchearbeit gesehen.\n3. Vertrauen und Datenschutz sind die Bedingungen, an denen sich alles entscheidet.\n\n## Ausgewählte Zitate\n- „Wenn wir das verschlafen, sind wir für junge Betriebe nicht mehr interessant.“\n- „Aber jemand muss das prüfen.“\n- „Wenn da jemand ausfällt, steht der Verband.“",
+      "updatedAt": "2026-09-16T11:48:00.000Z",
+      "basedOn": "a3f19c20@2026-09-16T11:40:00.000Z#2,2,2,3|b7d204e1@2026-09-16T11:42:00.000Z#1,1,1,3|c52e9f8a@2026-09-16T11:44:00.000Z#3,3,2,4",
+      "count": 3,
+      "protocolText": "## Gesamtbild der Haltungen\n- 1 von 3 skeptisch, 1 von 3 abwartend, 1 von 3 neugierig\n- Mittelwert Ø 2,0 von 4, Streuung σ 0,82: Die Gruppe ist gemischt.\n\n## Häufigste Begriffe\n- Datenschutz (3 von 3)\n- ChatGPT und Automatisierung (je 2 von 3)\n- Einzelnennungen: Texte schreiben, Fehler, Zeitersparnis, Kontrollverlust, Kosten, Assistenz, Wissensdatenbank\n\n## KI-Kompetenz in der Gruppe\n- Ø 2,0 von 4, von Einsteiger bis Fortgeschritten: gemischt\n\n## Relevanz heute vs. morgen\n- Heute Ø 1,7, morgen Ø 3,3 – die Gruppe ist sich in beiden Einschätzungen einig\n- Lücke +1,7 Stufen: ein deutlicher Sprung\n\n## Gemeinsame Einsatzgebiete\n- Mitgliederanfragen beantworten (2 von 3)\n- Protokolle schreiben (2 von 3)\n- Normen recherchieren (2 von 3)\n\n## Top-Herausforderungen (nach Häufigkeit gerankt)\n1. Belastung und Wissen der Geschäftsstelle (2 von 3)\n2. Nachwuchs und junge Betriebe gewinnen (2 von 3)\n3. Vertrauen der Mitglieder und Kosten (1 von 3)\n\n## Unterschiede und Spannungen\n- Ein Interview verbindet KI mit dem Risiko eines erneuten Vertrauensverlusts, ein anderes mit Zeitersparnis aus eigener Praxis.\n- Einigkeit besteht darin, dass KI-Ergebnisse geprüft werden müssen.\n\n## Drei Kernaussagen als Diskussionsimpuls\n1. Die Relevanz von KI wird für morgen deutlich höher eingeschätzt als für heute.\n2. Der größte Nutzen wird bei wiederkehrender Schreib- und Recherchearbeit gesehen.\n3. Vertrauen und Datenschutz sind die Bedingungen, an denen sich alles entscheidet.\n\n## Ausgewählte Zitate\n- „Wenn wir das verschlafen, sind wir für junge Betriebe nicht mehr interessant.“\n- „Aber jemand muss das prüfen.“\n- „Wenn da jemand ausfällt, steht der Verband.“"
+    }
+  },
+  "interviews": [
+    {
+      "id": "a3f19c20",
+      "pseudonym": "Interview 1",
+      "source": "recorded",
+      "createdAt": "2026-09-16T10:58:00.000Z",
+      "consentAt": "2026-09-16T10:57:40.000Z",
+      "fileName": "interview-a3f19c20.webm",
+      "mimeType": "audio/webm",
+      "size": 2854112,
+      "durationSec": 287,
+      "markers": [
+        {
+          "question": 0,
+          "atSec": 0
+        },
+        {
+          "question": 1,
+          "atSec": 31
+        },
+        {
+          "question": 2,
+          "atSec": 64
+        },
+        {
+          "question": 3,
+          "atSec": 98
+        },
+        {
+          "question": 4,
+          "atSec": 151
+        },
+        {
+          "question": 5,
+          "atSec": 205
+        }
+      ],
+      "transcript": "Wie stehst du grundsätzlich zum Thema KI? Also ich bin da eher abwartend. Ich sehe schon, dass das kommt, aber ich will erst sehen, dass es bei uns im Verband wirklich was bringt. Welche fünf Begriffe fallen dir spontan zu KI ein? ChatGPT natürlich, Texte schreiben, Datenschutz, Fehler, weil die ja manchmal Unsinn erzählt, und Zeitersparnis. Wie schätzt du deine eigene KI-Kompetenz ein? Grundkenntnisse. Ich hab es privat mal ausprobiert, für einen Brief, mehr nicht. Wie relevant ist KI für den Verband heute und wie relevant wird sie morgen sein? Heute mittel, würde ich sagen, eigentlich nutzt es ja keiner richtig. Morgen hoch. Wenn wir das verschlafen, sind wir für junge Betriebe nicht mehr interessant. Wo siehst du konkrete Einsatzgebiete für KI? Mitgliederanfragen beantworten, die immer gleichen Fragen zu den Merkblättern. Protokolle schreiben. Und Normen recherchieren, das dauert bei uns ewig. Vor welchen Top-Herausforderungen steht der Verband in den nächsten drei bis fünf Jahren und wo könnte KI dabei helfen? Nachwuchs, ganz klar, uns fehlen die Bauwerksmechaniker. Und dass die Geschäftsstelle alles alleine stemmt. Da könnte KI helfen, die Routine abzunehmen. Beim Nachwuchs eher nicht, das ist eine Frage von Ausbildung und Image.",
+      "transcriptModel": "gpt-4o-transcribe",
+      "opinion": "## Haltung zu KI\n**abwartend** – sieht die Entwicklung kommen, will aber zuerst einen belegbaren Nutzen für den Verband sehen.\n\n## Fünf Begriffe\n- ChatGPT\n- Texte schreiben\n- Datenschutz\n- Fehler\n- Zeitersparnis\n\n## Selbsteinschätzung KI-Kompetenz\n**Grundkenntnisse** – private Nutzung für einen Brief.\n\n## Relevanz für den FBS heute / morgen\n- Heute: **mittel**, niemand nutzt es bisher richtig\n- Morgen: **hoch**, sonst verliert der Verband an Attraktivität für junge Betriebe\n\n## Konkrete Einsatzgebiete\n- Mitgliederanfragen beantworten (wiederkehrende Fragen zu Merkblättern)\n- Protokolle schreiben\n- Normen recherchieren\n\n## Top-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte\n- Nachwuchs (Bauwerksmechaniker) – hier sieht die befragte Person wenig Beitrag von KI\n- Geschäftsstelle stemmt alles allein – KI könnte Routine abnehmen\n\n## Markante Zitate\n- „ich will erst sehen, dass es bei uns im Verband wirklich was bringt.“\n- „Wenn wir das verschlafen, sind wir für junge Betriebe nicht mehr interessant.“\n\n## Kurzfazit\nAbwartend, aber offen: KI wird als Entlastung für Routinearbeit gesehen, sofern der Nutzen für den Verband nachgewiesen ist.",
+      "opinionAt": "2026-09-16T11:40:00.000Z",
+      "scales": {
+        "haltung": 2,
+        "kompetenz": 2,
+        "relevanzHeute": 2,
+        "relevanzMorgen": 3,
+        "begriffe": [
+          "chatgpt",
+          "texte schreiben",
+          "datenschutz",
+          "fehler",
+          "zeitersparnis"
+        ],
+        "einsatzgebiete": [
+          "Mitgliederanfragen beantworten",
+          "Protokolle schreiben",
+          "Normen recherchieren"
+        ]
+      }
+    },
+    {
+      "id": "b7d204e1",
+      "pseudonym": "Interview 2",
+      "source": "uploaded",
+      "createdAt": "2026-09-16T11:06:00.000Z",
+      "consentAt": "2026-09-16T11:05:30.000Z",
+      "fileName": "Aufnahme-Smartphone-0916.m4a",
+      "mimeType": "audio/mp4",
+      "size": 1987340,
+      "durationSec": 241,
+      "markers": [],
+      "transcript": "Wie stehst du grundsätzlich zum Thema KI? Ehrlich gesagt skeptisch. Wir haben mit Wilma viel Geld und Nerven gelassen und am Ende hat es keiner benutzt. Ich will nicht, dass wir das nächste Projekt anfangen, nur weil alle von KI reden. Welche fünf Begriffe fallen dir spontan zu KI ein? Datenschutz, Kontrollverlust, Automatisierung, Kosten. Mehr fällt mir nicht ein. Wie schätzt du deine eigene KI-Kompetenz ein? Einsteiger. Ich hab das noch nie benutzt. Wie relevant ist KI für den Verband heute und morgen? Heute gering. Morgen wahrscheinlich hoch, das muss ich zugeben, die Betriebe fangen ja auch damit an, bei den Angeboten zum Beispiel. Wo siehst du konkrete Einsatzgebiete? Vielleicht Protokolle schreiben. Rundschreiben entwerfen. Aber jemand muss das prüfen. Vor welchen Top-Herausforderungen steht der Verband? Dass die Mitglieder uns noch vertrauen. Nach Wilma sind viele skeptisch. Und die Kosten, der Beitrag darf nicht steigen. KI hilft beim Vertrauen gar nicht, eher im Gegenteil, wenn wir es falsch machen.",
+      "transcriptModel": "gpt-4o-transcribe",
+      "opinion": "## Haltung zu KI\n**skeptisch** – geprägt von der Erfahrung mit dem früheren Digitalisierungsprojekt; lehnt ein Projekt ab, das nur aus dem allgemeinen Trend entsteht.\n\n## Fünf Begriffe\n- Datenschutz\n- Kontrollverlust\n- Automatisierung\n- Kosten\n(vier Begriffe genannt)\n\n## Selbsteinschätzung KI-Kompetenz\n**Einsteiger** – bisher keine eigene Nutzung.\n\n## Relevanz für den FBS heute / morgen\n- Heute: **gering**\n- Morgen: **hoch**, weil Mitgliedsbetriebe bereits damit arbeiten\n\n## Konkrete Einsatzgebiete\n- Protokolle schreiben\n- Rundschreiben entwerfen\n- jeweils nur mit menschlicher Prüfung\n\n## Top-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte\n- Vertrauen der Mitglieder – KI hilft hier aus Sicht der befragten Person nicht, bei Fehlern eher im Gegenteil\n- Kosten, keine Beitragserhöhung\n\n## Markante Zitate\n- „Wir haben mit Wilma viel Geld und Nerven gelassen und am Ende hat es keiner benutzt.“\n- „Aber jemand muss das prüfen.“\n\n## Kurzfazit\nSkeptisch und kostenbewusst; akzeptiert KI allenfalls für Schreibarbeit mit Prüfung und warnt vor einem Vertrauensverlust bei den Mitgliedern.",
+      "opinionAt": "2026-09-16T11:42:00.000Z",
+      "scales": {
+        "haltung": 1,
+        "kompetenz": 1,
+        "relevanzHeute": 1,
+        "relevanzMorgen": 3,
+        "begriffe": [
+          "datenschutz",
+          "kontrollverlust",
+          "automatisierung",
+          "kosten"
+        ],
+        "einsatzgebiete": [
+          "Protokolle schreiben",
+          "Rundschreiben entwerfen"
+        ]
+      }
+    },
+    {
+      "id": "c52e9f8a",
+      "pseudonym": "Interview 3",
+      "source": "recorded",
+      "createdAt": "2026-09-16T11:14:00.000Z",
+      "consentAt": "2026-09-16T11:13:45.000Z",
+      "fileName": "interview-c52e9f8a.webm",
+      "mimeType": "audio/webm",
+      "size": 3120448,
+      "durationSec": 312,
+      "markers": [
+        {
+          "question": 0,
+          "atSec": 0
+        },
+        {
+          "question": 1,
+          "atSec": 27
+        },
+        {
+          "question": 2,
+          "atSec": 55
+        },
+        {
+          "question": 3,
+          "atSec": 90
+        },
+        {
+          "question": 4,
+          "atSec": 140
+        },
+        {
+          "question": 5,
+          "atSec": 214
+        }
+      ],
+      "transcript": "Wie stehst du grundsätzlich zum Thema KI? Neugierig, positiv neugierig. Ich nutze das im Betrieb schon für Angebotstexte und es spart mir wirklich Zeit. Welche fünf Begriffe fallen dir spontan zu KI ein? ChatGPT, Assistenz, Wissensdatenbank, Automatisierung und Datenschutz. Wie schätzt du deine eigene KI-Kompetenz ein? Fortgeschritten würde ich sagen, ich nutze es fast jeden Tag, aber ich bin kein Techniker. Wie relevant ist KI für den Verband heute und morgen? Heute mittel. Morgen sehr hoch. In fünf Jahren fragt keiner mehr, ob, sondern nur noch wie. Wo siehst du konkrete Einsatzgebiete? Mitgliederanfragen beantworten, Normen recherchieren, Newsletter erstellen und Schulungsunterlagen für die Seminare. Vor welchen Top-Herausforderungen steht der Verband? Das Wissen in der Geschäftsstelle. Wenn da jemand ausfällt, steht der Verband. Da könnte KI helfen, das Wissen festzuhalten und auffindbar zu machen. Und junge Unternehmer gewinnen, die wollen einen modernen Verband.",
+      "transcriptModel": "gpt-4o-transcribe",
+      "opinion": "## Haltung zu KI\n**neugierig** – nutzt KI bereits im eigenen Betrieb und erlebt eine Zeitersparnis.\n\n## Fünf Begriffe\n- ChatGPT\n- Assistenz\n- Wissensdatenbank\n- Automatisierung\n- Datenschutz\n\n## Selbsteinschätzung KI-Kompetenz\n**Fortgeschritten** – nahezu tägliche Nutzung, ohne technischen Hintergrund.\n\n## Relevanz für den FBS heute / morgen\n- Heute: **mittel**\n- Morgen: **sehr hoch**\n\n## Konkrete Einsatzgebiete\n- Mitgliederanfragen beantworten\n- Normen recherchieren\n- Newsletter erstellen\n- Schulungsunterlagen für Seminare\n\n## Top-Herausforderungen des FBS (3–5 Jahre) und wo KI helfen könnte\n- Wissen in der Geschäftsstelle ist gefährdet, wenn jemand ausfällt – KI könnte es festhalten und auffindbar machen\n- Junge Unternehmer gewinnen, die einen modernen Verband erwarten\n\n## Markante Zitate\n- „In fünf Jahren fragt keiner mehr, ob, sondern nur noch wie.“\n- „Wenn da jemand ausfällt, steht der Verband.“\n\n## Kurzfazit\nPositiv eingestellt und praxiserfahren; sieht den größten Hebel im Sichern des Wissens der Geschäftsstelle.",
+      "opinionAt": "2026-09-16T11:44:00.000Z",
+      "scales": {
+        "haltung": 3,
+        "kompetenz": 3,
+        "relevanzHeute": 2,
+        "relevanzMorgen": 4,
+        "begriffe": [
+          "chatgpt",
+          "assistenz",
+          "wissensdatenbank",
+          "automatisierung",
+          "datenschutz"
+        ],
+        "einsatzgebiete": [
+          "Mitgliederanfragen beantworten",
+          "Normen recherchieren",
+          "Newsletter erstellen",
+          "Schulungsunterlagen"
+        ]
+      }
+    }
+  ]
+}
