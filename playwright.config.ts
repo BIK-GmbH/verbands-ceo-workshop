@@ -6,7 +6,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : [["list"]],
-  // The dev server compiles 58 MDX slides plus shiki and mermaid on demand. Eight
+  // The dev server compiles every MDX slide plus shiki and mermaid on demand. Eight
   // workers hammering it at once starved the machine badly enough that even
   // browserContext.newPage() timed out, so the suite runs a few at a time.
   workers: 2,

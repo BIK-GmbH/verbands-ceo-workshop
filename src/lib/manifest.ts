@@ -77,6 +77,9 @@ export const MANIFEST: ModuleMeta[] = [
     title: { de: "Realitätscheck FBS", en: "Reality check FBS" },
     description: { de: "Tag 2 · 08:30–10:00", en: "Day 2 · 08:30–10:00" },
     slides: [
+      // Lead-in of day 2, before the phase overview: slide number 0 keeps every
+      // captured field id of module 4 (04.01 ff.) unchanged.
+      { id: "04.00", module: 4, slide: 0, title: { de: "Rückblick Tag 1: Wo wir stehen", en: "Looking back at day 1: where we stand" } },
       { id: "04.01", module: 4, slide: 1, title: { de: "Phase 4: Warum sollte es diesmal funktionieren?", en: "Phase 4: Why should it work this time?" } },
       { id: "04.02", module: 4, slide: 2, title: { de: "Eigene Erfahrungen: Was lernen wir?", en: "Our own experience: what do we learn?" } },
       { id: "04.03", module: 4, slide: 3, title: { de: "Prüfrahmen: technisch · organisatorisch · Mitglieder", en: "Test frame: technical · organisational · members" } },

@@ -11,7 +11,7 @@ export interface SlideMeta {
   id: string;
   /** Module index (0..6, 99 for appendix) */
   module: number;
-  /** Slide index within module (1-based) */
+  /** Slide index within module (1-based; 0 marks a lead-in before the phase overview, e.g. 04.00) */
   slide: number;
   /** Title in both languages */
   title: Bilingual;

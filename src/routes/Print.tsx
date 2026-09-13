@@ -25,6 +25,7 @@ import {
   AiSuggest,
   WhyLadder,
   InterviewGroupPicture,
+  DayRecap,
   PrintHint, PrintHintIcon,
 } from "@/components/slide-blocks";
 import { AudioRecorder } from "@/components/AudioRecorder";
@@ -50,6 +51,8 @@ const printMdxComponents = {
   WhyLadder: (props: ComponentProps<typeof WhyLadder>) => <WhyLadder {...props} readOnly />,
   // The group picture prints its values as plain lines, never the interview controls.
   InterviewGroupPicture: (props: ComponentProps<typeof InterviewGroupPicture>) => <InterviewGroupPicture {...props} readOnly />,
+  // The day 1 recap prints its content without the AI button.
+  DayRecap: (props: ComponentProps<typeof DayRecap>) => <DayRecap {...props} readOnly />,
 } as Record<string, ComponentType<unknown>>;
 
 /** Linear print view — all slides, no chrome, used by browser print + Playwright PDF export. */

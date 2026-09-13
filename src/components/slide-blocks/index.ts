@@ -18,3 +18,4 @@ export { PosterPreview, PosterPreviewPrint } from "./PosterPreview";
 export { AiSuggest } from "./AiSuggest";
 export { InterviewGroupPicture } from "./InterviewGroupPicture";
 export { WhyLadder } from "./WhyLadder";
+export { DayRecap } from "./DayRecap";

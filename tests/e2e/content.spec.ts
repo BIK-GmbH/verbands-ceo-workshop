@@ -13,7 +13,7 @@ import {
 
 test.describe("Deck coverage", () => {
   test("every slide renders a heading and raises no errors", async ({ page }) => {
-    // 58 slides, each compiled by the dev server the first time it is requested.
+    // Every slide is compiled by the dev server the first time it is requested.
     test.setTimeout(300_000);
     const errors = collectPageErrors(page);
     const broken: string[] = [];

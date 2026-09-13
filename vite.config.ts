@@ -52,6 +52,9 @@ export default defineConfig({
       ],
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,webp,ico,woff2}"],
+        // All slides are compiled into the main chunk, which has grown past Workbox's
+        // 2 MiB default. It must stay precached, or the deck is not available offline.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
