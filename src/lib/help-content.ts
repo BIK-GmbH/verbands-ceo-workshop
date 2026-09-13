@@ -44,7 +44,9 @@ const POSTERS: HelpLink = { label: { de: "Poster-Galerie", en: "Poster gallery" 
 const INTERVIEWS: HelpLink = { label: { de: "Interviews", en: "Interviews" }, to: "/interviews" };
 const SETTINGS: HelpLink = { label: { de: "Einstellungen", en: "Settings" }, to: "/einstellungen" };
 const CARDS_SLIDE: HelpLink = { label: { de: "Folie 01.03 · Karten", en: "Slide 01.03 · cards" }, to: "/s/01.03" };
-const GLOSSARY: HelpLink = { label: { de: "Glossar (99.01)", en: "Glossary (99.01)" }, to: "/s/99.01" };
+const SYSTEM_CHECK: HelpLink = { label: { de: "Technik-Check", en: "Tech check" }, to: "/systemcheck" };
+const RECAP_SLIDE: HelpLink = { label: { de: "Folie 04.00 · Rückblick", en: "Slide 04.00 · recap" }, to: "/s/04.00" };
+const GLOSSARY: HelpLink ={ label: { de: "Glossar (99.01)", en: "Glossary (99.01)" }, to: "/s/99.01" };
 
 export const HELP_SECTIONS: HelpSection[] = [
   {
@@ -187,13 +189,33 @@ export const HELP_SECTIONS: HelpSection[] = [
       },
       {
         id: "sicherung",
-        title: { de: "Sicherung des gesamten Stands", en: "Backup of the whole state" },
+        title: { de: "Sicherung, die von selbst läuft", en: "Backups that run on their own" },
         body: {
-          de: "Beiträge, Interviews, Poster, Glossar und Bericht gehen in eine Datei und lassen sich auf jedem Gerät wieder einlesen.",
-          en: "Contributions, interviews, posters, glossary and report go into one file and can be read back in on any device.",
+          de: "Alle 15 Minuten legt die App einen Zwischenstand an, sobald sich etwas geändert hat, und immer vor dem Zurücksetzen oder Einlesen. Mit einem einmal gewählten Sicherungsordner landet jeder Stand zusätzlich als Datei auf der Festplatte.",
+          en: "Every 15 minutes the app takes a snapshot once something has changed, and always before a reset or restore. With a backup folder chosen once, every snapshot is also written to disk as a file.",
         },
         links: [SETTINGS],
-        keywords: { de: "backup wiederherstellen datei umziehen", en: "backup restore file move" },
+        keywords: { de: "backup zwischenstand wiederherstellen datei ordner automatisch", en: "backup snapshot restore file folder automatic" },
+      },
+      {
+        id: "rueckblick",
+        title: { de: "Rückblick zum Start von Tag 2", en: "Recap at the start of day 2" },
+        body: {
+          de: "Folie 04.00 zeigt live aus dem Protokoll, was wir an Tag 1 erarbeitet haben: Poster-Ergebnisse, Stimmung zu Beginn und offene Fragen. Auf Wunsch fasst die KI das in fünf Sätzen zusammen.",
+          en: "Slide 04.00 shows live from the record what we worked out on day 1: poster results, the mood at the start and open questions. On request the AI sums it up in five sentences.",
+        },
+        links: [RECAP_SLIDE],
+        keywords: { de: "tag 2 zusammenfassung gestern rückblick", en: "day 2 summary yesterday recap" },
+      },
+      {
+        id: "technik-check",
+        title: { de: "Technik-Check vor Beginn", en: "Tech check before the start" },
+        body: {
+          de: "Prüft in etwa einer Minute Internet, KI-Schlüssel, Mikrofon, Diktat, Aufnahme, Speicher, Offline-Betrieb und Beamer. Jede Zeile sagt, was zu tun ist.",
+          en: "Checks internet, AI keys, microphone, dictation, recording, storage, offline mode and projector in about a minute. Each row says what to do.",
+        },
+        links: [SYSTEM_CHECK],
+        keywords: { de: "systemcheck generalprobe test mikrofon internet hotspot", en: "system check rehearsal test microphone internet hotspot" },
       },
       {
         id: "aufnahme",
@@ -296,11 +318,21 @@ export const HELP_SECTIONS: HelpSection[] = [
         id: "task-sicherung",
         title: { de: "Den Stand sichern", en: "Back up the state" },
         body: {
-          de: "In den Einstellungen „Sicherung herunterladen“ – am besten am Ende jedes Tages. Dieselbe Datei lässt sich dort wieder einlesen; sie ersetzt den Stand des Geräts vollständig.",
-          en: "In the settings use “Download backup” – best at the end of each day. The same file can be read back in there; it replaces the state of the device completely.",
+          de: "Gesichert wird automatisch. Einmal unter Einstellungen → „Automatische Sicherung“ den Sicherungsordner wählen; nach einem Browser-Neustart unten links „Sicherungsordner wieder freigeben“ anklicken. Dort lässt sich auch jeder Zwischenstand wiederherstellen – der aktuelle Stand wird davor gesichert. Am Tagesende erinnert die App an eine Sicherung mit Aufnahmen.",
+          en: "Backups run automatically. Choose the backup folder once under Settings → “Automatic backup”; after a browser restart click “Re-allow backup folder” in the bottom left. Any snapshot can be restored there as well – the current state is saved first. At the end of each day the app reminds you to download a backup with recordings.",
         },
         links: [SETTINGS],
-        keywords: { de: "backup wiederherstellen zurücksetzen datei", en: "backup restore reset file" },
+        keywords: { de: "backup wiederherstellen zurücksetzen datei ordner zwischenstand", en: "backup restore reset file folder snapshot" },
+      },
+      {
+        id: "task-technik",
+        title: { de: "Vor Beginn die Technik prüfen", en: "Check the technology before starting" },
+        body: {
+          de: "Den Technik-Check auf dem Laptop am Beamer und im WLAN vor Ort durchlaufen lassen. Bei Mikrofon und Diktat-Probe einen Satz sprechen: Nur wenn er als Text erscheint, geht das Diktat sicher. „Ergebnis kopieren“ liefert einen Text für eine Nachricht.",
+          en: "Run the tech check on the laptop at the projector and on the venue's Wi-Fi. Say a sentence during the microphone and dictation tests: dictation is only safe if it appears as text. “Copy result” gives a text for a message.",
+        },
+        links: [SYSTEM_CHECK],
+        keywords: { de: "systemcheck generalprobe hotspot beamer", en: "system check rehearsal hotspot projector" },
       },
       {
         id: "task-ki",
@@ -451,8 +483,8 @@ export const HELP_SECTIONS: HelpSection[] = [
         id: "note-storage",
         title: { de: "Alles liegt in diesem Browser", en: "Everything lives in this browser" },
         body: {
-          de: "Beiträge, Interviews, Poster und Glossar bleiben auf diesem Gerät – auch wenn Tab und Browser geschlossen werden und über Updates der App hinweg. Verloren gehen sie beim Löschen der Browserdaten, im privaten Fenster und beim Wechsel des Geräts. Deshalb am Ende jedes Tages eine Sicherung herunterladen.",
-          en: "Contributions, interviews, posters and glossary stay on this device – also when tab and browser are closed and across app updates. They are lost when the browser data is cleared, in a private window and when the device changes. So download a backup at the end of each day.",
+          de: "Beiträge, Interviews, Poster und Glossar bleiben auf diesem Gerät – auch wenn Tab und Browser geschlossen werden und über Updates der App hinweg. Verloren gehen sie beim Löschen der Browserdaten, im privaten Fenster und beim Wechsel des Geräts – die Zwischenstände im Browser gleich mit. Deshalb einen Sicherungsordner wählen und am Ende jedes Tages zusätzlich eine Sicherung mit Aufnahmen herunterladen.",
+          en: "Contributions, interviews, posters and glossary stay on this device – also when tab and browser are closed and across app updates. They are lost when the browser data is cleared, in a private window and when the device changes – and the in-browser snapshots with them. So choose a backup folder and also download a backup with recordings at the end of each day.",
         },
         links: [SETTINGS],
         keywords: { de: "speicher localstorage datenverlust sicherung", en: "storage localstorage data loss backup" },

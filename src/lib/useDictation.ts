@@ -24,7 +24,7 @@ interface SpeechRecognitionLike {
   stop(): void;
   onresult: ((e: SpeechRecognitionEventLike) => void) | null;
   onend: (() => void) | null;
-  onerror: (() => void) | null;
+  onerror: ((e: { error?: string }) => void) | null;
 }
 type SpeechRecognitionCtor = new () => SpeechRecognitionLike;
 
@@ -37,12 +37,19 @@ function getCtor(): SpeechRecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
+/** Whether this browser offers speech recognition at all (not whether it works). */
+export function isDictationSupported(): boolean {
+  return getCtor() !== null;
+}
+
 export function useDictation(
   onText: (chunk: string) => void,
   lang = "de-DE",
 ) {
   const [supported] = useState(() => getCtor() !== null);
   const [listening, setListening] = useState(false);
+  /** Error code of the last run ("network", "not-allowed", …), reset on start. */
+  const [error, setError] = useState<string | null>(null);
   const recRef = useRef<SpeechRecognitionLike | null>(null);
   const onTextRef = useRef(onText);
   onTextRef.current = onText;
@@ -79,11 +86,13 @@ export function useDictation(
       setListening(false);
       releaseMic();
     };
-    rec.onerror = () => {
+    rec.onerror = (e) => {
+      setError(e.error ?? "unknown");
       setListening(false);
       releaseMic();
     };
     recRef.current = rec;
+    setError(null);
     try {
       rec.start();
     } catch {
@@ -107,5 +116,5 @@ export function useDictation(
     [releaseMic],
   );
 
-  return { supported, listening, toggle, start, stop };
+  return { supported, listening, error, toggle, start, stop };
 }

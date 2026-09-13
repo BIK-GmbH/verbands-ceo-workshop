@@ -167,6 +167,11 @@ export function getInterview(id: string): Interview | undefined {
   return snapshot.interviews.find((i) => i.id === id);
 }
 
+/** Every stored record straight from the database, audio included — independent of any subscriber. */
+export async function getAllInterviews(): Promise<Interview[]> {
+  return (await tx<Interview[]>("readonly", (s) => s.getAll() as IDBRequest<Interview[]>)) ?? [];
+}
+
 // ---------------------------------------------------------------------------
 // Writes
 

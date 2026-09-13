@@ -23,8 +23,10 @@ import {
   INTERVIEW_EXPORT_VERSION,
   clearAllInterviews,
   exportInterviewFile,
+  getAllInterviews,
   importInterviewFile,
   setGroupOpinion,
+  updateInterview,
   type ExportedInterview,
   type GroupOpinion,
 } from "./interview-store";
@@ -65,6 +67,34 @@ export interface BackupSummary {
   glossaryTerms: number;
   withAudio: boolean;
   hasReport: boolean;
+}
+
+/** Everything a summary counts, so a live count and a file summary read the same. */
+export interface BackupCounts {
+  entries: number;
+  interviews: number;
+  posterFields: number;
+  glossaryTerms: number;
+}
+
+/** „3 Beiträge · 1 Interview · …" — one wording for every place that describes a backup. */
+export function formatBackupCounts(c: BackupCounts, lang: Lang): string {
+  const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+  return (
+    lang === "de"
+      ? [
+          plural(c.entries, "Beitrag", "Beiträge"),
+          plural(c.interviews, "Interview", "Interviews"),
+          plural(c.posterFields, "Posterfeld", "Posterfelder"),
+          plural(c.glossaryTerms, "Glossarbegriff", "Glossarbegriffe"),
+        ]
+      : [
+          plural(c.entries, "contribution", "contributions"),
+          plural(c.interviews, "interview", "interviews"),
+          plural(c.posterFields, "poster field", "poster fields"),
+          plural(c.glossaryTerms, "glossary term", "glossary terms"),
+        ]
+  ).join(" · ");
 }
 
 /* ------------------------------------------------------------------ errors */
@@ -253,8 +283,14 @@ function coerceGroupOpinion(raw: unknown): GroupOpinion | null {
  * Replaces the content of this device with the file — replace, not merge, so
  * the device ends up exactly as the backup describes. Writes through the
  * stores' own setters, so every open panel re-renders without a reload.
+ *
+ * `keepAudio` (default on): most backups travel without recordings. An
+ * interview that is in the file without audio but still has its recording on
+ * this device keeps that recording — otherwise restoring a light backup would
+ * silently delete every interview recording. Interviews that are not in the
+ * file are removed as before.
  */
-export async function applyBackup(file: unknown): Promise<BackupSummary> {
+export async function applyBackup(file: unknown, { keepAudio = true }: { keepAudio?: boolean } = {}): Promise<BackupSummary> {
   const backup = validate(file);
   const { workshop, glossary, poster, report, interviewsGroup } = backup.stores;
 
@@ -274,14 +310,19 @@ export async function applyBackup(file: unknown): Promise<BackupSummary> {
   }
 
   try {
+    const recordings = keepAudio ? await recordingsToKeep(backup.interviews) : new Map<string, Blob>();
     await clearAllInterviews();
     if (backup.interviews.length) {
-      await importInterviewFile({
+      const { added } = await importInterviewFile({
         format: INTERVIEW_EXPORT_FORMAT,
         version: INTERVIEW_EXPORT_VERSION,
         exportedAt: backup.createdAt,
         interviews: backup.interviews,
       });
+      for (const iv of added) {
+        const audio = recordings.get(iv.id);
+        if (audio && !iv.audio) await updateInterview(iv.id, { audio });
+      }
     }
   } catch (err) {
     console.error("[backup] restoring the interviews failed", err);
@@ -290,6 +331,21 @@ export async function applyBackup(file: unknown): Promise<BackupSummary> {
   }
 
   return summarize(backup);
+}
+
+/** Recordings on this device for interviews the file carries without audio. */
+async function recordingsToKeep(incoming: ExportedInterview[]): Promise<Map<string, Blob>> {
+  const withoutAudio = new Set(incoming.filter((iv) => iv && !iv.audio).map((iv) => iv.id));
+  const keep = new Map<string, Blob>();
+  if (!withoutAudio.size) return keep;
+  try {
+    for (const iv of await getAllInterviews()) {
+      if (iv.audio && withoutAudio.has(iv.id)) keep.set(iv.id, iv.audio);
+    }
+  } catch (err) {
+    console.error("[backup] could not read the current recordings to keep them", err);
+  }
+  return keep;
 }
 
 /* ------------------------------------------------------------------- reset */

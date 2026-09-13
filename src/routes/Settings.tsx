@@ -1,23 +1,26 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AlertTriangle, ArrowLeft, Check, FileDown, FileUp, Home, Info, Loader2, Trash2 } from "lucide-react";
+import { Activity, AlertTriangle, ArrowLeft, ArrowRight, Check, FileDown, FileUp, Home, Info, Loader2, Trash2 } from "lucide-react";
 import type { Lang } from "@/types/slide";
 import { useLang } from "@/lib/i18n";
 import { lastSlidePath } from "@/lib/last-slide";
 import { InterviewSetup } from "@/components/interviews/InterviewSetup";
 import { ApiKeyStatus } from "@/components/ApiKeyStatus";
+import { AutoBackupSection } from "@/components/AutoBackupSection";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { BTN, ERROR_COLOR, Notice, card, formatBytes, formatDate, muted, outline } from "@/components/interviews/ui";
 import {
   applyBackup,
   describeBackupError,
   downloadBackup,
+  formatBackupCounts,
   parseBackup,
   resetContents,
   type BackupFile,
   type BackupSummary,
   summarize,
 } from "@/lib/backup";
+import { safeguardBefore } from "@/lib/auto-backup";
 import { useGlossary } from "@/lib/glossary";
 import { useInterviews } from "@/lib/interview-store";
 import { usePosterDrafts } from "@/lib/poster-store";
@@ -73,23 +76,22 @@ function BackupSection({ lang }: { lang: Lang }) {
     setError("");
   };
 
-  const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+  const countLine = (c: Counts) => formatBackupCounts(c, lang);
 
-  const countLine = (c: Counts) =>
-    (de
-      ? [
-          plural(c.entries, "Beitrag", "Beiträge"),
-          plural(c.interviews, "Interview", "Interviews"),
-          plural(c.posterFields, "Posterfeld", "Posterfelder"),
-          plural(c.glossaryTerms, "Glossarbegriff", "Glossarbegriffe"),
-        ]
-      : [
-          plural(c.entries, "contribution", "contributions"),
-          plural(c.interviews, "interview", "interviews"),
-          plural(c.posterFields, "poster field", "poster fields"),
-          plural(c.glossaryTerms, "glossary term", "glossary terms"),
-        ]
-    ).join(" · ");
+  /** The automatic safety snapshot must exist before anything is replaced or deleted. */
+  async function safeguard(reason: "before-reset" | "before-restore"): Promise<"taken" | "empty" | false> {
+    try {
+      return (await safeguardBefore(reason)) ? "taken" : "empty";
+    } catch (err) {
+      console.error("[settings] safety snapshot failed, nothing was changed", { reason, err });
+      setError(
+        de
+          ? "Es wurde nichts verändert: Vorher ließ sich kein automatischer Zwischenstand anlegen (Browser-Speicher voll?). Bitte oben alte Zwischenstände löschen und erneut versuchen."
+          : "Nothing was changed: no automatic snapshot could be taken first (browser storage full?). Please delete old snapshots above and try again.",
+      );
+      return false;
+    }
+  }
 
   async function doDownload() {
     clearNotices();
@@ -138,12 +140,13 @@ function BackupSection({ lang }: { lang: Lang }) {
     clearNotices();
     setBusy("apply");
     try {
+      if (!(await safeguard("before-restore"))) return;
       const s = await applyBackup(preview.file);
       setPreview(null);
       setDone(
         de
-          ? `Sicherung eingelesen: ${countLine(s)}. Der bisherige Stand wurde ersetzt.`
-          : `Backup restored: ${countLine(s)}. The previous state was replaced.`,
+          ? `Sicherung eingelesen: ${countLine(s)}. Der bisherige Stand wurde ersetzt und liegt als Zwischenstand bereit.`
+          : `Backup restored: ${countLine(s)}. The previous state was replaced and is kept as a snapshot.`,
       );
     } catch (err) {
       console.error("[settings] applying the backup failed", err);
@@ -159,12 +162,18 @@ function BackupSection({ lang }: { lang: Lang }) {
     try {
       // A failing backup must abort the reset — never delete without the file.
       const saved = backupFirst ? await downloadBackup({ includeAudio }) : null;
+      const safety = await safeguard("before-reset");
+      if (!safety) return;
       await resetContents({ alsoKeys });
       setConfirmReset(false);
       setDone(
         [
           de ? "Alle Inhalte wurden zurückgesetzt." : "All content has been reset.",
           saved && (de ? `Vorher gesichert als ${saved.fileName}.` : `Saved as ${saved.fileName} beforehand.`),
+          safety === "taken" &&
+            (de
+              ? "Der vorherige Stand liegt außerdem unter „Automatische Sicherung“ als Zwischenstand bereit."
+              : "The previous state is also kept as a snapshot under “Automatic backup”."),
           alsoKeys &&
             (de
               ? "API-Schlüssel und Anmeldung sind entfernt — beim nächsten Laden fragt die Anmeldung wieder."
@@ -515,6 +524,24 @@ export function Settings() {
           </p>
         </div>
 
+        <Link
+          to="/systemcheck"
+          data-testid="settings-systemcheck"
+          className="flex items-center gap-3 rounded-lg p-4 transition-colors hover:bg-[color-mix(in_oklch,var(--fg)_5%,transparent)]"
+          style={{ ...card, color: "var(--fg)" }}
+        >
+          <Activity size={20} style={{ color: "var(--workshop-accent)" }} aria-hidden />
+          <span className="flex-1 min-w-0">
+            <span className="block font-semibold">{de ? "Technik-Check" : "Tech check"}</span>
+            <span className="block text-sm" style={{ color: "var(--fg-muted)" }}>
+              {de
+                ? "Vor Beginn auf dem Laptop am Beamer: Internet, Schlüssel, Mikrofon, Diktat, Aufnahme, Speicher und Offline-Betrieb in etwa einer Minute prüfen."
+                : "Before the start on the laptop at the projector: check internet, keys, microphone, dictation, recording, storage and offline mode in about a minute."}
+            </span>
+          </span>
+          <ArrowRight size={16} style={{ color: "var(--fg-muted)" }} aria-hidden />
+        </Link>
+
         {/* Status first: whether a key is stored, and on request whether it really works. */}
         <section className="space-y-2">
           <ApiKeyStatus provider="anthropic" lang={lang} />
@@ -522,6 +549,8 @@ export function Settings() {
         </section>
 
         <InterviewSetup lang={lang} />
+
+        <AutoBackupSection lang={lang} />
 
         <BackupSection lang={lang} />
 
