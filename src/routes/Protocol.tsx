@@ -37,10 +37,13 @@ export function Protocol() {
         `${e.prompt} ${Array.isArray(e.value) ? e.value.join(" ") : e.value}`.toLowerCase().includes(needle),
       )
     : entries;
+  // The store hands the entries over in deck order (compareEntries, field-order.ts),
+  // so a module's first appearance is its position in the deck.
   const byModule = shown.reduce<Record<number, typeof shown>>((acc, e) => {
     (acc[e.module] ??= []).push(e);
     return acc;
   }, {});
+  const moduleOrder = [...new Set(shown.map((e) => e.module))];
 
   return (
     <div style={{ background: "var(--bg)", color: "var(--fg)", minHeight: "100svh" }}>
@@ -206,10 +209,7 @@ export function Protocol() {
               : "No input yet. The 'work it out' slides in each module fill this record."}
           </div>
         ) : (
-          Object.keys(byModule)
-            .map(Number)
-            .sort((a, b) => a - b)
-            .map((mod) => {
+          moduleOrder.map((mod) => {
               const m = findModule(mod);
               return (
                 <section key={mod} className="mb-7">

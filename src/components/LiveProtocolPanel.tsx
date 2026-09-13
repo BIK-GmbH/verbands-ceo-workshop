@@ -381,11 +381,14 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
         `${e.prompt} ${Array.isArray(e.value) ? e.value.join(" ") : e.value}`.toLowerCase().includes(needle),
       )
     : filled;
+  // The store hands the entries over in deck order (compareEntries, field-order.ts),
+  // so a module's first appearance is its position in the deck.
   const byModule = shown.reduce<Record<number, typeof shown>>((acc, e) => {
     (acc[e.module] ??= []).push(e);
     return acc;
   }, {});
-  const modulesWithInput = Object.keys(byModule).length;
+  const moduleOrder = [...new Set(shown.map((e) => e.module))];
+  const modulesWithInput = moduleOrder.length;
   const totalModules = MANIFEST.length;
   const pct = totalModules ? Math.round((modulesWithInput / totalModules) * 100) : 0;
   const stamp = new Date().toISOString().slice(0, 10);
@@ -673,10 +676,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
               </p>
             ) : (
               <div className="space-y-4">
-                {Object.keys(byModule)
-                  .map(Number)
-                  .sort((a, b) => a - b)
-                  .map((mod) => {
+                {moduleOrder.map((mod) => {
                     const m = findModule(mod);
                     return (
                       <div key={mod}>

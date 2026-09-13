@@ -11,6 +11,7 @@
  */
 
 import { formatCardLine } from "./cards";
+import { compareEntries } from "./field-order";
 
 export type CaptureKind = "text" | "decision" | "vote" | "checklist";
 
@@ -221,7 +222,8 @@ export function getAllEntries(): CaptureEntry[] {
   const state = read();
   if (state === entriesCacheFor) return entriesCache;
   entriesCacheFor = state;
-  entriesCache = Object.values(state.entries).sort((a, b) => a.id.localeCompare(b.id));
+  // Deck order, not id order: the field name must not decide the sequence.
+  entriesCache = Object.values(state.entries).sort(compareEntries);
   return entriesCache;
 }
 
@@ -299,7 +301,7 @@ function valueToText(v: CaptureEntry["value"]): string {
 /** Structured Markdown protocol — input for the /konzept-neu regeneration skill. */
 export function exportMarkdown(): string {
   const { meta, entries } = read();
-  const list = Object.values(entries).sort((a, b) => a.id.localeCompare(b.id));
+  const list = Object.values(entries).sort(compareEntries);
   const lines: string[] = [];
   lines.push(`# Workshop-Protokoll — ${meta.title}`, "");
   const people = filledParticipants(meta.participantsList);

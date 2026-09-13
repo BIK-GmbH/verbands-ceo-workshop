@@ -12,6 +12,7 @@ import { completeText } from "./ai-assist";
 import { MANIFEST, findModule, findSlide } from "./slides";
 import { getState, filledParticipants, type CaptureEntry, type CaptureKind } from "./workshop-store";
 import { hasValue, isAdHoc } from "./protocol-export";
+import { compareEntries } from "./field-order";
 import { formatCardLine } from "./cards";
 
 /* ------------------------------------------------------------------ prompt */
@@ -125,7 +126,7 @@ export interface ReportRequest {
 /** Builds the Claude request from the current store: all modules in manifest order, entries grouped per module. */
 export function buildReportRequest(lang: Lang, hints: string): ReportRequest {
   const { meta, entries } = getState();
-  const list = reportEntries(Object.values(entries)).sort((a, b) => a.id.localeCompare(b.id));
+  const list = reportEntries(Object.values(entries)).sort(compareEntries);
   const people = filledParticipants(meta.participantsList).length;
 
   const byModule = new Map<number, CaptureEntry[]>();

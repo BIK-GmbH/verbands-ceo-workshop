@@ -9,6 +9,7 @@
 import type { Lang } from "@/types/slide";
 import { getState, filledParticipants, type CaptureEntry } from "./workshop-store";
 import { MANIFEST, findModule, findSlide } from "./slides";
+import { compareEntries } from "./field-order";
 import { formatCardLine } from "./cards";
 import glossaryMdx from "@/content/99-01-glossar.mdx?raw";
 
@@ -606,7 +607,7 @@ export function buildProtocolModel(lang: Lang): ExportDoc {
   const { meta, entries } = getState();
   const list = Object.values(entries)
     .filter((e) => e.id !== WORKSHOP_GLOSSARY_ID && (hasValue(e) || isAdHoc(e)))
-    .sort((a, b) => a.id.localeCompare(b.id));
+    .sort(compareEntries);
   const glossaryEntry = entries[WORKSHOP_GLOSSARY_ID];
   const total = list.length + (glossaryEntry && hasValue(glossaryEntry) ? 1 : 0);
 
