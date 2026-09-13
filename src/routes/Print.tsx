@@ -1,5 +1,6 @@
 import { ALL_SLIDES, getSlideComponent } from "@/lib/slides";
 import { pick, useLang, t, formatAsOf } from "@/lib/i18n";
+import { useFixedFontScale } from "@/lib/font-scale";
 import { MDXProvider } from "@mdx-js/react";
 import {
   I18n,
@@ -23,6 +24,7 @@ import {
   PosterPreviewPrint,
   AiSuggest,
   WhyLadder,
+  InterviewGroupPicture,
   PrintHint, PrintHintIcon,
 } from "@/components/slide-blocks";
 import { AudioRecorder } from "@/components/AudioRecorder";
@@ -46,11 +48,15 @@ const printMdxComponents = {
   PosterPreview: PosterPreviewPrint,
   AiSuggest: (props: ComponentProps<typeof AiSuggest>) => <AiSuggest {...props} readOnly />,
   WhyLadder: (props: ComponentProps<typeof WhyLadder>) => <WhyLadder {...props} readOnly />,
+  // The group picture prints its values as plain lines, never the interview controls.
+  InterviewGroupPicture: (props: ComponentProps<typeof InterviewGroupPicture>) => <InterviewGroupPicture {...props} readOnly />,
 } as Record<string, ComponentType<unknown>>;
 
 /** Linear print view — all slides, no chrome, used by browser print + Playwright PDF export. */
 export function Print() {
   const [lang] = useLang();
+  // Paper layout: the print view always renders at the normal font-size step.
+  useFixedFontScale();
   return (
     <div className="bg-white text-black">
       {ALL_SLIDES.map((s) => {

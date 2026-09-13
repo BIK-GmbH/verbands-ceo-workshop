@@ -8,6 +8,15 @@ import { completeText } from "@/lib/ai-assist";
 import { getEntry, removeEntry, setEntry } from "@/lib/workshop-store";
 import type { Interview } from "@/lib/interview-store";
 import { parseOpinion, parseScalesOnly, type InterviewScales, type ParsedOpinion } from "@/lib/interview-metrics";
+import {
+  GROUP_MODULE,
+  GROUP_SLIDE_ID,
+  METRICS_FIELD,
+  METRICS_PROMPT,
+  OPINION_FIELD,
+  OPINION_PROMPT,
+  groupEntryId,
+} from "@/lib/interview-group";
 
 export const INTERVIEW_QUESTIONS: Bilingual[] = [
   { de: "Wie stehst du grundsätzlich zum Thema KI?", en: "What is your basic attitude towards AI?" },
@@ -161,9 +170,9 @@ export function summarizeGroup(opinions: string[], metrics: string): Promise<str
 // ---------------------------------------------------------------------------
 // Protocol (slide 01.02, module 1)
 
-const SLIDE_ID = "01.02";
-export const GROUP_PROTOCOL_ID = `${SLIDE_ID}:meinungsbild-gesamt`;
-export const GROUP_METRICS_PROTOCOL_ID = `${SLIDE_ID}:gruppenbild-kennzahlen`;
+const SLIDE_ID = GROUP_SLIDE_ID;
+export const GROUP_PROTOCOL_ID = groupEntryId(OPINION_FIELD);
+export const GROUP_METRICS_PROTOCOL_ID = groupEntryId(METRICS_FIELD);
 export const interviewProtocolId = (interviewId: string) => `${SLIDE_ID}:interview-${interviewId}`;
 
 /**
@@ -190,7 +199,7 @@ export function writeInterviewToProtocol(iv: Interview): Pick<Interview, "protoc
   const text = iv.opinion ?? "";
   setEntry({
     id: interviewProtocolId(iv.id),
-    module: 1,
+    module: GROUP_MODULE,
     slideId: SLIDE_ID,
     kind: "text",
     prompt: `Meinungsbild · ${iv.pseudonym}`,
@@ -206,10 +215,10 @@ export function removeInterviewFromProtocol(interviewId: string) {
 export function writeGroupToProtocol(text: string) {
   setEntry({
     id: GROUP_PROTOCOL_ID,
-    module: 1,
+    module: GROUP_MODULE,
     slideId: SLIDE_ID,
     kind: "text",
-    prompt: "Gemeinsames Meinungsbild aus den KI-Interviews",
+    prompt: OPINION_PROMPT,
     value: markdownToPlain(text),
   });
 }
@@ -222,10 +231,10 @@ export function writeGroupMetricsToProtocol(text: string) {
   if (getEntry(GROUP_METRICS_PROTOCOL_ID)?.value === text) return;
   setEntry({
     id: GROUP_METRICS_PROTOCOL_ID,
-    module: 1,
+    module: GROUP_MODULE,
     slideId: SLIDE_ID,
     kind: "text",
-    prompt: "Gruppenbild: Kennzahlen aus den KI-Interviews",
+    prompt: METRICS_PROMPT,
     value: text,
   });
 }

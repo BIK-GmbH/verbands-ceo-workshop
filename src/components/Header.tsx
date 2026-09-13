@@ -1,11 +1,19 @@
 import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Menu, Play, Search, Sun, Moon, ClipboardList, LayoutGrid, Mic, Settings as SettingsIcon } from "lucide-react";
+import { Menu, Play, Search, Sun, Moon, ClipboardList, LayoutGrid, Mic, Type, Settings as SettingsIcon } from "lucide-react";
 import { useApiKey } from "@/lib/ai-assist";
+import {
+  FONT_SCALES,
+  FONT_SCALE_LABEL,
+  nextFontScale,
+  useFontScale,
+  type FontScale,
+} from "@/lib/font-scale";
 import type { Lang, Theme } from "@/types/slide";
 import { t } from "@/lib/i18n";
 import { ALL_SLIDES } from "@/lib/slides";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { RecordingBadge } from "@/components/RecordingBadge";
 
 interface Props {
   lang: Lang;
@@ -19,6 +27,8 @@ interface Props {
 }
 
 const ICON = { strokeWidth: 2.25 } as const;
+/** The letter itself grows with the step — the quickest way to read the button. */
+const FONT_ICON_SIZE: Record<FontScale, number> = { normal: 14, large: 16, xlarge: 18 };
 const IS_MAC = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent);
 const BASE = import.meta.env.BASE_URL;
 
@@ -50,6 +60,9 @@ export function Header({
   const currentId = params.slideId ?? ALL_SLIDES[0].id;
   // A dot on the gear signals that AI features are still off on this device.
   const claudeKey = useApiKey();
+  const [fontScale, setFontScale] = useFontScale();
+  const nextScale = nextFontScale(fontScale);
+  const fontStep = FONT_SCALES.indexOf(fontScale) + 1;
   return (
     <header
       data-workshop-header
@@ -116,6 +129,9 @@ export function Header({
       </Link>
 
       <div className="ml-auto flex items-center gap-1.5">
+        {/* Only visible while the session recorder runs — it keeps recording across slides. */}
+        <RecordingBadge />
+
         <Tooltip
           content={
             lang === "de"
@@ -255,15 +271,15 @@ export function Header({
         <Tooltip
           content={
             lang === "de"
-              ? `KI-Einstellungen: API-Schlüssel für Glätten, Ergebnisbericht, Poster und Interview-Transkription, einmal pro Gerät.${claudeKey ? "" : " Der Punkt zeigt: auf diesem Gerät noch nicht eingerichtet."}`
-              : `AI settings: API keys for polishing, results report, posters and interview transcription, once per device.${claudeKey ? "" : " The dot means: not set up on this device yet."}`
+              ? `Einstellungen: API-Schlüssel für Glätten, Ergebnisbericht, Poster und Interview-Transkription, dazu Sicherung und Zurücksetzen der Workshop-Inhalte.${claudeKey ? "" : " Der Punkt zeigt: auf diesem Gerät noch nicht eingerichtet."}`
+              : `Settings: API keys for polishing, results report, posters and interview transcription, plus backup and reset of the workshop content.${claudeKey ? "" : " The dot means: not set up on this device yet."}`
           }
         >
         <Link
           to="/einstellungen"
           className={`size-9 grid place-items-center rounded-md transition-colors relative ${SOFT_HOVER}`}
           style={{ ...SOFT, color: "inherit" }}
-          aria-label={lang === "de" ? "KI-Einstellungen" : "AI settings"}
+          aria-label={lang === "de" ? "Einstellungen" : "Settings"}
         >
           <SettingsIcon size={18} {...ICON} />
           {!claudeKey && (
@@ -291,6 +307,50 @@ export function Header({
           aria-label={t("toggleTheme", lang)}
         >
           {theme === "dark" ? <Moon size={18} {...ICON} /> : <Sun size={18} {...ICON} />}
+        </button>
+        </Tooltip>
+
+        {/* Font size — three steps, for the beamer and for small laptop screens.
+            Shown from the desktop layout upwards, because that is where the steps
+            apply (see globals.css); the phone layout keeps its own type scale. */}
+        <Tooltip
+          content={
+            lang === "de"
+              ? `Schriftgröße der ganzen Oberfläche: ${FONT_SCALE_LABEL[fontScale].de} (Stufe ${fontStep} von 3). Weiter zu ${FONT_SCALE_LABEL[nextScale].de} — größer für den Beamer, normal für kleine Laptop-Bildschirme. Poster und Druckansicht bleiben unverändert.`
+              : `Font size of the whole interface: ${FONT_SCALE_LABEL[fontScale].en} (step ${fontStep} of 3). Next is ${FONT_SCALE_LABEL[nextScale].en} — bigger for the projector, normal for small laptop screens. Posters and the print view stay as they are.`
+          }
+        >
+        <button
+          type="button"
+          onClick={() => setFontScale(nextScale)}
+          data-testid="font-scale-toggle"
+          data-step={fontScale}
+          className={`hidden md:grid size-9 place-items-center rounded-md transition-colors relative ${SOFT_HOVER}`}
+          style={SOFT}
+          aria-label={
+            lang === "de"
+              ? `Schriftgröße: ${FONT_SCALE_LABEL[fontScale].de}, Stufe ${fontStep} von 3. Weiter zu ${FONT_SCALE_LABEL[nextScale].de}.`
+              : `Font size: ${FONT_SCALE_LABEL[fontScale].en}, step ${fontStep} of 3. Next: ${FONT_SCALE_LABEL[nextScale].en}.`
+          }
+        >
+          <Type size={FONT_ICON_SIZE[fontScale]} {...ICON} style={{ marginTop: -3 }} />
+          {/* Step markers: filled up to the current step. */}
+          <span className="absolute inset-x-0 bottom-[5px] flex justify-center gap-[3px]" aria-hidden>
+            {FONT_SCALES.map((s, i) => (
+              <span
+                key={s}
+                className="rounded-full"
+                style={{
+                  width: 3,
+                  height: 3,
+                  background:
+                    i < fontStep
+                      ? "var(--workshop-accent)"
+                      : "color-mix(in oklch, var(--fg) 32%, transparent)",
+                }}
+              />
+            ))}
+          </span>
         </button>
         </Tooltip>
 

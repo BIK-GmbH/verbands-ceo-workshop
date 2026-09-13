@@ -10,7 +10,7 @@ import "@/styles/landing.css";
  * We store a SHA-256 of "user:password" instead of the plain password so the credentials
  * are at least not readable at a glance in the bundle.
  */
-const AUTH_STORAGE_KEY = "verbands-ceo.auth.v1";
+export const AUTH_STORAGE_KEY = "verbands-ceo.auth.v1";
 const AUTH_HASH = "df617b21b8aee6210556bc3949b2d7c6bff8a9d53445323eb8652b70cd13cc36";
 
 const BASE = import.meta.env.BASE_URL;
@@ -62,12 +62,17 @@ async function sha256Hex(text: string): Promise<string> {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export function logout() {
+/** Forgets the login without reloading (used by the reset in the settings). */
+export function clearStoredAuth() {
   try {
     localStorage.removeItem(AUTH_STORAGE_KEY);
   } catch {
-    // Nothing stored in private mode; the reload below resets the in-memory state anyway.
+    // Nothing stored in private mode; the in-memory state lasts until the next load.
   }
+}
+
+export function logout() {
+  clearStoredAuth();
   window.location.reload();
 }
 

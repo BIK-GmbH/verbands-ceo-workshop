@@ -7,10 +7,10 @@ researchedOn: 2026-09-11
 
 # <I18n de="KI-Interview: Wie stehen wir zu KI?" en="AI interview: where do we stand on AI?" />
 
-<ExerciseCard duration="ca. 5 Min pro Person" goal="Ein persönliches Bild der Gruppe zu KI gewinnen und Material für die Top-Herausforderungen sammeln.">
+<ExerciseCard duration="ca. 5 Min pro Person" goal="Ein belastbares Bild der Gruppe zu KI gewinnen und Material für die Top-Herausforderungen sammeln.">
   <I18n
-    de="Kurze Einzelinterviews, einzeln nacheinander im Nebenraum, mit Einwilligung aufgezeichnet. Die App transkribiert jedes Interview, fasst es zu einem Meinungsbild zusammen und bildet daraus das gemeinsame Meinungsbild der Gruppe."
-    en="Short one-to-one interviews, one after another in a side room, recorded with consent. The app transcribes each interview, summarises it into an opinion picture and builds the group's shared opinion picture from them."
+    de="Kurze Einzelinterviews, einzeln nacheinander im Nebenraum, mit Einwilligung aufgezeichnet. Die App transkribiert jedes Interview, fasst es zu einem Meinungsbild zusammen und rechnet daraus das gemeinsame Bild der Gruppe aus. Wir lesen das Ergebnis anschließend gemeinsam."
+    en="Short one-to-one interviews, one after another in a side room, recorded with consent. The app transcribes each interview, summarises it into an opinion picture and computes the group picture from them. We then read the result together."
   />
 </ExerciseCard>
 
@@ -40,19 +40,11 @@ researchedOn: 2026-09-11
 
 </En>
 
-**<I18n de="Gruppenbild festhalten" en="Capture the group picture" />**
+<InterviewGroupPicture slideId="01.02" />
 
-<WorkshopInput slideId="01.02" field="ki-begriffe" prompt="Unsere fünf Begriffe zu KI – gesammelt" kind="text" rows={2} />
+<WorkshopInput slideId="01.02" field="i7-meinungsbild-gesamt" prompt="Gemeinsames Meinungsbild aus den KI-Interviews" kind="text" rows={8} placeholder="Entsteht im Interview-Modus aus den Einzel-Meinungsbildern – hier gemeinsam lesen und bei Bedarf schärfen." />
 
-<WorkshopInput slideId="01.02" field="ki-haltung" prompt="Grundhaltung zu KI – Mehrheit der Gruppe" kind="vote" options={["Skeptisch", "Abwartend", "Neugierig", "Überzeugt"]} />
-
-<WorkshopInput slideId="01.02" field="ki-kompetenz" prompt="Eigene KI-Kompetenz – Mehrheit der Gruppe" kind="vote" options={["Einsteiger", "Grundkenntnisse", "Fortgeschritten", "Experte"]} />
-
-<WorkshopInput slideId="01.02" field="relevanz-heute" prompt="Relevanz von KI für den Verband heute" kind="vote" options={["gering", "mittel", "hoch", "sehr hoch"]} />
-
-<WorkshopInput slideId="01.02" field="relevanz-morgen" prompt="Relevanz von KI für den Verband morgen" kind="vote" options={["gering", "mittel", "hoch", "sehr hoch"]} />
-
-<WorkshopInput slideId="01.02" field="ki-einsatzgebiete" prompt="Wo sehen wir konkrete Einsatzgebiete für KI?" kind="text" rows={3} />
+<WorkshopInput slideId="01.02" field="i9-ergaenzungen" prompt="Ergänzungen und Auffälligkeiten aus der Runde" kind="text" rows={3} placeholder="Was fällt uns beim gemeinsamen Lesen auf, was fehlt, wo widersprechen wir?" />
 
 <NoteCard variant="hint">
   <I18n
@@ -63,7 +55,7 @@ researchedOn: 2026-09-11
 
 <De>
 
-**Interview-Modus der App:** Die Einzelinterviews werden direkt in der App geführt und aufgenommen, im Nebenraum an einem zweiten Rechner. Aufnahmen vom Smartphone lassen sich alternativ als Audiodatei hochladen. Die App transkribiert jedes Interview und erstellt daraus ein <Hint de="Die Kernaussagen einer Person zu Haltung, Begriffen, Kompetenz, Relevanz, Einsatzgebieten und Herausforderungen. Das gemeinsame Meinungsbild zeigt Übereinstimmungen und Spannbreite, ohne Namen." en="A person's key statements on attitude, terms, competence, relevance, areas of application and challenges. The shared picture shows agreement and range, without names.">Meinungsbild</Hint> pro Person und ein gemeinsames Meinungsbild.
+**Interview-Modus der App:** Aufnehmen, Audiodateien hochladen und die Interviews zwischen den Rechnern übertragen geht direkt hier auf der Folie. Im Nebenraum läuft das Interview an einem zweiten Rechner; Aufnahmen vom Smartphone lassen sich als Audiodatei hochladen. Das Transkribieren und Auswerten – Transkript, <Hint de="Die Kernaussagen einer Person zu Haltung, Begriffen, Kompetenz, Relevanz, Einsatzgebieten und Herausforderungen. Das gemeinsame Meinungsbild zeigt Übereinstimmungen und Spannbreite, ohne Namen." en="A person's key statements on attitude, terms, competence, relevance, areas of application and challenges. The shared picture shows agreement and range, without names.">Meinungsbild</Hint> je Person und gemeinsames Meinungsbild – liegt im Interview-Modus.
 
 [Zum Interview-Modus](#/interviews)
 
@@ -71,7 +63,7 @@ researchedOn: 2026-09-11
 
 <En>
 
-**The app's interview mode:** the one-to-one interviews are conducted and recorded directly in the app, in a side room on a second computer. Alternatively, smartphone recordings can be uploaded as audio files. The app transcribes each interview and creates an opinion picture per person plus a shared group opinion picture.
+**The app's interview mode:** recording, uploading audio files and transferring interviews between computers all work right here on the slide. In the side room the interview runs on a second computer; smartphone recordings can be uploaded as audio files. Transcribing and evaluating – transcript, an opinion picture per person and the shared one – happens in interview mode.
 
 [Go to the interview mode](#/interviews)
 
@@ -79,14 +71,14 @@ researchedOn: 2026-09-11
 
 <NoteCard variant="tip" title="Interview-Modus">
   <I18n
-    de="Aufnahme nur mit Einwilligung der befragten Person. Das gemeinsame Meinungsbild steht danach anonymisiert im Protokoll auf dieser Folie und ist Diskussionsimpuls für Phase 1."
-    en="Record only with the interviewee's consent. Afterwards the anonymised group opinion picture is in the record on this slide and serves as a discussion starter for phase 1."
+    de="Aufnahme nur mit Einwilligung der befragten Person. Die Werte oben rechnet die App im Browser aus den ausgewerteten Interviews, ohne KI; sie stehen anonymisiert im Protokoll auf dieser Folie. Liegt zu einer Dimension nichts vor, tragen wir den Wert von Hand ein – er ist dann als von Hand gesetzt gekennzeichnet."
+    en="Record only with the interviewee's consent. The app computes the figures above in the browser from the evaluated interviews, without AI; they are in the record on this slide, anonymised. If a dimension has no data, we set the value by hand – it is then marked as set by hand."
   />
 </NoteCard>
 
 <SpeakerNotes>
   <I18n
-    de="Ablauf: Im Nebenraum führt eine Person die Interviews am Interview-Laptop (Einwilligung abhaken, Leitfaden Frage für Frage, ca. 5 Minuten pro Person), während im Plenum weitergearbeitet wird. Zeit knapp halten. Das Gruppenbild auf dieser Folie ergänzen wir im Plenum gemeinsam aus dem Meinungsbild. Nicht werten, die Spannbreite ist die Information. Danach dort Interviews exportieren, die Datei per USB-Stick oder Mail auf den Moderationslaptop bringen und dort importieren. Auf dem Moderationslaptop Alle verarbeiten, dann das Gesamtbild erstellen; es landet automatisch im Protokoll. Nach dem Workshop die Audiodaten auf beiden Geräten löschen. Überleitung: jetzt die Top-Herausforderungen, nur Probleme."
-    en="Procedure: in the side room one person conducts the interviews on the interview laptop (tick consent, guide question by question, about 5 minutes per person) while the plenary carries on. Keep time tight. We complete the group picture on this slide together in plenary from the shared opinion picture. Don't judge; the range is the information. Then export the interviews there, bring the file to the facilitator laptop by USB stick or email and import it there. On the facilitator laptop run Process all, then create the group picture; it goes into the record automatically. After the workshop delete the audio data on both devices. Bridge: now the top challenges, problems only."
+    de="Ablauf: interviewen, auswerten, Ergebnis gemeinsam lesen, nur bei Lücken von Hand ergänzen. Im Nebenraum führt eine Person die Interviews am Interview-Laptop (Einwilligung abhaken, Leitfaden Frage für Frage, ca. 5 Minuten pro Person), während im Plenum weitergearbeitet wird; Aufnehmen und Hochladen geht auch direkt auf dieser Folie. Zeit knapp halten. Danach dort Interviews exportieren, die Datei per USB-Stick oder Mail auf den Moderationslaptop bringen und über Übertragen importieren. Auf dem Moderationslaptop im Interview-Modus Alle verarbeiten, dann das Gesamtbild erstellen; Kennzahlen und Meinungsbild landen automatisch im Protokoll. Diese Folie zeigt die Werte, sobald sie vorliegen – ohne Abstimmung, wir lesen sie gemeinsam und deuten sie: Wo sind wir einig, wo uneinig, wie groß ist die Lücke heute zu morgen? Nicht werten, die Spannbreite ist die Information. Fehlt eine Person oder fällt die Transkription aus, den Wert mit von Hand setzen nachtragen; er bleibt als von Hand gesetzt erkennbar und lässt sich zurücksetzen. Auffälligkeiten aus dem Gespräch ins Ergänzungsfeld diktieren. Nach dem Workshop die Audiodaten auf beiden Geräten löschen. Überleitung: jetzt die Top-Herausforderungen, nur Probleme."
+    en="Procedure: interview, evaluate, read the result together, fill gaps by hand only. In the side room one person conducts the interviews on the interview laptop (tick consent, guide question by question, about 5 minutes per person) while the plenary carries on; recording and uploading also work right on this slide. Keep time tight. Then export the interviews there, bring the file to the facilitator laptop by USB stick or email and import it under Transfer. On the facilitator laptop run Process all in interview mode, then create the group picture; figures and opinion picture go into the record automatically. This slide shows the values as soon as they exist – no show of hands; we read and interpret them together: where do we agree, where not, how big is the gap between today and tomorrow? Don't judge; the range is the information. If someone is missing or transcription fails, add the value with set by hand; it stays recognisable as hand-set and can be reset. Dictate anything striking from the conversation into the additions field. After the workshop delete the audio data on both devices. Bridge: now the top challenges, problems only."
   />
 </SpeakerNotes>

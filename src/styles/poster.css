@@ -5,6 +5,10 @@
   background: #ffffff;
   color: #181A27;
   font-family: var(--font-sans);
+  /* The sheet is laid out in fixed px (see PosterSheet.tsx) and zoomed onto the
+   * paper format, so it carries its own base size: the app's font-size steps
+   * must not move the poster. */
+  font-size: 16px;
   box-shadow: 0 10px 40px rgb(0 0 0 / 0.18);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;

@@ -22,6 +22,7 @@ import {
   PosterPreview,
   AiSuggest,
   WhyLadder,
+  InterviewGroupPicture,
   Hint, HintIcon,
 } from "./slide-blocks";
 import { AudioRecorder } from "./AudioRecorder";
@@ -59,6 +60,7 @@ const mdxComponents = {
   PosterPreview,
   AiSuggest,
   WhyLadder,
+  InterviewGroupPicture,
   AudioRecorder,
   Hint, HintIcon,
   h1:(props: ChildrenProps) => (

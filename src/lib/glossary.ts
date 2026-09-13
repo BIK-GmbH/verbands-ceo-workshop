@@ -46,6 +46,9 @@ const KEY = "verbands-ceo.glossary.v1";
 const EVENT = "workshop-glossary-change";
 const MAX_SUGGESTIONS = 15;
 
+/** Storage key of the glossary — the backup (backup.ts) reads and restores it. */
+export const GLOSSARY_KEY = KEY;
+
 export const GLOSSARY_ENTRY_ID = "99.01:glossar-workshop";
 const GLOSSARY_ENTRY_PROMPT = "Glossar – im Workshop ergänzt";
 
@@ -253,6 +256,21 @@ export function addManualTerm(term: string, definition: string) {
     source: "manual",
   };
   write({ ...state, terms: [...state.terms, entry] });
+}
+
+/** Replaces terms and suggestions wholesale (restoring a backup); unusable rows are dropped. */
+export function replaceGlossary(raw: unknown) {
+  write(sanitize(raw));
+}
+
+/** Removes the glossary including its mirror entry in the record. */
+export function clearGlossary() {
+  try {
+    window.localStorage.removeItem(KEY);
+  } finally {
+    window.dispatchEvent(new CustomEvent(EVENT));
+  }
+  if (getEntry(GLOSSARY_ENTRY_ID)) removeEntry(GLOSSARY_ENTRY_ID);
 }
 
 /* ------------------------------------------------------------- suggestions */

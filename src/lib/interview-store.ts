@@ -223,17 +223,27 @@ export async function deleteAllAudio(): Promise<number> {
   return count;
 }
 
+/** Empties the interview database (reset, and before restoring a backup). */
+export async function clearAllInterviews(): Promise<void> {
+  await tx("readwrite", (s) => s.clear());
+  await changed();
+}
+
 // ---------------------------------------------------------------------------
 // Export / import (hand-over between the side-room laptop and the moderation laptop)
 
 const EXPORT_FORMAT = "verbands-ceo-interviews";
 const EXPORT_VERSION = 1;
 
-interface ExportedInterview extends Omit<Interview, "audio" | "protocolText" | "protocolPseudonym" | "error"> {
+/** The backup (backup.ts) embeds interviews in exactly this format instead of inventing a second one. */
+export const INTERVIEW_EXPORT_FORMAT = EXPORT_FORMAT;
+export const INTERVIEW_EXPORT_VERSION = EXPORT_VERSION;
+
+export interface ExportedInterview extends Omit<Interview, "audio" | "protocolText" | "protocolPseudonym" | "error"> {
   audio?: { mimeType: string; base64: string };
 }
 
-interface ExportFile {
+export interface ExportFile {
   format: typeof EXPORT_FORMAT;
   version: number;
   exportedAt: string;
@@ -259,7 +269,8 @@ function base64ToBlob(base64: string, mimeType: string): Blob {
   return new Blob([bytes], { type: mimeType });
 }
 
-export async function exportInterviews(includeAudio: boolean): Promise<string> {
+/** All interviews of this device as a plain object (the backup embeds it as-is). */
+export async function exportInterviewFile(includeAudio: boolean): Promise<ExportFile> {
   const list = snapshot.ready ? snapshot.interviews : ((await tx<Interview[]>("readonly", (s) => s.getAll())) ?? []);
   const interviews: ExportedInterview[] = [];
   for (const iv of list) {
@@ -272,8 +283,11 @@ export async function exportInterviews(includeAudio: boolean): Promise<string> {
     if (includeAudio && audio) out.audio = { mimeType: audio.type || iv.mimeType, base64: await blobToBase64(audio) };
     interviews.push(out);
   }
-  const file: ExportFile = { format: EXPORT_FORMAT, version: EXPORT_VERSION, exportedAt: new Date().toISOString(), interviews };
-  return JSON.stringify(file, null, 2);
+  return { format: EXPORT_FORMAT, version: EXPORT_VERSION, exportedAt: new Date().toISOString(), interviews };
+}
+
+export async function exportInterviews(includeAudio: boolean): Promise<string> {
+  return JSON.stringify(await exportInterviewFile(includeAudio), null, 2);
 }
 
 export class InterviewImportError extends Error {
@@ -341,6 +355,11 @@ export async function importInterviews(text: string): Promise<ImportResult> {
   } catch {
     throw new InterviewImportError("not-json");
   }
+  return importInterviewFile(parsed);
+}
+
+/** Same as `importInterviews`, but for an already parsed file (used by the backup). */
+export async function importInterviewFile(parsed: unknown): Promise<ImportResult> {
   const file = parsed as Partial<ExportFile>;
   if (!file || file.format !== EXPORT_FORMAT || !Array.isArray(file.interviews)) {
     throw new InterviewImportError("wrong-format");
@@ -382,6 +401,9 @@ export interface GroupOpinion {
 
 const GROUP_KEY = "verbands-ceo.interviews.group.v1";
 const GROUP_EVENT = "interview-group-change";
+
+/** Storage key of the group opinion — the backup (backup.ts) reads and restores it. */
+export const GROUP_OPINION_KEY = GROUP_KEY;
 let groupRaw: string | null = null;
 let groupCache: GroupOpinion | null = null;
 

@@ -77,7 +77,7 @@ Regeln:
 - Korrigiere offensichtliche Diktat- und Erkennungsfehler sinngemäß (typische Begriffe: Kernbohrung, Wandsäge, Seilsäge, Bauwerksmechaniker, BG Bau, DIN 18459, VOB, Geschäftsstelle, Vorstand, Ausschuss, Wilma), bleibe inhaltlich treu.
 - Stil: sachlich, klar, im Ton eines Verbandsprotokolls; Fließtext in vollständigen Sätzen, knappe Aufzählungen, wo sie die Lesbarkeit verbessern.
 
-Zuordnung der Beiträge: Modul 0 = Auftakt (u. a. Barometer vorher, Folie 00.08). Modul 1 = Phase 1 Need to Move (Folie 01.02: KI-Interview und gemeinsames Meinungsbild). Modul 2 = Phase 2 Möglichkeitsraum. Modul 3 = Phase 3 Zielbild. Modul 4 = Phase 4 Realitätscheck FBS (eigene Erfahrungen des Verbands) inkl. GO/ADAPT/STOP. Modul 5 = Phase 5 Wirtschaftlichkeit & Argumentation. Modul 6 = Phase 6 Roadmap. Modul 7 = Phase 7 Commitment (u. a. Barometer nachher 07.02, offene Fragen 07.03, Beschluss 07.04). Felder, deren Name mit „poster-“ beginnt, sind die verdichteten Phasenergebnisse (Poster) und tragen die Kernaussage des jeweiligen Abschnitts. Beiträge mit der Antwort „(offen)“ sind eigene Fragen oder Aufgaben ohne Antwort: führe sie unter den offenen Fragen auf.
+Zuordnung der Beiträge: Modul 0 = Auftakt (u. a. Barometer vorher, Folie 00.08). Modul 1 = Phase 1 Need to Move (Folie 01.02: KI-Interviews, gemessene Auswertung und gemeinsames Meinungsbild). Modul 2 = Phase 2 Möglichkeitsraum. Modul 3 = Phase 3 Zielbild. Modul 4 = Phase 4 Realitätscheck FBS (eigene Erfahrungen des Verbands) inkl. GO/ADAPT/STOP. Modul 5 = Phase 5 Wirtschaftlichkeit & Argumentation. Modul 6 = Phase 6 Roadmap. Modul 7 = Phase 7 Commitment (u. a. Barometer nachher 07.02, offene Fragen 07.03, Beschluss 07.04). Felder, deren Name mit „poster-“ beginnt, sind die verdichteten Phasenergebnisse (Poster) und tragen die Kernaussage des jeweiligen Abschnitts. Beiträge mit der Antwort „(offen)“ sind eigene Fragen oder Aufgaben ohne Antwort: führe sie unter den offenen Fragen auf.
 
 Format (Markdown):
 1. Kein Titel, keine Überschrift erster Ebene, keine Vor- oder Schlussbemerkung außerhalb der Gliederung.
@@ -85,7 +85,7 @@ Format (Markdown):
 ${headings}
 3. Innerhalb der Abschnitte sind Zwischenüberschriften „### “, Absätze, Aufzählungen mit „- “ und **Fettdruck** erlaubt. Keine Tabellen, Links, Bilder, Code oder HTML.
 4. Management Summary: 5–8 Sätze Fließtext. Enthält die Antwort der Gruppe auf die Leitfrage (ist keine erfasst, sag das ausdrücklich) und das Barometer vorher/nachher, sofern erfasst.
-5. Ausgangslage & Meinungsbild: Anlass, Haltung und KI-Kompetenz der Gruppe. Gibt es den Beitrag „01.02:meinungsbild-gesamt“ (gemeinsames Meinungsbild aus den KI-Interviews), fasse ihn hier zusammen.
+5. Ausgangslage & Meinungsbild: Anlass, Haltung und KI-Kompetenz der Gruppe. Gibt es den Beitrag „01.02:i7-meinungsbild-gesamt“ (gemeinsames Meinungsbild aus den KI-Interviews), fasse ihn hier zusammen. Die Beiträge „01.02:i1-haltung“ bis „01.02:i6-einsatzgebiete“ und „01.02:i8-gruppenbild-kennzahlen“ sind die gemessene Auswertung der Interviews (Mittelwert Ø, Streuung σ, Spanne, n); übernimm ihre Zahlen unverändert und rechne nichts nach. Ein Wert mit dem Zusatz „von Hand gesetzt“ wurde von der Moderation ergänzt, weil dazu kein Interview vorlag – nenne ihn als Einschätzung der Runde, nicht als Messwert.
 6. Nächste Schritte & Verantwortliche: nur Schritte, Termine und Verantwortliche, die in den Beiträgen stehen; Verantwortliche als Rolle, nicht als Name (außer Veranstalter).
 7. Gibt es für einen Abschnitt keine passenden Beiträge, steht darunter nur: „${EMPTY_SECTION[lang]}“
 8. ${language}`;
@@ -179,29 +179,44 @@ export interface StoredReport {
   editedAt?: string;
 }
 
-const REPORT_KEY = "verbands-ceo.report.v1";
+/** Storage key of the results report — the backup (backup.ts) reads and restores it. */
+export const REPORT_KEY = "verbands-ceo.report.v1";
 const REPORT_EVENT = "workshop-report-change";
 
 // Referentially stable snapshot for useSyncExternalStore, keyed on the raw string.
 let cacheRaw: string | null | undefined;
 let cacheReport: StoredReport | null = null;
 
+/** Validates one stored/imported report object; null when it is unusable. */
+function coerceReport(raw: unknown): StoredReport | null {
+  if (typeof raw !== "object" || raw === null) return null;
+  const r = raw as Partial<StoredReport>;
+  if (typeof r.markdown !== "string" || typeof r.createdAt !== "string" || typeof r.entryCount !== "number") return null;
+  return {
+    markdown: r.markdown,
+    createdAt: r.createdAt,
+    entryCount: r.entryCount,
+    lang: r.lang === "en" ? "en" : "de",
+    hints: typeof r.hints === "string" ? r.hints : "",
+    editedAt: typeof r.editedAt === "string" ? r.editedAt : undefined,
+  };
+}
+
 function parseReport(raw: string | null): StoredReport | null {
   if (!raw) return null;
   try {
-    const r = JSON.parse(raw) as Partial<StoredReport>;
-    if (typeof r.markdown !== "string" || typeof r.createdAt !== "string" || typeof r.entryCount !== "number") return null;
-    return {
-      markdown: r.markdown,
-      createdAt: r.createdAt,
-      entryCount: r.entryCount,
-      lang: r.lang === "en" ? "en" : "de",
-      hints: typeof r.hints === "string" ? r.hints : "",
-      editedAt: typeof r.editedAt === "string" ? r.editedAt : undefined,
-    };
+    return coerceReport(JSON.parse(raw));
   } catch {
     return null;
   }
+}
+
+/** Restores a report from a backup file. Returns false when the file carries none. */
+export function restoreReport(raw: unknown): boolean {
+  const report = coerceReport(raw);
+  if (!report) return false;
+  saveReport(report);
+  return true;
 }
 
 export function getReport(): StoredReport | null {

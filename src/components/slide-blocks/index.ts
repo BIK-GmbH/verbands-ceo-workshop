@@ -16,4 +16,5 @@ export { Hint, HintIcon, PrintHint, PrintHintIcon } from "./Hint";
 export { ZoomBox } from "./ZoomBox";
 export { PosterPreview, PosterPreviewPrint } from "./PosterPreview";
 export { AiSuggest } from "./AiSuggest";
+export { InterviewGroupPicture } from "./InterviewGroupPicture";
 export { WhyLadder } from "./WhyLadder";

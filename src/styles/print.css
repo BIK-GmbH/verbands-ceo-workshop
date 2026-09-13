@@ -12,6 +12,13 @@
     --workshop-accent: #1F4E79;
   }
 
+  /* The font-size steps stop at the paper: the printed pages are laid out for
+   * A4, a larger root size would reflow them (see src/lib/font-scale.tsx). */
+  html,
+  html[data-font-scale] {
+    font-size: 16px !important;
+  }
+
   /* Hide UI chrome — only slide content prints. */
   .no-print,
   header[data-workshop-header],

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { pauseForDictation, resumeAfterDictation } from "@/lib/session-recorder";
 
 /**
  * Voice-to-text via the browser's Web Speech API (Chrome/Edge, de-DE).
@@ -46,6 +47,17 @@ export function useDictation(
   const onTextRef = useRef(onText);
   onTextRef.current = onText;
 
+  // Dictation and the session recorder must never hold the microphone at the
+  // same time. While this hook listens, the recording pauses; the hold is
+  // released on every exit — end, error and unmount — so a dictation that dies
+  // silently cannot leave the recorder paused for good.
+  const holdsMic = useRef(false);
+  const releaseMic = useCallback(() => {
+    if (!holdsMic.current) return;
+    holdsMic.current = false;
+    resumeAfterDictation();
+  }, []);
+
   const stop = useCallback(() => {
     recRef.current?.stop();
   }, []);
@@ -63,19 +75,37 @@ export function useDictation(
         if (r.isFinal) onTextRef.current(r[0].transcript.trim());
       }
     };
-    rec.onend = () => setListening(false);
-    rec.onerror = () => setListening(false);
+    rec.onend = () => {
+      setListening(false);
+      releaseMic();
+    };
+    rec.onerror = () => {
+      setListening(false);
+      releaseMic();
+    };
     recRef.current = rec;
-    rec.start();
+    try {
+      rec.start();
+    } catch {
+      return; // Already running in another field: leave the recorder untouched.
+    }
+    holdsMic.current = true;
+    pauseForDictation();
     setListening(true);
-  }, [lang]);
+  }, [lang, releaseMic]);
 
   const toggle = useCallback(() => {
     if (listening) stop();
     else start();
   }, [listening, start, stop]);
 
-  useEffect(() => () => recRef.current?.stop(), []);
+  useEffect(
+    () => () => {
+      recRef.current?.stop();
+      releaseMic();
+    },
+    [releaseMic],
+  );
 
   return { supported, listening, toggle, start, stop };
 }

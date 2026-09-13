@@ -52,13 +52,16 @@ export interface WorkshopMeta {
   participantsList: Participant[];
 }
 
-interface WorkshopState {
+export interface WorkshopState {
   meta: WorkshopMeta;
   entries: Record<string, CaptureEntry>;
 }
 
 const KEY = "verbands-ceo.workshop.v1";
 const EVENT = "workshop-store-change";
+
+/** Storage key of the record — the backup (backup.ts) reads and restores it. */
+export const WORKSHOP_KEY = KEY;
 
 const DEFAULT_META: WorkshopMeta = {
   title: "KI-Geschäftsführer: Fiktion oder Realität?",
@@ -224,6 +227,48 @@ export function getAllEntries(): CaptureEntry[] {
 
 export function entryCount(): number {
   return Object.keys(read().entries).length;
+}
+
+const KINDS: CaptureKind[] = ["text", "decision", "vote", "checklist"];
+
+/** Tolerates hand-edited or foreign JSON: unusable rows are dropped, never trusted. */
+function sanitizeEntries(v: unknown): Record<string, CaptureEntry> {
+  if (typeof v !== "object" || v === null) return {};
+  const out: Record<string, CaptureEntry> = {};
+  for (const [key, raw] of Object.entries(v as Record<string, unknown>)) {
+    if (typeof raw !== "object" || raw === null) continue;
+    const e = raw as Record<string, unknown>;
+    const slideId = str(e.slideId);
+    out[key] = {
+      id: str(e.id) || key,
+      module: typeof e.module === "number" && Number.isFinite(e.module) ? e.module : Number.parseInt(slideId, 10) || 0,
+      slideId,
+      kind: KINDS.includes(e.kind as CaptureKind) ? (e.kind as CaptureKind) : "text",
+      prompt: str(e.prompt),
+      value: Array.isArray(e.value) ? e.value.filter((x): x is string => typeof x === "string") : str(e.value),
+      raw: typeof e.raw === "string" ? e.raw : undefined,
+      updatedAt: str(e.updatedAt) || new Date().toISOString(),
+    };
+  }
+  return out;
+}
+
+/**
+ * Replaces meta and entries wholesale (restoring a backup). Anything the file
+ * does not carry falls back to the defaults, so the result matches the file.
+ */
+export function replaceState(raw: unknown) {
+  const parsed = (typeof raw === "object" && raw !== null ? raw : {}) as Partial<WorkshopState>;
+  const meta = (parsed.meta ?? {}) as Partial<Record<keyof WorkshopMeta, unknown>>;
+  write({
+    meta: {
+      title: str(meta.title) || DEFAULT_META.title,
+      date: str(meta.date),
+      participants: str(meta.participants),
+      participantsList: sanitizeParticipants(meta.participantsList),
+    },
+    entries: sanitizeEntries(parsed.entries),
+  });
 }
 
 export function clearAll() {

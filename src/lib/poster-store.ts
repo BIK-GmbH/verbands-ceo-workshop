@@ -6,7 +6,7 @@
  * (entry id → text) and an optional image; plus the last print settings.
  */
 import { useSyncExternalStore } from "react";
-import type { Orientation, PaperFormat, PosterKey } from "@/lib/posters";
+import { PAPER_MM, type Orientation, type PaperFormat, type PosterKey } from "@/lib/posters";
 
 export interface PosterDraft {
   /** entry id → poster wording. Present (even "") means "use this instead of the record". */
@@ -21,13 +21,16 @@ export interface PosterPrefs {
   orientation: Orientation;
 }
 
-interface PosterState {
+export interface PosterState {
   drafts: Partial<Record<PosterKey, PosterDraft>>;
   prefs: PosterPrefs;
 }
 
 const KEY = "verbands-ceo.poster.v1";
 const EVENT = "poster-store-change";
+
+/** Storage key of the poster version — the backup (backup.ts) reads and restores it. */
+export const POSTER_KEY = KEY;
 const DEFAULT_PREFS: PosterPrefs = { format: "A3", orientation: "portrait" };
 const EMPTY: PosterState = { drafts: {}, prefs: DEFAULT_PREFS };
 
@@ -103,6 +106,49 @@ export function resetPosterFields(key: PosterKey) {
 export function setPosterPrefs(patch: Partial<PosterPrefs>) {
   const state = read();
   write({ ...state, prefs: { ...state.prefs, ...patch } });
+}
+
+/** Tolerates hand-edited or foreign JSON: only string fields and a string image survive. */
+function sanitizeDrafts(raw: unknown): PosterState["drafts"] {
+  if (typeof raw !== "object" || raw === null) return {};
+  const out: PosterState["drafts"] = {};
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (typeof value !== "object" || value === null) continue;
+    const d = value as Record<string, unknown>;
+    const fields: Record<string, string> = {};
+    if (typeof d.fields === "object" && d.fields !== null) {
+      for (const [entryId, text] of Object.entries(d.fields as Record<string, unknown>)) {
+        if (typeof text === "string") fields[entryId] = text;
+      }
+    }
+    out[key as PosterKey] = {
+      fields,
+      image: typeof d.image === "string" ? d.image : undefined,
+      updatedAt: typeof d.updatedAt === "string" ? d.updatedAt : "",
+    };
+  }
+  return out;
+}
+
+/** Replaces all poster drafts and print settings (restoring a backup). */
+export function replacePosterState(raw: unknown) {
+  const parsed = (typeof raw === "object" && raw !== null ? raw : {}) as Partial<PosterState>;
+  const prefs = (parsed.prefs ?? {}) as Partial<Record<keyof PosterPrefs, unknown>>;
+  write({
+    drafts: sanitizeDrafts(parsed.drafts),
+    prefs: {
+      format: typeof prefs.format === "string" && prefs.format in PAPER_MM ? (prefs.format as PaperFormat) : DEFAULT_PREFS.format,
+      orientation: prefs.orientation === "landscape" ? "landscape" : "portrait",
+    },
+  });
+}
+
+export function clearPosterState() {
+  try {
+    window.localStorage.removeItem(KEY);
+  } finally {
+    window.dispatchEvent(new CustomEvent(EVENT));
+  }
 }
 
 const getDrafts = () => read().drafts;

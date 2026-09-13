@@ -81,11 +81,11 @@ export function MicButton({ mic, lang }: { mic: ReturnType<typeof useDictation>;
       content={
         mic.listening
           ? de
-            ? "Diktat stoppen"
-            : "Stop dictation"
+            ? "Diktat stoppen. Eine laufende Sitzungsaufnahme läuft danach automatisch weiter."
+            : "Stop dictation. A running session recording continues automatically afterwards."
           : de
-            ? "Einsprechen statt tippen, der Text wird angehängt"
-            : "Dictate instead of typing, the text is appended"
+            ? "Einsprechen statt tippen, der Text wird angehängt. Läuft die Sitzungsaufnahme, pausiert sie automatisch, solange diktiert wird."
+            : "Dictate instead of typing, the text is appended. If the session recording is running, it pauses automatically while dictation is on."
       }
     >
       <button

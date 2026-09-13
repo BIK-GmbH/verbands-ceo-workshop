@@ -20,6 +20,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Schriftgröße / font-size steps ─────────────────────────────────
+ * Three steps, switched in the header (see src/lib/font-scale.tsx): the beamer in
+ * the room wants a big one, a small laptop screen the normal one. Everything sized
+ * in rem grows with the root font size; the chrome heights follow so header and
+ * footer keep their 2.25rem controls.
+ * From the desktop layout (768px) upwards only — the phone layout has its own
+ * compact type scale further down, and its header row is already full at 16px.
+ * Further exceptions: print (print.css) and the poster sheets (poster.css), both
+ * laid out for a fixed sheet.
+ */
+html { font-size: 16px; }
+@media (min-width: 768px) {
+  html[data-font-scale="large"] {
+    font-size: 18px;
+    --header-height: 62px;
+    --footer-height: 50px;
+  }
+  html[data-font-scale="xlarge"] {
+    font-size: 20px;
+    --header-height: 68px;
+    --footer-height: 54px;
+  }
+}
+
 /* Mobile: bigger bottom nav + respect iPhone home-indicator safe area.
  *
  * The trick: extend the footer's HEIGHT to include the safe-area-inset-bottom
