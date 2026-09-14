@@ -32,6 +32,7 @@ import {
 } from "./interview-store";
 import { POSTER_KEY, clearPosterState, replacePosterState, type PosterState } from "./poster-store";
 import { REPORT_KEY, clearReport, restoreReport, type StoredReport } from "./report";
+import { clearRecordings } from "./session-recorder";
 import { setOpenAiKey } from "./transcribe";
 import { WORKSHOP_KEY, clearAll, downloadFile, replaceState, type WorkshopState } from "./workshop-store";
 
@@ -360,9 +361,15 @@ function safely(label: string, run: () => void) {
 }
 
 /**
- * Empties every content store. `alsoKeys` additionally removes the two API keys
- * and the login — off by default, because that is what locks a facilitator out.
- * UI settings (language, theme, panel) are never touched.
+ * Empties every content store, including the session recordings (they are not
+ * part of a backup). `alsoKeys` additionally removes the two API keys and the
+ * login — off by default, because that is what locks a facilitator out.
+ * UI settings (language, theme, panel) and the automatic snapshots are never
+ * touched: the snapshots are the way back from a mistaken reset.
+ *
+ * This is the only reset. A partial one (e.g. just the record) leaves posters,
+ * glossary and interviews behind, and those write their entries back into the
+ * record the next time their slide is shown.
  */
 export async function resetContents({ alsoKeys }: { alsoKeys: boolean }): Promise<void> {
   safely("clearing the record", clearAll);
@@ -374,6 +381,11 @@ export async function resetContents({ alsoKeys }: { alsoKeys: boolean }): Promis
     await clearAllInterviews();
   } catch (err) {
     console.error("[backup] clearing the interview database failed", err);
+  }
+  try {
+    await clearRecordings();
+  } catch (err) {
+    console.error("[backup] clearing the session recordings failed", err);
   }
   if (!alsoKeys) return;
   safely("removing the Claude key", () => setApiKey(""));

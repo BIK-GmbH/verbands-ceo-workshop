@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Activity, AlertTriangle, ArrowLeft, ArrowRight, Check, FileDown, FileUp, Home, Info, Loader2, Trash2 } from "lucide-react";
 import type { Lang } from "@/types/slide";
 import { useLang } from "@/lib/i18n";
@@ -25,6 +25,7 @@ import { useGlossary } from "@/lib/glossary";
 import { useInterviews } from "@/lib/interview-store";
 import { usePosterDrafts } from "@/lib/poster-store";
 import { useAllEntries } from "@/lib/useWorkshop";
+import { useSessionRecorder } from "@/lib/session-recorder";
 
 /** Generous cap: a two-day workshop including interview audio stays far below it. */
 const MAX_BACKUP_BYTES = 300 * 1024 * 1024;
@@ -66,7 +67,20 @@ function BackupSection({ lang }: { lang: Lang }) {
   const [done, setDone] = useState("");
   const [error, setError] = useState("");
   const [preview, setPreview] = useState<Preview | null>(null);
-  const [confirmReset, setConfirmReset] = useState(false);
+  // The reset button on /protokoll leads here, straight into the confirmation.
+  const location = useLocation();
+  const [confirmReset, setConfirmReset] = useState(() => (location.state as { reset?: boolean } | null)?.reset === true);
+  const resetRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Only on arrival from /protokoll, not on every later open of the confirmation.
+    if (!confirmReset) return;
+    resetRef.current?.scrollIntoView({ block: "center" });
+    // A reload of this page must not open the confirmation again.
+    navigate(location.pathname, { replace: true, state: null });
+  }, []);
+  const recorder = useSessionRecorder();
+  const unsavedRecording = Boolean(recorder.url || recorder.recovery);
   const [backupFirst, setBackupFirst] = useState(true);
   const [alsoKeys, setAlsoKeys] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -338,7 +352,7 @@ function BackupSection({ lang }: { lang: Lang }) {
       </div>
 
       {/* ---------------------------------------------------------- reset */}
-      <div className="space-y-2 pt-4" style={{ borderTop: "1px solid var(--border)" }}>
+      <div ref={resetRef} className="space-y-2 pt-4" style={{ borderTop: "1px solid var(--border)" }}>
         <div className={subHead} style={{ color: ERROR_COLOR }}>
           {de ? "Alles zurücksetzen" : "Reset everything"}
         </div>
@@ -386,17 +400,34 @@ function BackupSection({ lang }: { lang: Lang }) {
                     "alle Interviews samt Aufnahmen, Transkripten und Meinungsbildern",
                     "Posterfassungen und hochgeladene Bilder",
                     "Glossarbegriffe und den KI-Ergebnisbericht",
+                    "gespeicherte Sitzungsaufnahmen",
                   ]
                 : [
                     "all slide contributions and the record",
                     "all interviews including recordings, transcripts and opinion pictures",
                     "poster versions and uploaded images",
                     "glossary terms and the AI results report",
+                    "stored session recordings",
                   ]
               ).map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
+            {unsavedRecording && (
+              <p className="flex items-start gap-1.5 font-semibold" style={{ color: ERROR_COLOR }} data-testid="reset-recording-warning">
+                <AlertTriangle size={14} className="mt-px shrink-0" aria-hidden />
+                {de
+                  ? "Es liegt eine Sitzungsaufnahme vor, die nicht in der Sicherung enthalten ist. Bitte vorher über das Aufnahme-Menü oben herunterladen."
+                  : "There is a session recording that is not part of the backup. Please download it first via the recording menu at the top."}
+              </p>
+            )}
+            {recorder.recording && (
+              <p style={muted}>
+                {de
+                  ? "Die laufende Aufnahme wird nicht gelöscht und läuft weiter."
+                  : "The running recording is not deleted and keeps going."}
+              </p>
+            )}
             <label className="flex items-start gap-1.5 cursor-pointer">
               <input
                 type="checkbox"

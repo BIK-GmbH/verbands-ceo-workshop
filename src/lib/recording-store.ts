@@ -182,6 +182,16 @@ export async function deleteSession(sessionId: string): Promise<void> {
   });
 }
 
+/** Removes every stored run except `keepId` (a recording that is still running). */
+export async function deleteAllSessions(keepId?: string): Promise<void> {
+  const all = (await tx<RecordingSession[]>([SESSIONS], "readonly", (t) =>
+    t.objectStore(SESSIONS).getAll() as IDBRequest<RecordingSession[]>,
+  )) ?? [];
+  for (const s of all) {
+    if (s.id !== keepId) await deleteSession(s.id);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Reads
 

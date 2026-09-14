@@ -26,6 +26,7 @@ import {
   assembleSession,
   beginSession,
   closeSession,
+  deleteAllSessions,
   deleteSession,
   findAbandonedSession,
   isQuotaError,
@@ -379,6 +380,18 @@ export function discardRecording() {
   pendingSessionId = null;
   if (id) void deleteSession(id).catch((err) => console.error("[session-recorder] cleanup failed", err));
   emit({ url: null, seconds: 0 });
+}
+
+/**
+ * Reset of all workshop content: drops the finished recording, the recovery
+ * offer and every stored run. A recording that is still running keeps going —
+ * the reset must not silently switch off the microphone.
+ */
+export async function clearRecordings(): Promise<void> {
+  if (snapshot.url) URL.revokeObjectURL(snapshot.url);
+  pendingSessionId = null;
+  emit({ url: null, recovery: null, error: null, ...(snapshot.recording ? {} : { seconds: 0 }) });
+  await deleteAllSessions(snapshot.recording ? session?.id : undefined);
 }
 
 /**

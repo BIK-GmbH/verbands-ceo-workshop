@@ -4,7 +4,7 @@ import { ArrowLeft, FileDown, FileJson, Trash2, FileText, Home, Printer, FileTyp
 import { BulkPolishButton, EntryEditor, isEditableText } from "@/components/ProtocolAi";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries, useWorkshopMeta } from "@/lib/useWorkshop";
-import { exportMarkdown, exportJSON, downloadFile, clearAll } from "@/lib/workshop-store";
+import { exportMarkdown, exportJSON, downloadFile } from "@/lib/workshop-store";
 import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { AudioRecorder } from "@/components/AudioRecorder";
 import { ParticipantsEditor } from "@/components/ParticipantsEditor";
@@ -146,15 +146,13 @@ export function Protocol() {
           <Tooltip
             content={
               de
-                ? "Löscht alle Beiträge in diesem Browser unwiderruflich (mit Rückfrage). Vorher am besten als JSON oder Word sichern."
-                : "Deletes all contributions in this browser irrevocably (asks first). Best save as JSON or Word beforehand."
+                ? "Löscht alle Inhalte in diesem Browser: Beiträge, Poster, Glossar, Bericht, Interviews und Aufnahmen. Führt zur Rückfrage in den Einstellungen, dort lässt sich vorher eine Sicherung herunterladen."
+                : "Deletes all content in this browser: contributions, posters, glossary, report, interviews and recordings. Leads to the confirmation in the settings, where a backup can be downloaded first."
             }
           >
             <button
               type="button"
-              onClick={() => {
-                if (window.confirm(de ? "Alle Eingaben wirklich löschen?" : "Really delete all input?")) clearAll();
-              }}
+              onClick={() => navigate("/einstellungen", { state: { reset: true } })}
               className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm ml-auto"
               style={{ border: "1px solid var(--border)", color: "#dc2626" }}
             >
