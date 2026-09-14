@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, X, Sparkles, Loader2, ArrowUp, ArrowDown, Minus } from "lucide-react";
+import { Plus, X, Sparkles, Loader2, ArrowUp, ArrowDown, Minus, PenLine } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries, useCapture, useWorkshopMeta } from "@/lib/useWorkshop";
 import { removeEntry, setEntry, type CaptureEntry, type Participant } from "@/lib/workshop-store";
@@ -377,14 +377,14 @@ export function BarometerVotes({ slideId, field, prompt, options, compareSlideId
 
   return (
     <div
-      className="my-4 rounded-md border p-4"
-      style={{ borderColor: "var(--workshop-accent)", background: "color-mix(in oklch, var(--workshop-accent) 4%, transparent)" }}
+      className="ws-input-block my-4 rounded-md p-4"
     >
       <div className="flex items-start gap-2 mb-3">
         <span
-          className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 mt-0.5"
+          className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 mt-0.5"
           style={{ background: "var(--workshop-accent)", color: "white" }}
         >
+          <PenLine size={11} aria-hidden />
           {de ? "Eingabe" : "Input"}
         </span>
         <span className="text-sm font-medium leading-snug flex-1">{prompt}</span>

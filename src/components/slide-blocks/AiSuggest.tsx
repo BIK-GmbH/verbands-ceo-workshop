@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Loader2, Mic, MicOff, Sparkles, X } from "lucide-react";
+import { Check, Loader2, Mic, MicOff, Sparkles, X, PenLine } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries, useCapture } from "@/lib/useWorkshop";
 import { useDictation } from "@/lib/useDictation";
@@ -150,18 +150,15 @@ export function AiSuggest({
 
   return (
     <div
-      className="my-4 rounded-md border p-4"
-      style={{
-        borderColor: "var(--workshop-accent)",
-        background: "color-mix(in oklch, var(--workshop-accent) 4%, transparent)",
-      }}
+      className="ws-input-block my-4 rounded-md p-4"
       data-ai-suggest={id}
     >
       <div className="flex items-start gap-2 mb-2">
         <span
-          className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 mt-0.5"
+          className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 mt-0.5"
           style={{ background: "var(--workshop-accent)", color: "white" }}
         >
+          <PenLine size={11} aria-hidden />
           {de ? "Eingabe" : "Input"}
         </span>
         <label className="text-sm font-medium leading-snug flex-1">{prompt}</label>

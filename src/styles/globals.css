@@ -271,3 +271,37 @@ html[data-motion="off"] .accordion-content {
   /* Long URLs / inline code break instead of pushing layout */
   .slide-page a, .slide-page code { word-break: break-word; overflow-wrap: anywhere; }
 }
+
+/* ── Eingabe vs. Info / input vs. info blocks ───────────────────────
+ * One glance must tell where the room writes something down. Input blocks
+ * (WorkshopInput, CardCollector, votes, …) are opaque sheets lifted off the
+ * slide with a red edge on the left; info blocks (ExerciseCard, tips) stay flat
+ * and neutral. The red frame alone is not enough — slide diagrams use it too.
+ */
+.ws-input-block {
+  background: color-mix(in oklch, var(--workshop-accent) 3%, var(--bg));
+  border: 1px solid color-mix(in oklch, var(--workshop-accent) 40%, var(--border));
+  border-left: 4px solid var(--workshop-accent);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 6px 16px -8px color-mix(in oklch, var(--workshop-accent) 35%, transparent);
+}
+.ws-info-block {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+}
+.ws-info-chip {
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+/* On the dark ground a red tint turns brown; the lifted grey sheet plus the red edge reads cleaner. */
+[data-theme="dark"] .ws-input-block {
+  background: color-mix(in srgb, var(--workshop-accent) 5%, var(--bg-elev));
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 8px 20px -10px rgb(0 0 0 / 0.7);
+}
+@media print {
+  .ws-input-block { box-shadow: none; }
+}

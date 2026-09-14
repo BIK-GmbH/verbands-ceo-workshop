@@ -72,12 +72,8 @@ export function ParticipantsEditor({ readOnly = false }: Props) {
 
   return (
     <div
-      className="my-4 rounded-md border p-4"
-      style={{
-        borderColor: "var(--workshop-accent)",
-        background: "color-mix(in oklch, var(--workshop-accent) 4%, transparent)",
-        color: "var(--fg)",
-      }}
+      className="ws-input-block my-4 rounded-md p-4"
+      style={{ color: "var(--fg)" }}
     >
       <div className="flex items-center gap-2 mb-3">
         <Users size={16} style={{ color: "var(--workshop-accent)" }} aria-hidden />

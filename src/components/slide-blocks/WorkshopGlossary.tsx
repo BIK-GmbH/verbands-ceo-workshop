@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
-import { Check, CheckCheck, Loader2, Pencil, Plus, Sparkles, Trash2, X } from "lucide-react";
+import { Check, CheckCheck, Loader2, Pencil, Plus, Sparkles, Trash2, X, PenLine } from "lucide-react";
 import type { Lang } from "@/types/slide";
 import { useLang } from "@/lib/i18n";
 import { useAllEntries } from "@/lib/useWorkshop";
@@ -340,12 +340,12 @@ function GlossaryEditor({ lang }: { lang: Lang }) {
 
   return (
     <div
-      className="my-4 rounded-md border p-4 space-y-4 not-prose"
-      style={{ borderColor: "var(--workshop-accent)", background: "color-mix(in oklch, var(--workshop-accent) 4%, transparent)" }}
+      className="ws-input-block my-4 rounded-md p-4 space-y-4 not-prose"
       data-testid="workshop-glossary"
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0" style={accentStyle}>
+        <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0" style={accentStyle}>
+          <PenLine size={11} aria-hidden />
           {t.input}
         </span>
         <span className="text-sm font-medium flex-1 min-w-[12rem]">{t.heading}</span>

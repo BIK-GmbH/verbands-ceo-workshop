@@ -5,7 +5,8 @@ import { useLang, t } from "@/lib/i18n";
 type Variant = "tip" | "warning" | "hint";
 
 const VARIANTS: Record<Variant, { icon: string; color: string; bg: string }> = {
-  tip:     { icon: "💡", color: "var(--workshop-accent)", bg: "color-mix(in oklch, var(--workshop-accent) 7%, transparent)" },
+  // Neutral on purpose: red tint is reserved for blocks where the room writes something down.
+  tip:     { icon: "💡", color: "var(--fg-muted)",        bg: "var(--bg-elev)" },
   warning: { icon: "⚠️", color: "#b45309",                 bg: "rgba(245, 158, 11, 0.10)" },
   hint:    { icon: "ℹ️", color: "#0369a1",                 bg: "rgba(14, 165, 233, 0.08)" },
 };

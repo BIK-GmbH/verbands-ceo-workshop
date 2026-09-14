@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ClipboardList } from "lucide-react";
 import { useLang, t } from "@/lib/i18n";
 
 interface Props {
@@ -14,19 +15,10 @@ export function ExerciseCard({ duration, goal, title, children }: Props) {
   const heading = title ? title[lang] : t("exercise", lang);
 
   return (
-    <section
-      className="my-6 border rounded-lg p-5"
-      style={{
-        borderColor: "var(--workshop-accent)",
-        background:
-          "color-mix(in oklch, var(--workshop-accent) 6%, transparent)",
-      }}
-    >
-      <header className="flex items-center gap-3 mb-3">
-        <span
-          className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded"
-          style={{ background: "var(--workshop-accent)", color: "white" }}
-        >
+    <section className="ws-info-block my-6 rounded-lg p-5">
+      <header className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
+        <span className="ws-info-chip inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded">
+          <ClipboardList size={13} aria-hidden />
           {heading}
         </span>
         {duration && (
