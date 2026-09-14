@@ -8,6 +8,9 @@
  *   exists. With a connected backup folder (auto-backup.ts) it lands in the
  *   subfolders `transkripte/` and `aufnahmen/`; otherwise it is a normal download.
  *
+ * "All of a kind" is one zip file (zip.ts). Session transcripts are the full
+ * transcript of a session recording, built only from cleaned segment text.
+ *
  * The toggle is a device setting like theme or language: not part of a backup,
  * not touched by a reset. Transcript text is never logged.
  */
@@ -18,7 +21,16 @@ import { writeToBackupFolder } from "./auto-backup";
 import type { Interview } from "./interview-store";
 import { localDateStamp } from "./local-date";
 import type { RecordingSession } from "./recording-store";
+import { findSlide } from "./manifest";
+import {
+  formatOffset,
+  fullTranscriptText,
+  transcriptProgress,
+  type SessionTranscript,
+} from "./session-transcript-store";
+import { removedLabel, removedTotal, type RemovedCounts } from "./transcript-filter";
 import { extensionForMime, fileExtension, isAcceptedAudioName } from "./transcribe";
+import { createZip, type ZipEntry } from "./zip";
 
 export const TRANSCRIPT_FOLDER = "transkripte";
 export const AUDIO_FOLDER = "aufnahmen";
@@ -53,6 +65,78 @@ export function allTranscriptsFileName(): string {
   return `transkripte-${localDateStamp()}.md`;
 }
 
+export function sessionTranscriptFileName(t: SessionTranscript): string {
+  return `transkript-sitzung-${localTimeStamp(t.startedAt)}.md`;
+}
+
+export function transcriptsZipFileName(): string {
+  return `transkripte-${localDateStamp()}.zip`;
+}
+
+export function recordingsZipFileName(): string {
+  return `aufnahmen-${localDateStamp()}.zip`;
+}
+
+/** Recorded length of a session: the end of its last segment. */
+export function sessionDurationSec(t: SessionTranscript): number {
+  return t.segments.reduce((max, x) => Math.max(max, x.endSec), 0);
+}
+
+/** "3:45 h", under an hour "12 min" */
+export function formatHours(sec: number): string {
+  const s = Math.max(0, Math.round(sec));
+  if (s < 3600) return `${Math.round(s / 60)} min`;
+  return `${Math.floor(s / 3600)}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")} h`;
+}
+
+export function sessionRemoved(t: SessionTranscript): RemovedCounts {
+  return t.segments.reduce(
+    (acc, x) => ({ privat: acc.privat + (x.removed?.privat ?? 0), unangemessen: acc.unangemessen + (x.removed?.unangemessen ?? 0) }),
+    { privat: 0, unangemessen: 0 },
+  );
+}
+
+/** Closed and every segment cleaned — only then the transcript is final. */
+export function isSessionTranscriptComplete(t: SessionTranscript): boolean {
+  const p = transcriptProgress(t);
+  return t.closed && p.total > 0 && p.done === p.total;
+}
+
+function removedLine(r: RemovedCounts | undefined): string {
+  const n = removedTotal(r);
+  if (!n || !r) return "- Bereinigung: keine Passagen entfernt";
+  return `- Bereinigung: ${removedLabel(r, "de")} (privat: ${r.privat}, unangemessen: ${r.unangemessen})`;
+}
+
+/**
+ * The full transcript of one session as a stand-alone document. Uses only the
+ * cleaned text; segments that are not transcribed or not cleaned yet are named
+ * as gaps (fullTranscriptText).
+ */
+export function sessionTranscriptMarkdown(t: SessionTranscript, heading = "#"): string {
+  const p = transcriptProgress(t);
+  const models = [...new Set(t.segments.map((x) => x.model).filter(Boolean))].join(", ");
+  const marks = t.segments.flatMap((x) => x.slides);
+  const course = marks.filter((m, i) => i === 0 || marks[i - 1].slideId !== m.slideId);
+  const lines = [
+    `${heading} Transkript: Sitzungsmitschnitt ${formatDate(t.startedAt, "de")}`,
+    "",
+    "- Workshop: KI-Geschäftsführer: Fiktion oder Realität?",
+    `- Beginn: ${formatDate(t.startedAt, "de")}`,
+    `- Dauer: ${formatHours(sessionDurationSec(t))}`,
+    `- Abschnitte: ${p.done} von ${p.total} transkribiert und bereinigt${p.failed ? ` · ${p.failed} fehlgeschlagen` : ""}${t.closed ? "" : " · Aufnahme läuft noch"}`,
+    `- Transkription: ${models || "—"}`,
+    removedLine(sessionRemoved(t)),
+    "- Private und unangemessene Passagen sind durch eine Markierung ersetzt.",
+  ];
+  if (course.length) {
+    lines.push("", `${heading}# Folienverlauf`, "");
+    for (const m of course) lines.push(`- [${formatOffset(m.atSec)}] ${m.slideId} · ${findSlide(m.slideId)?.title.de ?? ""}`.trimEnd());
+  }
+  lines.push("", `${heading}# Wortlaut`, "", fullTranscriptText(t) || "_(noch keine Abschnitte)_");
+  return lines.join("\n") + "\n";
+}
+
 /** One interview as Markdown: the facts first, then transcript and opinion picture. */
 export function transcriptMarkdown(iv: Interview, heading = "#"): string {
   const lines = [
@@ -62,6 +146,7 @@ export function transcriptMarkdown(iv: Interview, heading = "#"): string {
     `- Dauer: ${formatDuration(iv.durationSec)}`,
     `- Quelle: ${iv.source === "recorded" ? "Aufnahme in der App" : `hochgeladene Datei (${iv.fileName})`}`,
     `- Transkription: ${iv.transcriptModel ?? "—"}`,
+    ...(iv.transcript?.trim() ? [removedLine(iv.transcriptRemoved)] : []),
     "",
     `${heading}# Wortlaut`,
     "",
@@ -226,11 +311,36 @@ export function autoSaveSessionRecording(blob: Blob, session: RecordingSession):
   return autoSave("audio", name, () => saveFile(AUDIO_FOLDER, name, blob));
 }
 
+/** Once a session transcript is final — or, into the backup folder only, as an interim version when the recording ends. */
+export function autoSaveSessionTranscript(t: SessionTranscript, target: SaveTarget = "auto"): Promise<SavedFile | null> {
+  const name = sessionTranscriptFileName(t);
+  return autoSave("transcript", name, () => saveFile(TRANSCRIPT_FOLDER, name, markdownBlob(sessionTranscriptMarkdown(t)), target));
+}
+
+export function downloadSessionTranscript(t: SessionTranscript) {
+  downloadBlob(markdownBlob(sessionTranscriptMarkdown(t)), sessionTranscriptFileName(t));
+}
+
+/** One zip: a Markdown file per interview transcript and per session transcript. */
+export function transcriptsZip(interviews: Interview[], sessions: SessionTranscript[]): Promise<Blob> {
+  const entries: ZipEntry[] = [
+    ...interviews
+      .filter((iv) => iv.transcript?.trim())
+      .map((iv) => ({ name: transcriptFileName(iv), data: markdownBlob(transcriptMarkdown(iv)), date: new Date(iv.createdAt) })),
+    ...sessions
+      .filter((t) => t.segments.length > 0)
+      .map((t) => ({ name: sessionTranscriptFileName(t), data: markdownBlob(sessionTranscriptMarkdown(t)), date: new Date(t.startedAt) })),
+  ];
+  return createZip(entries);
+}
+
 export function downloadTranscript(iv: Interview) {
   downloadBlob(markdownBlob(transcriptMarkdown(iv)), transcriptFileName(iv));
 }
 
-export function downloadAllTranscripts(list: Interview[]) {
-  downloadBlob(markdownBlob(allTranscriptsMarkdown(list)), allTranscriptsFileName());
+export async function downloadAllTranscripts(interviews: Interview[], sessions: SessionTranscript[]): Promise<string> {
+  const name = transcriptsZipFileName();
+  downloadBlob(await transcriptsZip(interviews, sessions), name);
+  return name;
 }
 

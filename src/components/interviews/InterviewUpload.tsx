@@ -241,8 +241,8 @@ export function InterviewUpload({
             <span className="leading-snug">
               <strong>{de ? "Einwilligung bestätigen: " : "Confirm consent: "}</strong>
               {de
-                ? "Die befragten Personen haben der Aufnahme und der Verarbeitung zugestimmt (Speicherung auf diesem Gerät, Transkription über OpenAI, Zusammenfassung über Anthropic, Löschung nach dem Workshop)."
-                : "The interviewees agreed to the recording and its processing (storage on this device, transcription via OpenAI, summarisation via Anthropic, deletion after the workshop)."}
+                ? "Die befragten Personen haben der Aufnahme und der Verarbeitung zugestimmt (Speicherung auf diesem Gerät, Transkription über OpenAI, Bereinigung und Zusammenfassung über Anthropic, Löschung nach dem Workshop)."
+                : "The interviewees agreed to the recording and its processing (storage on this device, transcription via OpenAI, cleaning and summarisation via Anthropic, deletion after the workshop)."}
             </span>
           </label>
 

@@ -318,8 +318,8 @@ export function InterviewRecorder({
         <span className="leading-snug">
           <strong>{de ? "Einwilligung (Pflicht): " : "Consent (required): "}</strong>
           {de
-            ? "Die befragte Person ist einverstanden, dass das Interview aufgezeichnet und lokal auf diesem Gerät gespeichert wird, dass die Aufnahme zur Transkription an OpenAI und das Transkript zur Zusammenfassung an Anthropic (Claude) übertragen wird und dass Aufnahme und Transkript nach dem Workshop gelöscht werden. Die Einwilligung kann jederzeit widerrufen werden."
-            : "The interviewee agrees that the interview is recorded and stored locally on this device, that the recording is sent to OpenAI for transcription and the transcript to Anthropic (Claude) for summarisation, and that recording and transcript are deleted after the workshop. Consent can be withdrawn at any time."}
+            ? "Die befragte Person ist einverstanden, dass das Interview aufgezeichnet und lokal auf diesem Gerät gespeichert wird, dass die Aufnahme zur Transkription an OpenAI und das Transkript zur Bereinigung von privaten und unangemessenen Passagen sowie zur Zusammenfassung an Anthropic (Claude) übertragen wird und dass Aufnahme und Transkript nach dem Workshop gelöscht werden. Die Einwilligung kann jederzeit widerrufen werden."
+            : "The interviewee agrees that the interview is recorded and stored locally on this device, that the recording is sent to OpenAI for transcription and the transcript to Anthropic (Claude) for removing private and inappropriate passages and for summarisation, and that recording and transcript are deleted after the workshop. Consent can be withdrawn at any time."}
         </span>
       </label>
 

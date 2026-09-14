@@ -348,11 +348,11 @@ export const HELP_SECTIONS: HelpSection[] = [
         id: "task-aufnahme",
         title: { de: "Die Sitzung mitschneiden", en: "Record the session" },
         body: {
-          de: "Über das Rekorder-Menü in der Kopfzeile oder im Protokoll starten – nach Ansage im Raum und Zustimmung. Der Mitschnitt läuft über Folienwechsel weiter und wird am Ende als Audiodatei heruntergeladen.",
-          en: "Start it from the recorder menu in the header or in the record – after announcing it in the room and getting consent. The recording continues across slide changes and is downloaded as an audio file at the end.",
+          de: "Über das Rekorder-Menü in der Kopfzeile oder im Protokoll starten – nach Ansage im Raum und Zustimmung. Der Mitschnitt läuft über Folienwechsel weiter und wird am Ende als Audiodatei heruntergeladen. Mit „Mitschnitt laufend transkribieren“ entsteht nebenbei alle fünf Minuten ein Transkript-Abschnitt (OpenAI), den Claude von privaten und unangemessenen Passagen bereinigt; das Volltranskript steht unter Einstellungen → „Transkripte & Aufnahmen“.",
+          en: "Start it from the recorder menu in the header or in the record – after announcing it in the room and getting consent. The recording continues across slide changes and is downloaded as an audio file at the end. With “Transcribe the recording as it runs” a transcript segment is created every five minutes (OpenAI) and cleaned of private and inappropriate passages by Claude; the full transcript is under Settings → “Transcripts & recordings”.",
         },
         links: [RECORD],
-        keywords: { de: "audio mitschnitt rekorder einwilligung", en: "audio recording recorder consent" },
+        keywords: { de: "audio mitschnitt rekorder einwilligung transkript volltranskript", en: "audio recording recorder consent transcript full transcript" },
       },
       {
         id: "task-praesentieren",
@@ -503,8 +503,8 @@ export const HELP_SECTIONS: HelpSection[] = [
         id: "note-transfer",
         title: { de: "Was das Gerät verlässt", en: "What leaves the device" },
         body: {
-          de: "Das Diktat nutzt die Spracherkennung des Browsers, die Transkription schickt die Tonaufnahme an OpenAI, die übrigen KI-Funktionen schicken den jeweiligen Text an Anthropic. Schlüssel, Teilnehmerliste und Pseudonyme werden nie mitgesendet. Aufnahmen starten erst nach ausdrücklicher Zustimmung – im Raum ansagen.",
-          en: "Dictation uses the browser's speech recognition, transcription sends the audio to OpenAI, the other AI features send the respective text to Anthropic. Keys, participant list and pseudonyms are never sent along. Recordings only start after explicit consent – announce it in the room.",
+          de: "Das Diktat nutzt die Spracherkennung des Browsers, die Transkription schickt die Tonaufnahme an OpenAI (beim Mitschnitt nur, wenn laufendes Transkribieren eingeschaltet ist, und dann abschnittsweise), Claude bereinigt jedes Transkript von privaten und unangemessenen Passagen, bevor es gespeichert wird, die übrigen KI-Funktionen schicken den jeweiligen Text an Anthropic. Schlüssel, Teilnehmerliste und Pseudonyme werden nie mitgesendet. Aufnahmen starten erst nach ausdrücklicher Zustimmung – im Raum ansagen.",
+          en: "Dictation uses the browser's speech recognition, transcription sends the audio to OpenAI (for the session recording only when live transcription is switched on, and then in segments), Claude cleans every transcript of private and inappropriate passages before it is stored, the other AI features send the respective text to Anthropic. Keys, participant list and pseudonyms are never sent along. Recordings only start after explicit consent – announce it in the room.",
         },
         keywords: { de: "datenschutz dsgvo einwilligung übertragung", en: "privacy gdpr consent transfer" },
       },

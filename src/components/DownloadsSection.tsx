@@ -4,24 +4,31 @@ import { Download, FileAudio, FileText, FolderOpen, Loader2, Trash2 } from "luci
 import type { Lang } from "@/types/slide";
 import {
   AUDIO_FOLDER,
-  DOWNLOAD_GAP_MS,
   TRANSCRIPT_FOLDER,
   allTranscriptsFileName,
   allTranscriptsMarkdown,
   downloadAllTranscripts,
+  downloadSessionTranscript,
   downloadTranscript,
+  formatHours,
   interviewAudioFileName,
   markdownBlob,
+  recordingsZipFileName,
   saveFile,
+  sessionDurationSec,
   sessionFileName,
+  sessionRemoved,
+  sessionTranscriptFileName,
+  sessionTranscriptMarkdown,
   setAutoExportEnabled,
   transcriptFileName,
   transcriptMarkdown,
   useAutoExportEnabled,
   useAutoExportStatus,
-  wait,
-  type SaveTarget,
 } from "@/lib/auto-export";
+import { transcriptProgress, useSessionTranscripts } from "@/lib/session-transcript-store";
+import { removedLabel } from "@/lib/transcript-filter";
+import { ZipTooLargeError, createZip, type ZipEntry } from "@/lib/zip";
 import { useAutoBackup } from "@/lib/auto-backup";
 import { useInterviews, type Interview } from "@/lib/interview-store";
 import { RECORDING_STORE_EVENT, assembleSession, listSessions, type RecordingSession } from "@/lib/recording-store";
@@ -67,6 +74,7 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
   const de = lang === "de";
   const { interviews } = useInterviews();
   const { sessions, failed } = useStoredSessions();
+  const { sessions: sessionTranscripts } = useSessionTranscripts();
   const autoOn = useAutoExportEnabled();
   const { last } = useAutoExportStatus();
   const backup = useAutoBackup();
@@ -89,6 +97,8 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
 
   const running = runningSessionId();
   const transcripts = interviews.filter((iv) => iv.transcript?.trim());
+  const sessionDocs = sessionTranscripts.filter((t) => t.segments.length > 0);
+  const transcriptCount = transcripts.length + sessionDocs.length;
   const audio: AudioItem[] = [
     ...interviews.flatMap((iv): AudioItem[] => (iv.audio ? [{ kind: "interview", key: `iv:${iv.id}`, iv, blob: iv.audio }] : [])),
     ...sessions.map((s): AudioItem => ({ kind: "session", key: `rec:${s.id}`, session: s, running: s.id === running })),
@@ -136,43 +146,91 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
     }
   }
 
-  async function saveAllAudio(target: SaveTarget) {
+  /** All recordings as one zip: assembling the session recordings and the checksums take a moment, hence the progress. */
+  async function downloadAllAudioZip() {
     const items = downloadableAudio;
     if (!items.length) return;
-    setBusy(`audio-all:${target}`);
+    setBusy("audio-all:download");
+    setProgress({ done: 0, total: items.length });
+    try {
+      const entries: ZipEntry[] = [];
+      for (const [i, item] of items.entries()) {
+        const file = await audioFile(item);
+        if (file) {
+          const date = new Date(item.kind === "interview" ? item.iv.createdAt : item.session.startedAt);
+          entries.push({ name: file.name, data: file.blob, date });
+        }
+        setProgress({ done: i + 1, total: items.length });
+      }
+      const name = recordingsZipFileName();
+      downloadBlob(await createZip(entries), name);
+      notify(
+        de
+          ? `Heruntergeladen: ${name} (${entries.length} ${entries.length === 1 ? "Aufnahme" : "Aufnahmen"}).`
+          : `Downloaded: ${name} (${entries.length} ${entries.length === 1 ? "recording" : "recordings"}).`,
+      );
+    } catch (err) {
+      fail(
+        err instanceof ZipTooLargeError
+          ? de
+            ? "Zusammen sind die Aufnahmen größer als 4 GB – bitte einzeln herunterladen."
+            : "Together the recordings exceed 4 GB – please download them one by one."
+          : de
+            ? "Die Zip-Datei konnte nicht erstellt werden. Bitte erneut versuchen oder einzeln herunterladen."
+            : "The zip file could not be created. Please retry or download them one by one.",
+        { count: items.length },
+        err,
+      );
+    } finally {
+      setBusy(null);
+      setProgress(null);
+    }
+  }
+
+  async function saveAllAudioToFolder() {
+    const items = downloadableAudio;
+    if (!items.length) return;
+    setBusy("audio-all:folder");
     setProgress({ done: 0, total: items.length });
     let saved = 0;
     try {
       for (const item of items) {
         const file = await audioFile(item);
         if (file) {
-          const res = await saveFile(AUDIO_FOLDER, file.name, file.blob, target);
+          const res = await saveFile(AUDIO_FOLDER, file.name, file.blob, "folder");
           if (!res) throw new Error("backup folder not available");
           saved++;
-          if (target === "download") await wait(DOWNLOAD_GAP_MS);
         }
         setProgress({ done: saved, total: items.length });
       }
       notify(
-        target === "folder"
-          ? de
-            ? `${saved} ${saved === 1 ? "Aufnahme" : "Aufnahmen"} in „${folder?.name}/${AUDIO_FOLDER}“ gespeichert.`
-            : `${saved} ${saved === 1 ? "recording" : "recordings"} saved to “${folder?.name}/${AUDIO_FOLDER}”.`
-          : de
-            ? `${saved} ${saved === 1 ? "Aufnahme" : "Aufnahmen"} heruntergeladen.`
-            : `${saved} ${saved === 1 ? "recording" : "recordings"} downloaded.`,
+        de
+          ? `${saved} ${saved === 1 ? "Aufnahme" : "Aufnahmen"} in „${folder?.name}/${AUDIO_FOLDER}“ gespeichert.`
+          : `${saved} ${saved === 1 ? "recording" : "recordings"} saved to “${folder?.name}/${AUDIO_FOLDER}”.`,
       );
     } catch (err) {
       fail(
         de
           ? `Nach ${saved} von ${items.length} Aufnahmen abgebrochen. Bitte erneut versuchen oder einzeln herunterladen.`
           : `Stopped after ${saved} of ${items.length} recordings. Please retry or download them one by one.`,
-        { target, saved, total: items.length },
+        { saved, total: items.length },
         err,
       );
     } finally {
       setBusy(null);
       setProgress(null);
+    }
+  }
+
+  async function downloadAllTranscriptsZip() {
+    setBusy("transcripts-all");
+    try {
+      const name = await downloadAllTranscripts(transcripts, sessionDocs);
+      notify(de ? `Heruntergeladen: ${name} (${transcriptCount} ${transcriptCount === 1 ? "Transkript" : "Transkripte"}).` : `Downloaded: ${name} (${transcriptCount} ${transcriptCount === 1 ? "transcript" : "transcripts"}).`);
+    } catch (err) {
+      fail(de ? "Die Zip-Datei mit den Transkripten konnte nicht erstellt werden." : "The zip file with the transcripts could not be created.", { count: transcriptCount }, err);
+    } finally {
+      setBusy(null);
     }
   }
 
@@ -185,14 +243,19 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
         if (!res) throw new Error("backup folder not available");
         count++;
       }
-      await saveFile(TRANSCRIPT_FOLDER, allTranscriptsFileName(), markdownBlob(allTranscriptsMarkdown(transcripts)), "folder");
+      for (const t of sessionDocs) {
+        const res = await saveFile(TRANSCRIPT_FOLDER, sessionTranscriptFileName(t), markdownBlob(sessionTranscriptMarkdown(t)), "folder");
+        if (!res) throw new Error("backup folder not available");
+        count++;
+      }
+      if (transcripts.length) await saveFile(TRANSCRIPT_FOLDER, allTranscriptsFileName(), markdownBlob(allTranscriptsMarkdown(transcripts)), "folder");
       notify(
         de
-          ? `${count} ${count === 1 ? "Transkript" : "Transkripte"} und die Gesamtdatei in „${folder?.name}/${TRANSCRIPT_FOLDER}“ gespeichert.`
-          : `${count} ${count === 1 ? "transcript" : "transcripts"} and the combined file saved to “${folder?.name}/${TRANSCRIPT_FOLDER}”.`,
+          ? `${count} ${count === 1 ? "Transkript" : "Transkripte"} in „${folder?.name}/${TRANSCRIPT_FOLDER}“ gespeichert.`
+          : `${count} ${count === 1 ? "transcript" : "transcripts"} saved to “${folder?.name}/${TRANSCRIPT_FOLDER}”.`,
       );
     } catch (err) {
-      fail(de ? "Die Transkripte konnten nicht in den Sicherungsordner geschrieben werden." : "The transcripts could not be written to the backup folder.", { count: transcripts.length }, err);
+      fail(de ? "Die Transkripte konnten nicht in den Sicherungsordner geschrieben werden." : "The transcripts could not be written to the backup folder.", { count: transcriptCount }, err);
     } finally {
       setBusy(null);
     }
@@ -223,8 +286,8 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
         </h2>
         <p className="text-xs leading-snug" style={muted}>
           {de
-            ? "Alles, was auf diesem Gerät transkribiert und aufgenommen wurde, als eigene Dateien: Transkripte als lesbare Markdown-Datei (öffnet in jedem Texteditor und in Word), Aufnahmen im Originalformat."
-            : "Everything transcribed and recorded on this device as separate files: transcripts as readable Markdown (opens in any text editor and in Word), recordings in their original format."}
+            ? "Alles, was auf diesem Gerät transkribiert und aufgenommen wurde, als eigene Dateien: Transkripte als lesbare Markdown-Datei (öffnet in jedem Texteditor und in Word), Aufnahmen im Originalformat. „Alle herunterladen“ packt sie in eine Zip-Datei. Transkripte sind von privaten und unangemessenen Passagen bereinigt."
+            : "Everything transcribed and recorded on this device as separate files: transcripts as readable Markdown (opens in any text editor and in Word), recordings in their original format. “Download all” packs them into one zip file. Transcripts are cleaned of private and inappropriate passages."}
         </p>
       </div>
 
@@ -243,11 +306,11 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
             <span className="block text-xs leading-snug mt-0.5" style={muted}>
               {folder
                 ? de
-                  ? `Jedes neue Interview-Transkript, jede Interview-Aufnahme und jede beendete Sitzungsaufnahme landet sofort im Sicherungsordner „${folder.name}“ (Unterordner „${TRANSCRIPT_FOLDER}“ und „${AUDIO_FOLDER}“).${folderReady ? "" : " Solange der Ordner nach einem Browser-Neustart noch nicht wieder freigegeben ist, wird stattdessen heruntergeladen."}`
-                  : `Every new interview transcript, interview recording and finished session recording goes straight into the backup folder “${folder.name}” (subfolders “${TRANSCRIPT_FOLDER}” and “${AUDIO_FOLDER}”).${folderReady ? "" : " Until the folder is granted again after a browser restart, files are downloaded instead."}`
+                  ? `Jedes neue Interview-Transkript, jede Interview-Aufnahme, jede beendete Sitzungsaufnahme und jedes fertige Sitzungstranskript landet sofort im Sicherungsordner „${folder.name}“ (Unterordner „${TRANSCRIPT_FOLDER}“ und „${AUDIO_FOLDER}“).${folderReady ? "" : " Solange der Ordner nach einem Browser-Neustart noch nicht wieder freigegeben ist, wird stattdessen heruntergeladen."}`
+                  : `Every new interview transcript, interview recording, finished session recording and completed session transcript goes straight into the backup folder “${folder.name}” (subfolders “${TRANSCRIPT_FOLDER}” and “${AUDIO_FOLDER}”).${folderReady ? "" : " Until the folder is granted again after a browser restart, files are downloaded instead."}`
                 : de
-                  ? "Jedes neue Interview-Transkript, jede Interview-Aufnahme und jede beendete Sitzungsaufnahme wird sofort heruntergeladen. Chrome fragt beim zweiten Mal einmal, ob die Seite mehrere Dateien herunterladen darf – bitte erlauben. Mit einem Sicherungsordner (oben) landen die Dateien stattdessen dort."
-                  : "Every new interview transcript, interview recording and finished session recording is downloaded right away. Chrome asks once, on the second file, whether the page may download multiple files – please allow. With a backup folder (above) the files go there instead."}
+                  ? "Jedes neue Interview-Transkript, jede Interview-Aufnahme, jede beendete Sitzungsaufnahme und jedes fertige Sitzungstranskript wird sofort heruntergeladen. Chrome fragt beim zweiten Mal einmal, ob die Seite mehrere Dateien herunterladen darf – bitte erlauben. Mit einem Sicherungsordner (oben) landen die Dateien stattdessen dort."
+                  : "Every new interview transcript, interview recording, finished session recording and completed session transcript is downloaded right away. Chrome asks once, on the second file, whether the page may download multiple files – please allow. With a backup folder (above) the files go there instead."}
             </span>
           </span>
         </label>
@@ -263,11 +326,13 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
       <div className="space-y-2">
         <div className={subHead}>
           <FileText size={16} style={{ color: "var(--workshop-accent)" }} aria-hidden />
-          {de ? `Transkripte (${transcripts.length})` : `Transcripts (${transcripts.length})`}
+          {de ? `Transkripte (${transcriptCount})` : `Transcripts (${transcriptCount})`}
         </div>
-        {transcripts.length === 0 ? (
+        {transcriptCount === 0 ? (
           <p className="text-xs" style={muted}>
-            {de ? "Noch keine Transkripte. Sie entstehen auf der Seite KI-Interviews." : "No transcripts yet. They are created on the AI interviews page."}
+            {de
+              ? "Noch keine Transkripte. Sie entstehen auf der Seite KI-Interviews und – wenn eingeschaltet – laufend aus der Sitzungsaufnahme."
+              : "No transcripts yet. They are created on the AI interviews page and – when switched on – continuously from the session recording."}
           </p>
         ) : (
           <>
@@ -278,16 +343,38 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
                   <span className="text-xs" style={muted}>
                     {formatDate(iv.createdAt, lang)} · {iv.transcript?.split(/\s+/).filter(Boolean).length ?? 0} {de ? "Wörter" : "words"}
                     {iv.opinion ? (de ? " · mit Meinungsbild" : " · with opinion picture") : ""}
+                    {removedLabel(iv.transcriptRemoved, lang) ? ` · ${removedLabel(iv.transcriptRemoved, lang)}` : ""}
                   </span>
                   <button type="button" onClick={() => downloadTranscript(iv)} disabled={locked} className={`${BTN_SM} ml-auto`} style={outline}>
                     <Download size={12} /> {de ? "Herunterladen" : "Download"}
                   </button>
                 </li>
               ))}
+              {sessionDocs.map((t) => {
+                const p = transcriptProgress(t);
+                const removed = removedLabel(sessionRemoved(t), lang);
+                return (
+                  <li key={t.sessionId} className={row} style={{ background: "var(--bg)", border: "1px solid var(--border)" }} data-kind="session-transcript">
+                    <span className="font-medium">
+                      {de ? "Sitzung" : "Session"} {formatDate(t.startedAt, lang)}
+                    </span>
+                    <span className="text-xs" style={muted}>
+                      {formatHours(sessionDurationSec(t))} · {p.done}/{p.total} {de ? "Abschnitte" : "segments"}
+                      {p.failed ? (de ? ` · ${p.failed} fehlgeschlagen` : ` · ${p.failed} failed`) : ""}
+                      {t.closed ? "" : de ? " · Aufnahme läuft" : " · recording"}
+                      {removed ? ` · ${removed}` : ""}
+                    </span>
+                    <button type="button" onClick={() => downloadSessionTranscript(t)} disabled={locked} className={`${BTN_SM} ml-auto`} style={outline}>
+                      <Download size={12} /> {de ? "Herunterladen" : "Download"}
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
             <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={() => downloadAllTranscripts(transcripts)} disabled={locked} className={BTN} style={outline} data-testid="downloads-transcripts-all">
-                <Download size={15} /> {de ? "Alle Transkripte herunterladen (eine Datei)" : "Download all transcripts (one file)"}
+              <button type="button" onClick={() => void downloadAllTranscriptsZip()} disabled={locked} className={BTN} style={outline} data-testid="downloads-transcripts-all">
+                {busy === "transcripts-all" ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
+                {de ? "Alle Transkripte herunterladen (Zip)" : "Download all transcripts (zip)"}
               </button>
               {folderReady && (
                 <button type="button" onClick={() => void saveAllTranscriptsToFolder()} disabled={locked} className={BTN} style={outline}>
@@ -389,19 +476,19 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={() => void saveAllAudio("download")}
+                onClick={() => void downloadAllAudioZip()}
                 disabled={locked || downloadableAudio.length === 0}
                 className={BTN}
                 style={outline}
                 data-testid="downloads-audio-all"
               >
                 {busy === "audio-all:download" ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
-                {de ? `Alle Aufnahmen herunterladen (${downloadableAudio.length} Dateien)` : `Download all recordings (${downloadableAudio.length} files)`}
+                {de ? `Alle Aufnahmen herunterladen (Zip, ${downloadableAudio.length} ${downloadableAudio.length === 1 ? "Datei" : "Dateien"})` : `Download all recordings (zip, ${downloadableAudio.length} ${downloadableAudio.length === 1 ? "file" : "files"})`}
               </button>
               {folderReady && (
                 <button
                   type="button"
-                  onClick={() => void saveAllAudio("folder")}
+                  onClick={() => void saveAllAudioToFolder()}
                   disabled={locked || downloadableAudio.length === 0}
                   className={BTN}
                   style={outline}
@@ -418,8 +505,8 @@ export function DownloadsSection({ lang }: { lang: Lang }) {
             </div>
             <p className="text-xs leading-snug" style={muted}>
               {de
-                ? "Mehrere Aufnahmen kommen als einzelne Dateien nacheinander. Chrome fragt dabei einmal, ob die Seite mehrere Dateien herunterladen darf. Sitzungsaufnahmen sind nicht in der Sicherung enthalten."
-                : "Several recordings arrive as separate files one after another. Chrome asks once whether the page may download multiple files. Session recordings are not part of the backup."}
+                ? "„Alle Aufnahmen herunterladen“ erzeugt eine Zip-Datei; bei langen Sitzungsaufnahmen kann sie mehrere Hundert MB groß werden. Sitzungsaufnahmen sind nicht in der Sicherung enthalten, ihre Transkripte schon."
+                : "“Download all recordings” creates one zip file; with long session recordings it can be several hundred MB. Session recordings are not part of the backup, their transcripts are."}
             </p>
           </>
         )}

@@ -2,7 +2,9 @@
  * Sicherung & Zurücksetzen — the whole content state of the workshop in one file.
  *
  * Everything the two days produce lives in this browser only: five localStorage
- * keys plus the interview database. A cleared cache, a swapped laptop or a
+ * keys plus the interview database and the session transcripts. The session
+ * recording itself is not part of a backup (hours of audio); its cleaned
+ * transcript is. A cleared cache, a swapped laptop or a
  * mis-clicked reset would cost the day's work, so the facilitator can write it
  * all to a JSON file and read it back.
  *
@@ -21,6 +23,8 @@ import {
   GROUP_OPINION_KEY,
   INTERVIEW_EXPORT_FORMAT,
   INTERVIEW_EXPORT_VERSION,
+  base64ToBlob,
+  blobToBase64,
   clearAllInterviews,
   exportInterviewFile,
   getAllInterviews,
@@ -33,6 +37,15 @@ import {
 import { POSTER_KEY, clearPosterState, replacePosterState, type PosterState } from "./poster-store";
 import { REPORT_KEY, clearReport, restoreReport, type StoredReport } from "./report";
 import { clearRecordings } from "./session-recorder";
+import {
+  clearSessionTranscripts,
+  getAllSessionTranscripts,
+  replaceSessionTranscripts,
+  type SegmentStatus,
+  type SessionTranscript,
+  type SlideMark,
+  type TranscriptSegment,
+} from "./session-transcript-store";
 import { setOpenAiKey } from "./transcribe";
 import { WORKSHOP_KEY, clearAll, downloadFile, replaceState, type WorkshopState } from "./workshop-store";
 
@@ -57,6 +70,17 @@ export interface BackupFile {
   withAudio: boolean;
   stores: BackupStores;
   interviews: ExportedInterview[];
+  /** Absent in files written before session transcription existed */
+  sessionTranscripts?: ExportedSessionTranscript[];
+}
+
+/**
+ * A session transcript as it travels in a backup: cleaned text, slide marks and
+ * status. Never the uncleaned speech-to-text result; segment audio only in a
+ * backup with recordings (it exists only for segments not transcribed yet).
+ */
+export interface ExportedSessionTranscript extends Omit<SessionTranscript, "segments"> {
+  segments: (Omit<TranscriptSegment, "audio" | "rawText"> & { audio?: { mimeType: string; base64: string } })[];
 }
 
 /** What the file holds — shown as a preview before it replaces anything. */
@@ -68,6 +92,8 @@ export interface BackupSummary {
   glossaryTerms: number;
   withAudio: boolean;
   hasReport: boolean;
+  /** Session transcripts in the file (0 for older files) */
+  sessionTranscripts: number;
 }
 
 /** Everything a summary counts, so a live count and a file summary read the same. */
@@ -181,6 +207,13 @@ export async function collectBackup({ includeAudio }: { includeAudio: boolean })
     console.error("[backup] could not read the interview database", err);
   }
 
+  let sessionTranscripts: ExportedSessionTranscript[] = [];
+  try {
+    sessionTranscripts = await exportSessionTranscripts(includeAudio);
+  } catch (err) {
+    console.error("[backup] could not read the session transcripts", err);
+  }
+
   return {
     format: BACKUP_FORMAT,
     version: BACKUP_VERSION,
@@ -188,7 +221,31 @@ export async function collectBackup({ includeAudio }: { includeAudio: boolean })
     withAudio: includeAudio,
     stores,
     interviews,
+    sessionTranscripts,
   };
+}
+
+async function exportSessionTranscripts(includeAudio: boolean): Promise<ExportedSessionTranscript[]> {
+  const out: ExportedSessionTranscript[] = [];
+  for (const t of await getAllSessionTranscripts()) {
+    const segments: ExportedSessionTranscript["segments"] = [];
+    for (const seg of t.segments) {
+      // rawText is the uncleaned text: it never leaves the device.
+      const { audio, rawText: _raw, ...rest } = seg;
+      void _raw;
+      // A segment waiting for its cleaning counts as not transcribed in the file.
+      const status: SegmentStatus = rest.status === "done" ? "done" : rest.status === "failed" ? "failed" : "pending";
+      const exported: ExportedSessionTranscript["segments"][number] = { ...rest, status };
+      if (status !== "done") {
+        delete exported.text;
+        delete exported.model;
+      }
+      if (includeAudio && audio && status !== "done") exported.audio = { mimeType: audio.type || seg.mimeType, base64: await blobToBase64(audio) };
+      segments.push(exported);
+    }
+    out.push({ ...t, segments });
+  }
+  return out;
 }
 
 /** `workshop-sicherung-2026-09-16-1430.json` — local time, so the name matches the wall clock. */
@@ -233,7 +290,68 @@ function validate(file: unknown): BackupFile {
     withAudio: f.withAudio === true,
     stores,
     interviews: Array.isArray(f.interviews) ? (f.interviews as ExportedInterview[]) : [],
+    sessionTranscripts: Array.isArray(f.sessionTranscripts) ? (f.sessionTranscripts as ExportedSessionTranscript[]) : [],
   };
+}
+
+const STATUSES: SegmentStatus[] = ["pending", "failed", "done"];
+const num = (v: unknown, fallback = 0) => (typeof v === "number" && Number.isFinite(v) ? v : fallback);
+const optString = (v: unknown) => (typeof v === "string" ? v : undefined);
+
+/** Untrusted file → store records. Unusable rows are dropped; uncleaned text is never accepted. */
+function parseSessionTranscripts(list: ExportedSessionTranscript[]): SessionTranscript[] {
+  const out: SessionTranscript[] = [];
+  for (const raw of list) {
+    const t = raw as unknown as Record<string, unknown>;
+    if (!t || typeof t.sessionId !== "string" || !t.sessionId || !Array.isArray(t.segments)) continue;
+    const segments: TranscriptSegment[] = [];
+    for (const rawSeg of t.segments as unknown[]) {
+      const x = rawSeg as Record<string, unknown>;
+      if (!x || typeof x !== "object" || typeof x.index !== "number") continue;
+      let status = STATUSES.includes(x.status as SegmentStatus) ? (x.status as SegmentStatus) : "pending";
+      let audio: Blob | undefined;
+      const a = x.audio as { mimeType?: unknown; base64?: unknown } | undefined;
+      if (a && typeof a.base64 === "string" && typeof a.mimeType === "string" && /^(audio|video)\//.test(a.mimeType)) {
+        try {
+          audio = base64ToBlob(a.base64, a.mimeType);
+        } catch (err) {
+          console.error("[backup] skipping corrupt segment audio", { sessionId: t.sessionId, index: x.index, err });
+        }
+      }
+      const text = status === "done" ? optString(x.text) ?? "" : undefined;
+      if (status !== "done" && !audio) status = "failed";
+      const removed = x.removed as { privat?: unknown; unangemessen?: unknown } | undefined;
+      segments.push({
+        index: x.index,
+        startedAt: optString(x.startedAt) ?? optString(t.startedAt) ?? "",
+        startSec: num(x.startSec),
+        endSec: num(x.endSec),
+        status,
+        text,
+        removed: removed ? { privat: num(removed.privat), unangemessen: num(removed.unangemessen) } : undefined,
+        model: status === "done" ? optString(x.model) : undefined,
+        error: status === "failed" ? optString(x.error) ?? (audio ? undefined : "no-audio") : undefined,
+        failedAt: status === "failed" ? optString(x.failedAt) : undefined,
+        attempts: num(x.attempts),
+        audio,
+        mimeType: optString(x.mimeType) ?? audio?.type ?? "audio/webm",
+        slides: Array.isArray(x.slides)
+          ? (x.slides as unknown[]).flatMap((m): SlideMark[] => {
+              const mark = m as Record<string, unknown>;
+              return typeof mark?.slideId === "string" && typeof mark.atSec === "number" ? [{ slideId: mark.slideId, atSec: mark.atSec }] : [];
+            })
+          : [],
+      });
+    }
+    out.push({
+      sessionId: t.sessionId,
+      startedAt: optString(t.startedAt) ?? t.sessionId,
+      updatedAt: optString(t.updatedAt) ?? "",
+      closed: t.closed === true,
+      segments: segments.sort((a, b) => a.index - b.index),
+    });
+  }
+  return out;
 }
 
 /** Parses a picked file. Throws BackupError with a code the UI can translate. */
@@ -262,6 +380,7 @@ export function summarize(file: BackupFile): BackupSummary {
     glossaryTerms: Array.isArray(terms) ? terms.length : 0,
     withAudio: file.withAudio || file.interviews.some((iv) => Boolean(iv?.audio)),
     hasReport: typeof report?.markdown === "string" && report.markdown.trim() !== "",
+    sessionTranscripts: file.sessionTranscripts?.length ?? 0,
   };
 }
 
@@ -331,7 +450,37 @@ export async function applyBackup(file: unknown, { keepAudio = true }: { keepAud
     if (backup.interviews.length) throw new BackupError("write", err instanceof Error ? err.message : String(err));
   }
 
+  const sessions = parseSessionTranscripts(backup.sessionTranscripts ?? []);
+  try {
+    await replaceSessionTranscripts(keepAudio ? await withDeviceSegmentAudio(sessions) : sessions);
+  } catch (err) {
+    console.error("[backup] restoring the session transcripts failed", err);
+    if (sessions.length) throw new BackupError("write", err instanceof Error ? err.message : String(err));
+  }
+
   return summarize(backup);
+}
+
+/**
+ * Segments the file carries without audio but that still wait for their
+ * transcript keep the audio this device has — same idea as recordingsToKeep.
+ */
+async function withDeviceSegmentAudio(sessions: SessionTranscript[]): Promise<SessionTranscript[]> {
+  let device: SessionTranscript[] = [];
+  try {
+    device = await getAllSessionTranscripts();
+  } catch (err) {
+    console.error("[backup] could not read the current session transcripts to keep their audio", err);
+    return sessions;
+  }
+  const audioOf = new Map(device.flatMap((t) => t.segments.filter((x) => x.audio).map((x) => [`${t.sessionId}#${x.index}`, x.audio as Blob] as const)));
+  return sessions.map((t) => ({
+    ...t,
+    segments: t.segments.map((x) => {
+      const audio = x.status !== "done" && !x.audio ? audioOf.get(`${t.sessionId}#${x.index}`) : undefined;
+      return audio ? { ...x, audio, status: "pending" as const, error: undefined } : x;
+    }),
+  }));
 }
 
 /** Recordings on this device for interviews the file carries without audio. */
@@ -386,6 +535,11 @@ export async function resetContents({ alsoKeys }: { alsoKeys: boolean }): Promis
     await clearRecordings();
   } catch (err) {
     console.error("[backup] clearing the session recordings failed", err);
+  }
+  try {
+    await clearSessionTranscripts();
+  } catch (err) {
+    console.error("[backup] clearing the session transcripts failed", err);
   }
   if (!alsoKeys) return;
   safely("removing the Claude key", () => setApiKey(""));

@@ -312,6 +312,8 @@ function hasContent(file: BackupFile, s: BackupSummary): boolean {
     s.posterFields > 0 ||
     s.glossaryTerms > 0 ||
     s.hasReport ||
+    // Summaries stored before session transcripts existed lack the field.
+    (s.sessionTranscripts ?? 0) > 0 ||
     people ||
     posterImage ||
     file.stores.interviewsGroup !== undefined

@@ -321,6 +321,13 @@ function BackupSection({ lang }: { lang: Lang }) {
                       : de
                         ? "ohne Interview-Aufnahmen"
                         : "without interview recordings",
+                    ...(preview.summary.sessionTranscripts
+                      ? [
+                          de
+                            ? `${preview.summary.sessionTranscripts} ${preview.summary.sessionTranscripts === 1 ? "Sitzungstranskript" : "Sitzungstranskripte"}`
+                            : `${preview.summary.sessionTranscripts} session ${preview.summary.sessionTranscripts === 1 ? "transcript" : "transcripts"}`,
+                        ]
+                      : []),
                   ].join(" · ")}
                 </dd>
               </div>

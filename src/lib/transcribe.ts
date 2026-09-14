@@ -1,5 +1,5 @@
 /**
- * Speech-to-text for the interview mode via the OpenAI transcription API.
+ * Speech-to-text for the interviews and the session recording via the OpenAI transcription API.
  *
  * Claude cannot take audio, so transcription uses OpenAI. The app has no
  * backend: the browser calls the API directly with a key the facilitator
@@ -22,8 +22,12 @@ export const ACCEPTED_EXTENSIONS = ["mp3", "m4a", "wav", "webm", "ogg"] as const
 export const ACCEPT_ATTRIBUTE = ".mp3,.m4a,.wav,.webm,.ogg,audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/webm,audio/ogg";
 
 // Vocabulary hint: improves recognition of domain terms without changing content.
-const VOCABULARY_PROMPT =
+const INTERVIEW_PROMPT =
   "Kurzinterview im Workshop des Fachverbands Betonbohren und -sägen Deutschland (FBS) über künstliche Intelligenz. Begriffe: KI, ChatGPT, Claude, Copilot, Chatbot, Verband, Geschäftsstelle, Vorstand, Mitgliedsbetriebe, Kernbohrung, Wandsäge, Seilsäge, Bauwerksmechaniker, BG Bau, Fachkräftemangel, Digitalisierung.";
+
+/** Same idea for the session recording: a group discussion across the whole workshop. */
+export const SESSION_PROMPT =
+  "Mitschnitt einer Diskussion im Workshop „KI-Geschäftsführer: Fiktion oder Realität?“ des Fachverbands Betonbohren und -sägen Deutschland (FBS), mehrere Sprecherinnen und Sprecher. Begriffe: KI, KI-Geschäftsführer, ChatGPT, Claude, Copilot, Wissensbasis, RAG, Verband, Geschäftsstelle, Geschäftsführung, Vorstand, Mitgliederversammlung, Ausschuss, Mitgliedsbetriebe, Wilma, Kernbohrung, Wandsäge, Seilsäge, Bauwerksmechaniker, BG Bau, IG BAU, DIN 18459, VOB, Merkblätter, Datenschutz, Roadmap.";
 
 export function getOpenAiKey(): string {
   try {
@@ -125,13 +129,13 @@ function errorFor(status: number, body: ApiErrorBody["error"]): TranscribeError 
   return new TranscribeError("api", detail);
 }
 
-async function post(model: string, audio: Blob, fileName: string, apiKey: string): Promise<Response> {
+async function post(model: string, audio: Blob, fileName: string, apiKey: string, prompt: string): Promise<Response> {
   const form = new FormData();
   form.append("file", audio, fileName);
   form.append("model", model);
   form.append("language", "de");
   form.append("response_format", "json");
-  form.append("prompt", VOCABULARY_PROMPT);
+  form.append("prompt", prompt);
   try {
     return await fetch(ENDPOINT, {
       method: "POST",
@@ -152,26 +156,38 @@ export interface TranscriptResult {
   model: string;
 }
 
+export interface TranscribeOptions {
+  /** Vocabulary hint; defaults to the interview vocabulary */
+  prompt?: string;
+  /** Neutral base name of the uploaded file (never a participant's file name); defaults to "interview" */
+  fileBase?: string;
+}
+
 /**
  * Transcribes one audio blob (German). Tries gpt-4o-transcribe first and falls
  * back to whisper-1 if the account cannot use that model. Throws TranscribeError.
  */
-export async function transcribeAudio(audio: Blob, extension: string, logLabel: string): Promise<TranscriptResult> {
+export async function transcribeAudio(
+  audio: Blob,
+  extension: string,
+  logLabel: string,
+  { prompt = INTERVIEW_PROMPT, fileBase = "interview" }: TranscribeOptions = {},
+): Promise<TranscriptResult> {
   const apiKey = getOpenAiKey();
   if (!apiKey) throw new TranscribeError("no-key");
   if (audio.size === 0) throw new TranscribeError("no-audio");
   if (audio.size > MAX_AUDIO_BYTES) throw new TranscribeError("too-large");
 
   // Neutral file name: participant names in original file names never leave the device.
-  const fileName = `interview.${extension || "webm"}`;
+  const fileName = `${fileBase}.${extension || "webm"}`;
   try {
     let model = PRIMARY_MODEL;
-    let res = await post(model, audio, fileName, apiKey);
+    let res = await post(model, audio, fileName, apiKey, prompt);
     if (res.status === 400 || res.status === 404) {
       const firstError = await readError(res);
       console.error("[transcribe] primary model failed, falling back", { feature: logLabel, status: res.status, detail: firstError?.message });
       model = FALLBACK_MODEL;
-      res = await post(model, audio, fileName, apiKey);
+      res = await post(model, audio, fileName, apiKey, prompt);
     }
     if (!res.ok) throw errorFor(res.status, await readError(res));
     const body = (await res.json()) as { text?: unknown };

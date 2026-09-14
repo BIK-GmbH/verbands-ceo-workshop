@@ -18,7 +18,10 @@
  * recovery path is exercised on every stop instead of only in an emergency.
  * Memory is no longer the only copy of a two-day workshop.
  *
- * Everything stays in the browser: no upload, no server.
+ * Transcription (opt-in, see session-transcriber.ts): next to the unbroken main
+ * recording a second recorder on the same microphone stream cuts short,
+ * individually playable segments that are transcribed one by one. Only those
+ * segments ever leave the browser, and only when the facilitator opted in.
  */
 import { useSyncExternalStore } from "react";
 import {
@@ -32,6 +35,8 @@ import {
   isQuotaError,
   type RecordingSession,
 } from "@/lib/recording-store";
+import { closeSessionTranscript, putSegment, type SlideMark } from "@/lib/session-transcript-store";
+import { isSessionTranscribeEnabled } from "@/lib/session-transcriber";
 
 export type RecorderError = "no-access" | "unsupported" | "quota" | "storage" | "empty";
 
@@ -147,7 +152,11 @@ function extensionFor(mime: string): string {
 
 function startTicking() {
   stopTicking();
-  timer = window.setInterval(() => emit({ seconds: snapshot.seconds + 1 }), 1000);
+  timer = window.setInterval(() => {
+    emit({ seconds: snapshot.seconds + 1 });
+    // Counted in recorded seconds, so a dictation pause does not shorten a segment.
+    if (segment && snapshot.seconds - segment.startSec >= segmentSeconds()) rotateSegment();
+  }, 1000);
 }
 
 function stopTicking() {
@@ -237,6 +246,169 @@ export async function discardRecovery(): Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
+// Transcription segments
+//
+// A second MediaRecorder on the same stream, stopped and restarted every few
+// minutes: each run is a complete, playable file the transcription API accepts
+// (unlike the chunks of the main recording). The seam between two runs may drop
+// a few milliseconds — that only affects the transcription copy, never the main
+// recording. A running segment lives in memory until it ends, so a crash costs
+// at most that segment's transcript; the main recording is unaffected.
+
+/** Segment length. The debug key exists for automated tests only. */
+const SEGMENT_SECONDS = 5 * 60;
+const SEGMENT_DEBUG_KEY = "verbands-ceo.debug.segment-seconds";
+
+function segmentSeconds(): number {
+  try {
+    const debug = Number(window.localStorage.getItem(SEGMENT_DEBUG_KEY));
+    if (Number.isFinite(debug) && debug >= 2) return debug;
+  } catch {
+    /* storage blocked: default length */
+  }
+  return SEGMENT_SECONDS;
+}
+
+interface RunningSegment {
+  rec: MediaRecorder;
+  index: number;
+  startSec: number;
+  startedAt: string;
+  slides: SlideMark[];
+}
+
+let segmentMedia: MediaStream | null = null;
+let segmentSessionId: string | null = null;
+let segment: RunningSegment | null = null;
+let segmentCount = 0;
+/** Segment writes run strictly in order; the stop waits for this chain. */
+let segmentWrites: Promise<void> = Promise.resolve();
+
+/** "#/s/01.03" or "#/p/01.03" → "01.03"; other routes carry no slide. */
+function slideFromHash(): string | null {
+  const m = /^#\/(?:s|p)\/([^/?#]+)/.exec(window.location.hash);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+function onHashChange() {
+  const slideId = slideFromHash();
+  if (!segment || !slideId) return;
+  const last = segment.slides[segment.slides.length - 1];
+  if (last?.slideId === slideId) return;
+  segment.slides.push({ slideId, atSec: snapshot.seconds });
+}
+
+function startSegment() {
+  if (!segmentMedia || !segmentSessionId) return;
+  let rec: MediaRecorder;
+  try {
+    rec = new MediaRecorder(segmentMedia);
+  } catch (err) {
+    // Transcription is an extra: the main recording goes on without it.
+    console.error("[session-recorder] segment recorder could not start", err);
+    return;
+  }
+  const sessionId = segmentSessionId;
+  const slideId = slideFromHash();
+  const current: RunningSegment = {
+    rec,
+    index: segmentCount++,
+    startSec: snapshot.seconds,
+    startedAt: new Date().toISOString(),
+    slides: slideId ? [{ slideId, atSec: snapshot.seconds }] : [],
+  };
+  const parts: Blob[] = [];
+  rec.ondataavailable = (e) => {
+    if (e.data.size > 0) parts.push(e.data);
+  };
+  rec.onstop = () => {
+    const mimeType = rec.mimeType || parts[0]?.type || "audio/webm";
+    const audio = new Blob(parts, { type: mimeType });
+    const endSec = snapshot.seconds;
+    if (audio.size === 0) return;
+    segmentWrites = segmentWrites.then(() =>
+      putSegment(sessionId, sessionId, {
+        index: current.index,
+        startedAt: current.startedAt,
+        startSec: current.startSec,
+        endSec: Math.max(endSec, current.startSec),
+        status: "pending",
+        attempts: 0,
+        audio,
+        mimeType,
+        slides: current.slides,
+      })
+        .then(() => undefined)
+        .catch((err) => console.error("[session-recorder] segment could not be stored", { sessionId, index: current.index, err })),
+    );
+  };
+  try {
+    rec.start();
+  } catch (err) {
+    console.error("[session-recorder] segment recorder could not start", err);
+    return;
+  }
+  if (recorder?.state === "paused") {
+    try {
+      rec.pause();
+    } catch {
+      /* a segment that records through a dictation pause is harmless */
+    }
+  }
+  segment = current;
+}
+
+function stopSegment() {
+  const current = segment;
+  segment = null;
+  if (current && current.rec.state !== "inactive") {
+    try {
+      current.rec.stop();
+    } catch (err) {
+      console.error("[session-recorder] segment recorder could not stop", err);
+    }
+  }
+}
+
+function rotateSegment() {
+  stopSegment();
+  startSegment();
+}
+
+function beginSegments(media: MediaStream, sessionId: string) {
+  if (!isSessionTranscribeEnabled()) return;
+  segmentMedia = media;
+  segmentSessionId = sessionId;
+  segmentCount = 0;
+  segmentWrites = Promise.resolve();
+  window.addEventListener("hashchange", onHashChange);
+  startSegment();
+}
+
+/** Flushes the last segment and marks the transcript as complete. Never throws. */
+async function endSegments(): Promise<void> {
+  const sessionId = segmentSessionId;
+  window.removeEventListener("hashchange", onHashChange);
+  const last = segment;
+  if (last && last.rec.state !== "inactive") {
+    // The final data arrives asynchronously in onstop, which queues the write.
+    const stopped = new Promise<void>((resolve) => last.rec.addEventListener("stop", () => resolve(), { once: true }));
+    stopSegment();
+    await stopped;
+  }
+  segment = null;
+  segmentMedia = null;
+  segmentSessionId = null;
+  await segmentWrites;
+  if (!sessionId) return;
+  try {
+    await closeSessionTranscript(sessionId);
+  } catch (err) {
+    console.error("[session-recorder] closing the transcript failed", { sessionId, err });
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Recording
 
 /** A write failed: end the run cleanly so everything saved so far survives. */
@@ -294,7 +466,8 @@ export async function startRecording(): Promise<void> {
     };
 
     rec.onstop = () => {
-      media.getTracks().forEach((t) => t.stop());
+      // Before the tracks end: the segment recorder must still hand over its last part.
+      void endSegments().finally(() => media.getTracks().forEach((t) => t.stop()));
       recorder = null;
       dictationHolds = 0;
       stopTicking();
@@ -312,6 +485,7 @@ export async function startRecording(): Promise<void> {
     dictationHolds = 0;
     emit({ recording: true, paused: false, seconds: 0, url: null, error: null });
     window.addEventListener("beforeunload", beforeUnload);
+    beginSegments(media, session.id);
     startTicking();
   } catch (err) {
     console.error("[session-recorder] start failed", err);
@@ -455,6 +629,11 @@ export function pauseForDictation() {
   } catch {
     return; // Pausing is a convenience; a failure must not break the recording.
   }
+  try {
+    if (segment?.rec.state === "recording") segment.rec.pause();
+  } catch {
+    /* the segment simply records through the dictation */
+  }
   stopTicking();
   emit({ paused: true });
 }
@@ -468,6 +647,11 @@ export function resumeAfterDictation() {
     recorder.resume();
   } catch {
     return;
+  }
+  try {
+    if (segment?.rec.state === "paused") segment.rec.resume();
+  } catch {
+    /* see pauseForDictation */
   }
   startTicking();
   emit({ paused: false });

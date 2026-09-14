@@ -42,8 +42,11 @@ export interface Interview {
   /** Absent after "delete all audio" or when imported without audio */
   audio?: Blob;
   markers: QuestionMarker[];
+  /** Cleaned of private and inappropriate passages (transcript-filter.ts) before it is stored */
   transcript?: string;
   transcriptModel?: string;
+  /** Passages the cleaning replaced by a marker */
+  transcriptRemoved?: { privat: number; unangemessen: number };
   opinion?: string;
   opinionAt?: string;
   /**
@@ -255,7 +258,7 @@ export interface ExportFile {
   interviews: ExportedInterview[];
 }
 
-function blobToBase64(blob: Blob): Promise<string> {
+export function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -267,7 +270,7 @@ function blobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-function base64ToBlob(base64: string, mimeType: string): Blob {
+export function base64ToBlob(base64: string, mimeType: string): Blob {
   const bin = atob(base64);
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
@@ -306,6 +309,13 @@ const str = (v: unknown): v is string => typeof v === "string";
 const optStr = (v: unknown): string | undefined => (typeof v === "string" ? v : undefined);
 const optNum = (v: unknown): number | undefined => (typeof v === "number" && Number.isFinite(v) ? v : undefined);
 
+function sanitizeRemoved(v: unknown): Interview["transcriptRemoved"] {
+  if (!v || typeof v !== "object") return undefined;
+  const r = v as Record<string, unknown>;
+  const n = (x: unknown) => (typeof x === "number" && Number.isFinite(x) && x >= 0 ? Math.round(x) : 0);
+  return { privat: n(r.privat), unangemessen: n(r.unangemessen) };
+}
+
 /** Validates one record from an untrusted file; returns null when it is unusable. */
 function parseRecord(raw: unknown): Interview | null {
   if (!raw || typeof raw !== "object") return null;
@@ -341,6 +351,7 @@ function parseRecord(raw: unknown): Interview | null {
     markers,
     transcript: optStr(r.transcript),
     transcriptModel: optStr(r.transcriptModel),
+    transcriptRemoved: sanitizeRemoved(r.transcriptRemoved),
     opinion: optStr(r.opinion),
     opinionAt: optStr(r.opinionAt),
     scales: sanitizeScales(r.scales) ?? undefined,

@@ -14,6 +14,11 @@
  * the record under `<slideId>:${DISCUSSION_FIELD}` and are marked as coming from
  * the recorded discussion.
  *
+ * Every segment passes a cleaning step (transcript-filter.ts) before it counts
+ * as done: `text` only ever holds the cleaned version. The raw speech-to-text
+ * result waits in `rawText` while cleaning is outstanding and is deleted as
+ * soon as it succeeded; readers, exports and backups never use `rawText`.
+ *
  * Own database: a corrupted transcript store must never take the recordings or
  * the interviews with it. Transcript text is never logged.
  */
@@ -30,7 +35,11 @@ export const DISCUSSION_FIELD = "mitschnitt";
 /** Heading of those entries in the record and every export. */
 export const DISCUSSION_PROMPT = "Aus der mitgeschnittenen Diskussion";
 
-export type SegmentStatus = "pending" | "transcribing" | "done" | "failed";
+/**
+ * pending → transcribing → cleaning → done; "failed" keeps what is needed for a
+ * retry (the audio, or the raw text when only the cleaning failed).
+ */
+export type SegmentStatus = "pending" | "transcribing" | "cleaning" | "done" | "failed";
 
 /** Which slide was open from which second of the segment on — a hint for the assignment, not the assignment itself. */
 export interface SlideMark {
@@ -48,10 +57,17 @@ export interface TranscriptSegment {
   startSec: number;
   endSec: number;
   status: SegmentStatus;
+  /** Cleaned transcript — the only text anything outside the pipeline may use */
   text?: string;
+  /** Uncleaned speech-to-text result, only until the cleaning succeeded */
+  rawText?: string;
+  /** Passages the cleaning replaced by a marker */
+  removed?: { privat: number; unangemessen: number };
   model?: string;
   /** Error code of the last failed attempt (TranscribeErrorCode) */
   error?: string;
+  /** ISO timestamp of the last failed attempt — the retry back-off counts from here */
+  failedAt?: string;
   attempts: number;
   /** Individually playable audio of this segment; removed once transcribed. */
   audio?: Blob;
@@ -233,6 +249,15 @@ export async function clearSessionTranscripts(): Promise<void> {
   await changed();
 }
 
+/** Backup restore: replaces every stored session with `list` in one transaction. */
+export async function replaceSessionTranscripts(list: SessionTranscript[]): Promise<void> {
+  await tx("readwrite", (s) => {
+    s.clear();
+    list.forEach((t) => s.put(t));
+  });
+  await changed();
+}
+
 // ---------------------------------------------------------------------------
 // Derived text
 
@@ -264,8 +289,11 @@ export function fullTranscriptText(t: SessionTranscript): string {
   return t.segments
     .map((x) => {
       const mark = `[${formatOffset(x.startSec)}]`;
-      if (x.status === "done" && x.text?.trim()) return `${mark} ${x.text.trim()}`;
-      return `${mark} (Abschnitt bis ${formatOffset(x.endSec)} noch nicht transkribiert)`;
+      if (x.status === "done") return x.text?.trim() ? `${mark} ${x.text.trim()}` : `${mark} (keine Sprache erkannt)`;
+      const until = formatOffset(x.endSec);
+      // Transcribed but not cleaned yet: the raw text must not appear anywhere.
+      if (x.rawText !== undefined) return `${mark} (Abschnitt bis ${until} noch nicht bereinigt)`;
+      return `${mark} (Abschnitt bis ${until} noch nicht transkribiert)`;
     })
     .join("\n\n");
 }

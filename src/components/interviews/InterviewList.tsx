@@ -16,7 +16,7 @@ import {
   Wand2,
 } from "lucide-react";
 import type { Lang } from "@/types/slide";
-import { useApiKey } from "@/lib/ai-assist";
+import { AiAssistError, getApiKey, useApiKey } from "@/lib/ai-assist";
 import { deleteInterview, getInterview, updateInterview, type Interview } from "@/lib/interview-store";
 import {
   INTERVIEW_QUESTIONS,
@@ -28,6 +28,7 @@ import {
 } from "@/lib/interview-opinion";
 import { EMPTY_SCALES, SCALES, hasScaleValues, type InterviewScales, type ScaleId } from "@/lib/interview-metrics";
 import { autoSaveTranscript } from "@/lib/auto-export";
+import { cleanTranscript, removedLabel } from "@/lib/transcript-filter";
 import { TranscribeError, extensionForMime, fileExtension, isAcceptedAudioName, transcribeAudio, useOpenAiKey } from "@/lib/transcribe";
 import { bilingualError, describeProcessingError, isFatal } from "./errors";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -67,9 +68,13 @@ async function recordError(id: string, stage: BusyStage, err: unknown) {
 
 async function transcribeOne(iv: Interview): Promise<Interview> {
   if (!iv.audio) throw new TranscribeError("no-audio");
+  // Without the Claude key the transcript could not be cleaned — do not spend the transcription.
+  if (!getApiKey()) throw new AiAssistError("no-key");
   const ext = isAcceptedAudioName(iv.fileName) ? fileExtension(iv.fileName) : extensionForMime(iv.mimeType);
   const result = await transcribeAudio(iv.audio, ext, `interview ${iv.id}`);
-  const patch = { transcript: result.text, transcriptModel: result.model, error: undefined };
+  // Only the cleaned text is ever stored; if the cleaning fails, the raw text is dropped and the audio stays for a retry.
+  const cleaned = await cleanTranscript(result.text, "interview", `interview ${iv.id}`);
+  const patch = { transcript: cleaned.text, transcriptModel: result.model, transcriptRemoved: cleaned.removed, error: undefined };
   const next = (await updateInterview(iv.id, patch)) ?? { ...iv, ...patch };
   // Fire and forget: a failed file save is reported on its own and must not fail the transcription.
   void autoSaveTranscript(next);
@@ -145,7 +150,11 @@ export function InterviewList({ interviews, lang }: { interviews: Interview[]; l
       return;
     }
     if (queue.some((iv) => !iv.opinion) && !claudeKey) {
-      setError(de ? "Für die Meinungsbilder fehlt der Claude-Schlüssel (siehe Einrichtung oben)." : "The Claude key for opinion pictures is missing (see setup above).");
+      setError(
+        de
+          ? "Für das Bereinigen der Transkripte und die Meinungsbilder fehlt der Claude-Schlüssel (siehe Einrichtung oben)."
+          : "The Claude key for cleaning transcripts and for opinion pictures is missing (see setup above).",
+      );
       return;
     }
     setProgress({ done: 0, total: queue.length });
@@ -228,8 +237,8 @@ export function InterviewList({ interviews, lang }: { interviews: Interview[]; l
       {(!openAiKey || !claudeKey) && (
         <Notice tone="warn">
           {de
-            ? `Hinweis: ${[!openAiKey && "OpenAI-Schlüssel (Transkription)", !claudeKey && "Claude-Schlüssel (Meinungsbilder)"].filter(Boolean).join(" und ")} fehlt – siehe Einrichtung oben.`
-            : `Note: ${[!openAiKey && "OpenAI key (transcription)", !claudeKey && "Claude key (opinion pictures)"].filter(Boolean).join(" and ")} missing – see setup above.`}
+            ? `Hinweis: ${[!openAiKey && "OpenAI-Schlüssel (Transkription)", !claudeKey && "Claude-Schlüssel (Bereinigung und Meinungsbilder)"].filter(Boolean).join(" und ")} fehlt – siehe Einrichtung oben.`
+            : `Note: ${[!openAiKey && "OpenAI key (transcription)", !claudeKey && "Claude key (cleaning and opinion pictures)"].filter(Boolean).join(" and ")} missing – see setup above.`}
         </Notice>
       )}
       {notice && <Notice tone="ok">{notice}</Notice>}
@@ -437,8 +446,8 @@ function InterviewCard({
             !hasAudio
               ? de ? "Kein Audio gespeichert" : "No audio stored"
               : de
-                ? "Aufnahme in Text umwandeln. Dafür wird das Audio an die OpenAI-API übertragen."
-                : "Turn the recording into text. The audio is sent to the OpenAI API for this."
+                ? "Aufnahme in Text umwandeln. Dafür wird das Audio an die OpenAI-API übertragen; Claude entfernt danach private und unangemessene Passagen, erst dann wird das Transkript gespeichert."
+                : "Turn the recording into text. The audio is sent to the OpenAI API for this; Claude then removes private and inappropriate passages, only then the transcript is stored."
           }
         >
           <button
@@ -524,6 +533,7 @@ function InterviewCard({
             <span className="text-[11px] font-normal ml-2" style={muted}>
               {iv.transcript.split(/\s+/).filter(Boolean).length} {de ? "Wörter" : "words"}
               {iv.transcriptModel ? ` · ${iv.transcriptModel}` : ""}
+              {removedLabel(iv.transcriptRemoved, lang) ? ` · ${removedLabel(iv.transcriptRemoved, lang)}` : ""}
             </span>
           </summary>
           <div className="px-3 pb-3 space-y-2">

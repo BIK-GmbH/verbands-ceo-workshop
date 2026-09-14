@@ -28,6 +28,8 @@ import {
   stopRecording,
   useSessionRecorder,
 } from "@/lib/session-recorder";
+import { useSessionTranscribeEnabled } from "@/lib/session-transcriber";
+import { TranscribeOptIn, TranscriptionStatus } from "@/components/SessionTranscription";
 
 /**
  * Header control for the session recorder — the single place from which the
@@ -71,6 +73,7 @@ export function RecorderMenu() {
   const de = lang === "de";
   const { supported, consented, recording, paused, seconds, url, extension, recovery, busy, error } =
     useSessionRecorder();
+  const transcribeOn = useSessionTranscribeEnabled();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<Position | null>(null);
   const btnRef = useRef<HTMLButtonElement | null>(null);
@@ -344,9 +347,13 @@ export function RecorderMenu() {
                     >
                       <AlertTriangle size={15} className="shrink-0 mt-0.5" aria-hidden />
                       <span>
-                        {de
-                          ? "Die Aufnahme bleibt vollständig lokal im Browser (kein Upload). Sie dient als Gedächtnisstütze für das Protokoll und kann nach dem Workshop heruntergeladen werden. Aufnahme nur mit Einverständnis aller Anwesenden."
-                          : "The recording stays entirely local in the browser (no upload). It serves as a memory aid for the record and can be downloaded after the workshop. Record only with the consent of everyone present."}
+                        {transcribeOn
+                          ? de
+                            ? "Die Aufnahme selbst bleibt lokal im Browser. Weil laufend transkribiert wird, geht der Ton abschnittsweise an OpenAI; Claude entfernt danach private und unangemessene Passagen. Aufnahme und Transkription nur mit Einverständnis aller Anwesenden."
+                            : "The recording itself stays local in the browser. Because it is transcribed as it runs, the audio goes to OpenAI in segments; Claude then removes private and inappropriate passages. Record and transcribe only with the consent of everyone present."
+                          : de
+                            ? "Die Aufnahme bleibt vollständig lokal im Browser (kein Upload). Sie dient als Gedächtnisstütze für das Protokoll und kann nach dem Workshop heruntergeladen werden. Aufnahme nur mit Einverständnis aller Anwesenden."
+                            : "The recording stays entirely local in the browser (no upload). It serves as a memory aid for the record and can be downloaded after the workshop. Record only with the consent of everyone present."}
                       </span>
                     </div>
                     <button
@@ -363,6 +370,7 @@ export function RecorderMenu() {
                     >
                       <Mic size={15} aria-hidden /> {de ? "Einverstanden — Aufnahme starten" : "Agreed — start recording"}
                     </button>
+                    <TranscribeOptIn lang={lang} disabled={busy} />
                   </>
                 ) : recording ? (
                   <>
@@ -407,6 +415,7 @@ export function RecorderMenu() {
                       >
                         <Mic size={15} aria-hidden /> {de ? "Aufnahme starten" : "Start recording"}
                       </button>
+                      <TranscribeOptIn lang={lang} disabled={busy} />
                       <p className="text-xs" style={{ color: "var(--fg-muted)" }}>
                         {de
                           ? "Die Aufnahme läuft beim Wechsel auf eine Folie weiter und pausiert automatisch, solange in ein Feld diktiert wird. Jedes Teilstück wird sofort im Browser gesichert."
@@ -451,6 +460,8 @@ export function RecorderMenu() {
                     {de ? "Datei wird zusammengesetzt…" : "Assembling the file…"}
                   </p>
                 )}
+
+                <TranscriptionStatus lang={lang} />
 
                 {errorText && (
                   <p data-testid="recorder-menu-error" className="text-xs" style={{ color: RED }}>

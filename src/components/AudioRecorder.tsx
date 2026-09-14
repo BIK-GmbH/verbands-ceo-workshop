@@ -13,6 +13,8 @@ import {
   stopRecording,
   useSessionRecorder,
 } from "@/lib/session-recorder";
+import { useSessionTranscribeEnabled } from "@/lib/session-transcriber";
+import { TranscribeOptIn, TranscriptionStatus } from "@/components/SessionTranscription";
 
 /**
  * Opt-in local session recorder. Captures audio via MediaRecorder entirely in
@@ -29,6 +31,7 @@ export function AudioRecorder() {
   const { supported, consented, recording, paused, seconds, url, extension, recovery, busy, error } =
     useSessionRecorder();
   const stamp = localDateStamp();
+  const transcribeOn = useSessionTranscribeEnabled();
 
   if (!supported) {
     return (
@@ -118,9 +121,13 @@ export function AudioRecorder() {
           <div className="flex gap-2 p-2.5 rounded-md text-xs" style={{ background: "rgba(245, 158, 11, 0.10)", color: "#b45309" }}>
             <AlertTriangle size={15} className="shrink-0 mt-0.5" />
             <span>
-              {de
-                ? "Die Aufnahme bleibt vollständig lokal im Browser (kein Upload). Sie dient als Gedächtnisstütze für das Protokoll und kann nach dem Workshop heruntergeladen werden. Aufnahme nur mit Einverständnis aller Anwesenden."
-                : "The recording stays entirely local in the browser (no upload). It serves as a memory aid for the record and can be downloaded after the workshop. Record only with the consent of everyone present."}
+              {transcribeOn
+                ? de
+                  ? "Die Aufnahme selbst bleibt lokal im Browser. Weil laufend transkribiert wird, geht der Ton abschnittsweise an OpenAI; Claude entfernt danach private und unangemessene Passagen. Aufnahme und Transkription nur mit Einverständnis aller Anwesenden."
+                  : "The recording itself stays local in the browser. Because it is transcribed as it runs, the audio goes to OpenAI in segments; Claude then removes private and inappropriate passages. Record and transcribe only with the consent of everyone present."
+                : de
+                  ? "Die Aufnahme bleibt vollständig lokal im Browser (kein Upload). Sie dient als Gedächtnisstütze für das Protokoll und kann nach dem Workshop heruntergeladen werden. Aufnahme nur mit Einverständnis aller Anwesenden."
+                  : "The recording stays entirely local in the browser (no upload). It serves as a memory aid for the record and can be downloaded after the workshop. Record only with the consent of everyone present."}
             </span>
           </div>
           <button
@@ -132,6 +139,7 @@ export function AudioRecorder() {
           >
             {de ? "Einverstanden — Rekorder aktivieren" : "Agreed — enable recorder"}
           </button>
+          <TranscribeOptIn lang={lang} />
         </div>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
@@ -219,6 +227,15 @@ export function AudioRecorder() {
             : "The recording continues when you switch to a slide and pauses automatically while someone dictates into a field. Every chunk is saved in the browser immediately — if the browser crashes, the recording can be restored on the next start. The header shows at any time whether it is running."}
         </p>
       )}
+
+      {consented && !recording && (
+        <div className="mt-3">
+          <TranscribeOptIn lang={lang} disabled={busy} />
+        </div>
+      )}
+      <div className="mt-3">
+        <TranscriptionStatus lang={lang} />
+      </div>
 
       {url && !recording && <audio data-testid="recorder-player" controls src={url} className="mt-3 w-full" />}
       {errorText && <p data-testid="recorder-error" className="mt-2 text-xs" style={{ color: "#dc2626" }}>{errorText}</p>}
