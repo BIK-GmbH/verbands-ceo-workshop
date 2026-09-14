@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import clsx from "clsx";
 import { ChevronDown, ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
@@ -6,9 +6,13 @@ import { MANIFEST, ALL_SLIDES } from "@/lib/slides";
 import { pick, t } from "@/lib/i18n";
 import type { Lang } from "@/types/slide";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { ResizeHandle } from "@/components/ResizeHandle";
+import { usePanelWidth } from "@/lib/usePanelWidth";
 
 const ICON = { strokeWidth: 2.25 } as const;
 const DRAWER_EXIT_MS = 220;
+const MIN_WIDTH = 200;
+const MAX_WIDTH = 480;
 
 interface Props {
   lang: Lang;
@@ -59,6 +63,10 @@ export function Sidebar({
       return () => clearTimeout(t);
     }
   }, [mobileOpen, drawerMounted]);
+
+  // Desktop width, adjustable by dragging the right edge.
+  const asideRef = useRef<HTMLElement>(null);
+  const { width, setWidth, reset } = usePanelWidth("sidebar", MIN_WIDTH, MAX_WIDTH);
 
   function toggleModule(idx: number) {
     setOpenModules((prev) => {
@@ -231,15 +239,26 @@ export function Sidebar({
     <>
       {/* Desktop: inline static sidebar */}
       <aside
+        ref={asideRef}
         data-workshop-sidebar
-        className="hidden md:flex flex-col border-r"
+        className="hidden md:flex flex-col border-r relative shrink-0"
         style={{
           borderColor: "var(--border)",
           background: "var(--bg-elev)",
-          width: "var(--sidebar-width)",
+          width: width ?? "var(--sidebar-width)",
         }}
       >
         {sidebarBody}
+        <ResizeHandle
+          target={asideRef}
+          edge="right"
+          min={MIN_WIDTH}
+          max={MAX_WIDTH}
+          width={width}
+          onResize={setWidth}
+          onReset={reset}
+          label={{ de: "Breite der Folienübersicht", en: "Width of the slide overview" }}
+        />
       </aside>
 
       {/* Mobile: drawer + backdrop. Mounted while open OR animating-out so

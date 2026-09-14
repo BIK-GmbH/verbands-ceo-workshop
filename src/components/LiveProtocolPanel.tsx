@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ResizeHandle } from "@/components/ResizeHandle";
+import { usePanelWidth } from "@/lib/usePanelWidth";
 import {
   PanelRightClose,
   FileDown,
@@ -279,6 +281,9 @@ function AdhocField({
   );
 }
 
+const PANEL_MIN_WIDTH = 280;
+const PANEL_MAX_WIDTH = 720;
+
 /**
  * Always-on, right-docked live record. Runs alongside every slide so the board
  * sees the protocol build up in real time — no navigating to a separate page.
@@ -288,6 +293,9 @@ function AdhocField({
  * the AI assistant (opt-in, see ai-assist.ts) polishes dictated text in place.
  */
 export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
+  // Desktop width, adjustable by dragging the left edge.
+  const asideRef = useRef<HTMLElement>(null);
+  const { width, setWidth, reset } = usePanelWidth("protocol", PANEL_MIN_WIDTH, PANEL_MAX_WIDTH);
   const de = lang === "de";
   const navigate = useNavigate();
   const entries = useAllEntries();
@@ -426,11 +434,28 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
         aria-hidden
       />
       <aside
+        ref={asideRef}
         data-live-protocol
-        className="no-print flex flex-col shrink-0 border-l max-sm:fixed max-sm:inset-y-0 max-sm:right-0 max-sm:z-40 w-full sm:w-[22rem] shadow-2xl sm:shadow-none"
-        style={{ background: "var(--bg-elev)", borderColor: "var(--border)" }}
+        data-custom-width={width === undefined ? undefined : ""}
+        className="no-print relative flex flex-col shrink-0 border-l max-sm:fixed max-sm:inset-y-0 max-sm:right-0 max-sm:z-40 w-full sm:w-[22rem] shadow-2xl sm:shadow-none"
+        style={{
+          background: "var(--bg-elev)",
+          borderColor: "var(--border)",
+          // Applied from 768px up only (resize.css) — below, the panel keeps its fixed widths.
+          ...(width === undefined ? {} : ({ "--protocol-width": `${width}px` } as CSSProperties)),
+        }}
         aria-label={de ? "Live-Protokoll" : "Live record"}
       >
+        <ResizeHandle
+          target={asideRef}
+          edge="left"
+          min={PANEL_MIN_WIDTH}
+          max={PANEL_MAX_WIDTH}
+          width={width}
+          onResize={setWidth}
+          onReset={reset}
+          label={{ de: "Breite des Live-Protokolls", en: "Width of the live record" }}
+        />
         {/* Panel header */}
         <div
           className="flex items-center gap-2 px-4 h-12 border-b shrink-0"

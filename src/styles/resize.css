@@ -1,0 +1,48 @@
+/* Drag handles of the resizable side bars (see src/components/ResizeHandle.tsx). */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 9px;
+  z-index: 20;
+  cursor: col-resize;
+  touch-action: none;
+  display: none;
+}
+.resize-handle[data-edge="right"] { right: -5px; }
+.resize-handle[data-edge="left"] { left: -5px; }
+
+/* The visible line: invisible until hover, focus or drag. */
+.resize-handle::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--workshop-accent);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.resize-handle:hover::after { opacity: 0.45; }
+.resize-handle:focus-visible { outline: none; }
+.resize-handle:focus-visible::after,
+.resize-handle[data-dragging="1"]::after { opacity: 1; }
+html[data-motion="off"] .resize-handle::after { transition: none; }
+
+/* Desktop only — the phone layout has drawers instead of side bars. */
+@media (min-width: 768px) {
+  .resize-handle { display: block; }
+  aside[data-live-protocol][data-custom-width] { width: var(--protocol-width); }
+}
+
+html[data-resizing="1"],
+html[data-resizing="1"] * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+@media print {
+  .resize-handle { display: none !important; }
+}
