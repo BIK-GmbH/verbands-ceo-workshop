@@ -213,7 +213,7 @@ export function autoSaveTranscript(iv: Interview): Promise<SavedFile | null> {
   return autoSave("transcript", iv.pseudonym, () => saveFile(TRANSCRIPT_FOLDER, transcriptFileName(iv), markdownBlob(transcriptMarkdown(iv))));
 }
 
-/** After an interview was recorded in the app. */
+/** After an interview was recorded in the app or uploaded. */
 export function autoSaveInterviewAudio(iv: Interview): Promise<SavedFile | null> {
   const audio = iv.audio;
   if (!audio) return Promise.resolve(null);

@@ -1,7 +1,8 @@
 import { useRef, useState, type DragEvent } from "react";
 import { FileAudio, Loader2, Upload, X } from "lucide-react";
 import type { Lang } from "@/types/slide";
-import { newInterviewId, saveInterview } from "@/lib/interview-store";
+import { newInterviewId, saveInterview, type Interview } from "@/lib/interview-store";
+import { DOWNLOAD_GAP_MS, autoSaveInterviewAudio, wait } from "@/lib/auto-export";
 import { ACCEPT_ATTRIBUTE, MAX_AUDIO_BYTES, fileExtension, isAcceptedAudioName } from "@/lib/transcribe";
 import { BTN, ERROR_COLOR, Notice, card, field, formatBytes, muted, outline, primary } from "./ui";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -97,18 +98,27 @@ export function InterviewUpload({
     if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
   }
 
+  /** With auto-save on, uploads land in the backup folder too; spaced, because Chrome drops rapid downloads. */
+  async function autoSaveAll(list: Interview[]) {
+    for (const [i, iv] of list.entries()) {
+      if (i > 0) await wait(DOWNLOAD_GAP_MS);
+      await autoSaveInterviewAudio(iv);
+    }
+  }
+
   async function importAll() {
     if (!consent || !valid.length || busy) return;
     setBusy(true);
     setError("");
     let done = 0;
     const failed: Staged[] = [];
+    const added: Interview[] = [];
     for (const s of valid) {
       const ext = fileExtension(s.file.name);
       const mimeType = s.file.type || MIME_BY_EXT[ext] || "application/octet-stream";
       try {
         const durationSec = await probeDuration(s.file);
-        await saveInterview({
+        const interview: Interview = {
           id: newInterviewId(),
           pseudonym: s.pseudonym.trim() || `Teilnehmer ${nextNumber + done}`,
           source: "uploaded",
@@ -121,7 +131,9 @@ export function InterviewUpload({
           // Store a plain Blob: the File's name and timestamps are not needed.
           audio: s.file.slice(0, s.file.size, mimeType),
           markers: [],
-        });
+        };
+        await saveInterview(interview);
+        added.push(interview);
         done++;
       } catch (err) {
         console.error("[interview-upload] saving failed", { file: s.file.name, size: s.file.size, err });
@@ -129,6 +141,7 @@ export function InterviewUpload({
       }
     }
     setBusy(false);
+    void autoSaveAll(added);
     setStaged((prev) => prev.filter((s) => s.error || failed.includes(s)));
     if (done) {
       setNotice(de ? `${done} ${done === 1 ? "Interview" : "Interviews"} übernommen.` : `${done} ${done === 1 ? "interview" : "interviews"} added.`);
