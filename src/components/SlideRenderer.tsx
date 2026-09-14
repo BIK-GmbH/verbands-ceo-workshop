@@ -24,6 +24,7 @@ import {
   WhyLadder,
   InterviewGroupPicture,
   DayRecap,
+  LiveConversation,
   Hint, HintIcon,
 } from "./slide-blocks";
 import { AudioRecorder } from "./AudioRecorder";
@@ -63,6 +64,7 @@ const mdxComponents = {
   WhyLadder,
   InterviewGroupPicture,
   DayRecap,
+  LiveConversation,
   AudioRecorder,
   Hint, HintIcon,
   h1:(props: ChildrenProps) => (

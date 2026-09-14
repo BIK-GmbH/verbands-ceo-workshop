@@ -19,3 +19,4 @@ export { AiSuggest } from "./AiSuggest";
 export { InterviewGroupPicture } from "./InterviewGroupPicture";
 export { WhyLadder } from "./WhyLadder";
 export { DayRecap } from "./DayRecap";
+export { LiveConversation } from "./LiveConversation";
