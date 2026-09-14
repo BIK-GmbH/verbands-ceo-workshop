@@ -19,6 +19,7 @@
  * they belong to, so an evaluation never drifts away from its question.
  */
 import { ALL_SLIDES } from "./manifest";
+import { isDiscussionEntry } from "./discussion-entry";
 
 /** Everything the comparison needs; `CaptureEntry` satisfies it structurally. */
 export interface OrderedEntry {
@@ -111,6 +112,8 @@ export function fieldRank(entryId: string): number {
 export function compareEntries(a: OrderedEntry, b: OrderedEntry): number {
   return (
     slideRank(a.slideId) - slideRank(b.slideId) ||
+    // The summary of the recorded discussion closes a slide, after everything the room captured itself.
+    Number(isDiscussionEntry(a.id)) - Number(isDiscussionEntry(b.id)) ||
     fieldRank(a.id) - fieldRank(b.id) ||
     a.id.localeCompare(b.id)
   );

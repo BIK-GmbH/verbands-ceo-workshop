@@ -29,6 +29,7 @@ import {
   PrintHint, PrintHintIcon,
 } from "@/components/slide-blocks";
 import { AudioRecorder } from "@/components/AudioRecorder";
+import { DiscussionPrintBlock } from "@/components/DiscussionMark";
 import { ModuleArt } from "@/components/art/ModuleArt";
 import { isPhaseOverview } from "@/components/art/module-art";
 import type { ComponentProps, ComponentType } from "react";
@@ -91,6 +92,7 @@ export function Print() {
                 </p>
               </>
             )}
+            <DiscussionPrintBlock slideId={s.id} lang={lang} />
             {s.sources && s.sources.length > 0 && (
               <footer className="mt-8 pt-2 border-t text-xs text-gray-600">
                 <strong>{t("sources", lang)}:</strong>

@@ -322,6 +322,9 @@ class BlockRenderer {
         new TextRun({ text: b.question, bold: true }),
         ...(b.open ? [new TextRun({ text: `   ${L.open.toUpperCase()}`, bold: true, size: 14, color: C.red, characterSpacing: 30 })] : []),
         ...(b.polished ? [new TextRun({ text: `   · ${L.polished}`, italics: true, size: 15, color: C.muted })] : []),
+        ...(b.discussion
+          ? [new TextRun({ text: `   ${L.discussion.toUpperCase()}`, bold: true, size: 14, color: C.red, characterSpacing: 30 })]
+          : []),
       ],
       { keepNext: true, spacing: { before: 200, after: 60 } },
     );
@@ -358,6 +361,32 @@ class BlockRenderer {
       return [
         question,
         table([width], [new TableRow({ children: [cell(this.blocks(b.body, inner), width, { fill: C.rose, leftAccent: true })] })], NO_BORDERS),
+        spacer(120),
+      ];
+    }
+    if (b.discussion) {
+      // Set apart like a quote: grey edge and an italic origin line, so it never reads as a decision.
+      const inner = width - 400;
+      return [
+        question,
+        table(
+          [width],
+          [
+            new TableRow({
+              children: [
+                cell(
+                  [
+                    para([new TextRun({ text: L.discussionNote, italics: true, size: 16, color: C.muted })], { spacing: { after: 80 } }),
+                    ...this.blocks(b.body, inner),
+                  ],
+                  width,
+                  { fill: C.soft, leftAccent: true },
+                ),
+              ],
+            }),
+          ],
+          NO_BORDERS,
+        ),
         spacer(120),
       ];
     }

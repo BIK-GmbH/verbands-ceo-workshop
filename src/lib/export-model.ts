@@ -11,6 +11,7 @@ import { getState, filledParticipants, type CaptureEntry } from "./workshop-stor
 import { MANIFEST, findModule, findSlide } from "./slides";
 import { compareEntries } from "./field-order";
 import { formatCardLine } from "./cards";
+import { DISCUSSION_BADGE, DISCUSSION_NOTE, isDiscussionEntry } from "./discussion-entry";
 import glossaryMdx from "@/content/99-01-glossar.mdx?raw";
 import { localDateStamp } from "@/lib/local-date";
 
@@ -60,6 +61,8 @@ export type Block =
       polished: boolean;
       /** Votes/decisions are shown as a highlighted result */
       highlight: boolean;
+      /** Summary of the recorded discussion (`…:mitschnitt`), not a contribution the room captured itself */
+      discussion?: boolean;
       barometer?: { rows: BarometerRow[]; total: number };
     };
 
@@ -140,6 +143,8 @@ const LABELS = {
     open: "offen",
     openAnswer: "Noch keine Antwort erfasst.",
     polished: "KI-geglättet",
+    discussion: DISCUSSION_BADGE.de,
+    discussionNote: `${DISCUSSION_NOTE.de.charAt(0).toUpperCase()}${DISCUSSION_NOTE.de.slice(1)}`,
     votes: (n: number) => (n === 1 ? "1 Stimme" : `${n} Stimmen`),
     slide: "Folie",
     phase: "Phase",
@@ -194,6 +199,8 @@ const LABELS = {
     open: "open",
     openAnswer: "No answer captured yet.",
     polished: "AI-smoothed",
+    discussion: DISCUSSION_BADGE.en,
+    discussionNote: `${DISCUSSION_NOTE.en.charAt(0).toUpperCase()}${DISCUSSION_NOTE.en.slice(1)}`,
     votes: (n: number) => (n === 1 ? "1 vote" : `${n} votes`),
     slide: "Slide",
     phase: "Phase",
@@ -591,7 +598,8 @@ function entryBlock(e: CaptureEntry): Block {
         },
       ]
     : textBlocks(e.value);
-  return { type: "entry", question, body, open: false, polished, highlight: e.kind === "vote" || e.kind === "decision" };
+  const discussion = isDiscussionEntry(e.id);
+  return { type: "entry", question, body, open: false, polished, highlight: !discussion && (e.kind === "vote" || e.kind === "decision"), discussion };
 }
 
 function moduleTitle(index: number, lang: Lang): string {

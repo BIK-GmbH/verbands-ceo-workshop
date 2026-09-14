@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, FileDown, FileJson, Trash2, FileText, Home, Printer, FileType, Pencil, Search } from "lucide-react";
 import { BulkPolishButton, EntryEditor, isEditableText } from "@/components/ProtocolAi";
 import { useLang } from "@/lib/i18n";
@@ -9,6 +9,9 @@ import { printProtocolPdf, downloadProtocolWord } from "@/lib/protocol-export";
 import { AudioRecorder } from "@/components/AudioRecorder";
 import { ParticipantsEditor } from "@/components/ParticipantsEditor";
 import { ReportPanel } from "@/components/ReportPanel";
+import { DISCUSSION_ASSIGN_ANCHOR, DiscussionAssign } from "@/components/DiscussionAssign";
+import { DiscussionBadge, DiscussionNote } from "@/components/DiscussionMark";
+import { isDiscussionEntry } from "@/lib/discussion-entry";
 import { findModule } from "@/lib/slides";
 import { lastSlidePath } from "@/lib/last-slide";
 import { formatCardLine } from "@/lib/cards";
@@ -25,6 +28,19 @@ export function Protocol() {
   const stamp = localDateStamp();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+
+  // The live record links here to assign the recorded discussion; jump to that section once it rendered.
+  const location = useLocation();
+  const focus = (location.state as { focus?: string } | null)?.focus;
+  useEffect(() => {
+    if (focus !== DISCUSSION_ASSIGN_ANCHOR) return;
+    // The section appears once the transcripts are loaded; clearing the state afterwards keeps a reload from jumping again.
+    const t = window.setTimeout(() => {
+      document.getElementById(DISCUSSION_ASSIGN_ANCHOR)?.scrollIntoView({ block: "start" });
+      navigate(location.pathname, { replace: true, state: null });
+    }, 150);
+    return () => window.clearTimeout(t);
+  }, [focus, location.pathname, navigate]);
 
   // Return to the slide the user came from; fall back to the deck start if the
   // protocol was opened directly (no in-app history). React Router tracks the
@@ -161,6 +177,8 @@ export function Protocol() {
           </Tooltip>
         </section>
 
+        <DiscussionAssign lang={lang} />
+
         <ReportPanel entries={entries} lang={lang} />
 
         {entries.length > 0 && (
@@ -222,9 +240,20 @@ export function Protocol() {
                         return <EntryEditor key={e.id} entry={e} lang={lang} onClose={() => setEditingId(null)} />;
                       }
                       const val = Array.isArray(e.value) ? e.value.map(formatCardLine).join("\n") : e.value;
+                      const discussion = isDiscussionEntry(e.id);
                       return (
-                        <div key={e.id} className="rounded-md p-3" style={{ background: "var(--bg-elev)", border: "1px solid var(--border)" }}>
+                        <div
+                          key={e.id}
+                          className="rounded-md p-3"
+                          style={{
+                            background: "var(--bg-elev)",
+                            border: "1px solid var(--border)",
+                            ...(discussion ? { borderLeft: "3px solid color-mix(in oklch, var(--workshop-accent) 55%, var(--border))" } : {}),
+                          }}
+                          data-discussion-entry={discussion ? e.slideId : undefined}
+                        >
                           <div className="flex items-start gap-2 mb-1">
+                            {discussion && <DiscussionBadge lang={lang} />}
                             <div className="text-sm font-medium flex-1">{e.prompt}</div>
                             {isEditableText(e) && (
                               <Tooltip
@@ -245,6 +274,7 @@ export function Protocol() {
                               </Tooltip>
                             )}
                           </div>
+                          {discussion && <DiscussionNote lang={lang} className="text-xs mb-1" />}
                           <div className="text-sm whitespace-pre-wrap" style={{ color: val ? "var(--fg)" : "var(--fg-muted)" }}>
                             {val || (de ? "— (keine Eingabe)" : "— (no input)")}
                           </div>

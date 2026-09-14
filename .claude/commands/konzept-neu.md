@@ -118,7 +118,7 @@ später in die Dokumente oder in die Abschlussmeldung.
 
 ## Schritt 3 – Die Quelle richtig lesen
 
-**Aufbau der Sicherung** (`src/lib/backup.ts`): `{ format, version, createdAt, withAudio, stores, interviews }`.
+**Aufbau der Sicherung** (`src/lib/backup.ts`): `{ format, version, createdAt, withAudio, stores, interviews, sessionTranscripts? }`.
 
 - `stores.workshop` = das Protokoll: `meta` (`title`, `date`, `participantsList` mit Name, Vorname,
   Organisation, Rolle) und `entries`, ein Objekt Kennung → Eintrag
@@ -145,6 +145,18 @@ später in die Dokumente oder in die Abschlussmeldung.
 - **Eigene Fragen** `<folie>:q-…`: `prompt` ist die Frage, `value` die Antwort; leerer `value` = **offen**.
   Offene eigene Fragen gehören immer in „Offene Fragen".
 - **Notizen** `<folie>:notiz`: Freitext aus dem Live-Protokoll zu dieser Folie.
+- **Mitschnitt** `<folie>:mitschnitt` (Frage „Aus der mitgeschnittenen Diskussion“): KI-Zusammenfassung der
+  mitgeschnittenen Diskussion, im Nachgang von der Moderation geprüft und dieser Folie inhaltlich zugeordnet.
+  Jede Zeile trägt den Zeitraum `[hh:mm:ss–hh:mm:ss]` (bei mehreren Aufnahmen `[Aufnahme n, …]`). Das ist eine
+  **Nebenquelle**: Sie ergänzt Kontext, Begründungen, Einwände und offene Fragen, wiegt aber weniger als
+  ausdrücklich erfasste Beiträge, Entscheidungen, Abstimmungen und Poster-Felder. Widerspricht sie einem
+  erfassten Beitrag, gilt der Beitrag; den Unterschied als offen nennen. Aussagen, die nur hier stehen, im
+  Text als „aus der Diskussion“ kennzeichnen (z. B. „In der Diskussion wurde genannt, dass …“), nie als
+  Beschluss. Keine wörtlichen Zitate daraus – es ist bereits eine Zusammenfassung.
+- **Volltranskript der Sitzung** `sessionTranscripts` (optional, in neueren Sicherungen): die Transkripte
+  der Sitzungsaufnahme je Aufnahme in Abschnitten mit Zeitmarken, bereits von Privatem und Unangemessenem
+  bereinigt (Marken wie `[Passage entfernt: …]` ignorieren, nichts daraus erschließen). Nur zum Nachschlagen,
+  wenn eine `:mitschnitt`-Zusammenfassung unklar ist; nicht selbst neu zuordnen und nicht zitieren.
 - **Barometer** 00.08 (vorher) und 07.02 (nachher): `…:barometer-vorher` (Art `vote`) enthält die
   Verteilung „Option: n · … (N Stimmen)"; `…-stimmen` die Einzelstimmen „Option — Name" (**Namen nie
   übernehmen**); `…-analyse` eine KI-Auswertung. Verteilung, mittlere Position und Bewegungen
@@ -643,6 +655,8 @@ if (/^\s*[{[]/.test(raw)) {
       current.kind = ref[2];
       current.id = `${ref[1]}:${current.prompt}`;
       entries[current.id] = current;
+    } else if (/^_Mitschnitt: zusammengefasst aus der mitgeschnittenen Diskussion_$/.test(line)) {
+      // Kennzeichnung aus dem Markdown-Export, kein Inhalt.
     } else if (current?.id && !/^## /.test(line)) current.lines.push(line);
     if (/^## /.test(line)) current = null;
   }
@@ -724,6 +738,7 @@ const flags = (e) => {
   else if (posterOf.has(e.id)) f.push(`auf Poster ${posterOf.get(e.id).join(", ")}`);
   if (isAdhoc(e)) f.push(hasValue(e) ? "eigene Frage, beantwortet" : "eigene Frage, OFFEN");
   if (e.id.endsWith(":notiz")) f.push("Notiz");
+  if (e.id.endsWith(":mitschnitt") || e.prompt === "Aus der mitgeschnittenen Diskussion") f.push("Mitschnitt (KI-Zusammenfassung der Diskussion, Nebenquelle)");
   if (e.raw) f.push("KI-geglättet (Original in raw)");
   if (/-analyse$/.test(e.id) || /:i7-meinungsbild-gesamt$|:interview-/.test(e.id)) f.push("KI-Auswertung");
   if (e.updatedAt) f.push(e.updatedAt.slice(0, 16).replace("T", " ") + " UTC");

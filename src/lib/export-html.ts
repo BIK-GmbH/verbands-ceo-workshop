@@ -90,7 +90,8 @@ function blockHtml(b: Block, doc: ExportDoc): string {
         .join("")}</tbody></table>`;
     case "entry": {
       const badges =
-        (b.open ? `<span class="badge open">${esc(L.open)}</span>` : "") + (b.polished ? `<span class="badge ai">${esc(L.polished)}</span>` : "");
+        (b.open ? `<span class="badge open">${esc(L.open)}</span>` : "") + (b.polished ? `<span class="badge ai">${esc(L.polished)}</span>` : "") +
+        (b.discussion ? `<span class="badge rec">${esc(L.discussion)}</span>` : "");
       let answer: string;
       if (b.open) answer = `<p>${esc(L.openAnswer)}</p>`;
       else if (b.barometer) {
@@ -103,8 +104,9 @@ function blockHtml(b: Block, doc: ExportDoc): string {
             )
             .join("")}` + `<div class="total">${esc(L.votes(b.barometer.total))}</div></div>`;
       } else answer = b.body.map((x) => blockHtml(x, doc)).join("");
-      const cls = ["entry", b.open ? "open" : "", b.highlight ? "hl" : ""].filter(Boolean).join(" ");
-      return `<div class="${cls}"><div class="q">${esc(b.question)}${badges}</div><div class="a">${answer}</div></div>`;
+      const cls = ["entry", b.open ? "open" : "", b.highlight ? "hl" : "", b.discussion ? "rec" : ""].filter(Boolean).join(" ");
+      const note = b.discussion ? `<div class="rec-note">${esc(L.discussionNote)}</div>` : "";
+      return `<div class="${cls}"><div class="q">${esc(b.question)}${badges}</div>${note}<div class="a">${answer}</div></div>`;
     }
   }
 }
@@ -253,6 +255,9 @@ hr { border: 0; border-top: .3mm solid var(--line); margin: 5mm 0; }
 .badge { display: inline-block; font-size: 6.3pt; letter-spacing: .1em; text-transform: uppercase; padding: .5mm 1.6mm; border-radius: 1mm; vertical-align: .3mm; margin-left: 2mm; font-weight: 700; font-style: normal; }
 .badge.ai { background: #eceef2; color: var(--muted); }
 .badge.open { background: var(--rose); color: var(--red); }
+.badge.rec { background: #fff; color: var(--red); border: .3mm solid var(--red); }
+.entry.rec .a { border-left: .8mm solid var(--line); padding-left: 3mm; }
+.entry.rec .rec-note { font-size: 7.5pt; font-style: italic; color: var(--muted); margin: -.6mm 0 1.2mm; }
 .baro { font-weight: 400; }
 .baro .row { display: flex; align-items: center; gap: 3mm; margin: .8mm 0; }
 .baro .opt { width: 38mm; flex: none; }

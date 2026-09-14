@@ -20,6 +20,7 @@ import {
   Check,
   Search,
   FileText,
+  AudioLines,
 } from "lucide-react";
 import type { Lang, SlideMeta } from "@/types/slide";
 import { useAllEntries, useCapture } from "@/lib/useWorkshop";
@@ -39,6 +40,10 @@ import { MANIFEST, findModule } from "@/lib/slides";
 import { BulkPolishButton, EntryEditor, MicButton, PolishBar, isEditableText, polishQuestion } from "@/components/ProtocolAi";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { localDateStamp } from "@/lib/local-date";
+import { DISCUSSION_ASSIGN_ANCHOR } from "@/components/DiscussionAssign";
+import { DiscussionBadge, DiscussionNote } from "@/components/DiscussionMark";
+import { isDiscussionEntry } from "@/lib/discussion-entry";
+import { useSessionTranscripts } from "@/lib/session-transcript-store";
 
 interface Props {
   open: boolean;
@@ -401,6 +406,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
   const totalModules = MANIFEST.length;
   const pct = totalModules ? Math.round((modulesWithInput / totalModules) * 100) : 0;
   const stamp = localDateStamp();
+  const hasRecordingTranscript = useSessionTranscripts().sessions.length > 0;
 
   if (!open) {
     // Closing the drawer keeps the dictation running; show where it writes and offer a stop.
@@ -729,6 +735,7 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                               );
                             }
                             const val = Array.isArray(e.value) ? e.value.join("\n") : e.value;
+                            const discussion = isDiscussionEntry(e.id);
                             return (
                               <div
                                 key={e.id}
@@ -748,7 +755,11 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
                                   onClick={() => navigate(`/s/${e.slideId}`)}
                                   className="flex-1 text-left p-2 min-w-0 hover:bg-black/[0.03]"
                                 >
-                                  <div className="font-medium mb-0.5 leading-snug">{e.prompt}</div>
+                                  <div className="font-medium mb-0.5 leading-snug flex flex-wrap items-center gap-1.5">
+                                    {discussion && <DiscussionBadge lang={lang} size="xs" />}
+                                    {e.prompt}
+                                  </div>
+                                  {discussion && <DiscussionNote lang={lang} className="text-[10px] mb-0.5" />}
                                   <div className="whitespace-pre-wrap" style={{ color: "var(--fg)" }}>
                                     {val}
                                   </div>
@@ -860,6 +871,25 @@ export function LiveProtocolPanel({ open, onClose, lang, current }: Props) {
               </button>
             </Tooltip>
           </div>
+          {hasRecordingTranscript && (
+            <Tooltip
+              content={
+                de
+                  ? "Vor dem Protokoll: das Transkript der mitgeschnittenen Diskussion zusammenfassen und den passenden Folien zuordnen"
+                  : "Before the record: summarize the transcript of the recorded discussion and assign it to the matching slides"
+              }
+            >
+              <button
+                type="button"
+                onClick={() => navigate("/protokoll", { state: { focus: DISCUSSION_ASSIGN_ANCHOR } })}
+                className="inline-flex items-center gap-1.5 text-xs hover:underline"
+                style={{ color: "var(--workshop-accent)" }}
+                data-testid="discussion-assign-link"
+              >
+                <AudioLines size={13} /> {de ? "Mitschnitt den Folien zuordnen" : "Assign recording to slides"}
+              </button>
+            </Tooltip>
+          )}
           <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
             <Tooltip
               content={

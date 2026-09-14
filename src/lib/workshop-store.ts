@@ -12,6 +12,7 @@
 
 import { formatCardLine } from "./cards";
 import { compareEntries } from "./field-order";
+import { isDiscussionEntry } from "./discussion-entry";
 
 export type CaptureKind = "text" | "decision" | "vote" | "checklist";
 
@@ -327,6 +328,8 @@ export function exportMarkdown(): string {
     }
     lines.push(`### ${e.prompt}`);
     lines.push(`*(Folie ${e.slideId} · ${e.kind})*`, "");
+    // A line of its own, so the reference line above stays machine-readable (/konzept-neu).
+    if (isDiscussionEntry(e.id)) lines.push("_Mitschnitt: zusammengefasst aus der mitgeschnittenen Diskussion_", "");
     const val = valueToText(e.value).trim();
     lines.push(val ? val : "_(keine Eingabe)_", "");
   }
