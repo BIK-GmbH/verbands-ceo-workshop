@@ -353,6 +353,7 @@ async function finishRecording(): Promise<void> {
     // discarded; closing the session keeps it out of the crash-recovery offer.
     pendingSessionId = current.id;
     await closeSession(current.id);
+    await handOver(result.blob, { ...result.session, closed: true }, current.id);
   } catch (err) {
     console.error("[session-recorder] assembling failed", err);
     // Nothing is deleted here: the chunks stay and are offered as a recovery
@@ -365,6 +366,53 @@ export function stopRecording() {
   if (!recorder) return;
   // The finished blob is published from rec.onstop / finishRecording above.
   recorder.stop();
+}
+
+/**
+ * Receives every finished recording (the automatic saving of files registers
+ * here; kept as a hook so this module does not depend on the folder logic).
+ * Resolves `onDisk: true` only when the file verifiably landed on disk — then
+ * the stored chunks are no longer the only copy and are cleaned up like after
+ * a download. A browser download cannot be verified, so its chunks stay.
+ */
+export type FinishedRecordingHandler = (blob: Blob, session: RecordingSession) => Promise<{ onDisk: boolean }>;
+let finishedHandler: FinishedRecordingHandler | null = null;
+
+export function setFinishedRecordingHandler(handler: FinishedRecordingHandler | null) {
+  finishedHandler = handler;
+}
+
+async function handOver(blob: Blob, finished: RecordingSession, id: string) {
+  if (!finishedHandler) return;
+  try {
+    const { onDisk } = await finishedHandler(blob, finished);
+    if (onDisk && pendingSessionId === id) recordingDownloaded();
+  } catch (err) {
+    // The recording itself is fine and still offered for download.
+    console.error("[session-recorder] handing the finished recording over failed", { id, err });
+  }
+}
+
+/** Id of the run currently being written — not downloadable yet. */
+export function runningSessionId(): string | null {
+  return snapshot.recording ? (session?.id ?? null) : null;
+}
+
+/**
+ * Removes one stored run from the download list. Goes through the same paths as
+ * the recorder panel, so its offer or finished file disappears there as well.
+ */
+export async function deleteStoredRecording(id: string): Promise<void> {
+  if (id === runningSessionId()) return;
+  if (id === pendingSessionId) {
+    discardRecording();
+    return;
+  }
+  if (snapshot.recovery?.id === id) {
+    await discardRecovery();
+    return;
+  }
+  await deleteSession(id);
 }
 
 /** Called once the user actually downloaded a restored file. */

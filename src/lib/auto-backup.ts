@@ -611,7 +611,7 @@ async function freeName(dir: DirHandle, date: Date, suffix: string): Promise<str
 }
 
 /** createWritable writes into a swap file and swaps on close — a crash leaves no half file. */
-async function writeFile(dir: DirHandle, name: string, content: string): Promise<void> {
+async function writeFile(dir: DirHandle, name: string, content: string | Blob): Promise<void> {
   const fh = await dir.getFileHandle(name, { create: true });
   const w = await fh.createWritable();
   try {
@@ -697,6 +697,35 @@ async function syncFolder(): Promise<void> {
   if (!newest) return;
   const json = await readPayload(newest.id);
   if (json) await writeSnapshotToFolder(newest, json);
+}
+
+export type FolderWriteResult = { written: true; path: string } | { written: false; reason: "no-folder" | "no-permission" };
+
+/**
+ * Writes one file into a subfolder of the backup folder (transcripts,
+ * recordings). Existing files are never overwritten — a taken name gets a
+ * counter. Throws on a failed write after publishing it as a folder problem.
+ */
+export async function writeToBackupFolder(subfolder: string, name: string, content: string | Blob): Promise<FolderWriteResult> {
+  const stored = await loadFolder();
+  if (!stored) return { written: false, reason: "no-folder" };
+  const permission = await publishFolder(stored);
+  if (permission !== "granted" && permission !== "unknown") return { written: false, reason: "no-permission" };
+  try {
+    const dir = (await stored.handle.getDirectoryHandle(subfolder, { create: true })) as DirHandle;
+    const dot = name.lastIndexOf(".");
+    const [stem, ext] = dot > 0 ? [name.slice(0, dot), name.slice(dot)] : [name, ""];
+    let target = name;
+    for (let i = 2; await exists(dir, target); i++) target = `${stem}-${i}${ext}`;
+    await writeFile(dir, target, content);
+    return { written: true, path: `${stored.name}/${subfolder}/${target}` };
+  } catch (err) {
+    const kind = folderProblemFor(err);
+    console.error("[auto-backup] writing a file to the backup folder failed", { folder: stored.name, subfolder, name, kind, err });
+    setStatus({ folderProblem: problem(kind) });
+    await publishFolder(stored);
+    throw err;
+  }
 }
 
 /** Opens the folder picker. false = the user cancelled. */

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle, ChevronLeft, ChevronRight, Download, Loader2, Mic, Pause, Play, Square, Trash2 } from "lucide-react";
 import type { Lang } from "@/types/slide";
-import { newInterviewId, saveInterview, type QuestionMarker } from "@/lib/interview-store";
+import { autoSaveInterviewAudio } from "@/lib/auto-export";
+import { newInterviewId, saveInterview, type Interview, type QuestionMarker } from "@/lib/interview-store";
 import { INTERVIEW_QUESTIONS, TARGET_SECONDS } from "@/lib/interview-opinion";
 import { extensionForMime } from "@/lib/transcribe";
 import { BTN, ERROR_COLOR, Notice, WARN_COLOR, card, danger, downloadBlob, field, formatDuration, muted, outline, primary } from "./ui";
@@ -219,7 +220,7 @@ export function InterviewRecorder({
     const name = pseudonym.trim() || `Teilnehmer ${nextNumber}`;
     const mimeType = blob.type || "audio/webm";
     try {
-      await saveInterview({
+      const interview: Interview = {
         id,
         pseudonym: name,
         source: "recorded",
@@ -231,7 +232,9 @@ export function InterviewRecorder({
         durationSec,
         audio: blob,
         markers: markersRef.current,
-      });
+      };
+      await saveInterview(interview);
+      void autoSaveInterviewAudio(interview);
       setSaved(name);
       setPseudonym("");
       setConsent(false);

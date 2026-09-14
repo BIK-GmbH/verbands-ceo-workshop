@@ -27,6 +27,7 @@ import {
   writeInterviewToProtocol,
 } from "@/lib/interview-opinion";
 import { EMPTY_SCALES, SCALES, hasScaleValues, type InterviewScales, type ScaleId } from "@/lib/interview-metrics";
+import { autoSaveTranscript } from "@/lib/auto-export";
 import { TranscribeError, extensionForMime, fileExtension, isAcceptedAudioName, transcribeAudio, useOpenAiKey } from "@/lib/transcribe";
 import { bilingualError, describeProcessingError, isFatal } from "./errors";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -69,7 +70,10 @@ async function transcribeOne(iv: Interview): Promise<Interview> {
   const ext = isAcceptedAudioName(iv.fileName) ? fileExtension(iv.fileName) : extensionForMime(iv.mimeType);
   const result = await transcribeAudio(iv.audio, ext, `interview ${iv.id}`);
   const patch = { transcript: result.text, transcriptModel: result.model, error: undefined };
-  return (await updateInterview(iv.id, patch)) ?? { ...iv, ...patch };
+  const next = (await updateInterview(iv.id, patch)) ?? { ...iv, ...patch };
+  // Fire and forget: a failed file save is reported on its own and must not fail the transcription.
+  void autoSaveTranscript(next);
+  return next;
 }
 
 async function summarizeOne(iv: Interview): Promise<Interview> {

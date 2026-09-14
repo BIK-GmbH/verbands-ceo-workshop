@@ -52,6 +52,13 @@ interface StoredChunk {
   blob: Blob;
 }
 
+/** Fired when a run starts, ends or is removed — not per chunk, that would be every five seconds. */
+export const RECORDING_STORE_EVENT = "recording-store-change";
+
+function announce() {
+  if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent(RECORDING_STORE_EVENT));
+}
+
 let dbPromise: Promise<IDBDatabase> | null = null;
 
 function openDb(): Promise<IDBDatabase> {
@@ -130,6 +137,7 @@ export async function beginSession(mimeType: string, extension: string): Promise
     updatedAt: startedAt,
   };
   await tx([SESSIONS], "readwrite", (t) => t.objectStore(SESSIONS).put(session));
+  announce();
   return session;
 }
 
@@ -172,6 +180,7 @@ export async function closeSession(sessionId: string): Promise<void> {
   await tx([SESSIONS], "readwrite", (t) =>
     t.objectStore(SESSIONS).put({ ...session, closed: true, updatedAt: new Date().toISOString() }),
   );
+  announce();
 }
 
 /** Removes header and every chunk — only after a download or an explicit discard. */
@@ -180,6 +189,7 @@ export async function deleteSession(sessionId: string): Promise<void> {
     t.objectStore(CHUNKS).delete(rangeFor(sessionId));
     t.objectStore(SESSIONS).delete(sessionId);
   });
+  announce();
 }
 
 /** Removes every stored run except `keepId` (a recording that is still running). */
@@ -194,6 +204,14 @@ export async function deleteAllSessions(keepId?: string): Promise<void> {
 
 // ---------------------------------------------------------------------------
 // Reads
+
+/** Every stored run, oldest first. */
+export async function listSessions(): Promise<RecordingSession[]> {
+  const all = (await tx<RecordingSession[]>([SESSIONS], "readonly", (t) =>
+    t.objectStore(SESSIONS).getAll() as IDBRequest<RecordingSession[]>,
+  )) ?? [];
+  return all.sort((a, b) => a.startedAt.localeCompare(b.startedAt));
+}
 
 export async function getSession(sessionId: string): Promise<RecordingSession | undefined> {
   return tx<RecordingSession | undefined>([SESSIONS], "readonly", (t) =>

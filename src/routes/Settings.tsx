@@ -7,6 +7,7 @@ import { lastSlidePath } from "@/lib/last-slide";
 import { InterviewSetup } from "@/components/interviews/InterviewSetup";
 import { ApiKeyStatus } from "@/components/ApiKeyStatus";
 import { AutoBackupSection } from "@/components/AutoBackupSection";
+import { DownloadsSection } from "@/components/DownloadsSection";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { BTN, ERROR_COLOR, Notice, card, formatBytes, formatDate, muted, outline } from "@/components/interviews/ui";
 import {
@@ -584,6 +585,8 @@ export function Settings() {
         <AutoBackupSection lang={lang} />
 
         <BackupSection lang={lang} />
+
+        <DownloadsSection lang={lang} />
 
         <section
           className="rounded-lg p-4 space-y-3 text-sm"

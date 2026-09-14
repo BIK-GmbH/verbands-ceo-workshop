@@ -16,6 +16,7 @@ import { MotionProvider } from "@/lib/motion";
 import { FontScaleProvider } from "@/lib/font-scale";
 import { LoginGate } from "@/components/LoginGate";
 import { AutoBackup } from "@/components/AutoBackup";
+import { AutoExport } from "@/components/AutoExport";
 
 export function App() {
   return (
@@ -26,6 +27,7 @@ export function App() {
             <LoginGate>
               <HashRouter>
                 <AutoBackup />
+                <AutoExport />
                 <HelpProvider>
                   <Routes>
                     <Route path="/" element={<Landing />} />

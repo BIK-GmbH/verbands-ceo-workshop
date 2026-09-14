@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, FileText, Home, ListChecks, Mic, Upload } from "lucide-react";
+import { ArrowLeft, Download, FileText, Home, ListChecks, Mic, Upload } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 import { lastSlidePath } from "@/lib/last-slide";
 import { useInterviews } from "@/lib/interview-store";
@@ -105,6 +105,17 @@ export function Interviews() {
               : "Short one-to-one interviews (about 5 minutes) on attitudes towards AI and its value for the FBS: record directly or upload audio files, transcribe, create an opinion picture per person and from those the group picture. Results go into the record on slide 01.02. All data stays local in this browser; audio and text are only sent for transcription (OpenAI) and summarisation (Anthropic)."}
           </p>
         </div>
+
+        <Link
+          to="/einstellungen"
+          state={{ focus: "downloads" }}
+          className="inline-flex items-center gap-1.5 text-sm font-medium"
+          style={{ color: "var(--workshop-accent)" }}
+          data-testid="interviews-downloads-link"
+        >
+          <Download size={15} aria-hidden />
+          {de ? "Alle Transkripte und Aufnahmen herunterladen" : "Download all transcripts and recordings"}
+        </Link>
 
         <InterviewSetup lang={lang} />
 
